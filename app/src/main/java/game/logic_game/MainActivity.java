@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_button:
-                //start new intent for example
+                Intent intent = new Intent(this,Game.class); //create intent
+                startActivity(intent); //start intent
                 Log.d("test123","test"); //test to check if the button is getting clicked ( printf test)
                 break;
         }
