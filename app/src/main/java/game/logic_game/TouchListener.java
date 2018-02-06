@@ -15,21 +15,28 @@ import static android.support.v4.view.ViewCompat.animate;
  */
 
 public class TouchListener implements View.OnTouchListener {
-    int object_size_x;
-    int object_size_y;
+    float pos_x,pos_y;
+    float prev_pos_x,prev_pos_y;
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        object_size_x = view.getWidth();
-        object_size_y = view.getHeight();
 
          Log.d("test123", motionEvent.getAction() + "");
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                prev_pos_x = motionEvent.getRawX();
+                prev_pos_y = motionEvent.getRawY();
                 return true;
             case MotionEvent.ACTION_MOVE:
-                animate(view).y(motionEvent.getRawY() - object_size_y / 2).x(motionEvent.getRawX() - object_size_x/2).setDuration(0);
+                pos_x = motionEvent.getRawX();
+                pos_y = motionEvent.getRawY();
+                animate(view)
+                        .x(view.getX() + pos_x - prev_pos_x)
+                        .y(view.getY() + pos_y - prev_pos_y)
+                        .setDuration(0);
+                prev_pos_x = pos_x;
+                prev_pos_y = pos_y;
                 return true;
         }
         return false;
