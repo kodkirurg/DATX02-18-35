@@ -11,7 +11,7 @@ public class Disjunction extends Operator {
     }
 
     @Override
-    public int hashCode() {
+    public int calculateHash() {
         long magic = ExpressionUtil.HASH_DISJ_MAGIC_NUMBER;
         long hash = magic;
         magic *= ExpressionUtil.HASH_DISJ_MAGIC_NUMBER;

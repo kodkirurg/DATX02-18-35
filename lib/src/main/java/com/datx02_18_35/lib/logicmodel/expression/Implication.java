@@ -10,7 +10,7 @@ public class Implication extends Operator {
     }
 
     @Override
-    public int hashCode() {
+    public int calculateHash() {
         long magic = ExpressionUtil.HASH_IMPL_MAGIC_NUMBER;
         long hash = magic;
         magic *= ExpressionUtil.HASH_IMPL_MAGIC_NUMBER;

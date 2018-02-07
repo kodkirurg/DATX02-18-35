@@ -11,7 +11,7 @@ public class Conjunction extends Operator {
     }
 
     @Override
-    public int hashCode() {
+    public int calculateHash() {
         long magic = ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         long hash = magic;
         magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;

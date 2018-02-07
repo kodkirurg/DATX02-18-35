@@ -10,7 +10,7 @@ public class Absurdity extends Expression {
     }
 
     @Override
-    public int hashCode() {
+    protected int calculateHash() {
         return (int)ExpressionUtil.HASH_ABSU_MAGIC_NUMBER;
     }
 

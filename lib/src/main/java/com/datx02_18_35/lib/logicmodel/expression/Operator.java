@@ -10,4 +10,6 @@ public abstract class Operator extends Expression {
         this.operand1 = operand1;
         this.operand2 = operand2;
     }
+
+
 }

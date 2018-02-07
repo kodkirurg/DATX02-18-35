@@ -13,7 +13,7 @@ public class Proposition extends Expression {
     }
 
     @Override
-    public int hashCode() {
+    public int calculateHash() {
         return (int)(id.hashCode() * ExpressionUtil.HASH_PROP_MAGIC_NUMBER);
     }
 
