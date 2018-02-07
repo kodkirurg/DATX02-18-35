@@ -1,13 +1,11 @@
-package game.logic_game;
+package com.datx02_18_35.android;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
+import game.logic_game.R;
 
 public class Game extends AppCompatActivity {
     private ViewGroup root;

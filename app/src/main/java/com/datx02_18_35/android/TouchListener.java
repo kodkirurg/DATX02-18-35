@@ -1,4 +1,4 @@
-package game.logic_game;
+package com.datx02_18_35.android;
 
 import android.content.ClipData;
 import android.util.Log;
