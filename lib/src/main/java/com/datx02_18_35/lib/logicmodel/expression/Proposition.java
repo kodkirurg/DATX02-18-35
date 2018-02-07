@@ -5,7 +5,20 @@ package com.datx02_18_35.lib.logicmodel.expression;
  */
 
 public class Proposition extends Expression {
-    protected Proposition() {
 
+    private String id;
+
+    Proposition(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int)(id.hashCode() * ExpressionUtil.HASH_PROP_MAGIC_NUMBER);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Proposition && id.equals(((Proposition) other).id);
     }
 }

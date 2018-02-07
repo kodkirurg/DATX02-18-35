@@ -5,7 +5,19 @@ package com.datx02_18_35.lib.logicmodel.expression;
  */
 
 public class Absurdity extends Expression {
-    protected Absurdity() {
+    Absurdity() {
 
     }
+
+    @Override
+    public int hashCode() {
+        return (int)ExpressionUtil.HASH_ABSU_MAGIC_NUMBER;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Absurdity;
+    }
+
+
 }

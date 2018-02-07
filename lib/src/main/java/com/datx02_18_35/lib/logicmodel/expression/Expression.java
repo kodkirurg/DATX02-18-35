@@ -5,7 +5,13 @@ package com.datx02_18_35.lib.logicmodel.expression;
  */
 
 public abstract class Expression {
-    protected Expression() {
+    Expression() {
 
     }
+
+    @Override
+    public abstract int hashCode();
+
+    @Override
+    public abstract boolean equals(Object other);
 }
