@@ -6,7 +6,7 @@ package com.datx02_18_35.lib.logicmodel.expression;
 
 public class Proposition extends Expression {
 
-    private String id;
+    private final String id;
 
     Proposition(String id) {
         this.id = id;
