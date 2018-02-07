@@ -6,7 +6,7 @@ package com.datx02_18_35.lib.logicmodel.expression;
 
 public class Absurdity extends Expression {
     Absurdity() {
-
+        super();
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ExpressionFactory {
 
     }
 
-    public ExpressionFactory getSingleton() {
+    public static ExpressionFactory getSingleton() {
         return singleton;
     }
 

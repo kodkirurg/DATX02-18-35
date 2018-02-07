@@ -9,6 +9,7 @@ public class Proposition extends Expression {
     private final String id;
 
     Proposition(String id) {
+        super();
         this.id = id;
     }
 
