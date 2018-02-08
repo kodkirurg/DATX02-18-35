@@ -25,7 +25,7 @@ public class Game extends AppCompatActivity {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        recAdapter = new RecyclerAdapter(new String[]{"a","b","c"});
+        recAdapter = new RecyclerAdapter(new String[]{"a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c"});
         recyclerView.setAdapter(recAdapter);
     }
 
