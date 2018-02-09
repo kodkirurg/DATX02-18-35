@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import game.logic_game.R;
 
 /**
@@ -14,10 +16,10 @@ import game.logic_game.R;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private String[] dataSet;
+    public ArrayList<String> dataSet;
 
 
-    public RecyclerAdapter(String[] dataSet){
+    public RecyclerAdapter(ArrayList dataSet){
         this.dataSet = dataSet;
     }
 
@@ -36,7 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return dataSet.length;
+        return dataSet.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

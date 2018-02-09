@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import game.logic_game.R;
 
 public class Game extends AppCompatActivity {
@@ -25,7 +27,9 @@ public class Game extends AppCompatActivity {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        recAdapter = new RecyclerAdapter(new String[]{"a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c"});
+        ArrayList list = new ArrayList();
+        list.add(0, "test"); //edit this to remove and add elements
+        recAdapter = (RecyclerAdapter) new RecyclerAdapter(list);
         recyclerView.setAdapter(recAdapter);
     }
 
