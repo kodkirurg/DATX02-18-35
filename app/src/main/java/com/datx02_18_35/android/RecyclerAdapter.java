@@ -15,7 +15,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter {
     public ArrayList<String> dataSet;
 
 
@@ -41,12 +41,37 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return dataSet.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public boolean onItemMove(int adapterPosition, int adapterPosition1) {
+        //implement
+        return false;
+    }
+
+    public void onItemDismiss(int adapterPosition) {
+        //implement
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public CardView cardView;
 
         public ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onItemSelected() {
+
+        }
+
+        @Override
+        public void onItemClear() {
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            view.setBackgroundColor(Color.BLACK);
         }
     }
 }
