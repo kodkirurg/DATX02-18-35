@@ -1,9 +1,11 @@
 package com.datx02_18_35.android;
 
 import android.graphics.Color;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,6 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardView.setCardBackgroundColor(Color.BLUE);
     }
 
+
     @Override
     public int getItemCount() {
         return dataSet.size();
@@ -61,7 +64,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onItemSelected() {
-
+            cardView.setBackgroundColor(Color.GRAY);
         }
 
         @Override
@@ -71,7 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            view.setBackgroundColor(Color.BLACK);
+
         }
     }
 }
