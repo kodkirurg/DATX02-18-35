@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,7 +45,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return dataSet.size();
     }
 
-    public boolean onItemMove(int adapterPosition, int adapterPosition1) {
+    public boolean onItemMove(int indexFrom, int indexTo) {
+        Log.d("test123","from" + indexFrom + " to" + indexTo);
         //implement
         return false;
     }
@@ -62,9 +64,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemView.setOnClickListener(this);
         }
 
+
         @Override
         public void onItemSelected() {
-            cardView.setBackgroundColor(Color.GRAY);
+
         }
 
         @Override
@@ -74,7 +77,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-
+            cardView.setBackgroundColor(Color.BLACK);
         }
     }
 }

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 LogicModel.main(null); // Testing :)
                 Intent intent = new Intent(this, Game.class); //create intent
                 startActivity(intent); //start intent
-                Log.d("test123", "test"); //test to check if the button is getting clicked ( printf test)
                 break;
             }
         }
