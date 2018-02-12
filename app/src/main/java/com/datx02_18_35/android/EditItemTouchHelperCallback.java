@@ -43,7 +43,7 @@ public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
         //display target set
         target.itemView.setBackgroundColor(Color.GREEN);
         //remove previous target
-        if(this.target !=target.getAdapterPosition()){
+        if(this.target !=target.getAdapterPosition() & this.target >=0){
             recyclerView.findViewHolderForAdapterPosition(this.target).itemView.setBackgroundColor(Color.BLUE);
         }
         //set new index targets
@@ -60,6 +60,7 @@ public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
         //if valid target then move to it
         if(this.viewHolder >= 0 && this.target >= 0){
             recyclerAdapter.onItemMove(this.viewHolder, this.target);
+            recyclerView.findViewHolderForAdapterPosition(this.target).itemView.setBackgroundColor(Color.BLUE);
         }
         //clear selection of indexs
         this.viewHolder = -1;
@@ -68,7 +69,6 @@ public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
-
         //add fake "holder" for the place we are moving from or solve deselecting targets
 
 
