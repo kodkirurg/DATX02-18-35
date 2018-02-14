@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import game.logic_game.R;
 
@@ -46,7 +47,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public boolean onItemMove(int indexFrom, int indexTo) {
-        Log.d("test123","from" + indexFrom + " to" + indexTo);
+        Collections.swap(dataSet,indexFrom,indexTo);
+        notifyItemMoved(indexFrom,indexTo);
         //implement
         return false;
     }

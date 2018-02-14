@@ -34,6 +34,25 @@ public class Game extends AppCompatActivity implements OnStartDragListener {
         list.add(1, "test"); //edit this to remove and add elements
         list.add(2, "test"); //edit this to remove and add elements
         list.add(3, "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+        list.add( "test"); //edit this to remove and add elements
+
+
+
+
         recAdapter = new RecyclerAdapter(list);
 
         //add drag and drop
