@@ -76,7 +76,7 @@ public class ExpressionFactory {
                 expressionArray.add(createOperator(OperatorType.DISJUNCTION,exprs[0],exprs[1]));
                 return expressionArray;
             case DISJUNCTION_ELIMINATION:
-                // Assuming conjuction card first, disjunction second
+                // Assuming conjunction card first, disjunction second
                 expressionArray.add(((Implication)(((Conjunction)exprs[0]).getOperand1())).getOperand2());
             default:
                 throw new IllegalArgumentException("Unknown rule type!");

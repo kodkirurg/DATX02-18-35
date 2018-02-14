@@ -14,9 +14,14 @@ public class LogicModel {
         Expression q2 = exprFact.createProposition("Q");
         Expression c1 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, p1, q1);
         Expression c2 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, p2, q2);
+        Expression c3 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, q2, p2);
+
 
         System.out.println(c1.hashCode());
         System.out.println(c2.hashCode());
+        System.out.println(c3.hashCode());
         System.out.println(c1.equals(c2));
+        System.out.println(c1.equals(c3));
+        System.out.println(c1.logicEquals(c3));
     }
 }
