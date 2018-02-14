@@ -16,15 +16,23 @@ public class LogicModel {
         Expression q2 = exprFact.createProposition("Q");
         Expression c1 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, p1, q1);
         Expression c2 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, p2, q2);
+        Expression c3 = exprFact.createOperator(ExpressionFactory.OperatorType.CONJUNCTION, q2, p2);
+
 
         System.out.println(c1.hashCode());
         System.out.println(c2.hashCode());
+        System.out.println(c3.hashCode());
         System.out.println(c1.equals(c2));
+
         System.out.println(p1.equals(p2));
         System.out.println(p1.equals(q2));
         ArrayList<ExpressionFactory.RuleType> list = (ArrayList<ExpressionFactory.RuleType>)exprFact.checkLegalRules(c1);
         System.out.println(list.get(0)+" "+ list.get(1));
 
+
+
+	System.out.println(c1.equals(c3));
+        System.out.println(c1.logicEquals(c3));
 
     }
 }
