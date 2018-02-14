@@ -1,6 +1,5 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
