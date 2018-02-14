@@ -60,14 +60,14 @@ public class ExpressionFactory {
         ArrayList<Expression> expressionArray = new ArrayList<Expression>();
         switch (type) {
             case IMPLICATION_ELIMINATION:
-                expressionArray.add(((Operator)exprs[0]).getOperand2());
+                expressionArray.add(((Operator)exprs[0]).operand2);
                 return expressionArray;
             case IMPLICATION_INTRODUCTION:
                 expressionArray.add(createOperator(OperatorType.IMPLICATION,exprs[0],exprs[1]));
                 return expressionArray;
             case CONJUNCTION_ELIMINATION:
-                expressionArray.add(((Operator)exprs[0]).getOperand1());
-                expressionArray.add(((Operator)exprs[0]).getOperand2());
+                expressionArray.add(((Operator)exprs[0]).operand1);
+                expressionArray.add(((Operator)exprs[0]).operand2);
                 return expressionArray;
             case CONJUNCTION_INTRODUCTION:
                 expressionArray.add(createOperator(OperatorType.CONJUNCTION,exprs[0],exprs[1]));
@@ -77,7 +77,7 @@ public class ExpressionFactory {
                 return expressionArray;
             case DISJUNCTION_ELIMINATION:
                 // Assuming conjunction card first, disjunction second
-                expressionArray.add(((Implication)(((Conjunction)exprs[0]).getOperand1())).getOperand2());
+                expressionArray.add(((Implication)(((Conjunction)exprs[0]).operand1)).operand2);
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
@@ -95,38 +95,38 @@ public class ExpressionFactory {
             case 2:
                 legalRules.add(RuleType.CONJUNCTION_INTRODUCTION);
                 if(exprs[0] instanceof Implication && !(exprs[1] instanceof Implication)){
-                   if(((Implication)exprs[0]).getOperand1().logicEquals(exprs[1])){
+                   if(((Implication)exprs[0]).operand1.logicEquals(exprs[1])){
                        legalRules.add(RuleType.IMPLICATION_ELIMINATION);
                    }
                 }else if(exprs[1] instanceof Implication && !(exprs[0] instanceof Implication)){
-                    if(((Implication)exprs[1]).getOperand1().logicEquals(exprs[0])) {
+                    if(((Implication)exprs[1]).operand1.logicEquals(exprs[0])) {
                         legalRules.add(RuleType.IMPLICATION_ELIMINATION);
                     }
                 }
                 if(exprs[0] instanceof Disjunction && exprs[1] instanceof Conjunction){
-                    if(((Operator)exprs[1]).getOperand1() instanceof Implication && ((Operator)exprs[1]).getOperand2() instanceof Implication){
-                        Expression rhsA = ((Implication) (((Conjunction)exprs[1]).getOperand1())).getOperand2();
-                        Expression rhsB = ((Implication) (((Conjunction)exprs[1]).getOperand2())).getOperand2();
+                    if(((Operator)exprs[1]).operand1 instanceof Implication && ((Operator)exprs[1]).operand2 instanceof Implication){
+                        Expression rhsA = ((Implication) (((Conjunction)exprs[1]).operand1)).operand2;
+                        Expression rhsB = ((Implication) (((Conjunction)exprs[1]).operand2)).operand2;
 
                         if(rhsA.logicEquals(rhsB)){
-                            Expression lhsA = ((Implication) (((Conjunction)exprs[1]).getOperand1())).getOperand1();
-                            Expression lhsB = ((Implication) (((Conjunction)exprs[1]).getOperand2())).getOperand1();
-                            if(lhsA.logicEquals(((Disjunction)exprs[0]).getOperand1()) && lhsB.logicEquals(((Disjunction)exprs[0]).getOperand2()) ||
-                                    lhsB.logicEquals(((Disjunction)exprs[0]).getOperand1()) && lhsA.logicEquals(((Disjunction)exprs[0]).getOperand2()) ){
+                            Expression lhsA = ((Implication) (((Conjunction)exprs[1]).operand1)).operand1;
+                            Expression lhsB = ((Implication) (((Conjunction)exprs[1]).operand2)).operand1;
+                            if(lhsA.logicEquals(((Disjunction)exprs[0]).operand1) && lhsB.logicEquals(((Disjunction)exprs[0]).operand2) ||
+                                    lhsB.logicEquals(((Disjunction)exprs[0]).operand1) && lhsA.logicEquals(((Disjunction)exprs[0]).operand2) ){
                                 legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
                             }
                         }
                     }
                 }else if(exprs[1] instanceof Disjunction && exprs[0] instanceof Conjunction) {
-                    if (((Operator) exprs[0]).getOperand1() instanceof Implication && ((Operator) exprs[0]).getOperand2() instanceof Implication) {
-                        Expression rhsA = ((Implication) (((Conjunction) exprs[0]).getOperand1())).getOperand2();
-                        Expression rhsB = ((Implication) (((Conjunction) exprs[0]).getOperand2())).getOperand2();
+                    if (((Operator) exprs[0]).operand1 instanceof Implication && ((Operator) exprs[0]).operand2 instanceof Implication) {
+                        Expression rhsA = ((Implication) (((Conjunction) exprs[0]).operand1)).operand2;
+                        Expression rhsB = ((Implication) (((Conjunction) exprs[0]).operand2)).operand2;
 
                         if (rhsA.logicEquals(rhsB)) {
-                            Expression lhsA = ((Implication) (((Conjunction) exprs[0]).getOperand1())).getOperand1();
-                            Expression lhsB = ((Implication) (((Conjunction) exprs[0]).getOperand2())).getOperand1();
-                            if (lhsA.logicEquals(((Disjunction) exprs[1]).getOperand1()) && lhsB.logicEquals(((Disjunction) exprs[1]).getOperand2()) ||
-                                    lhsB.logicEquals(((Disjunction) exprs[1]).getOperand1()) && lhsA.logicEquals(((Disjunction) exprs[1]).getOperand2())) {
+                            Expression lhsA = ((Implication) (((Conjunction) exprs[0]).operand1)).operand1;
+                            Expression lhsB = ((Implication) (((Conjunction) exprs[0]).operand2)).operand1;
+                            if (lhsA.logicEquals(((Disjunction) exprs[1]).operand1) && lhsB.logicEquals(((Disjunction) exprs[1]).operand2) ||
+                                    lhsB.logicEquals(((Disjunction) exprs[1]).operand1) && lhsA.logicEquals(((Disjunction) exprs[1]).operand2)) {
                                 legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
                             }
                         }
