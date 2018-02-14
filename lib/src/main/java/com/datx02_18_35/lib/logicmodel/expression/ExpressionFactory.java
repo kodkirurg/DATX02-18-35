@@ -157,7 +157,7 @@ public class ExpressionFactory {
                 }
                 return  legalRules;
             default:
-                throw new IllegalArgumentException("To many arguments");
+                throw new IllegalArgumentException("Too many arguments");
         }
 
     }
