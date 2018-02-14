@@ -94,14 +94,10 @@ public class ExpressionFactory {
                 return legalRules;
             case 2:
                 legalRules.add(RuleType.CONJUNCTION_INTRODUCTION);
-                if(exprs[0] instanceof Implication && !(exprs[1] instanceof Implication)){
-                   if(((Implication)exprs[0]).operand1.logicEquals(exprs[1])){
-                       legalRules.add(RuleType.IMPLICATION_ELIMINATION);
-                   }
-                }else if(exprs[1] instanceof Implication && !(exprs[0] instanceof Implication)){
-                    if(((Implication)exprs[1]).operand1.logicEquals(exprs[0])) {
-                        legalRules.add(RuleType.IMPLICATION_ELIMINATION);
-                    }
+                if(exprs[0] instanceof Implication && ((Implication)exprs[0]).operand1.logicEquals(exprs[1])) {
+                    legalRules.add(RuleType.IMPLICATION_ELIMINATION);
+                }else if(exprs[1] instanceof Implication && ((Implication)exprs[1]).operand1.logicEquals(exprs[0])){
+                    legalRules.add(RuleType.IMPLICATION_ELIMINATION);
                 }
                 if(exprs[0] instanceof Disjunction && exprs[1] instanceof Conjunction){
                     if(((Operator)exprs[1]).operand1 instanceof Implication && ((Operator)exprs[1]).operand2 instanceof Implication){
