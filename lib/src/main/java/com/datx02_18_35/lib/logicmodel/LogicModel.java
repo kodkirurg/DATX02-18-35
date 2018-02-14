@@ -27,11 +27,8 @@ public class LogicModel {
         System.out.println(p1.equals(p2));
         System.out.println(p1.equals(q2));
         ArrayList<ExpressionFactory.RuleType> list = (ArrayList<ExpressionFactory.RuleType>)exprFact.checkLegalRules(c1);
-        System.out.println(list.get(0)+" "+ list.get(1));
-
-
-
-	System.out.println(c1.equals(c3));
+        System.out.println(list.get(0)+""+ list.get(1));
+	    System.out.println(c1.equals(c3));
         System.out.println(c1.logicEquals(c3));
 
     }
