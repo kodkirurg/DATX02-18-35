@@ -2,6 +2,7 @@ package com.datx02_18_35.lib.logicmodel.expression;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -119,55 +120,8 @@ public class ExpressionFactory {
         return result;
     }
 
-    public Collection<RuleType> checkLegalRules(Expression... exprs){
-        ArrayList<RuleType> legalRules = new ArrayList<RuleType>();
-        switch(exprs.length){
-            case 1:
-                legalRules.add(RuleType.DISJUNCTION_INTRODUCTION);
-                if(exprs[0] instanceof Conjunction){
-                    legalRules.add(RuleType.CONJUNCTION_ELIMINATION);
-                }
-                return legalRules;
-            case 2:
-                legalRules.add(RuleType.CONJUNCTION_INTRODUCTION);
-                if(exprs[0] instanceof Implication && ((Implication)exprs[0]).operand1.logicEquals(exprs[1])) {
-                    legalRules.add(RuleType.IMPLICATION_ELIMINATION);
-                }else if(exprs[1] instanceof Implication && ((Implication)exprs[1]).operand1.logicEquals(exprs[0])){
-                    legalRules.add(RuleType.IMPLICATION_ELIMINATION);
-                }
-                if(exprs[0] instanceof Disjunction && exprs[1] instanceof Conjunction){
-                    if(((Operator)exprs[1]).operand1 instanceof Implication && ((Operator)exprs[1]).operand2 instanceof Implication){
-                        Expression rhsA = ((Implication) (((Conjunction)exprs[1]).operand1)).operand2;
-                        Expression rhsB = ((Implication) (((Conjunction)exprs[1]).operand2)).operand2;
 
-                        if(rhsA.logicEquals(rhsB)){
-                            Expression lhsA = ((Implication) (((Conjunction)exprs[1]).operand1)).operand1;
-                            Expression lhsB = ((Implication) (((Conjunction)exprs[1]).operand2)).operand1;
-                            if(lhsA.logicEquals(((Disjunction)exprs[0]).operand1) && lhsB.logicEquals(((Disjunction)exprs[0]).operand2) ||
-                                    lhsB.logicEquals(((Disjunction)exprs[0]).operand1) && lhsA.logicEquals(((Disjunction)exprs[0]).operand2) ){
-                                legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
-                            }
-                        }
-                    }
-                }else if(exprs[1] instanceof Disjunction && exprs[0] instanceof Conjunction) {
-                    if (((Operator) exprs[0]).operand1 instanceof Implication && ((Operator) exprs[0]).operand2 instanceof Implication) {
-                        Expression rhsA = ((Implication) (((Conjunction) exprs[0]).operand1)).operand2;
-                        Expression rhsB = ((Implication) (((Conjunction) exprs[0]).operand2)).operand2;
 
-                        if (rhsA.logicEquals(rhsB)) {
-                            Expression lhsA = ((Implication) (((Conjunction) exprs[0]).operand1)).operand1;
-                            Expression lhsB = ((Implication) (((Conjunction) exprs[0]).operand2)).operand1;
-                            if (lhsA.logicEquals(((Disjunction) exprs[1]).operand1) && lhsB.logicEquals(((Disjunction) exprs[1]).operand2) ||
-                                    lhsB.logicEquals(((Disjunction) exprs[1]).operand1) && lhsA.logicEquals(((Disjunction) exprs[1]).operand2)) {
-                                legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
-                            }
-                        }
-                    }
-                }
-                return  legalRules;
-            default:
-                throw new IllegalArgumentException("Too many arguments");
-        }
 
-    }
+
 }

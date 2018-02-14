@@ -35,19 +35,19 @@ public class LogicModel {
 
         System.out.println(p1.equals(p2));
         System.out.println(p1.equals(q2));
-        Collection<RuleType> col1 = exprFact.checkLegalRules(c1);
+
         //col.forEach((type) -> System.out.println(type));
-        for (RuleType type : col1) {
-            System.out.println(type);
-        }
+       // for (RuleType type : col1) {
+        //    System.out.println(type);
+        //}
         //System.out.println(list.get(0)+""+ list.get(1));
 	    System.out.println(c1.equals(c3));
         System.out.println(c1.logicEquals(c3));
 
-        Collection<RuleType> col2 =exprFact.checkLegalRules(c6,c7);
-        for (RuleType type : col2) {
-            System.out.println(type);
-        }
+
+       // for (RuleType type : col2) {
+        //    System.out.println(type);
+        //}
 
     }
 }
