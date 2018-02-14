@@ -8,7 +8,6 @@ public abstract class Expression {
 
     protected int hash;
 
-
     @Override
     public final int hashCode() {
         return hash;

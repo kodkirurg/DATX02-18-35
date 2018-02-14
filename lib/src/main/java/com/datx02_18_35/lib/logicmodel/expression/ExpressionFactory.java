@@ -1,8 +1,12 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
 
+import com.sun.istack.internal.Pool;
+
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -20,22 +24,6 @@ public class ExpressionFactory {
 
     public static ExpressionFactory getSingleton() {
         return singleton;
-    }
-
-    public enum OperatorType {
-        CONJUNCTION,
-        DISJUNCTION,
-        IMPLICATION,
-    }
-
-    public enum RuleType {
-        IMPLICATION_ELIMINATION,
-        IMPLICATION_INTRODUCTION,
-        CONJUNCTION_ELIMINATION,
-        CONJUNCTION_INTRODUCTION,
-        DISJUNCTION_ELIMINATION,
-        DISJUNCTION_INTRODUCTION,
-
     }
 
     public Proposition createProposition(String id) {
@@ -56,31 +44,70 @@ public class ExpressionFactory {
         }
     }
 
-    public Collection<Expression> applyRule(RuleType type, Expression... exprs) {
-        ArrayList<Expression> expressionArray = new ArrayList<Expression>();
-        switch (type) {
-            case IMPLICATION_ELIMINATION:
-                expressionArray.add(((Operator)exprs[0]).operand2);
-                return expressionArray;
-            case IMPLICATION_INTRODUCTION:
-                expressionArray.add(createOperator(OperatorType.IMPLICATION,exprs[0],exprs[1]));
-                return expressionArray;
-            case CONJUNCTION_ELIMINATION:
-                expressionArray.add(((Operator)exprs[0]).operand1);
-                expressionArray.add(((Operator)exprs[0]).operand2);
-                return expressionArray;
-            case CONJUNCTION_INTRODUCTION:
-                expressionArray.add(createOperator(OperatorType.CONJUNCTION,exprs[0],exprs[1]));
-                return expressionArray;
+
+    /**
+     * Warning: This function assumes the Rule object is created automatically and correct
+     * @param rule
+     * @return
+     */
+    public Collection<Expression> applyRule(Rule rule) {
+        Collection<Expression> result = new ArrayList<>();
+        assert rule.expressions.size() >= 1;
+        Expression expr1 = rule.expressions.get(0);
+
+        switch (rule.type) {
+            case IMPLICATION_ELIMINATION: {
+                assert rule.expressions.size() == 2;
+                Expression expr2 = rule.expressions.get(1);
+
+                assert expr1 instanceof Implication;
+                Implication impl = (Implication) expr1;
+
+                assert impl.operand1.equals(expr2);
+                result.add(impl.operand2);
+
+                break;
+            }
+            case IMPLICATION_INTRODUCTION: {
+                assert rule.expressions.size() == 2;
+                Expression expr2 = rule.expressions.get(1);
+
+                result.add(createOperator(OperatorType.IMPLICATION, expr1, expr2));
+                break;
+            }
+            case CONJUNCTION_ELIMINATION: {
+                assert rule.expressions.size() == 1;
+
+                assert expr1 instanceof Conjunction;
+                Conjunction conj = (Conjunction) expr1;
+
+                result.add(conj.operand1);
+                result.add(conj.operand2);
+                break;
+            }
+            case CONJUNCTION_INTRODUCTION: {
+                assert rule.expressions.size() == 2;
+                Expression expr2 = rule.expressions.get(1);
+
+                result.add(createOperator(OperatorType.CONJUNCTION, expr1, expr2));
+                break;
+            }
+            case DISJUNCTION_ELIMINATION: {
+                assert rule.expressions.size() == 3;
+                Expression expr2 = rule.expressions.get(1);
+                Expression expr3 = rule.expressions.get(2);
+
+                assert expr1 instanceof Disjunction;
+                //TODO: finish :)
+                throw new NotImplementedException();
+            }
             case DISJUNCTION_INTRODUCTION:
-                expressionArray.add(createOperator(OperatorType.DISJUNCTION,exprs[0],exprs[1]));
-                return expressionArray;
-            case DISJUNCTION_ELIMINATION:
-                // Assuming conjunction card first, disjunction second
-                expressionArray.add(((Implication)(((Conjunction)exprs[0]).operand1)).operand2);
+
+                throw new NotImplementedException();
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
+        return result;
     }
 
     public Collection<RuleType> checkLegalRules(Expression... exprs){
