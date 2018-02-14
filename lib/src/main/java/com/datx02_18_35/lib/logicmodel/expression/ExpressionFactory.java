@@ -1,14 +1,8 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
-
-import com.sun.istack.internal.Pool;
-
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by robin on 2018-02-07.
@@ -98,12 +92,27 @@ public class ExpressionFactory {
                 Expression expr3 = rule.expressions.get(2);
 
                 assert expr1 instanceof Disjunction;
-                //TODO: finish :)
-                throw new NotImplementedException();
-            }
-            case DISJUNCTION_INTRODUCTION:
+                assert expr2 instanceof Implication;
+                assert expr3 instanceof Implication;
 
-                throw new NotImplementedException();
+                Disjunction disj = (Disjunction)expr1;
+                Implication impl1 = (Implication)expr2;
+                Implication impl2 = (Implication)expr3;
+
+                assert disj.operand1.equals(impl1.operand1);
+                assert disj.operand2.equals(impl2.operand1);
+                assert impl1.operand2.equals(impl2.operand2);
+
+                result.add(impl1.operand2);
+                break;
+            }
+            case DISJUNCTION_INTRODUCTION:{
+                assert rule.expressions.size() == 2;
+                Expression expr2 = rule.expressions.get(1);
+
+                result.add(createOperator(OperatorType.DISJUNCTION, expr1, expr2));
+                break;
+            }
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
