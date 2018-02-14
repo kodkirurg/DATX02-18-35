@@ -11,6 +11,13 @@ public abstract class Operator extends Expression {
         this.operand1 = operand1;
         this.operand2 = operand2;
     }
+    public  Expression getOperand1(){
+        return this.operand1 ;
+    }
+
+    public Expression getOperand2(){
+        return this.operand2;
+    }
 
 
 }

@@ -4,7 +4,7 @@ package com.datx02_18_35.lib.logicmodel.expression;
  * Created by robin on 2018-02-07.
  */
 
-public class Implication extends Operator {
+public class Implication extends Operator { // Operand1 leads to operand2.
     Implication(Expression operand1, Expression operand2) {
         super(operand1, operand2);
     }

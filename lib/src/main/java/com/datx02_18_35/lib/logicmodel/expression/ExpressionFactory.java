@@ -1,6 +1,7 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -28,7 +29,12 @@ public class ExpressionFactory {
     }
 
     public enum RuleType {
-        IMPLICATIOM_ELIMINATION,
+        IMPLICATION_ELIMINATION,
+        IMPLICATION_INTRODUCTION,
+        CONJUNCTION_ELIMINATION,
+        CONJUNCTION_INTRODUCTION,
+        DISJUNCTION_ELIMINATION,
+        DISJUNCTION_INTRODUCTION,
 
     }
 
@@ -51,8 +57,33 @@ public class ExpressionFactory {
     }
 
     public Collection<Expression> applyRule(RuleType type, Expression... exprs) {
-        throw new NotImplementedException();
+        ArrayList<Expression> expressionArray = new ArrayList<Expression>();
+        switch (type) {
+            case IMPLICATION_ELIMINATION:
+                expressionArray.add(((Operator)exprs[0]).getOperand2());
+                return expressionArray;
+            case IMPLICATION_INTRODUCTION:
+                expressionArray.add(createOperator(OperatorType.IMPLICATION,exprs[0],exprs[1]));
+                return expressionArray;
+            case CONJUNCTION_ELIMINATION:
+                expressionArray.add(((Operator)exprs[0]).getOperand1());
+                expressionArray.add(((Operator)exprs[0]).getOperand2());
+                return expressionArray;
+            case CONJUNCTION_INTRODUCTION:
+                expressionArray.add(createOperator(OperatorType.CONJUNCTION,exprs[0],exprs[1]));
+                return expressionArray;
+            case DISJUNCTION_INTRODUCTION:
+                expressionArray.add(createOperator(OperatorType.DISJUNCTION,exprs[0],exprs[1]));
+                return expressionArray;
+            case DISJUNCTION_ELIMINATION:
+                return null;
+            default:
+                throw new IllegalArgumentException("Unknown rule type!");
+
+        }
+        //throw new NotImplementedException();
     }
+    
 
 
 }
