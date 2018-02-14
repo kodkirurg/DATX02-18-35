@@ -11,6 +11,7 @@ public class Proposition extends Expression {
     Proposition(String id) {
         super();
         this.id = id;
+        hash=calculateHash();
     }
 
     @Override

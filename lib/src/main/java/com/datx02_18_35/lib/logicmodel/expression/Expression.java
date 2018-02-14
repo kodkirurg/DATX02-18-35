@@ -6,9 +6,8 @@ package com.datx02_18_35.lib.logicmodel.expression;
 
 public abstract class Expression {
 
-    private final int hash;
+    protected int hash;
 
-    Expression() { hash = calculateHash();}
 
     @Override
     public final int hashCode() {

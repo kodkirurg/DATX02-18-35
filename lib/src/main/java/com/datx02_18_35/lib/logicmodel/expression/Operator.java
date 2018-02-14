@@ -10,6 +10,7 @@ public abstract class Operator extends Expression {
         super();
         this.operand1 = operand1;
         this.operand2 = operand2;
+        hash=calculateHash();
     }
     public  Expression getOperand1(){
         return this.operand1 ;
