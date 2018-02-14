@@ -76,14 +76,12 @@ public class ExpressionFactory {
                 expressionArray.add(createOperator(OperatorType.DISJUNCTION,exprs[0],exprs[1]));
                 return expressionArray;
             case DISJUNCTION_ELIMINATION:
-                return null;
+                throw new NotImplementedException();
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
-
         }
-        //throw new NotImplementedException();
     }
-    
+
 
 
 }
