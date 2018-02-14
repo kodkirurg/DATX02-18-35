@@ -8,9 +8,7 @@ public abstract class Expression {
 
     private final int hash;
 
-    Expression() {
-        hash = calculateHash();
-    }
+    Expression() { hash = calculateHash();}
 
     @Override
     public final int hashCode() {
@@ -21,4 +19,9 @@ public abstract class Expression {
 
     @Override
     public abstract boolean equals(Object other);
+
+    public boolean logicEquals(Object other){
+        return  this.equals(other);
+    }
+
 }

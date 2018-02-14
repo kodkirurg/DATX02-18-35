@@ -76,10 +76,67 @@ public class ExpressionFactory {
                 expressionArray.add(createOperator(OperatorType.DISJUNCTION,exprs[0],exprs[1]));
                 return expressionArray;
             case DISJUNCTION_ELIMINATION:
-                throw new NotImplementedException();
+                // Assuming conjuction card first, disjunction second
+                expressionArray.add(((Implication)(((Conjunction)exprs[0]).getOperand1())).getOperand2());
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
+    }
+
+    public Collection<RuleType> checkLegalRules(Expression... exprs){
+        ArrayList<RuleType> legalRules = new ArrayList<RuleType>();
+        switch(exprs.length){
+            case 1:
+                legalRules.add(RuleType.DISJUNCTION_INTRODUCTION);
+                if(exprs[0] instanceof Conjunction){
+                    legalRules.add(RuleType.CONJUNCTION_ELIMINATION);
+                }
+                return legalRules;
+            case 2:
+                legalRules.add(RuleType.CONJUNCTION_INTRODUCTION);
+                if(exprs[0] instanceof Implication && !(exprs[1] instanceof Implication)){
+                   if(((Implication)exprs[0]).getOperand1().logicEquals(exprs[1])){
+                       legalRules.add(RuleType.IMPLICATION_ELIMINATION);
+                   }
+                }else if(exprs[1] instanceof Implication && !(exprs[0] instanceof Implication)){
+                    if(((Implication)exprs[1]).getOperand1().logicEquals(exprs[0])) {
+                        legalRules.add(RuleType.IMPLICATION_ELIMINATION);
+                    }
+                }
+                if(exprs[0] instanceof Disjunction && exprs[1] instanceof Conjunction){
+                    if(((Operator)exprs[1]).getOperand1() instanceof Implication && ((Operator)exprs[1]).getOperand2() instanceof Implication){
+                        Expression rhsA = ((Implication) (((Conjunction)exprs[1]).getOperand1())).getOperand2();
+                        Expression rhsB = ((Implication) (((Conjunction)exprs[1]).getOperand2())).getOperand2();
+
+                        if(rhsA.logicEquals(rhsB)){
+                            Expression lhsA = ((Implication) (((Conjunction)exprs[1]).getOperand1())).getOperand1();
+                            Expression lhsB = ((Implication) (((Conjunction)exprs[1]).getOperand2())).getOperand1();
+                            if(lhsA.logicEquals(((Disjunction)exprs[0]).getOperand1()) && lhsB.logicEquals(((Disjunction)exprs[0]).getOperand2()) ||
+                                    lhsB.logicEquals(((Disjunction)exprs[0]).getOperand1()) && lhsA.logicEquals(((Disjunction)exprs[0]).getOperand2()) ){
+                                legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
+                            }
+                        }
+                    }
+                }else if(exprs[1] instanceof Disjunction && exprs[0] instanceof Conjunction) {
+                    if (((Operator) exprs[0]).getOperand1() instanceof Implication && ((Operator) exprs[0]).getOperand2() instanceof Implication) {
+                        Expression rhsA = ((Implication) (((Conjunction) exprs[0]).getOperand1())).getOperand2();
+                        Expression rhsB = ((Implication) (((Conjunction) exprs[0]).getOperand2())).getOperand2();
+
+                        if (rhsA.logicEquals(rhsB)) {
+                            Expression lhsA = ((Implication) (((Conjunction) exprs[0]).getOperand1())).getOperand1();
+                            Expression lhsB = ((Implication) (((Conjunction) exprs[0]).getOperand2())).getOperand1();
+                            if (lhsA.logicEquals(((Disjunction) exprs[1]).getOperand1()) && lhsB.logicEquals(((Disjunction) exprs[1]).getOperand2()) ||
+                                    lhsB.logicEquals(((Disjunction) exprs[1]).getOperand1()) && lhsA.logicEquals(((Disjunction) exprs[1]).getOperand2())) {
+                                legalRules.add(RuleType.DISJUNCTION_ELIMINATION);
+                            }
+                        }
+                    }
+                }
+                return  legalRules;
+            default:
+                throw new IllegalArgumentException("To many arguments");
+        }
+
     }
 
 
