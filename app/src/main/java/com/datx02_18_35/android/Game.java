@@ -23,18 +23,13 @@ public class Game extends AppCompatActivity  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("test123","test");
         setContentView(R.layout.activity_game);
-
-        Log.d("test123","test");
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
-        Fragment_board_cards frag = new Fragment_board_cards();
 
-
-        Log.d("test123","test");
-        ft.replace(R.id.game_left_side , frag).commit();
+        ft.replace(R.id.game_right_side, new Fragment_board_actions());
+        ft.replace(R.id.game_left_side , new Fragment_board_cards()).commit();
 
     }
 

@@ -31,7 +31,7 @@ public class Fragment_board_cards extends Fragment implements OnStartDragListene
 
         recyclerView = (RecyclerView) view.findViewById(R.id.game_recycler_view);
         // use a grid layout manager
-        recLayoutManager = new GridLayoutManager(getContext(), 3);
+        recLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
