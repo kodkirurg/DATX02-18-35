@@ -16,7 +16,7 @@ import game.logic_game.R;
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-
+    private static Fragment_Inventory inventory= new Fragment_Inventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,11 +49,15 @@ public class Game extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Game.class); //change to scope/assumption classs
+                i = new Intent(this,Scope.class); //change to scope/assumption classs
                 break;
         }
         startActivity(i);
         return false;
+    }
+
+    public static Fragment_Inventory getInventory(){
+        return inventory;
     }
 
 }
