@@ -23,7 +23,11 @@ public class Rule {
     }
 
     public static Collection<Rule> getLegalRules(Collection<Expression> expressions){
-        ArrayList<Expression> exprs = (ArrayList<Expression>) expressions;
+        ArrayList<Expression> exprs = new ArrayList<Expression>();
+        for (Expression e : expressions){
+            exprs.add(e);
+        }
+
         ArrayList<Rule> legalRules = new ArrayList<Rule>();
         switch(exprs.size()) {
             case 1:
@@ -31,6 +35,7 @@ public class Rule {
                 if (exprs.get(0) instanceof Conjunction) {
                     legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, exprs));
                 }
+
             case 2:
                 ArrayList<Expression> reverseExprs = exprs;
                 Collections.reverse(reverseExprs);
