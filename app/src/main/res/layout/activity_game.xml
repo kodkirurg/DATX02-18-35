@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:id="@+id/game_left_side" />
     <FrameLayout
-        android:background="@color/colorAccent"
         android:layout_width="150dp"
         android:layout_height="match_parent"
         android:id="@+id/game_right_side"

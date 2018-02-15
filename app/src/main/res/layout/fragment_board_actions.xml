@@ -4,9 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.datx02_18_35.android.Fragment_board_actions">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/game_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="horizontal"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        />
+
 
 </FrameLayout>
