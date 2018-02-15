@@ -18,28 +18,29 @@ public class Inventory {
         inventoryList=new ArrayList<>();
         inventoryHash=new HashSet<>();
         inventoryList.add(inventoryHash);
-        length=0;
     }
 
-    public void addExpression(Expression expr){
-         boolean exists=false;
-         int i=0;
-        while(!exists && i<length-1){
-            if(inventoryList.get(i).contains(expr)){
-                exists=true;
-            }
-        }
-        if(!exists){
-            inventoryList.get(length).add(expr);
-        }
+    public void addExpression(Collection<Expression> expr){
+        assert (expr.size()>=1);
+        ArrayList<Expression> exprArrayList = (ArrayList<Expression>)expr;
+         for (int i=0; i<exprArrayList.size();i++) {
+             boolean exists=false;
+             int j = 0;
+             while (!exists && j < inventoryList.size() - 1) {
+                 if (inventoryList.get(j).contains(exprArrayList.get(i))) {
+                     exists = true;
+                 }
+             }
+             if (!exists) {
+                 inventoryList.get(inventoryList.size()).add(exprArrayList.get(i));
+             }
+         }
     }
     public void addScope(){
         inventoryList.add(new HashSet<Expression>());
-        length+=1;
     }
     public void removeScope(){
-        inventoryList.remove(length);
-        length-=1;
+        inventoryList.remove(inventoryList.size());
     }
     public List<Collection<Expression>> getInventory(){
         return inventoryList;
