@@ -1,4 +1,6 @@
-package com.datx02_18_35.lib.logicmodel.expression;
+package com.datx02_18_35.lib.logicmodel;
+
+import com.datx02_18_35.lib.logicmodel.expression.Expression;
 
 import java.util.ArrayList;
 import java.util.Collection;

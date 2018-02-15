@@ -3,9 +3,6 @@ package com.datx02_18_35.lib.logicmodel;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
-import com.datx02_18_35.lib.logicmodel.expression.RuleType;
-
-import java.util.Collection;
 
 public class LogicModel {
     public static void main(String[] args) {

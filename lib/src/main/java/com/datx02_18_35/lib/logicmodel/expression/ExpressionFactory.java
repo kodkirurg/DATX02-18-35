@@ -1,8 +1,9 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
+import com.datx02_18_35.lib.logicmodel.Rule;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 
 /**
