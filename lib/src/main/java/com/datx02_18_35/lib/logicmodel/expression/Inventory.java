@@ -5,44 +5,38 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Jonatan on 2018-02-15.
  */
 
 public class Inventory {
-    private List<Collection<Expression>> inventoryList;
+    private List<Set<Expression>> inventoryList;
     private int length;
-    private Collection<Expression> inventoryHash;
     Inventory(){
         inventoryList=new ArrayList<>();
-        inventoryHash=new HashSet<>();
-        inventoryList.add(inventoryHash);
+        inventoryList.add(new HashSet<>());
     }
 
-    public void addExpression(Collection<Expression> expr){
-        assert (expr.size()>=1);
-        ArrayList<Expression> exprArrayList = (ArrayList<Expression>)expr;
-         for (int i=0; i<exprArrayList.size();i++) {
-             boolean exists=false;
-             int j = 0;
-             while (!exists && j < inventoryList.size() - 1) {
-                 if (inventoryList.get(j).contains(exprArrayList.get(i))) {
-                     exists = true;
+    public void addExpression(Collection<Expression> expressions){
+        ADD_NEXT:
+        for (Expression expr : expressions) {
+             for (Set<Expression> scopeInventory : inventoryList) {
+                 if (scopeInventory.contains(expr)) {
+                     continue ADD_NEXT;
                  }
              }
-             if (!exists) {
-                 inventoryList.get(inventoryList.size()).add(exprArrayList.get(i));
-             }
-         }
+            inventoryList.get(inventoryList.size()).add(expr);
+        }
     }
     public void addScope(){
-        inventoryList.add(new HashSet<Expression>());
+        inventoryList.add(new HashSet<>());
     }
     public void removeScope(){
         inventoryList.remove(inventoryList.size());
     }
-    public List<Collection<Expression>> getInventory(){
+    public List<Set<Expression>> getInventory(){
         return inventoryList;
     }
 
