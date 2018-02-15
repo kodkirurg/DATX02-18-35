@@ -1,43 +1,49 @@
 package com.datx02_18_35.lib.logicmodel.expression;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Created by Jonatan on 2018-02-15.
  */
 
 public class Inventory {
-    private List<Set<Expression>> inventoryList;
+    private Stack<Set<Expression>> inventories;
     private int length;
     Inventory(){
-        inventoryList=new ArrayList<>();
-        inventoryList.add(new HashSet<>());
+        inventories =new Stack<>();
+        inventories.push(new HashSet<>());
     }
 
-    public void addExpression(Collection<Expression> expressions){
+    public void addExpression(Expression expression) {
+        Collection<Expression> col = new ArrayList<>();
+        col.add(expression);
+        addExpressions(col);
+    }
+
+    public void addExpressions(Collection<Expression> expressions){
         ADD_NEXT:
         for (Expression expr : expressions) {
-             for (Set<Expression> scopeInventory : inventoryList) {
+             for (Set<Expression> scopeInventory : inventories) {
                  if (scopeInventory.contains(expr)) {
                      continue ADD_NEXT;
                  }
              }
-            inventoryList.get(inventoryList.size()).add(expr);
+            inventories.peek().add(expr);
         }
     }
     public void addScope(){
-        inventoryList.add(new HashSet<>());
+        inventories.add(new HashSet<>());
     }
     public void removeScope(){
-        inventoryList.remove(inventoryList.size());
+        inventories.remove(inventories.size());
     }
     public List<Set<Expression>> getInventory(){
-        return inventoryList;
+        return inventories;
     }
 
 }
