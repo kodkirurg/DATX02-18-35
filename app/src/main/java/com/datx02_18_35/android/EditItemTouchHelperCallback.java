@@ -12,6 +12,9 @@ import android.util.Log;
 
 public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
+    public boolean isLongPressDragEnabled=true;
+
+
     private final RecyclerAdapter recyclerAdapter;
 
     public EditItemTouchHelperCallback(RecyclerAdapter adapter) {
@@ -20,7 +23,7 @@ public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return isLongPressDragEnabled;
     }
 
     @Override
