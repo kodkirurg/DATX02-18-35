@@ -1,11 +1,5 @@
-package com.datx02_18_35.lib.logicmodel;
+package com.datx02_18_35.lib.logicmodel.expression;
 
-
-import com.datx02_18_35.lib.logicmodel.expression.Assumption;
-import com.datx02_18_35.lib.logicmodel.expression.Conjunction;
-import com.datx02_18_35.lib.logicmodel.expression.Disjunction;
-import com.datx02_18_35.lib.logicmodel.expression.Expression;
-import com.datx02_18_35.lib.logicmodel.expression.Implication;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,38 +22,38 @@ public class Rule {
         this.expressions = expressions;
     }
 
-    public static Collection<Rule> getLegalRules(Collection<Expression> expressions){
-        ArrayList<Expression> exprs = new ArrayList<Expression>();
-        for (Expression e : expressions){
-            exprs.add(e);
-        }
+    public static Collection<Rule> getLegalRules(
+            Expression assumption, Collection<Expression> expressions){
+
+        List<Expression> exprs = new ArrayList<>(expressions);
 
         ArrayList<Rule> legalRules = new ArrayList<Rule>();
         switch(exprs.size()) {
             case 1:
+                if (assumption != null) {
+                    List<Expression> assumptionAndExpr = new ArrayList<>();
+                    assumptionAndExpr.add(assumption);
+                    assumptionAndExpr.addAll(exprs);
+                    legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, assumptionAndExpr));
+                }
+
                 legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, exprs));
                 if (exprs.get(0) instanceof Conjunction) {
                     legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, exprs));
                 }
 
             case 2:
-                ArrayList<Expression> reverseExprs = exprs;
+                List<Expression> reverseExprs = exprs;
                 Collections.reverse(reverseExprs);
 
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, exprs));
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, reverseExprs));
 
-                if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.logicEquals(exprs.get(0))) {
+                if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.logicEquals(exprs.get(1))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, exprs));
 
                 } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.logicEquals(exprs.get(0))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseExprs));
-                }
-
-                if (exprs.get(0) instanceof Assumption) {
-                    legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, exprs));
-                } else if (exprs.get(1) instanceof Assumption) {
-                    legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, reverseExprs));
                 }
 
 

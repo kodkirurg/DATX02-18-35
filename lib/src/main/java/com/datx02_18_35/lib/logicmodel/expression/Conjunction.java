@@ -14,7 +14,7 @@ public class Conjunction extends Operator {
     public int calculateHash() {
         long magic = ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         long hash = magic;
-        magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER; // Varför detta??
+        magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER; // Varför detta?? (Svar: Polynom ftw /Robin)
         hash += operand1.hashCode() * magic;
         magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         hash += operand2.hashCode() * magic;
@@ -31,9 +31,9 @@ public class Conjunction extends Operator {
     @Override
     public boolean logicEquals(Object other) {
         return other instanceof Conjunction
-                &&(this.operand1.equals(((Conjunction) other).operand1)
-                && this.operand2.equals(((Conjunction) other).operand2))
-                || (this.operand1.equals(((Conjunction) other).operand2)
-                && this.operand2.equals(((Conjunction) other).operand1));
+                &&(this.operand1.logicEquals(((Conjunction) other).operand1)
+                && this.operand2.logicEquals(((Conjunction) other).operand2))
+                || (this.operand1.logicEquals(((Conjunction) other).operand2)
+                && this.operand2.logicEquals(((Conjunction) other).operand1));
     }
 }
