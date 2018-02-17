@@ -1,36 +1,63 @@
 package com.datx02_18_35.android;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class Game extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter recAdapter;
-    private RecyclerView.LayoutManager recLayoutManager;
+public class Game extends AppCompatActivity  {
+
+    Toolbar toolbar;
+    private static Fragment_Inventory inventory= new Fragment_Inventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        recyclerView = (RecyclerView) findViewById(R.id.game_recycler_view);
-        // use a linear layout manager
-        recLayoutManager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(recLayoutManager);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft =fm.beginTransaction();
 
-        // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
-        list.add(0, "test"); //edit this to remove and add elements
-        recAdapter = (RecyclerAdapter) new RecyclerAdapter(list);
-        recyclerView.setAdapter(recAdapter);
+        ft.replace(R.id.game_right_side, new Fragment_board_actions());
+        ft.replace(R.id.game_left_side , new Fragment_board_cards()).commit();
+
+
+        //Set toolbar
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        this.setSupportActionBar(toolbar);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.toolbar, menu); //add more items under dir menu -> toolbar
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        Intent i = null;
+        switch(menu.getItemId()){
+            case R.id.item_assumption:
+                i = new Intent(this,Scope.class); //change to scope/assumption classs
+                break;
+        }
+        startActivity(i);
+        return false;
+    }
+
+    public static Fragment_Inventory getInventory(){
+        return inventory;
     }
 
 }

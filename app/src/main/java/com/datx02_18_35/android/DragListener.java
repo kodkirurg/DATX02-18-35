@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class DragListener implements View.OnDragListener {
         int action = dragEvent.getAction();
         switch (dragEvent.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
+                Log.d("test123","ACTION DRAG STARTED");
                 // do nothing
                 break;
             case DragEvent.ACTION_DRAG_ENTERED:
