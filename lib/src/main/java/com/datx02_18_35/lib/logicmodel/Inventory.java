@@ -5,7 +5,6 @@ import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -14,11 +13,11 @@ import java.util.Stack;
  */
 
 public class Inventory {
-    private Stack<Set<Expression>> inventories;
+    private Stack<HashSet<Expression>> inventories;
     private int length;
     Inventory(){
         inventories =new Stack<>();
-        inventories.push(new HashSet<>());
+        inventories.push(new HashSet<Expression>());
     }
 
     public void addExpression(Expression expression) {
@@ -39,12 +38,12 @@ public class Inventory {
         }
     }
     public void addScope(){
-        inventories.add(new HashSet<>());
+        inventories.add(new HashSet<Expression>());
     }
     public void removeScope(){
         inventories.remove(inventories.size());
     }
-    public List<Set<Expression>> getInventory(){
+    public Stack<HashSet<Expression>> getInventory(){
         return inventories;
     }
 
