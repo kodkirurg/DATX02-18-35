@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.lib.logicmodel.expression.Expression;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,10 +22,10 @@ import game.logic_game.R;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter {
-    public ArrayList<String> dataSet;
+    public ArrayList<Expression> dataSet;
 
 
-    public RecyclerAdapter(ArrayList dataSet){
+    public RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
     }
 

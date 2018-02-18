@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
+import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+
 import java.util.ArrayList;
 
 import game.logic_game.R;
@@ -35,26 +39,15 @@ public class Fragment_board_cards extends Fragment implements OnStartDragListene
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
-        list.add(0, "test"); //edit this to remove and add elements
-        list.add(1, "test"); //edit this to remove and add elements
-        list.add(2, "test"); //edit this to remove and add elements
-        list.add(3, "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
+        ArrayList<Expression> list = new ArrayList<Expression>();
+        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        Expression p1 = exprFact.createProposition("P");
+        Expression q1 = exprFact.createProposition("Q");
+        Expression r1 = exprFact.createProposition("R");
+        Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
+        Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
+
+        list.add(p1);
 
 
 
