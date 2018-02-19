@@ -50,8 +50,6 @@ public class Fragment_board_cards extends Fragment implements OnStartDragListene
         list.add(p1);
 
 
-
-
         recAdapter = new RecyclerAdapter(list);
 
         //add drag and drop

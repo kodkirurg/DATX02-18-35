@@ -15,10 +15,11 @@
         >
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/info_button_on_card"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:clickable="true"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_info_black_24px"
             android:focusable="true"
             android:contentDescription="info_tag" />
     </RelativeLayout>

@@ -1,14 +1,13 @@
 package com.datx02_18_35.android;
 
 import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 
@@ -21,9 +20,13 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
 
+
+    public RecyclerAdapter(){
+        //empty const
+    }
 
     public RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
@@ -41,6 +44,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // - replace the contents of the view with that element
 
         holder.cardView.setCardBackgroundColor(Color.BLUE);
+        holder.infoButton.setOnClickListener(this);
+        holder.infoButton.setTag(position);
     }
 
 
@@ -52,7 +57,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public boolean onItemMove(int indexFrom, int indexTo) {
         Collections.swap(dataSet,indexFrom,indexTo);
         notifyItemMoved(indexFrom,indexTo);
-        //implement
         return false;
     }
 
@@ -60,12 +64,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //implement
     }
 
+    @Override
+    public void onClick(View v) {
+        Log.d("test123","test ");
+        int test = (int) v.getTag();
+        Log.d("test123","" + test);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public CardView cardView;
+        public ImageView infoButton;
 
         public ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
+            infoButton = (ImageView) itemView.findViewById(R.id.info_button_on_card);
             itemView.setOnClickListener(this);
         }
 
