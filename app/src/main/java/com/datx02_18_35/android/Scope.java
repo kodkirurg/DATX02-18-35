@@ -18,7 +18,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private Fragment_Inventory inventory;
+    private FragmentInventory inventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

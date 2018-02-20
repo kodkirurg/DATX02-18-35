@@ -23,14 +23,11 @@ import game.logic_game.R;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
 
-
-    public RecyclerAdapter(){
-        //empty const
-    }
-
-    public RecyclerAdapter(ArrayList<Expression> dataSet){
+    RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,10 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
-        holder.cardView.setCardBackgroundColor(Color.BLUE);
-        holder.infoButton.setOnClickListener(this);
-        holder.infoButton.setTag(position);
+       new CardDeflator(holder);
     }
 
 
@@ -57,7 +51,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public boolean onItemMove(int indexFrom, int indexTo) {
         Collections.swap(dataSet,indexFrom,indexTo);
         notifyItemMoved(indexFrom,indexTo);
-        return false;
+        //implement
+        return true;
     }
 
     public void onItemDismiss(int adapterPosition) {
@@ -78,7 +73,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
-            infoButton = (ImageView) itemView.findViewById(R.id.info_button_on_card);
             itemView.setOnClickListener(this);
         }
 
@@ -96,6 +90,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         @Override
         public void onClick(View view) {
             cardView.setBackgroundColor(Color.BLACK);
+        }
+    }
+
+    private static class CardDeflator{
+        CardDeflator(ViewHolder holder){
+            Log.d("test123","test");
         }
     }
 }

@@ -22,7 +22,6 @@ public class LogicModel {
         Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
         Expression c6 = exprFact.createOperator(OperatorType.DISJUNCTION, p1,r1);
         Expression c7 = exprFact.createOperator(OperatorType.CONJUNCTION, c4,c5);
-
         System.out.println(c1.hashCode());
         System.out.println(c2.hashCode());
         System.out.println(c3.hashCode());
