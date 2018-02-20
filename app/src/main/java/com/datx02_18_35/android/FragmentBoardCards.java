@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class Fragment_board_cards extends Fragment implements OnStartDragListener {
+public class FragmentBoardCards extends Fragment implements OnStartDragListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
@@ -47,6 +47,8 @@ public class Fragment_board_cards extends Fragment implements OnStartDragListene
         Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
         Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
 
+        list.add(p1);
+        list.add(p1);
         list.add(p1);
 
 

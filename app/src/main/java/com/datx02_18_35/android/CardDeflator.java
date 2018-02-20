@@ -17,24 +17,20 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-19.
  */
 
-public class CardGenerator {
+public class CardDeflator {
     private static Expression expr;
     private CardView final_view;
     private Expression g1_expr,g2_expr;
     private ViewGroup parent;
 
-    public View getView(){
+    public CardView getView(){
         return final_view;
     }
 
-    public CardGenerator(Expression expr, ViewGroup parent) {
-        CardGenerator.expr = expr;
-        if(expr instanceof Proposition | expr instanceof Absurdity){
-            Log.d("test123", "CardGenerator: ");
-            final_view = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_basic, parent,false);
-        }
-    }
+    CardDeflator(RecyclerAdapter.ViewHolder holder){
 
+        holder.cardView.removeViewAt(0);
+    }
 
     // call with depth 0 always
     private void generateOperator(int depth, View view, Expression expr1, Expression expr2){

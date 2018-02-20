@@ -17,7 +17,7 @@ import game.logic_game.R;
 
 
 
-public class Fragment_board_actions extends Fragment {
+public class FragmentBoardActions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -60,7 +60,7 @@ public class Fragment_board_actions extends Fragment {
 
         //settings for this fragment
         EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
+        localBehavoir.isLongPressDragEnabled = true;
 
 
         //add drag and drop

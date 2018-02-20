@@ -14,7 +14,7 @@ import game.logic_game.R;
  * Created by Magnus on 2018-02-14.
  */
 
-public class Fragment_Inventory extends Fragment {
+public class FragmentInventory extends Fragment {
 public boolean open = false;
 
     @Override
