@@ -27,13 +27,4 @@ public class Conjunction extends Operator {
                 && this.operand1.equals(((Conjunction) other).operand1)
                 && this.operand2.equals(((Conjunction) other).operand2);
     }
-
-    @Override
-    public boolean logicEquals(Object other) {
-        return other instanceof Conjunction
-                &&(this.operand1.logicEquals(((Conjunction) other).operand1)
-                && this.operand2.logicEquals(((Conjunction) other).operand2))
-                || (this.operand1.logicEquals(((Conjunction) other).operand2)
-                && this.operand2.logicEquals(((Conjunction) other).operand1));
-    }
 }
