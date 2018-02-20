@@ -37,7 +37,7 @@ public class LogicModel {
         //}
         //System.out.println(list.get(0)+""+ list.get(1));
 	    System.out.println(c1.equals(c3));
-        System.out.println(c1.logicEquals(c3));
+        System.out.println(c1.equals(c3));
 
 
        // for (RuleType type : col2) {
