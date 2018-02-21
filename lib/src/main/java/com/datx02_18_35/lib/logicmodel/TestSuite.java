@@ -29,7 +29,7 @@ public class TestSuite {
         selectedCards = new ArrayList<Expression>();
     }
 
-/*
+
     public void makeMove(){
         System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
                 "SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
@@ -41,16 +41,16 @@ public class TestSuite {
             case "APPLY_RULE":
                 if(selectedCards.size() == 0){
                     System.out.println("Invalid argument");
-                    break;
                 }else {
                     applyRule();
-                    break;
                 }
+                break;
             case "SHOW_GAMEBOARD":
                 showGameboard();
                 break;
             case "SHOW_INVENTORY":
                 showInventory();
+                break;
             case "SHOW_RUlES":
                 showLegalRules();
                 break;
@@ -153,79 +153,87 @@ public class TestSuite {
     }
 
     private void showGameboard(){
-        List<Expression> expressions = session.getExpressionsOnGameBoard();
-        for (int i = 0; i<expressions.size(); i++){
-            System.out.println("["+i+"]"+expressions.get(i).toString());
+        int i = 0;
+        for (Expression expr : session.getGameBoard()) {
+            System.out.println("["+(i++)+"]"+expr);
         }
-
     }
 
     public void showInventory(){
-        List<Expression> expressions = session.getExpressionsInInventory();
-        for (int i = 0; i<expressions.size();i++){
-            System.out.println("["+i+"]"+expressions.get(i).toString());
+        int i = 0;
+        for (Expression expr : session.getInventory()) {
+            System.out.println("["+(i++)+"]"+expr);
         }
     }
 
     private void selectCard(){
         showGameboard();
-
-        List<Expression> expressions = session.getExpressionsOnGameBoard();
         System.out.println("Select a card by the index");
-        int input = inputReader.nextInt();
-        if(input<expressions.size() && input>=0) {
-            selectedCards.add(expressions.get(input));
-            showLegalRules();
-        }else {
+        while (true) {
+            int input = inputReader.nextInt();
+            if (input < 0) {
+                System.out.println("Invalid argument");
+                continue;
+            }
+            for (Expression expr : session.getGameBoard()) {
+                if (input == 0) {
+                    selectedCards.add(expr);
+                    showLegalRules();
+                    return;
+                } else {
+                    input--;
+                }
+            }
             System.out.println("Invalid argument");
-            this.selectCard();
         }
     }
 
-    private void moveCardFromInventory(){
+    private void addCardFromInventory(){
         showInventory();
-        List<Expression> expressions = session.getExpressionsInInventory();
         System.out.println("Select a card to move by the index");
-        int input = inputReader.nextInt();
-        if(input<expressions.size() && input>=0) {
-            List<Expression> expression = new ArrayList<>();
-            expression.add(expressions.get(input));
-            session.addExpressionToGameBoard(expression);
-        }else {
+        while (true) {
+            int input = inputReader.nextInt();
+            if (input < 0) {
+                System.out.println("Invalid argument");
+                continue;
+            }
+            for (Expression expr : session.getInventory()) {
+                if (input == 0) {
+                    session.addExpressionToGameBoard(expr);
+                    return;
+                } else {
+                    input--;
+                }
+            }
             System.out.println("Invalid argument");
-            this.moveCardFromInventory();
         }
     }
 
     private List<Rule> showLegalRules(){
-        Collection<Rule> rules =  Rule.getLegalRules(session.getCurrentAssumption(),selectedCards);
-        List<Rule> listOfRules = new ArrayList<>(rules);
-        for (int i = 0; i<listOfRules.size(); i++){
-            System.out.println("["+i+"]" + listOfRules.get(i).type.toString()); //Skriv ut expressions också
+        List<Rule> rules =  new ArrayList<>(Rule.getLegalRules(session.getAssumption(),selectedCards));
+        int i = 0;
+        for (Rule rule : rules) {
+            System.out.println("["+(i++)+"]"+rule.type);
         }
-        return listOfRules;
+        return rules;
     }
 
     private void applyRule(){
         List<Rule> rules = showLegalRules();
-        Collection<String> strings = new ArrayList<>();
-        for (Rule r : rules){
-            strings.add(r.type.toString());
-        }
         int input = inputReader.nextInt();
-        if(input > 0 && input< rules.size()) {
-            session.addExpressionToGameBoard(exprFactory.applyRule(rules.get(input)));
-            showGameboard();
-            clearSelection();
+        while (input < 0 || input >= rules.size()) {
+            System.out.println("Invalid input!");
+            input = inputReader.nextInt();
         }
-
-
+        session.addExpressionToInventory(exprFactory.applyRule(rules.get(input)));
+        clearSelection();
+        showGameboard();
     }
 
-    private void clearSelection(){
+    private void clearSelection() {
         selectedCards.clear();
     }
-    */
+
 }
 
 

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 public class LogicModel {
     public static void main(String[] args) {
-        System.out.println("Hello from logic model library!");
-        System.out.println(RuleType.CONJUNCTION_ELIMINATION.toString());
-        System.out.println(RuleType.CONJUNCTION_ELIMINATION.name());
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");
@@ -20,8 +17,8 @@ public class LogicModel {
 
         Session session = new Session(hypo);
 
-        //TestSuite testSuite = new TestSuite(exprFact,session);
-        //testSuite.makeMove();
+        TestSuite testSuite = new TestSuite(exprFact,session);
+        testSuite.makeMove();
 
        /* Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");

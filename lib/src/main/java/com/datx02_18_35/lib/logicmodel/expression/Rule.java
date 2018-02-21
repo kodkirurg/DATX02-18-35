@@ -46,7 +46,7 @@ public class Rule {
                 legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, exprs));
                 }
 
-
+                break;
             case 2:
                 List<Expression> reverseExprs = exprs;
                 Collections.reverse(reverseExprs);
@@ -60,7 +60,7 @@ public class Rule {
                 } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.equals(exprs.get(0))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseExprs));
                 }
-
+                break;
 
             case 3:
                 Rule disjElimRule;
@@ -81,7 +81,7 @@ public class Rule {
                 if (disjElimRule != null) {
                     legalRules.add(disjElimRule);
                 }
-
+                break;
             default:
                 throw new IllegalArgumentException("Too many arguments");
         }
