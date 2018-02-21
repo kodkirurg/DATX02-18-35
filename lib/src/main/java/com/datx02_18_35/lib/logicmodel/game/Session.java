@@ -3,6 +3,7 @@ package com.datx02_18_35.lib.logicmodel.game;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
@@ -31,4 +32,11 @@ public class Session {
     public Iterable<Scope> getScopes() {
         return scopes;
     }
+
+    public void addExpressionToGameBoard(Collection<Expression> expressions){}
+    public List<Expression>  getExpressionsOnGameBoard(){return null;}
+    public List<Expression>  getExpressionsInInventory(){return null;}
+    public Expression getCurrentAssumption(){return null;}
+
+
 }

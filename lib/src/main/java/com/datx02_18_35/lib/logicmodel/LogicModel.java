@@ -3,15 +3,24 @@ package com.datx02_18_35.lib.logicmodel;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+import com.datx02_18_35.lib.logicmodel.game.Session;
 import com.datx02_18_35.lib.logicmodel.game.TestSuite;
+
+import java.util.ArrayList;
 
 public class LogicModel {
     public static void main(String[] args) {
         System.out.println("Hello from logic model library!");
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        Expression p1 = exprFact.createProposition("P");
+        Expression p2 = exprFact.createProposition("P");
+        ArrayList<Expression> hypo = new ArrayList<>();
+        hypo.add(p1);
 
-        TestSuite testSuite = new TestSuite(exprFact);
+        Session session = new Session(hypo);
+
+        TestSuite testSuite = new TestSuite(exprFact,session);
         testSuite.makeMove();
 
        /* Expression p1 = exprFact.createProposition("P");

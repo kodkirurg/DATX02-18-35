@@ -22,4 +22,7 @@ public class Scope {
         inventory = new Inventory();
         gameBoard = new GameBoard(hypothesis);
     }
+
+    public GameBoard getGameBoard(){return null;}
+
 }
