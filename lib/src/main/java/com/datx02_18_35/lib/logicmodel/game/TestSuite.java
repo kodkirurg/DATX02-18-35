@@ -16,12 +16,12 @@ import java.util.Scanner;
  */
 
 public class TestSuite {
-    Scanner inputReader = new Scanner(System.in);
-    ExpressionFactory exprFactory;
-    String input;
-    Session session;
+    private Scanner inputReader = new Scanner(System.in);
+    private ExpressionFactory exprFactory;
+    private String input;
+    private Session session;
 
-    List<Expression> selectedCards;
+    private List<Expression> selectedCards;
     public TestSuite(ExpressionFactory exprFactory, Session session) {
         this.exprFactory = exprFactory;
         this.session = session;
@@ -30,25 +30,35 @@ public class TestSuite {
 
 
     public void makeMove(){
-        System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
+        System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
+                "SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
         input = inputReader.nextLine();
         switch (input){
             case "MAKE_ASSUMPTION":
                 this.createExpression();
+                break;
             case "APPLY_RULE":
                 if(selectedCards.size() == 0){
                     System.out.println("Invalid argument");
+                    break;
                 }else {
                     applyRule();
+                    break;
                 }
             case "SHOW_GAMEBOARD":
-                showCards();
+                showGameboard();
+                break;
+            case "SHOW_INVENTORY":
+                showInventory();
             case "SHOW_RUlES":
                 showLegalRules();
+                break;
             case "SELECT_CARD":
                 selectCard();
+                break;
             case "CLEAR_SELECTION":
                 clearSelection();
+                break;
             default:
                 System.out.println("Invalid argument");
         }
@@ -64,24 +74,30 @@ public class TestSuite {
         switch (input) {
             case "CONJUNCTION":
                 expression.add(exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand()));
+                break;
             case "DISJUNCTION":
                 expression.add(exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand()));
+                break;
             case "IMPLICATION":
                 expression.add(exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand()));
+                break;
             case "PROPOSITION":
                 expression.add(createProposition());
+                break;
             case "ABSURDITY":
                 expression.add(exprFactory.createAbsurdity());
+                break;
             default:
                 System.out.println("Invalid argument");
                 this.createExpression();
 
         }
-        session.addExpressionToGameBoard(expression);
-        showCards();
+        //session.addExpressionToGameBoard(expression);
+        // showCards();
+
     }
 
-    public Expression createLeftOperand() {
+    private Expression createLeftOperand() {
         System.out.println("Decide left operator, chose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
         input = inputReader.nextLine();
         switch (input) {
@@ -102,8 +118,8 @@ public class TestSuite {
         }
     }
 
-    public Expression createRightOperand() {
-        System.out.println("Decide right operator, chose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
+    private Expression createRightOperand() {
+        System.out.println("Decide right operator, choose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
         input = inputReader.nextLine();
         switch (input) {
             case "CONJUNCTION":
@@ -123,7 +139,7 @@ public class TestSuite {
         }
     }
 
-    public Expression createProposition() {
+    private Expression createProposition() {
         System.out.println("Please choose proposition between: P,Q,R,S,T");
         input = inputReader.nextLine();
         if (input.equals("P") || input.equals("Q") || input.equals("R") || input.equals("S") || input.equals("T")) {
@@ -135,7 +151,7 @@ public class TestSuite {
 
     }
 
-    public void showCards(){
+    private void showGameboard(){
         List<Expression> expressions = session.getExpressionsOnGameBoard();
         for (int i = 0; i<expressions.size(); i++){
             System.out.println("["+i+"]"+expressions.get(i).toString());
@@ -143,8 +159,15 @@ public class TestSuite {
 
     }
 
-    public void selectCard(){
-        showCards();
+    public void showInventory(){
+        List<Expression> expressions = session.getExpressionsInInventory();
+        for (int i = 0; i<expressions.size();i++){
+            System.out.println("["+i+"]"+expressions.get(i).toString());
+        }
+    }
+
+    private void selectCard(){
+        showGameboard();
 
         List<Expression> expressions = session.getExpressionsOnGameBoard();
         System.out.println("Select a card by the index");
@@ -158,7 +181,22 @@ public class TestSuite {
         }
     }
 
-    public List<Rule> showLegalRules(){
+    private void moveCardFromInventory(){
+        showInventory();
+        List<Expression> expressions = session.getExpressionsInInventory();
+        System.out.println("Select a card to move by the index");
+        int input = inputReader.nextInt();
+        if(input<expressions.size() && input>=0) {
+            List<Expression> expression = new ArrayList<>();
+            expression.add(expressions.get(input));
+            session.addExpressionToGameBoard(expression);
+        }else {
+            System.out.println("Invalid argument");
+            this.moveCardFromInventory();
+        }
+    }
+
+    private List<Rule> showLegalRules(){
         Collection<Rule> rules =  Rule.getLegalRules(session.getCurrentAssumption(),selectedCards);
         List<Rule> listOfRules = new ArrayList<>(rules);
         for (int i = 0; i<listOfRules.size(); i++){
@@ -167,7 +205,7 @@ public class TestSuite {
         return listOfRules;
     }
 
-    public void applyRule(){
+    private void applyRule(){
         List<Rule> rules = showLegalRules();
         Collection<String> strings = new ArrayList<>();
         for (Rule r : rules){
@@ -176,14 +214,14 @@ public class TestSuite {
         int input = inputReader.nextInt();
         if(input > 0 && input< rules.size()) {
             session.addExpressionToGameBoard(exprFactory.applyRule(rules.get(input)));
-            showCards();
+            showGameboard();
             clearSelection();
         }
 
 
     }
 
-    public void clearSelection(){
+    private void clearSelection(){
         selectedCards.clear();
     }
 }
