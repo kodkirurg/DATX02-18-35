@@ -20,5 +20,10 @@ public class Absurdity extends Expression {
         return other instanceof Absurdity;
     }
 
+    @Override
+    public String toString(){
+        return "ABSURDITY";
+    }
+
 
 }

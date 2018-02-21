@@ -1,4 +1,4 @@
-package com.datx02_18_35.lib.logicmodel;
+package com.datx02_18_35.lib.logicmodel.game;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 
@@ -14,13 +14,18 @@ import java.util.Stack;
  */
 
 public class Inventory {
-    private Stack<Set<Expression>> inventories;
-    private int length;
-    Inventory(){
-        inventories =new Stack<>();
-        inventories.push(new HashSet<>());
+    private Expression assumption;
+    private HashSet<Expression> expressions;
+
+    Inventory(Expression assumption){
+        this.assumption = assumption;
+        this.expressions = new HashSet<>();
     }
 
+    Inventory() {
+        this(null);
+    }
+/*
     public void addExpression(Expression expression) {
         Collection<Expression> col = new ArrayList<>();
         col.add(expression);
@@ -39,13 +44,13 @@ public class Inventory {
         }
     }
     public void addScope(){
-        inventories.add(new HashSet<>());
+        inventories.add(new HashSet<Expression>());
     }
     public void removeScope(){
         inventories.remove(inventories.size());
     }
-    public List<Set<Expression>> getInventory(){
+    public Stack<HashSet<Expression>> getInventory(){
         return inventories;
     }
-
+*/
 }

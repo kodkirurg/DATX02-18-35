@@ -24,6 +24,8 @@ public class ExpressionFactory {
         return new Proposition(id);
     }
 
+    public Absurdity createAbsurdity(){return new Absurdity();}
+
     public Operator createOperator(
             OperatorType type, Expression operand1, Expression operand2) {
         switch (type) {

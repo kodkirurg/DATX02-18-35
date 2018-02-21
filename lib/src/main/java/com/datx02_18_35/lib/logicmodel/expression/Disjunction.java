@@ -29,11 +29,8 @@ public class Disjunction extends Operator {
     }
 
     @Override
-    public boolean logicEquals(Object other) {
-        return other instanceof Disjunction
-                &&(this.operand1.logicEquals(((Disjunction) other).operand1)
-                && this.operand2.logicEquals(((Disjunction) other).operand2))
-                || (this.operand1.logicEquals(((Disjunction) other).operand2)
-                && this.operand2.logicEquals(((Disjunction) other).operand1));
+    public String toString(){
+        return "(" + operand1.toString() + "\\/" + operand2.toString() + ")";
     }
+
 }
