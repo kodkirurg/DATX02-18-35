@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 import game.logic_game.R;
 
@@ -21,13 +23,18 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
+    private HashMap<Integer,Expression> selected=new HashMap<Integer, Expression>();
 
 
     public RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
     }
+
+
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,8 +47,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
+        holder.cardView.setOnClickListener(this);
+        holder.cardView.setTag(position);
         holder.cardView.setCardBackgroundColor(Color.BLUE);
     }
+
 
 
     @Override
@@ -60,8 +70,26 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //implement
     }
 
+    @Override
+    public void onClick(View view) {
+        int position = (int) view.getTag();
+
+        if(selected.get(position) == null){
+            selected.put(position,dataSet.get(position));
+            view.setBackgroundColor(Color.BLACK);
+        }
+        else{
+            selected.remove(position);
+            view.setBackgroundColor(Color.WHITE);
+        }
+
+
+
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public CardView cardView;
+        boolean clicked=false;
 
         public ViewHolder(CardView itemView) {
             super(itemView);
@@ -82,7 +110,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            cardView.setBackgroundColor(Color.BLACK);
+
         }
     }
 }

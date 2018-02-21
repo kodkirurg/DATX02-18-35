@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +30,10 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
-        ft.replace(R.id.scope_rec , new Fragment_board_cards()).commit();
+
+        ft.replace(R.id.game_right_side, new Fragment_board_actions());
+        ft.replace(R.id.game_left_side , new Fragment_board_cards()).commit();
+
         Button inv_button = (Button) findViewById(R.id.inventory_button); //grab a view and convert it to a button class
         inv_button.setOnClickListener(this);
 
@@ -58,7 +62,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             case R.id.item_assumption:
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft =fm.beginTransaction();
-                ft.replace(R.id.scope_rec , new Fragment_board_cards()).commit(); //Option is to open new intent
+                ft.replace(R.id.game_left_side , new Fragment_scope_cards()).commit(); //Option is to open new intent
                 break;
         }
         return false;
@@ -68,7 +72,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         FragmentTransaction ft = fm.beginTransaction();
         FrameLayout layout = (FrameLayout)findViewById(R.id.fragment_container);
         ft.replace(R.id.fragment_container, inventory);
-        if (inventory.open ==true) {
+        if (inventory.open) {
             layout.setVisibility(View.GONE);
             inventory.open = false;
         }
@@ -88,7 +92,6 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.close_button: {
-                finish();
                 break;
             }
             case R.id.resolve_button: {
