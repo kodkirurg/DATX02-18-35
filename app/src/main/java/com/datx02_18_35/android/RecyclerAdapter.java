@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.datx02_18_35.lib.logicmodel.expression.Absurdity;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.Operator;
 import com.datx02_18_35.lib.logicmodel.expression.Proposition;
 
 import org.w3c.dom.Text;
@@ -105,14 +107,64 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             supremeParent = holder.cardView;
             
             
-        if(expr instanceof Proposition | expr instanceof Absurdity){
-            Log.d("test123", "test");
-            supremeParent.removeAllViews();
-            TextView text = new TextView(supremeParent.getContext());
-            text.setText(expr.toString());
-            supremeParent.addView(text);
-        }
+            if(expr instanceof Proposition | expr instanceof Absurdity){
+                Log.d("test123", "test");
+                supremeParent.removeAllViews();
+                TextView text = new TextView(supremeParent.getContext());
+                text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                text.setGravity(Gravity.CENTER);
+                text.setText(expr.toString());
+                text.setTextSize(40);
+                supremeParent.addView(text);
+                return;
+            }
 
+
+
+            Operator op = (Operator) expr;
+
+            Log.d("test123",op.toString());
+
+            Expression op1 = op.getOperand1();
+            Expression op2 = op.getOperand2();
+            TextView text1 = supremeParent.findViewById(R.id.card_text_1);
+            TextView text2 = supremeParent.findViewById(R.id.card_text_2);
+            TextView text3 = supremeParent.findViewById(R.id.card_text_3);
+            TextView text4 = supremeParent.findViewById(R.id.card_text_4);
+
+
+
+
+            if((op1 instanceof Absurdity | op1 instanceof  Proposition) & (op2 instanceof Absurdity | op2 instanceof  Proposition)  ){
+                // 0 complex
+
+
+
+            }
+
+
+            /*
+            else if((op1 instanceof Operator) & ((op2 instanceof Absurdity) | (op2 instanceof Proposition))){
+                //text1 complex
+
+
+            }
+            else if( ((op1 instanceof Absurdity) | (op1 instanceof Proposition)) & (op2 instanceof Operator)  ){
+                //text2 complex
+
+
+            }
+
+            */
+            else{ //(op1 & op2) == Operators
+
+                //Use standard card and all textX complex
+                text1.setText(" .. ");
+                text2.setText(" .. ");
+                text3.setText(" .. ");
+                text4.setText(" .. ");
+            }
         }
     }
 }
+
