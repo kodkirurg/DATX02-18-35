@@ -35,20 +35,27 @@ public class Session {
     }
 
     public Iterable<Expression> getInventory() {
-        return () -> new Iterator<Expression>() {
-            private Iterator<Scope> scopeIter = scopes.iterator();
-            private Iterator<Expression> inventoryIter = scopeIter.next().getInventory().iterator();
+        return new Iterable<Expression>() {
             @Override
-            public boolean hasNext() {
-                return inventoryIter.hasNext() || scopeIter.hasNext();
-            }
-            @Override
-            public Expression next() {
-                assert this.hasNext();
-                if (!inventoryIter.hasNext()) {
-                    inventoryIter = scopeIter.next().getInventory().iterator();
-                }
-                return inventoryIter.next();
+            public Iterator<Expression> iterator() {
+                return new Iterator<Expression>() {
+                    private Iterator<Scope> scopeIter = scopes.iterator();
+                    private Iterator<Expression> inventoryIter = scopeIter.next().getInventory().iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return inventoryIter.hasNext() || scopeIter.hasNext();
+                    }
+
+                    @Override
+                    public Expression next() {
+                        assert this.hasNext();
+                        if (!inventoryIter.hasNext()) {
+                            inventoryIter = scopeIter.next().getInventory().iterator();
+                        }
+                        return inventoryIter.next();
+                    }
+                };
             }
         };
     }
