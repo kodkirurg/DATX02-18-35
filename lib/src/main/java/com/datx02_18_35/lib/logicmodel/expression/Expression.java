@@ -18,5 +18,8 @@ public abstract class Expression {
     @Override
     public abstract boolean equals(Object other);
 
+    @Override
+    public abstract String toString();
+
 
 }

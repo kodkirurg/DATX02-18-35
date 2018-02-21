@@ -9,6 +9,8 @@ public class LogicModel {
         System.out.println("Hello from logic model library!");
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+
+
         Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");

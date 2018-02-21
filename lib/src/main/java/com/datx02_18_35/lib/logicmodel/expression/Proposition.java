@@ -23,4 +23,8 @@ public class Proposition extends Expression {
     public boolean equals(Object other) {
         return other instanceof Proposition && id.equals(((Proposition) other).id);
     }
+
+    public String toString(){
+        return this.id;
+    }
 }

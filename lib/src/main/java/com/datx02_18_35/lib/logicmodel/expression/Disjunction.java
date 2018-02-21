@@ -28,4 +28,9 @@ public class Disjunction extends Operator {
                 && this.operand2.equals(((Disjunction) other).operand2);
     }
 
+    @Override
+    public String toString(){
+        return "(" + operand1.toString() + "\\/" + operand2.toString() + ")";
+    }
+
 }

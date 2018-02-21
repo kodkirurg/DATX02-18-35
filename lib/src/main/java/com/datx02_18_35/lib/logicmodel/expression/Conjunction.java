@@ -27,4 +27,9 @@ public class Conjunction extends Operator {
                 && this.operand1.equals(((Conjunction) other).operand1)
                 && this.operand2.equals(((Conjunction) other).operand2);
     }
+
+    @Override
+    public String toString(){
+        return "(" + operand1.toString() + "/\\" + operand2.toString() + ")";
+    }
 }
