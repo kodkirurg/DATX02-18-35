@@ -34,6 +34,10 @@ public class Session {
         return scopes;
     }
 
+    public Expression getAssumption() {
+        return scopes.peek().getAssumption();
+    }
+
     public Iterable<Expression> getGameBoard() {
         return scopes.peek().getGameBoard();
     }
