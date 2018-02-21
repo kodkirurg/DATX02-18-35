@@ -3,6 +3,7 @@ package com.datx02_18_35.lib.logicmodel;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+import com.datx02_18_35.lib.logicmodel.game.TestSuite;
 
 public class LogicModel {
     public static void main(String[] args) {
@@ -10,8 +11,10 @@ public class LogicModel {
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
 
+        TestSuite testSuite = new TestSuite(exprFact);
+        testSuite.makeMove();
 
-        Expression p1 = exprFact.createProposition("P");
+       /* Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression q2 = exprFact.createProposition("Q");
@@ -45,6 +48,6 @@ public class LogicModel {
        // for (RuleType type : col2) {
         //    System.out.println(type);
         //}
-
+    */
     }
 }
