@@ -106,6 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             
             
         if(expr instanceof Proposition | expr instanceof Absurdity){
+            Log.d("test123", "test");
             supremeParent.removeAllViews();
             TextView text = new TextView(supremeParent.getContext());
             text.setText(expr.toString());
