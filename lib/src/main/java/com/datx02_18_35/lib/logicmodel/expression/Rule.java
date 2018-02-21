@@ -42,6 +42,11 @@ public class Rule {
                     legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, exprs));
                 }
 
+                else if (exprs.get(0) instanceof Absurdity){
+                legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, exprs));
+                }
+
+
             case 2:
                 List<Expression> reverseExprs = exprs;
                 Collections.reverse(reverseExprs);
