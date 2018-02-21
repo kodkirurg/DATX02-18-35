@@ -1,9 +1,10 @@
-package com.datx02_18_35.lib.logicmodel.game;
+package com.datx02_18_35.lib.logicmodel;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
 import com.datx02_18_35.lib.logicmodel.expression.Rule;
+import com.datx02_18_35.lib.logicmodel.game.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class TestSuite {
         selectedCards = new ArrayList<Expression>();
     }
 
-
+/*
     public void makeMove(){
         System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
                 "SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
@@ -224,6 +225,7 @@ public class TestSuite {
     private void clearSelection(){
         selectedCards.clear();
     }
+    */
 }
 
 
