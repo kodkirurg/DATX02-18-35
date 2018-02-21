@@ -5,6 +5,7 @@ import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,14 @@ public class Scope {
         assert hypothesis != null;
         this.assumption = null;
         gameBoard.addAll(hypothesis);
+    }
+
+    public Expression getAssumption() {
+        return assumption;
+    }
+
+    public Iterable<Expression> getGameBoard() {
+        return gameBoard;
     }
 
     public Iterable<Expression> getInventory() {
