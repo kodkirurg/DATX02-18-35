@@ -34,6 +34,10 @@ public class Session {
         return scopes;
     }
 
+    public Iterable<Expression> getGameBoard() {
+        return scopes.peek().getGameBoard();
+    }
+
     public Iterable<Expression> getInventory() {
         return new Iterable<Expression>() {
             @Override
