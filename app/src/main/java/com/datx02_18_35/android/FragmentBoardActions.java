@@ -38,21 +38,7 @@ public class FragmentBoardActions extends Fragment {
 
         // specify an adapter (see also next example)
         ArrayList list = new ArrayList();
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
+
 
 
         recAdapter = new RecyclerAdapter(list);

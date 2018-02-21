@@ -8,8 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.datx02_18_35.lib.logicmodel.expression.Absurdity;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.Proposition;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-       new CardDeflator(holder);
+       new CardDeflator(holder,dataSet.get(position));
     }
 
 
@@ -94,8 +99,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     private static class CardDeflator{
-        CardDeflator(ViewHolder holder){
-            Log.d("test123","test");
+        CardView supremeParent;
+        
+        CardDeflator(ViewHolder holder, Expression expr){
+            supremeParent = holder.cardView;
+            
+            
+        if(expr instanceof Proposition | expr instanceof Absurdity){
+            supremeParent.removeAllViews();
+            TextView text = new TextView(supremeParent.getContext());
+            text.setText(expr.toString());
+            supremeParent.addView(text);
+        }
+
         }
     }
 }
