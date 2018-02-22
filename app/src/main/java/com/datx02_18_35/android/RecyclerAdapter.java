@@ -17,7 +17,9 @@ import com.datx02_18_35.lib.logicmodel.expression.Proposition;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 import game.logic_game.R;
 
@@ -27,6 +29,7 @@ import game.logic_game.R;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
+    private HashMap<Integer,Expression> selected=new HashMap<Integer, Expression>();
 
     RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
@@ -46,6 +49,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // - replace the contents of the view with that element
        new CardDeflator(holder,dataSet.get(position));
     }
+
 
 
     @Override
@@ -75,6 +79,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public CardView cardView;
         public ImageView infoButton;
 
+
         public ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
@@ -94,7 +99,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            cardView.setBackgroundColor(Color.BLACK);
+
         }
     }
 
