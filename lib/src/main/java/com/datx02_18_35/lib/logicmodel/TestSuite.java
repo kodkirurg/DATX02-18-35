@@ -242,7 +242,13 @@ public class TestSuite {
             clearSelection();
             showGameboard();
         }
-        else {
+        else if(rules.get(input).type.name().equals("IMPLICATION_INTRODUCTION")){
+            session.closeScope();
+            session.addExpressionToInventory(exprFactory.applyRule(rules.get(input)));
+            clearSelection();
+            showGameboard();
+        }
+        else{
             session.addExpressionToInventory(exprFactory.applyRule(rules.get(input)));
             clearSelection();
             showGameboard();
