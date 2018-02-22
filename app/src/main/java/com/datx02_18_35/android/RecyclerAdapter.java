@@ -103,6 +103,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private static class CardDeflator{
         CardView topCardView;
+        final String dots = " .. ";
 
         
         CardDeflator(ViewHolder holder, Expression expr){
@@ -139,6 +140,109 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                     sText(R.id.card_text_2,op1.toString());
                     sText(R.id.card_text_3,op2.toString());
+                }
+                else{
+                    if( op1 instanceof Operator &  (op2 instanceof Proposition | op2 instanceof Absurdity) ) {
+                        //upper
+                        Operator upper = (Operator) op1;
+                        Expression upper_left = upper.getOperand1();
+                        Expression upper_right = upper.getOperand2();
+
+                        //Upper left
+                        if( upper_left instanceof Operator ){
+                            sText(R.id.card_text_2, dots);
+                        }
+                        else{
+                            sText(R.id.card_text_2, upper_left.toString());
+                        }
+
+                        //Upper right
+                        if( upper_right instanceof Operator ){
+                            sText(R.id.card_text_1, dots);
+                        }
+                        else{
+                            sText(R.id.card_text_1, upper_right.toString());
+                        }
+
+                        //lower
+                        rmView(R.id.card_frame_lower);
+                        rmView(R.id.card_card_2_4);
+                        mParent(R.id.card_card_2_3);
+                        sText(R.id.card_text_3,op2.toString());
+                    }
+
+                    if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
+
+                        //lower
+                        Operator lower = (Operator) op2;
+                        Expression lower_left = lower.getOperand1();
+                        Expression lower_right = lower.getOperand2();
+
+                        //lower left
+                        if(lower_left instanceof Operator){
+                            sText(R.id.card_text_3,dots);
+                        }
+                        else{
+                            sText(R.id.card_text_3,lower_left.toString());
+                        }
+
+                        //lower left
+                        if(lower_right instanceof Operator){
+                            sText(R.id.card_text_4,dots);
+                        }
+                        else{
+                            sText(R.id.card_text_4,lower_right.toString());
+                        }
+
+
+                        //upper
+                        rmView(R.id.card_frame_upper);
+                        rmView(R.id.card_card_1_1);
+                        mParent(R.id.card_card_1_2);
+                        sText(R.id.card_text_2,op1.toString());
+                    }
+
+                    if( op1 instanceof Operator & op2 instanceof Operator ){
+                        //lower and upper
+                        Operator lower = (Operator) op2;
+                        Expression lower_left = lower.getOperand1();
+                        Expression lower_right = lower.getOperand2();
+
+                        //lower left
+                        if(lower_left instanceof Operator){
+                            sText(R.id.card_text_3,dots);
+                        }
+                        else{
+                            sText(R.id.card_text_3,lower_left.toString());
+                        }
+
+                        //lower left
+                        if(lower_right instanceof Operator){
+                            sText(R.id.card_text_4,dots);
+                        }
+                        else{
+                            sText(R.id.card_text_4,lower_right.toString());
+                        }
+                        Operator upper = (Operator) op1;
+                        Expression upper_left = upper.getOperand1();
+                        Expression upper_right = upper.getOperand2();
+
+                        //Upper left
+                        if( upper_left instanceof Operator ){
+                            sText(R.id.card_text_2, dots);
+                        }
+                        else{
+                            sText(R.id.card_text_2, upper_left.toString());
+                        }
+
+                        //Upper right
+                        if( upper_right instanceof Operator ){
+                            sText(R.id.card_text_1, dots);
+                        }
+                        else{
+                            sText(R.id.card_text_1, upper_right.toString());
+                        }
+                    }
                 }
             }
         }
