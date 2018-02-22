@@ -6,11 +6,13 @@ import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
 import com.datx02_18_35.lib.logicmodel.expression.Rule;
 import com.datx02_18_35.lib.logicmodel.expression.RuleType;
 import com.datx02_18_35.lib.logicmodel.game.Session;
+import com.sun.org.apache.bcel.internal.classfile.ExceptionTable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 /**
@@ -31,8 +33,7 @@ public class TestSuite {
     }
 
 
-    public void makeMove(){
-
+    public void makeMove() {
         while (true) {
             System.out.println("Make a move from the following set of moves: 1. MAKE_ASSUMPTION, 2. APPLY_RULE, 3. SHOW_GAMEBOARD, 4. SHOW_INVENTORY," +
                     " 5. ADD_CARD_FROM_INVENTORY, 6. SHOW_RUlES, 7. SELECT_CARD, 8. CLEAR_SELECTION");
@@ -73,6 +74,7 @@ public class TestSuite {
                 default:
                     System.out.println("Invalid argument in makeMove");
             }
+
         }
 
 
@@ -224,7 +226,8 @@ public class TestSuite {
     }
 
     private List<Rule> showLegalRules(){
-        List<Rule> rules =  new ArrayList<>(Rule.getLegalRules(session.getAssumption(),selectedCards));
+        List<Rule> rules = new ArrayList<>(Rule.getLegalRules(session.getAssumption(), selectedCards));
+
         int i = 0;
         for (Rule rule : rules) {
             System.out.println("["+(i++)+"]"+rule.type);
