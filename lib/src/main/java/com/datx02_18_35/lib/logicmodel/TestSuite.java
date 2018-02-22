@@ -26,13 +26,13 @@ public class TestSuite {
     public TestSuite(ExpressionFactory exprFactory, Session session) {
         this.exprFactory = exprFactory;
         this.session = session;
-        selectedCards = new ArrayList<Expression>();
+        selectedCards = new ArrayList<>();
     }
 
 
     public void makeMove(){
         System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
-                "ADD_CARD_FROM_INVENTORY, SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
+                " ADD_CARD_FROM_INVENTORY, SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
         input = inputReader.nextLine();
         switch (input){
             case "MAKE_ASSUMPTION":
@@ -44,7 +44,7 @@ public class TestSuite {
                 break;
             case "APPLY_RULE":
                 if(selectedCards.size() == 0){
-                    System.out.println("Invalid argument");
+                    System.out.println("Can't apply rule since no cards are selected");
                 }else {
                     applyRule();
                 }
