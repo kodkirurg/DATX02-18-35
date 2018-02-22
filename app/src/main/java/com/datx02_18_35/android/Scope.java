@@ -22,6 +22,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
 
     private FragmentInventory inventory = new FragmentInventory(); // replace with our getInventory
     Toolbar toolbar;
+    FrameLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
 
         ft.replace(R.id.game_right_side, new Fragment_scope_actions());
         ft.replace(R.id.game_left_side , new Fragment_scope_cards()).commit();
+
+        layout = (FrameLayout)findViewById(R.id.fragment_container);
+        ft.replace(R.id.fragment_container, inventory);
+        layout.setVisibility(View.GONE);
 
         Button inv_button = (Button) findViewById(R.id.inventory_button); //grab a view and convert it to a button class
         inv_button.setOnClickListener(this);
@@ -69,19 +74,14 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         return false;
     }
     public void giveInventory(){
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        FrameLayout layout = (FrameLayout)findViewById(R.id.fragment_container);
-        ft.replace(R.id.fragment_container, inventory);
-        if (inventory.open) {
+        if (layout.isShown()) {
             layout.setVisibility(View.GONE);
-            inventory.open = false;
+
         }
         else {
             layout.setVisibility(View.VISIBLE);
-            inventory.open = true;
+            
         }
-        ft.commit();
     }
 
     @Override

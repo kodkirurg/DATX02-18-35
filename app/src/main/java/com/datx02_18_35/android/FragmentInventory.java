@@ -25,7 +25,6 @@ import game.logic_game.R;
 
 
 public class FragmentInventory extends Fragment implements View.OnClickListener  {
-    public boolean open = false;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -64,8 +63,8 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
         recyclerView.setAdapter(recAdapter);
 
-       // Button addTo_button = (Button)  container.getRootView().findViewById(R.id.addTo_button); //grab a view and convert it to a button class
-       // addTo_button.setOnClickListener(this);
+     //   Button addTo_button = (Button)  container.getRootView().findViewById(R.id.addTo_button); //grab a view and convert it to a button class
+     //   addTo_button.setOnClickListener(this);
 
         return frag;
 
