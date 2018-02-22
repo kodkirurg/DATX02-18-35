@@ -5,11 +5,13 @@ import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
 import com.datx02_18_35.lib.logicmodel.expression.Rule;
 import com.datx02_18_35.lib.logicmodel.game.Session;
+import com.sun.org.apache.bcel.internal.classfile.ExceptionTable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 /**
@@ -59,7 +61,11 @@ public class TestSuite {
                 this.addCardFromInventory();
                 break;
             case 6:
-                showLegalRules();
+                if(selectedCards.size() == 0){
+                    System.out.println("No applicable rules since no cards are selected");
+                }else {
+                    showLegalRules();
+                }
                 break;
             case 7:
                 selectCard();
@@ -224,7 +230,8 @@ public class TestSuite {
     }
 
     private List<Rule> showLegalRules(){
-        List<Rule> rules =  new ArrayList<>(Rule.getLegalRules(session.getAssumption(),selectedCards));
+        List<Rule> rules = new ArrayList<>(Rule.getLegalRules(session.getAssumption(), selectedCards));
+
         int i = 0;
         for (Rule rule : rules) {
             System.out.println("["+(i++)+"]"+rule.type);
