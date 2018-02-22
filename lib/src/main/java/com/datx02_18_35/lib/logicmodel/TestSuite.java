@@ -31,40 +31,40 @@ public class TestSuite {
 
 
     public void makeMove(){
-        System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
-                " ADD_CARD_FROM_INVENTORY, SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
-        input = inputReader.nextLine();
+        System.out.println("Make a move from the following set of moves: 1. MAKE_ASSUMPTION, 2. APPLY_RULE, 3. SHOW_GAMEBOARD, 4. SHOW_INVENTORY," +
+                " 5. ADD_CARD_FROM_INVENTORY, 6. SHOW_RUlES, 7. SELECT_CARD, 8. CLEAR_SELECTION");
+        int input = inputReader.nextInt();
         switch (input){
-            case "MAKE_ASSUMPTION":
+            case 1:
                 Expression expression = this.createExpression();
                 Collection<Expression> expressions = new ArrayList<>();
                 expressions.add(expression);
                 session.pushScope(expression);
                 this.showGameboard();
                 break;
-            case "APPLY_RULE":
+            case 2:
                 if(selectedCards.size() == 0){
                     System.out.println("Can't apply rule since no cards are selected");
                 }else {
                     applyRule();
                 }
                 break;
-            case "SHOW_GAMEBOARD":
+            case 3:
                 showGameboard();
                 break;
-            case "SHOW_INVENTORY":
+            case 4:
                 showInventory();
                 break;
-            case "ADD_CARD_FROM_INVENTORY":
+            case 5:
                 this.addCardFromInventory();
                 break;
-            case "SHOW_RUlES":
+            case 6:
                 showLegalRules();
                 break;
-            case "SELECT_CARD":
+            case 7:
                 selectCard();
                 break;
-            case "CLEAR_SELECTION":
+            case 8:
                 clearSelection();
                 break;
             default:
@@ -76,23 +76,23 @@ public class TestSuite {
     }
 
     public Expression createExpression() {
-        System.out.println("Decide root between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
+        System.out.println("Decide root between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
         Expression expression;
-        input = inputReader.nextLine();
+        int input = inputReader.nextInt();
         switch (input) {
-            case "CONJUNCTION":
+            case 1:
                 expression=(exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand()));
                 break;
-            case "DISJUNCTION":
+            case 2:
                 expression=(exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand()));
                 break;
-            case "IMPLICATION":
+            case 3:
                 expression=(exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand()));
                 break;
-            case "PROPOSITION":
+            case 4:
                 expression=(createProposition());
                 break;
-            case "ABSURDITY":
+            case 5:
                 expression=(exprFactory.createAbsurdity());
                 break;
             default:
@@ -105,18 +105,18 @@ public class TestSuite {
     }
 
     private Expression createLeftOperand() {
-        System.out.println("Decide left operator, chose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        input = inputReader.nextLine();
+        System.out.println("Decide left operator, chose between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
+        int input = inputReader.nextInt();
         switch (input) {
-            case "CONJUNCTION":
+            case 1:
                 return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
-            case "DISJUNCTION":
+            case 2:
                 return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
-            case "IMPLICATION":
+            case 3:
                 return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
-            case "PROPOSITION":
+            case 4:
                 return createProposition();
-            case "ABSURDITY":
+            case 5:
                 return exprFactory.createAbsurdity();
             default:
                 System.out.println("Invalid argument");
@@ -126,18 +126,18 @@ public class TestSuite {
     }
 
     private Expression createRightOperand() {
-        System.out.println("Decide right operator, choose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        input = inputReader.nextLine();
+        System.out.println("Decide right operator, choose between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
+        int input = inputReader.nextInt();
         switch (input) {
-            case "CONJUNCTION":
+            case 1:
                 return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
-            case "DISJUNCTION":
+            case 2:
                 return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
-            case "IMPLICATION":
+            case 3:
                 return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
-            case "PROPOSITION":
+            case 4:
                 return createProposition();
-            case "ABSURDITY":
+            case 5:
                 return exprFactory.createAbsurdity();
             default:
                 System.out.println("Invalid argument");
@@ -147,15 +147,23 @@ public class TestSuite {
     }
 
     private Expression createProposition() {
-        System.out.println("Please choose proposition between: P,Q,R,S,T");
-        input = inputReader.nextLine();
-        if (input.equals("P") || input.equals("Q") || input.equals("R") || input.equals("S") || input.equals("T")) {
-            return exprFactory.createProposition(input);
-        } else {
-            System.out.println("Invalid argument");
-            return this.createProposition();
+        System.out.println("Please choose proposition between: 1. P, 2. Q, 3. R, 4. S, 5. T");
+        int input = inputReader.nextInt();
+        switch (input){
+            case 1:
+                return exprFactory.createProposition("P");
+            case 2:
+                return exprFactory.createProposition("Q");
+            case 3:
+                return exprFactory.createProposition("R");
+            case 4:
+                return exprFactory.createProposition("S");
+            case 5:
+                return exprFactory.createProposition("T");
+            default:
+                System.out.println("Invalid argument");
+                return this.createProposition();
         }
-
     }
 
     private void showGameboard(){
