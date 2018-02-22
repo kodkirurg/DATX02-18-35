@@ -4,15 +4,11 @@ import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
 import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
 import com.datx02_18_35.lib.logicmodel.expression.Rule;
-import com.datx02_18_35.lib.logicmodel.expression.RuleType;
 import com.datx02_18_35.lib.logicmodel.game.Session;
-import com.sun.org.apache.bcel.internal.classfile.ExceptionTable;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Scanner;
 
 /**
