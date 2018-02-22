@@ -33,7 +33,7 @@ public class TestSuite {
         while (true) {
             System.out.println("Make a move from the following set of moves: 1. MAKE_ASSUMPTION, 2. APPLY_RULE, 3. SHOW_GAMEBOARD, 4. SHOW_INVENTORY," +
                     " 5. ADD_CARD_FROM_INVENTORY, 6. SHOW_RUlES, 7. SELECT_CARD, 8. CLEAR_SELECTION");
-            int input = inputReader.nextInt(-1);
+            int input = inputReader.nextInt();
             switch (input){
                 case 1:
                     Expression expression = this.createExpression();
@@ -79,7 +79,7 @@ public class TestSuite {
     public Expression createExpression() {
         while (true) {
             System.out.println("Decide root between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
-            int input = inputReader.nextInt(-1);
+            int input = inputReader.nextInt();
             switch (input) {
                 case 1:
                     return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());

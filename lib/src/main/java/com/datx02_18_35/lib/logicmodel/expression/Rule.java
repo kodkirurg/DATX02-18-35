@@ -27,7 +27,7 @@ public class Rule {
 
         List<Expression> exprs = new ArrayList<>(expressions);
 
-        ArrayList<Rule> legalRules = new ArrayList<Rule>();
+        ArrayList<Rule> legalRules = new ArrayList<>();
         switch(exprs.size()) {
             case 1:
                 if (assumption != null) {
@@ -83,7 +83,7 @@ public class Rule {
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Too many arguments");
+                break;
         }
         return legalRules;
 
