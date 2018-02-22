@@ -32,11 +32,15 @@ public class TestSuite {
 
     public void makeMove(){
         System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
-                "SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
+                "ADD_CARD_FROM_INVENTORY, SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
         input = inputReader.nextLine();
         switch (input){
             case "MAKE_ASSUMPTION":
-                this.createExpression();
+                Expression expression = this.createExpression();
+                Collection<Expression> expressions = new ArrayList<>();
+                expressions.add(expression);
+                session.pushScope(expression);
+                this.showGameboard();
                 break;
             case "APPLY_RULE":
                 if(selectedCards.size() == 0){
@@ -51,6 +55,9 @@ public class TestSuite {
             case "SHOW_INVENTORY":
                 showInventory();
                 break;
+            case "ADD_CARD_FROM_INVENTORY":
+                this.addCardFromInventory();
+                break;
             case "SHOW_RUlES":
                 showLegalRules();
                 break;
@@ -61,40 +68,39 @@ public class TestSuite {
                 clearSelection();
                 break;
             default:
-                System.out.println("Invalid argument");
+                System.out.println("Invalid argument in makeMove");
         }
 
         makeMove();
 
     }
 
-    public void createExpression() {
+    public Expression createExpression() {
         System.out.println("Decide root between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        Collection<Expression> expression = new ArrayList<>();
+        Expression expression;
         input = inputReader.nextLine();
         switch (input) {
             case "CONJUNCTION":
-                expression.add(exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand()));
+                expression=(exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand()));
                 break;
             case "DISJUNCTION":
-                expression.add(exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand()));
+                expression=(exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand()));
                 break;
             case "IMPLICATION":
-                expression.add(exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand()));
+                expression=(exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand()));
                 break;
             case "PROPOSITION":
-                expression.add(createProposition());
+                expression=(createProposition());
                 break;
             case "ABSURDITY":
-                expression.add(exprFactory.createAbsurdity());
+                expression=(exprFactory.createAbsurdity());
                 break;
             default:
                 System.out.println("Invalid argument");
-                this.createExpression();
+                expression=this.createExpression();
 
         }
-        //session.addExpressionToGameBoard(expression);
-        // showCards();
+        return expression;
 
     }
 
@@ -184,7 +190,7 @@ public class TestSuite {
                     input--;
                 }
             }
-            System.out.println("Invalid argument");
+            System.out.println("Invalid arguement");
         }
     }
 
@@ -225,9 +231,22 @@ public class TestSuite {
             System.out.println("Invalid input!");
             input = inputReader.nextInt();
         }
-        session.addExpressionToInventory(exprFactory.applyRule(rules.get(input)));
-        clearSelection();
-        showGameboard();
+        if(rules.get(input).type.name().equals("ABSURDITY_ELIMINATION")||rules.get(input).type.name().equals("DISJUNCTION_INTRODUCTION")){
+            System.out.println("Please create card for absurdity elimination/disjunction introduction");
+            Expression expression = this.createExpression();
+            List<Expression> expressions = new ArrayList<>();
+            expressions.addAll(rules.get(input).expressions);
+            expressions.add(expression);
+            Rule rule = new Rule(rules.get(input).type,expressions);
+            session.addExpressionToInventory(exprFactory.applyRule(rule));
+            clearSelection();
+            showGameboard();
+        }
+        else {
+            session.addExpressionToInventory(exprFactory.applyRule(rules.get(input)));
+            clearSelection();
+            showGameboard();
+        }
     }
 
     private void clearSelection() {

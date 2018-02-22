@@ -121,6 +121,7 @@ public class ExpressionFactory {
                 assert rule.expressions.size()==2;
                 assert rule.expressions.get(0) instanceof Absurdity;
                 result.add(rule.expressions.get(1));
+                break;
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
