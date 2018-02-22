@@ -29,7 +29,6 @@ import game.logic_game.R;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
-    private HashMap<Integer,Expression> selected=new HashMap<Integer, Expression>();
 
     RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
@@ -77,7 +76,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
         public CardView cardView;
-        public ImageView infoButton;
 
 
         public ViewHolder(CardView itemView) {
