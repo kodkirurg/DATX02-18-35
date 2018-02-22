@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,8 @@ import android.widget.TextView;
 
 import com.datx02_18_35.lib.logicmodel.expression.Absurdity;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.Operator;
 import com.datx02_18_35.lib.logicmodel.expression.Proposition;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -104,20 +104,64 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     private static class CardDeflator{
-        CardView supremeParent;
+        CardView topCardView;
+
         
         CardDeflator(ViewHolder holder, Expression expr){
-            supremeParent = holder.cardView;
-            
-            
-        if(expr instanceof Proposition | expr instanceof Absurdity){
-            Log.d("test123", "test");
-            supremeParent.removeAllViews();
-            TextView text = new TextView(supremeParent.getContext());
-            text.setText(expr.toString());
-            supremeParent.addView(text);
+            topCardView = holder.cardView;
+
+
+            //whole card one symbol
+            if(expr instanceof Proposition | expr instanceof Absurdity){
+                Log.d("test123", "test");
+                topCardView.removeAllViews();
+                TextView text = new TextView(topCardView.getContext());
+                text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                text.setGravity(Gravity.CENTER);
+                text.setText(expr.toString());
+                text.setTextSize(40);
+                topCardView.addView(text);
+            }
+            else {
+                Operator op = (Operator) expr;
+                Expression op1 = op.getOperand1();
+                Expression op2 = op.getOperand2();
+
+
+                // set big operator in middle + no complex on up/down card.
+                if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
+                    rmView(R.id.card_frame_lower);
+                    rmView(R.id.card_frame_upper);
+                    rmView(R.id.card_card_1_1);
+                    rmView(R.id.card_card_2_4);
+
+                    mParent(R.id.card_card_1_2);
+                    mParent(R.id.card_card_2_3);
+
+
+                    sText(R.id.card_text_2,op1.toString());
+                    sText(R.id.card_text_3,op2.toString());
+                }
+            }
         }
 
+        //remove view by id
+        private void rmView(int rId){
+            View view = topCardView.findViewById(rId);
+            ViewGroup viewGroup = (ViewGroup) view.getParent();
+            viewGroup.removeView(view);
+        }
+        //expand to fill by id
+        private void mParent(int rId){
+            View view = topCardView.findViewById(rId);
+            view.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+            view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        //sets text in textview by id.
+        private void sText(int rId,String s){
+            TextView t = topCardView.findViewById(rId);
+            t.setText(s);
         }
     }
 }
+
