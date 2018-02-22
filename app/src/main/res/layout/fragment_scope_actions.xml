@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.datx02_18_35.android.Fragment_scope_actions">
+    tools:context="com.datx02_18_35.android.FragmentScopeActions">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/game_recycler_view"

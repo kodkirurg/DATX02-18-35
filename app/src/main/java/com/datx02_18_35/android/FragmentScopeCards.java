@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class Fragment_scope_cards extends Fragment implements OnStartDragListener {
+public class FragmentScopeCards extends Fragment implements OnStartDragListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
@@ -68,5 +68,11 @@ public class Fragment_scope_cards extends Fragment implements OnStartDragListene
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         itemTouchHelper.startDrag(viewHolder);
     }
+
+    public void addToScope(/*Expression newCard*/){
+        //list.add(newCard);
+        //recyclerView.notifyDataSetChanged();
+    }
+
 
 }

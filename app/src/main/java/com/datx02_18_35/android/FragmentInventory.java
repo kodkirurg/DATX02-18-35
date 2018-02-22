@@ -24,7 +24,7 @@ import game.logic_game.R;
  */
 
 
-public class FragmentInventory extends Fragment implements View.OnClickListener  {
+public class FragmentInventory extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -43,6 +43,7 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
+        //list = getinventory from controllern
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
@@ -63,9 +64,6 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
         recyclerView.setAdapter(recAdapter);
 
-     //   Button addTo_button = (Button)  container.getRootView().findViewById(R.id.addTo_button); //grab a view and convert it to a button class
-     //   addTo_button.setOnClickListener(this);
-
         return frag;
 
     }
@@ -79,19 +77,10 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
 
     }
-    public void updateInventory(){
-
+    public void addToInventory(/*Expression newCard*/){
+        //list.add(newCard);
+        //recyclerView.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.addTo_button: {
-                /*if (something_is_clicked){
-                    take the clicked item and send to scope board
-                }*/
-                break;
-            }
-        }
-    }
+
 }

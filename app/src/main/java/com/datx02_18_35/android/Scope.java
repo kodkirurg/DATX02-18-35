@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import game.logic_game.R;
 
 public class Scope extends AppCompatActivity implements View.OnClickListener {
 
-    private FragmentInventory inventory = new FragmentInventory(); // replace with our getInventory
     Toolbar toolbar;
     FrameLayout layout;
 
@@ -33,11 +31,11 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         FragmentTransaction ft =fm.beginTransaction();
 
 
-        ft.replace(R.id.game_right_side, new Fragment_scope_actions());
-        ft.replace(R.id.game_left_side , new Fragment_scope_cards()).commit();
+        ft.replace(R.id.game_right_side, new FragmentScopeActions());
+        ft.replace(R.id.game_left_side , new FragmentScopeCards()).commit();
 
         layout = (FrameLayout)findViewById(R.id.fragment_container);
-        ft.replace(R.id.fragment_container, inventory);
+        ft.replace(R.id.fragment_container, new FragmentInventory());
         layout.setVisibility(View.GONE);
 
         Button inv_button = (Button) findViewById(R.id.inventory_button); //grab a view and convert it to a button class
@@ -68,7 +66,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             case R.id.item_assumption:
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft =fm.beginTransaction();
-                ft.replace(R.id.game_left_side , new Fragment_scope_cards()).commit(); //Option is to open new intent
+                ft.replace(R.id.game_left_side , new FragmentScopeCards()).commit(); //Option is to open new intent
                 break;
         }
         return false;
@@ -88,18 +86,25 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.inventory_button: {
-                inventory.updateInventory();     //Update inventory and the inventory fragment
                 giveInventory();
                 break;
             }
             case R.id.close_button: {
+                //
                 break;
             }
             case R.id.resolve_button: {
-/*                if (checkValidity()){         // Call the expressionevaluation mathod
-                 inventory.addCard(Card x);     // Call the addtoinventory method
+/*                if (checkValidity()){         // Call the expressionevaluation method
+                 addCard(Expression x);     // Call the addtoinventory method i controllern
+                 if (no more scopes){
+                 finish();
+                 }
+                 else{
+                 jump back to previous board
+                 }
                 }
-                break;;*/
+                */
+                break;
             }
         }
     }

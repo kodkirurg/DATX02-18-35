@@ -17,7 +17,7 @@ import game.logic_game.R;
 
 
 
-public class Fragment_scope_actions extends Fragment {
+public class FragmentScopeActions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -53,8 +53,6 @@ public class Fragment_scope_actions extends Fragment {
         ItemTouchHelper.Callback callback = localBehavoir;
 
 
-
-
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -63,6 +61,10 @@ public class Fragment_scope_actions extends Fragment {
 
 
         return view;
+    }
+    public void updateActions() {
+        //list=(all the actions);
+        //recyclerView.notifyDataSetChanged();
     }
 
 }
