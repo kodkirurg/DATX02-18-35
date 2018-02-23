@@ -2,14 +2,28 @@ package com.datx02_18_35.lib.logicmodel;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
-import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+import com.datx02_18_35.lib.logicmodel.expression.RuleType;
+import com.datx02_18_35.lib.logicmodel.game.Session;
+
+import java.util.ArrayList;
 
 public class LogicModel {
     public static void main(String[] args) {
         System.out.println("Hello from logic model library!");
-
+        System.out.println(RuleType.CONJUNCTION_ELIMINATION.toString());
+        System.out.println(RuleType.CONJUNCTION_ELIMINATION.name());
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
+        Expression p2 = exprFact.createProposition("P");
+        ArrayList<Expression> hypo = new ArrayList<>();
+        hypo.add(p1);
+
+        Session session = new Session(hypo);
+
+        //TestSuite testSuite = new TestSuite(exprFact,session);
+        //testSuite.makeMove();
+
+       /* Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression q2 = exprFact.createProposition("Q");
@@ -22,7 +36,6 @@ public class LogicModel {
         Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
         Expression c6 = exprFact.createOperator(OperatorType.DISJUNCTION, p1,r1);
         Expression c7 = exprFact.createOperator(OperatorType.CONJUNCTION, c4,c5);
-
         System.out.println(c1.hashCode());
         System.out.println(c2.hashCode());
         System.out.println(c3.hashCode());
@@ -37,12 +50,12 @@ public class LogicModel {
         //}
         //System.out.println(list.get(0)+""+ list.get(1));
 	    System.out.println(c1.equals(c3));
-        System.out.println(c1.logicEquals(c3));
+        System.out.println(c1.equals(c3));
 
 
        // for (RuleType type : col2) {
         //    System.out.println(type);
         //}
-
+    */
     }
 }

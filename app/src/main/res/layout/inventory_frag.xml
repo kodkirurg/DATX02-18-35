@@ -8,16 +8,23 @@
 
     >
 
-    <!--android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rec_view"
+    <FrameLayout
+    android:id="@+id/view_rec"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-        >
-
-
-    </android.support.v7.widget.RecyclerView-->
+        <Button
+            android:id="@+id/addTo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/textView4"
+            android:layout_marginBottom="110dp"
+            android:layout_marginRight="-60dp"
+            android:rotation="90"
+            android:layout_gravity="bottom|right"
+            android:text="Put on game board" />
+    </FrameLayout>
 
 
     <TextView
@@ -29,4 +36,15 @@
         android:layout_marginTop="67dp"
         android:text="Inventory"
         android:textSize="50sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/game_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        />
+
 </RelativeLayout>

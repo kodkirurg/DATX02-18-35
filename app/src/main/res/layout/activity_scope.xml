@@ -6,14 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.datx02_18_35.android.Scope">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/game_recycler_view"
+    <include
+        layout="@layout/toolbar"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:id="@+id/topPanel"
+        />
+    <FrameLayout
+        android:id="@+id/game_left_side"
+        android:layout_width="225dp"
         android:layout_height="match_parent"
-        android:layout_above="@+id/inventory_button"
         android:layout_alignParentStart="true"
-        android:orientation="vertical"
-        android:scrollbars="horizontal" />
+        android:layout_below="@+id/topPanel"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:id="@+id/game_right_side"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/topPanel"
+        android:layout_centerHorizontal="true" />
+
+
 
     <Button
         android:id="@+id/inventory_button"
@@ -32,12 +47,22 @@
         android:layout_alignParentEnd="true"
         android:text="Close" />
 
+    <Button
+        android:id="@+id/resolve_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/inventory_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:text="Resolve" />
+
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="265dp"
-
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="234dp" >
+    </FrameLayout>
 
 </RelativeLayout>

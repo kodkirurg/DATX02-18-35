@@ -29,11 +29,7 @@ public class Conjunction extends Operator {
     }
 
     @Override
-    public boolean logicEquals(Object other) {
-        return other instanceof Conjunction
-                &&(this.operand1.logicEquals(((Conjunction) other).operand1)
-                && this.operand2.logicEquals(((Conjunction) other).operand2))
-                || (this.operand1.logicEquals(((Conjunction) other).operand2)
-                && this.operand2.logicEquals(((Conjunction) other).operand1));
+    public String toString(){
+        return "(" + operand1.toString() + "/\\" + operand2.toString() + ")";
     }
 }

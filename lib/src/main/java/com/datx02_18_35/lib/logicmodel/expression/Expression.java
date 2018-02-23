@@ -18,8 +18,8 @@ public abstract class Expression {
     @Override
     public abstract boolean equals(Object other);
 
-    public boolean logicEquals(Object other){
-        return  this.equals(other);
-    }
+    @Override
+    public abstract String toString();
+
 
 }

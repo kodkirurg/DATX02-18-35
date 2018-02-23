@@ -42,6 +42,11 @@ public class Rule {
                     legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, exprs));
                 }
 
+                else if (exprs.get(0) instanceof Absurdity){
+                legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, exprs));
+                }
+
+
             case 2:
                 List<Expression> reverseExprs = exprs;
                 Collections.reverse(reverseExprs);
@@ -49,10 +54,10 @@ public class Rule {
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, exprs));
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, reverseExprs));
 
-                if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.logicEquals(exprs.get(1))) {
+                if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.equals(exprs.get(1))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, exprs));
 
-                } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.logicEquals(exprs.get(0))) {
+                } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.equals(exprs.get(0))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseExprs));
                 }
 
@@ -87,14 +92,14 @@ public class Rule {
     //Help function to create a DisjunctionElimination rule with the order of the expressions: A or B, A>C, B>C
     private static Rule createDisjunctionElimination(Disjunction disj, Implication impl1, Implication impl2){
         ArrayList<Expression> exprsOrder = new ArrayList<Expression>();
-        if(impl1.operand2.logicEquals(impl2.operand2)) {
-            if (disj.operand1.logicEquals(impl1.operand1) && disj.operand2.logicEquals(impl2.operand1)) {
+        if(impl1.operand2.equals(impl2.operand2)) {
+            if (disj.operand1.equals(impl1.operand1) && disj.operand2.equals(impl2.operand1)) {
                 //Already in the correct order.
                 exprsOrder.add(disj);
                 exprsOrder.add(impl1);
                 exprsOrder.add(impl2);
 
-            }else if(disj.operand2.logicEquals(impl1.operand1) && disj.operand1.logicEquals(impl2.operand1)){
+            }else if(disj.operand2.equals(impl1.operand1) && disj.operand1.equals(impl2.operand1)){
                 //Change order of implications.
                 exprsOrder.add(disj);
                 exprsOrder.add(impl2);

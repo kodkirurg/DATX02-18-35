@@ -3,6 +3,8 @@ package com.datx02_18_35.lib.logicmodel.expression;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 /**
  * Created by robin on 2018-02-07.
@@ -23,6 +25,8 @@ public class ExpressionFactory {
     public Proposition createProposition(String id) {
         return new Proposition(id);
     }
+
+    public Absurdity createAbsurdity(){return new Absurdity();}
 
     public Operator createOperator(
             OperatorType type, Expression operand1, Expression operand2) {
@@ -113,6 +117,10 @@ public class ExpressionFactory {
                 result.add(createOperator(OperatorType.DISJUNCTION, expr1, expr2));
                 break;
             }
+            case ABSURDITY_ELIMINATION:
+                assert rule.expressions.size()==2;
+                assert rule.expressions.get(0) instanceof Absurdity;
+                result.add(rule.expressions.get(1));
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }

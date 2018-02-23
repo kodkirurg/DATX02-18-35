@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_button: {
-                LogicModel.main(null); // Testing :)
                 Intent intent = new Intent(this, Game.class); //create intent
                 startActivity(intent); //start intent
                 break;

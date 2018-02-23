@@ -16,7 +16,7 @@ import game.logic_game.R;
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-    private static Fragment_Inventory inventory= new Fragment_Inventory();
+    private static FragmentInventory inventory= new FragmentInventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,8 @@ public class Game extends AppCompatActivity  {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
-        ft.replace(R.id.game_right_side, new Fragment_board_actions());
-        ft.replace(R.id.game_left_side , new Fragment_board_cards()).commit();
+        ft.replace(R.id.game_right_side, new FragmentBoardActions());
+        ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();
 
 
         //Set toolbar
@@ -56,7 +56,7 @@ public class Game extends AppCompatActivity  {
         return false;
     }
 
-    public static Fragment_Inventory getInventory(){
+    public static FragmentInventory getInventory(){
         return inventory;
     }
 

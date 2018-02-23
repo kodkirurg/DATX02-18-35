@@ -17,7 +17,7 @@ import game.logic_game.R;
 
 
 
-public class Fragment_board_actions extends Fragment {
+public class FragmentBoardActions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -38,21 +38,7 @@ public class Fragment_board_actions extends Fragment {
 
         // specify an adapter (see also next example)
         ArrayList list = new ArrayList();
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
-        list.add( "test"); //edit this to remove and add elements
+
 
 
         recAdapter = new RecyclerAdapter(list);
@@ -60,7 +46,7 @@ public class Fragment_board_actions extends Fragment {
 
         //settings for this fragment
         EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
+        localBehavoir.isLongPressDragEnabled = true;
 
 
         //add drag and drop
