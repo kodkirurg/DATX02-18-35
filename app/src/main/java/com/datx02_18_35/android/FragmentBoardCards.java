@@ -44,7 +44,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression r1 = exprFact.createProposition("R");
-        Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
+        Expression c4 = exprFact.createOperator(OperatorType.CONJUNCTION, p1,q1);
         Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
         Expression abs = exprFact.createAbsurdity();
 

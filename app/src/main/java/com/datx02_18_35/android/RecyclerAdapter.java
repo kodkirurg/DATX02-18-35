@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.datx02_18_35.lib.logicmodel.expression.Absurdity;
+import com.datx02_18_35.lib.logicmodel.expression.Conjunction;
+import com.datx02_18_35.lib.logicmodel.expression.Disjunction;
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.Implication;
 import com.datx02_18_35.lib.logicmodel.expression.Operator;
 import com.datx02_18_35.lib.logicmodel.expression.Proposition;
 
@@ -128,11 +131,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 Expression op2 = op.getOperand2();
 
 
+                topCardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.WHITE);
+                ImageView imageView = topCardView.findViewById(R.id.card_image_middle);
+                if(op instanceof Implication){
+                    imageView.setBackgroundResource(R.drawable.vertical_implication);
+                }
+                else if(op instanceof Disjunction){
+                    imageView.setBackgroundResource(R.drawable.horizontal_disjunction);
+                }
+                else if(op instanceof Conjunction){
+                    imageView.setBackgroundResource(R.drawable.horizontal_conjunction);
+                }
+
                 // set big operator in middle + no complex on up/down card.
                 if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
-                    ImageView imageView = topCardView.findViewById(R.id.card_image_middle);
-                    imageView.setBackgroundResource(R.drawable.vertical_implication);
-                    topCardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.YELLOW);
                     rmView(R.id.card_frame_lower);
                     rmView(R.id.card_frame_upper);
                     rmView(R.id.card_card_1_1);
