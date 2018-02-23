@@ -1,6 +1,7 @@
 package com.datx02_18_35.android;
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -97,7 +98,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-
+            view.setBackgroundColor(Color.BLACK);
         }
     }
 
@@ -129,6 +130,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 // set big operator in middle + no complex on up/down card.
                 if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
+                    ImageView imageView = topCardView.findViewById(R.id.card_image_middle);
+                    imageView.setBackgroundResource(R.drawable.vertical_implication);
+                    topCardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.YELLOW);
                     rmView(R.id.card_frame_lower);
                     rmView(R.id.card_frame_upper);
                     rmView(R.id.card_card_1_1);
