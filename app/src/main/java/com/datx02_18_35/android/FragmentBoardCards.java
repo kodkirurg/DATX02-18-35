@@ -44,16 +44,19 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression r1 = exprFact.createProposition("R");
-        Expression c4 = exprFact.createOperator(OperatorType.CONJUNCTION, p1,q1);
-        Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
+        Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
+        Expression c5 = exprFact.createOperator(OperatorType.DISJUNCTION, r1,q1);
         Expression abs = exprFact.createAbsurdity();
 
         Expression complex = exprFact.createOperator(OperatorType.IMPLICATION, c4,c5);
         Expression upperC_lowerS = exprFact.createOperator(OperatorType.IMPLICATION, c4,p1);
         Expression upperS_lowerC = exprFact.createOperator(OperatorType.IMPLICATION, p1,c4);
-        Expression upperC_lowerC = exprFact.createOperator(OperatorType.IMPLICATION, c4,c4);
+        Expression upperC_lowerC = exprFact.createOperator(OperatorType.IMPLICATION, c4,c5);
+        Expression upperCC_lowerCC = exprFact.createOperator(OperatorType.IMPLICATION, upperC_lowerC ,upperC_lowerC );
 
-        list.add(c4);
+        list.add(upperC_lowerS);
+        list.add(upperC_lowerC);
+        list.add(upperCC_lowerCC);
 
         recAdapter = new RecyclerAdapter(list);
 

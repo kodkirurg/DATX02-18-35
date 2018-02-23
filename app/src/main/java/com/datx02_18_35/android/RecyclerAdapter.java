@@ -132,15 +132,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
                 topCardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.WHITE);
-                ImageView imageView = topCardView.findViewById(R.id.card_image_middle);
+                ImageView middleImage = topCardView.findViewById(R.id.card_image_middle);
                 if(op instanceof Implication){
-                    imageView.setBackgroundResource(R.drawable.vertical_implication);
+                    middleImage.setBackgroundResource(R.drawable.vertical_implication);
                 }
                 else if(op instanceof Disjunction){
-                    imageView.setBackgroundResource(R.drawable.horizontal_disjunction);
+                    middleImage.setBackgroundResource(R.drawable.horizontal_disjunction);
                 }
                 else if(op instanceof Conjunction){
-                    imageView.setBackgroundResource(R.drawable.horizontal_conjunction);
+                    middleImage.setBackgroundResource(R.drawable.horizontal_conjunction);
                 }
 
                 // set big operator in middle + no complex on up/down card.
@@ -158,6 +158,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     sText(R.id.card_text_3,op2.toString());
                 }
                 else{
+                    ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);
+                    ImageView lowerImage = topCardView.findViewById(R.id.card_image_lower);
+                    topCardView.findViewById(R.id.card_frame_lower).setBackgroundColor(Color.WHITE);
+                    topCardView.findViewById(R.id.card_frame_upper).setBackgroundColor(Color.WHITE);
+
+
+
                     if( op1 instanceof Operator &  (op2 instanceof Proposition | op2 instanceof Absurdity) ) {
                         //upper
                         Operator upper = (Operator) op1;
@@ -179,6 +186,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         else{
                             sText(R.id.card_text_1, upper_right.toString());
                         }
+                        //Upper middle
+                        if(upper instanceof Implication){
+                            upperImage.setBackgroundResource(R.drawable.horizontal_implication);
+                        }
+                        else if(upper instanceof Disjunction){
+                            upperImage.setBackgroundResource(R.drawable.vertical_disjunction);
+                        }
+                        else if(upper instanceof Conjunction){
+                            upperImage.setBackgroundResource(R.drawable.vertical_conjunction);
+                        }
+
+
 
                         //lower
                         rmView(R.id.card_frame_lower);
@@ -209,6 +228,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         else{
                             sText(R.id.card_text_4,lower_right.toString());
                         }
+                        //Lower middle
+                        if(lower instanceof Implication){
+                            lowerImage.setBackgroundResource(R.drawable.horizontal_implication);
+                        }
+                        else if(lower instanceof Disjunction){
+                            lowerImage.setBackgroundResource(R.drawable.vertical_disjunction);
+                        }
+                        else if(lower instanceof Conjunction){
+                            lowerImage.setBackgroundResource(R.drawable.vertical_conjunction);
+                        }
+
 
 
                         //upper
@@ -239,6 +269,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         else{
                             sText(R.id.card_text_4,lower_right.toString());
                         }
+                        //Lower middle
+                        if(lower instanceof Implication){
+                            lowerImage.setBackgroundResource(R.drawable.horizontal_implication);
+                        }
+                        else if(lower instanceof Disjunction){
+                            lowerImage.setBackgroundResource(R.drawable.vertical_disjunction);
+                        }
+                        else if(lower instanceof Conjunction){
+                            lowerImage.setBackgroundResource(R.drawable.vertical_conjunction);
+                        }
+
+
+
+
                         Operator upper = (Operator) op1;
                         Expression upper_left = upper.getOperand1();
                         Expression upper_right = upper.getOperand2();
@@ -258,6 +302,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         else{
                             sText(R.id.card_text_1, upper_right.toString());
                         }
+                        //Upper middle
+                        if(upper instanceof Implication){
+                            upperImage.setBackgroundResource(R.drawable.horizontal_implication);
+                        }
+                        else if(upper instanceof Disjunction){
+                            upperImage.setBackgroundResource(R.drawable.vertical_disjunction);
+                        }
+                        else if(upper instanceof Conjunction){
+                            upperImage.setBackgroundResource(R.drawable.vertical_conjunction);
+                        }
+
                     }
                 }
             }

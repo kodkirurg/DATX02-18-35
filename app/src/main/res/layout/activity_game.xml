@@ -20,7 +20,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/topPanel"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/WhiteSmoke"
+        />
 
     <FrameLayout
         android:id="@+id/game_right_side"
@@ -28,7 +30,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/topPanel"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/WhiteSmoke"
+        />
 
 
 </RelativeLayout>
