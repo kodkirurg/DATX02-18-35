@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
+
 import java.util.ArrayList;
 
 import game.logic_game.R;
@@ -37,7 +40,12 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
+        ArrayList<Expression> list = new ArrayList<Expression>();
+
+        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        Expression r1 = exprFact.createProposition("R");
+
+        list.add(r1);
 
 
 

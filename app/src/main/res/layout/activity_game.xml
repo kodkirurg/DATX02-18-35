@@ -5,34 +5,48 @@
     android:id="@+id/activity_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="6dp">
+    android:padding="6dp"
+    android:orientation="vertical"
+    >
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_height="wrap_content"
+        <include
+            layout="@layout/toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/topPanel"
+            />
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/topPanel"
-        />
-
-    <FrameLayout
-        android:id="@+id/game_left_side"
-        android:layout_width="225dp"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/topPanel"
-        android:layout_centerHorizontal="true"
-        android:background="@color/WhiteSmoke"
-        />
+        android:weightSum="100"
+        android:orientation="horizontal"
+        android:id="@+id/game_board_bottom"
+        android:layout_below="@id/topPanel"
+        >
+        <FrameLayout
+            android:id="@+id/game_left_side"
+            android:layout_width="0dp"
+            android:layout_gravity="start"
+            android:layout_height="match_parent"
+            android:background="@color/WhiteSmoke"
+            android:layout_weight="66"
+            android:layout_margin="3dp"
+            />
 
-    <FrameLayout
-        android:id="@+id/game_right_side"
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/topPanel"
-        android:layout_centerHorizontal="true"
-        android:background="@color/WhiteSmoke"
-        />
+        <FrameLayout
+            android:id="@+id/game_right_side"
+            android:layout_width="0dp"
+            android:layout_gravity="end"
+            android:layout_height="match_parent"
+            android:background="@color/WhiteSmoke"
+            android:layout_weight="34"
+            android:layout_margin="3dp"
+            />
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>
