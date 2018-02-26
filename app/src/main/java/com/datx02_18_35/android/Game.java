@@ -16,7 +16,6 @@ import game.logic_game.R;
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-    private static FragmentInventory inventory= new FragmentInventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +53,6 @@ public class Game extends AppCompatActivity  {
         }
         startActivity(i);
         return false;
-    }
-
-    public static FragmentInventory getInventory(){
-        return inventory;
     }
 
 }

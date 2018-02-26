@@ -21,6 +21,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
     FrameLayout layout;
+    //ModelScope modelScope;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         }
         return false;
     }
-    public void giveInventory(){
+    public void showInventory(){
         if (layout.isShown()) {
             layout.setVisibility(View.GONE);
 
@@ -86,26 +87,29 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.inventory_button: {
-                giveInventory();
+                showInventory();
                 break;
             }
             case R.id.close_button: {
-                //
+                prevScope();
                 break;
             }
             case R.id.resolve_button: {
 /*                if (checkValidity()){         // Call the expressionevaluation method
-                 addCard(Expression x);     // Call the addtoinventory method i controllern
-                 if (no more scopes){
-                 finish();
-                 }
-                 else{
-                 jump back to previous board
-                 }
+                        addCard(Expression x);     // Call the addtoinventory method i controllern
+                        prevScope();
                 }
                 */
                 break;
             }
         }
+    }
+    public void prevScope(){
+        /*if (no more scopes){
+            finish();
+        }
+        else{
+            jump back to previous board
+        }*/
     }
 }

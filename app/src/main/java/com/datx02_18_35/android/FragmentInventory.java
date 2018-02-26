@@ -8,7 +8,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
@@ -33,7 +32,7 @@ public class FragmentInventory extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View frag = inflater.inflate(R.layout.inventory_frag, container, false);
+        View frag = inflater.inflate(R.layout.fragment_inventory, container, false);
 
         recyclerView = (RecyclerView) frag.findViewById(R.id.game_recycler_view);
         // use a grid layout manager
