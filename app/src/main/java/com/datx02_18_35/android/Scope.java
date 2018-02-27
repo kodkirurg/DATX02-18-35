@@ -21,7 +21,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
     FrameLayout layout;
-    //ModelScope modelScope;
+    //ModelSession modelSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +95,8 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.resolve_button: {
-/*                if (checkValidity()){         // Call the expressionevaluation method
-                        addCard(Expression x);     // Call the addtoinventory method i controllern
+/*                modelSession.
+                          // Call the addtoinventory method i controllern
                         prevScope();
                 }
                 */
@@ -105,11 +105,11 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         }
     }
     public void prevScope(){
-        /*if (no more scopes){
-            finish();
+        /*try{
+            modelSession.closeScope();
         }
-        else{
-            jump back to previous board
+        catch (EmptyStackException e){
+            finish();
         }*/
     }
 }
