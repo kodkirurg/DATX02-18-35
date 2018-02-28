@@ -22,7 +22,7 @@ public class Absurdity extends Expression {
 
     @Override
     public String toString(){
-        return "(!)";
+        return "(¤)";
     }
 
 

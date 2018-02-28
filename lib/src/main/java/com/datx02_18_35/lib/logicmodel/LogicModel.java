@@ -23,7 +23,7 @@ public class LogicModel {
 
 
         ExpressionParser expressionParser = new ExpressionParser();
-        String stringExpression = "((((P)|(Q))&((Q)>(T)))&(P))";
+        String stringExpression = "(((!(P)|(Q))&(!((Q)>(T))))&(P))";
         Expression expression = expressionParser.parseString(stringExpression);
         System.out.println(expression.toString());
 

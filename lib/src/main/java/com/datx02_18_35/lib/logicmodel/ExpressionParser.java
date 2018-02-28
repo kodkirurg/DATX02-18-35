@@ -49,9 +49,15 @@ public class ExpressionParser {
                         return exprFactory.createOperator(OperatorType.IMPLICATION,parseString(leftString),parseString(rightString));
                     }
                     break;
-                case '!': //ABSURDITY
+                case '¤': //ABSURDITY
                     if(parenthesisCount==0) {
                         return exprFactory.createAbsurdity();
+                    }
+                    break;
+                case '!': //NEGATION
+                    if(parenthesisCount == 0){
+                        String rightString = expression.substring(i+1);
+                        return  exprFactory.createNegation(parseString(rightString));
                     }
                     break;
                 default: //PROPOSITION
