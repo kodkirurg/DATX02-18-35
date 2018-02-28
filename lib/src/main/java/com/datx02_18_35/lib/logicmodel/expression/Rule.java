@@ -115,4 +115,16 @@ public class Rule {
         }
         return new Rule(RuleType.DISJUNCTION_ELIMINATION,exprsOrder);
     }
+    public static Rule finishIncompleteRule(Rule rule,Expression expression){
+        List<Expression> expressions = new ArrayList<>();
+        if(rule.type==RuleType.ABSURDITY_ELIMINATION||rule.type==RuleType.DISJUNCTION_INTRODUCTION){
+            if(rule.expressions.size()!=1){
+                expressions.addAll(rule.expressions);
+                expressions.add(expression);
+                Rule newRule = new Rule(rule.type, expressions);
+                return newRule;
+            }
+        }
+        throw new IllegalArgumentException("Either RuleType or Expressions of rule is invalid as argument");
+    }
 }

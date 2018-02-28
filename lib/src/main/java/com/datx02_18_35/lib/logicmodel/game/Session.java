@@ -123,7 +123,7 @@ public class Session {
     }
 
     public void applyRule(Rule rule){
-        throw new NotImplementedException();
+        this.addExpressionToInventory(expFactory.applyRule(rule));
     }
 
     public boolean checkWin(){
