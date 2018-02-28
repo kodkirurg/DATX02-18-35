@@ -28,6 +28,7 @@ public class ExpressionFactory {
 
     public Absurdity createAbsurdity(){return new Absurdity();}
 
+    public Negation createNegation(Expression expression){return new Negation(expression);}
     public Operator createOperator(
             OperatorType type, Expression operand1, Expression operand2) {
         switch (type) {
