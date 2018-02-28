@@ -42,7 +42,29 @@ public class Session {
         return scopes.peek().getGameBoard();
     }
 
-    public Iterable<Expression> getInventory() {
+    public Iterable<Iterable<Expression>> getInventorys(){
+        Iterable<Scope> scopesIter = getScopes();
+        Iterator<Scope> scopesIterator = scopesIter.iterator();
+        return new Iterable<Iterable<Expression>>() {
+            @Override
+            public Iterator<Iterable<Expression>> iterator() {
+                return new Iterator<Iterable<Expression>>() {
+                    @Override
+                    public boolean hasNext() {
+                        return scopesIterator.hasNext();
+                    }
+
+                    @Override
+                    public Iterable<Expression> next() {
+                        assert this.hasNext();
+                        return scopesIterator.next().getInventory();
+                    }
+                }
+            }
+        }
+    }
+
+    public Iterable<Expression> getAllInventory() {
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
