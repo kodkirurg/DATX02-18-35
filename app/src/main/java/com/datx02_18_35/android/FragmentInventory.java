@@ -67,7 +67,6 @@ public class FragmentInventory extends Fragment {
 
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,6 +75,8 @@ public class FragmentInventory extends Fragment {
 
 
     }
+
+
     public void addToInventory(/*Expression newCard*/){
         //list.add(newCard);
         //recyclerView.notifyDataSetChanged();

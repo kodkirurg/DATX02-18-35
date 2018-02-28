@@ -7,12 +7,14 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 import game.logic_game.R;
@@ -21,7 +23,6 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar toolbar;
     FrameLayout layout;
-    //ModelSession modelSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);
+        TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
+        mTextView.setText("Scope 1");
+
 
     }
     @Override
@@ -67,7 +71,10 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             case R.id.item_assumption:
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft =fm.beginTransaction();
-                ft.replace(R.id.game_left_side , new FragmentScopeCards()).commit(); //Option is to open new intent
+                int fragcount = fm.getBackStackEntryCount();
+                TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
+                mTextView.setText("Scope "+(fragcount+2));
+                ft.replace(R.id.game_left_side , new FragmentScopeCards()).addToBackStack("").commit(); //Option is to open new intent
                 break;
         }
         return false;
@@ -82,6 +89,24 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             
         }
     }
+    @Override
+    public void onBackPressed(){
+        if(layout.isShown()) {
+            layout.setVisibility(View.GONE);
+        }
+        else {
+            //popScope();           säg till controllern att pop scope
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft =fm.beginTransaction();
+            int fragcount = fm.getBackStackEntryCount();
+            TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
+            if (fragcount!=0){
+                mTextView.setText("Scope "+(fragcount));
+            }
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -91,25 +116,10 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
                 break;
             }
             case R.id.close_button: {
-                prevScope();
-                break;
-            }
-            case R.id.resolve_button: {
-/*                modelSession.
-                          // Call the addtoinventory method i controllern
-                        prevScope();
-                }
-                */
+                onBackPressed();
                 break;
             }
         }
     }
-    public void prevScope(){
-        /*try{
-            modelSession.closeScope();
-        }
-        catch (EmptyStackException e){
-            finish();
-        }*/
-    }
+
 }
