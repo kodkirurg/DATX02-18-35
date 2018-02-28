@@ -113,8 +113,8 @@ public class Session {
         scopes.peek().addExpressionToInventory(expression);
     }
 
-    public void makeAssumption(){
-        throw new NotImplementedException();
+    public void makeAssumption(Expression expression){
+        this.addExpressionToInventory(expression);
     }
 
     public Collection<Rule> getAvailableRules(Collection<Expression> expressions){
