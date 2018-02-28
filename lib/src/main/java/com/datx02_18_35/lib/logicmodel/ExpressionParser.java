@@ -49,7 +49,7 @@ public class ExpressionParser {
                         return exprFactory.createOperator(OperatorType.IMPLICATION,parseString(leftString),parseString(rightString));
                     }
                     break;
-                case '¤': //ABSURDITY
+                case '#': //ABSURDITY
                     if(parenthesisCount==0) {
                         return exprFactory.createAbsurdity();
                     }
