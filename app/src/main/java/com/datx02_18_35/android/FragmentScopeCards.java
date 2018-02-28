@@ -24,6 +24,7 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private ArrayList<Expression> list;
 
 
 
@@ -39,7 +40,7 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
+        list = new ArrayList<Expression>();
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
@@ -71,6 +72,10 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
 
     public void addToScope(/*Expression newCard*/){
         //list.add(newCard);
+        //recyclerView.notifyDataSetChanged();
+    }
+    public void updateCards(ArrayList<Expression> newList){
+        //list=newList;
         //recyclerView.notifyDataSetChanged();
     }
 

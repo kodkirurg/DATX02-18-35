@@ -32,9 +32,11 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
+        FragmentScopeCards scopeBoard = new FragmentScopeCards();
+
 
         ft.replace(R.id.game_right_side, new FragmentScopeActions());
-        ft.replace(R.id.game_left_side , new FragmentScopeCards()).commit();
+        ft.replace(R.id.game_left_side , scopeBoard).commit();
 
         layout = (FrameLayout)findViewById(R.id.fragment_container);
         ft.replace(R.id.fragment_container, new FragmentInventory());
@@ -69,12 +71,17 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch(menu.getItemId()){
             case R.id.item_assumption:
+                /*
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft =fm.beginTransaction();
                 int fragcount = fm.getBackStackEntryCount();
                 TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
                 mTextView.setText("Scope "+(fragcount+2));
-                ft.replace(R.id.game_left_side , new FragmentScopeCards()).addToBackStack("").commit(); //Option is to open new intent
+                ft.replace(R.id.game_left_side , new FragmentScopeCards()).addToBackStack("").commit(); */
+
+                //somehow clear game board
+                //tell fragment to update
+
                 break;
         }
         return false;
@@ -95,7 +102,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             layout.setVisibility(View.GONE);
         }
         else {
-            //popScope();           säg till controllern att pop scope
+            //popScope();           säg till controllern att "popa" scope
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft =fm.beginTransaction();
