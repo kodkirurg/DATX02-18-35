@@ -5,26 +5,26 @@ package com.datx02_18_35.lib.logicmodel.expression;
  */
 
 public class Negation extends Expression {
-    Expression expression;
+    Expression operand;
 
-    Negation(Expression expression){
+    Negation(Expression operand){
         super();
-        this.expression = expression;
+        this.operand = operand;
         hash=calculateHash();
 
     }
     @Override
     protected int calculateHash() {
-        return (int)(ExpressionUtil.HASH_NEGA_MAGIC_NUMBER*expression.calculateHash());
+        return (int)(ExpressionUtil.HASH_NEGA_MAGIC_NUMBER*operand.calculateHash());
     }
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof Negation && expression.equals(((Negation) other).expression);
+        return other instanceof Negation && operand.equals(((Negation) other).operand);
     }
 
     @Override
     public String toString() {
-        return "(!"+ this.expression.toString() + ")";
+        return "(!"+ this.operand.toString() + ")";
     }
 }

@@ -28,7 +28,14 @@ public class ExpressionFactory {
 
     public Absurdity createAbsurdity(){return new Absurdity();}
 
-    public Negation createNegation(Expression expression){return new Negation(expression);}
+    public Expression createNegation(Expression expression){
+        if(expression instanceof Negation){
+            return ((Negation) expression).operand;
+        }else {
+            return new Negation(expression);
+        }
+
+    }
     public Operator createOperator(
             OperatorType type, Expression operand1, Expression operand2) {
         switch (type) {
@@ -123,10 +130,20 @@ public class ExpressionFactory {
                 assert rule.expressions.get(0) instanceof Absurdity;
                 result.add(rule.expressions.get(1));
                 break;
+            case ABSURDITY_INTRODUCTION:
+                assert rule.expressions.size()==2;
+                Expression expr2 = rule.expressions.get(1);
+
+                assert expr1 instanceof Negation;
+                Negation negation = (Negation) expr1;
+
+                assert negation.operand.equals(expr2);
+                result.add(createAbsurdity());
+
             case LAW_OF_EXCLUDED_MIDDLE:
                 assert rule.expressions.size()==1;
-                Negation negation = createNegation(expr1);
-                result.add(createOperator(OperatorType.DISJUNCTION,expr1,negation));
+                result.add(createOperator(OperatorType.DISJUNCTION,expr1,createNegation(expr1)));
+                break;
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
