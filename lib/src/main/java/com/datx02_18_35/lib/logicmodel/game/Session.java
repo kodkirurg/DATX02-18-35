@@ -50,7 +50,7 @@ public class Session {
         return scopes.peek().getGameBoard();
     }
 
-    public Iterable<Iterable<Expression>> getInventory(){
+    public Iterable<Iterable<Expression>> getInventorys(){
         Iterable<Scope> scopesIter = getScopes();
         Iterator<Scope> scopesIterator = scopesIter.iterator();
         return new Iterable<Iterable<Expression>>() {
@@ -71,8 +71,7 @@ public class Session {
             }
         };
     }
-
-    public Iterable<Expression> getAllInventory() {
+     public Iterable<Expression> getInventory() {
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
@@ -97,6 +96,7 @@ public class Session {
             }
         };
     }
+
 
     public void addExpressionToGameBoard(List<Expression> expressions){
         scopes.peek().addExpressionToGameBoard(expressions);

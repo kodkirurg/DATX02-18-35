@@ -30,6 +30,6 @@ public class Conjunction extends Operator {
 
     @Override
     public String toString(){
-        return "(" + operand1.toString() + "/\\" + operand2.toString() + ")";
+        return "(" + operand1.toString() + "&" + operand2.toString() + ")";
     }
 }

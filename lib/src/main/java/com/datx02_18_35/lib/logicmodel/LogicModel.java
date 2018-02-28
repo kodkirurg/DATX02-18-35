@@ -2,6 +2,7 @@ package com.datx02_18_35.lib.logicmodel;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
+import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
 import com.datx02_18_35.lib.logicmodel.expression.RuleType;
 import com.datx02_18_35.lib.logicmodel.game.Session;
 
@@ -11,14 +12,23 @@ public class LogicModel {
     public static void main(String[] args) {
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
-        Expression p2 = exprFact.createProposition("P");
+        Expression q1 = exprFact.createProposition("Q");
+        Expression qp1 = exprFact.createOperator(OperatorType.IMPLICATION,q1,p1);
         ArrayList<Expression> hypo = new ArrayList<>();
+        Expression goal = qp1;
         hypo.add(p1);
 
-        Session session = new Session(hypo);
 
-        TestSuite testSuite = new TestSuite(exprFact,session);
-        testSuite.makeMove();
+        Session session = new Session(hypo,goal);
+
+
+        ExpressionParser expressionParser = new ExpressionParser();
+        String stringExpression = "((((P)|(Q))&((Q)>(T)))&(P))";
+        Expression expression = expressionParser.parseString(stringExpression);
+        System.out.println(expression.toString());
+
+        //TestSuite testSuite = new TestSuite(exprFact,session);
+        // testSuite.makeMove();
 
        /* Expression p1 = exprFact.createProposition("P");
         Expression p2 = exprFact.createProposition("P");
