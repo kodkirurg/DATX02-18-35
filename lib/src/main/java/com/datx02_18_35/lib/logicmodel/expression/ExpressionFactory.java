@@ -123,6 +123,10 @@ public class ExpressionFactory {
                 assert rule.expressions.get(0) instanceof Absurdity;
                 result.add(rule.expressions.get(1));
                 break;
+            case LAW_OF_EXCLUDED_MIDDLE:
+                assert rule.expressions.size()==1;
+                Negation negation = createNegation(expr1);
+                result.add(createOperator(OperatorType.DISJUNCTION,expr1,negation));
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }

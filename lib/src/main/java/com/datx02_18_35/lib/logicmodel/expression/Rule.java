@@ -22,13 +22,15 @@ public class Rule {
         this.expressions = expressions;
     }
 
-    public static Collection<Rule> getLegalRules(
-            Expression assumption, Collection<Expression> expressions){
+    public static Collection<Rule> getLegalRules( Expression assumption, Collection<Expression> expressions){
 
         List<Expression> exprs = new ArrayList<>(expressions);
 
         ArrayList<Rule> legalRules = new ArrayList<>();
         switch(exprs.size()) {
+            case 0:
+                legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
+
             case 1:
                 if (assumption != null) {
                     List<Expression> assumptionAndExpr = new ArrayList<>();
