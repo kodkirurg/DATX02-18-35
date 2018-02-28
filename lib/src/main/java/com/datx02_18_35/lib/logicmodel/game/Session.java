@@ -1,6 +1,8 @@
 package com.datx02_18_35.lib.logicmodel.game;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
+import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
+import com.datx02_18_35.lib.logicmodel.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * Created by robin on 2018-02-20.
  */
@@ -16,10 +20,14 @@ import java.util.Stack;
 public class Session {
     private Stack<Scope> scopes = new Stack<>();
     private List<Expression> hypothesis = new ArrayList<>();
+    private Expression goal;
+    private ExpressionFactory expFactory;
 
-    public Session(List<Expression> hypothesis) {
+    public Session(List<Expression> hypothesis,Expression goal) {
         this.hypothesis.addAll(hypothesis);
         this.scopes.push(new Scope(hypothesis));
+        this.goal=goal;
+        expFactory = ExpressionFactory.getSingleton();
     }
 
     public void pushScope(Expression assumption) {
@@ -42,7 +50,7 @@ public class Session {
         return scopes.peek().getGameBoard();
     }
 
-    public Iterable<Iterable<Expression>> getInventorys(){
+    public Iterable<Iterable<Expression>> getInventory(){
         Iterable<Scope> scopesIter = getScopes();
         Iterator<Scope> scopesIterator = scopesIter.iterator();
         return new Iterable<Iterable<Expression>>() {
@@ -59,9 +67,9 @@ public class Session {
                         assert this.hasNext();
                         return scopesIterator.next().getInventory();
                     }
-                }
+                };
             }
-        }
+        };
     }
 
     public Iterable<Expression> getAllInventory() {
@@ -104,4 +112,41 @@ public class Session {
     public void addExpressionToInventory(Expression expression) {
         scopes.peek().addExpressionToInventory(expression);
     }
+
+    public void makeAssumption(){
+        throw new NotImplementedException();
+    }
+
+    public Collection<Rule> getAvailableRules(Collection<Expression> expressions){
+        Collection<Rule> rules=Rule.getLegalRules(this.getAssumption(),expressions);
+        return rules;
+    }
+
+    public void applyRule(Rule rule){
+        throw new NotImplementedException();
+    }
+
+    public boolean checkWin(){
+        assert scopes.size()!=0;
+        assert scopes!=null;
+        if(scopes.size()>1) {
+            return false;
+        }
+        Scope scope = this.getScopes().iterator().next();
+        Iterable<Expression> inventory = scope.getInventory();
+        for (Expression e: inventory){
+            if(e.equals(goal)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+    private Expression createExpression(){
+        throw new NotImplementedException();
+    }
+
+
+
+
 }
