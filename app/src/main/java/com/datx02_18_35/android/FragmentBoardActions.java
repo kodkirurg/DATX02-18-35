@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.datx02_18_35.lib.logicmodel.expression.Expression;
 import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
+import com.datx02_18_35.lib.logicmodel.expression.Rule;
+import com.datx02_18_35.lib.logicmodel.expression.RuleType;
 
 import java.util.ArrayList;
 
@@ -40,27 +42,26 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
+        ArrayList<Rule> list = new ArrayList<Rule>();
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
 
-        list.add(r1);
 
 
 
-        recAdapter = new RecyclerAdapter(list);
+
+        recAdapter = new RuleAdapter(list);
 
 
         //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
+        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
         localBehavoir.isLongPressDragEnabled = true;
+        localBehavoir.rules = true;
 
 
         //add drag and drop
         ItemTouchHelper.Callback callback = localBehavoir;
-
-
 
 
         itemTouchHelper = new ItemTouchHelper(callback);

@@ -1,7 +1,6 @@
 package com.datx02_18_35.android;
 
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,9 +20,7 @@ import com.datx02_18_35.lib.logicmodel.expression.Operator;
 import com.datx02_18_35.lib.logicmodel.expression.Proposition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 
 import game.logic_game.R;
 
@@ -33,6 +30,8 @@ import game.logic_game.R;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     public ArrayList<Expression> dataSet;
+    public boolean rules;
+
 
     RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
@@ -42,7 +41,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent,false);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
         return new ViewHolder(cardView);
     }
 
@@ -101,6 +100,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
+
             view.setBackgroundColor(Color.BLACK);
         }
     }
@@ -123,6 +123,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 text.setGravity(Gravity.CENTER);
                 text.setText(expr.toString());
                 text.setTextSize(40);
+                text.setTextColor(Color.BLUE);
                 topCardView.addView(text);
             }
             else {
