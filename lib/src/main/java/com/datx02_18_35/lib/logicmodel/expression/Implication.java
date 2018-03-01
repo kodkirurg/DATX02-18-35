@@ -28,7 +28,7 @@ public class Implication extends Operator { // Operand1 leads to operand2.
     }
     @Override
     public String toString(){
-        return "(" + operand1.toString() + "-->" + operand2.toString() + ")";
+        return "(" + operand1.toString() + ">" + operand2.toString() + ")";
     }
 
 }

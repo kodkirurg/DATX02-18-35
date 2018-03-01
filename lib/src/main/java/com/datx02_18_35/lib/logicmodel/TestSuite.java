@@ -8,7 +8,6 @@ import com.datx02_18_35.lib.logicmodel.game.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,206 +25,243 @@ public class TestSuite {
     public TestSuite(ExpressionFactory exprFactory, Session session) {
         this.exprFactory = exprFactory;
         this.session = session;
-        selectedCards = new ArrayList<Expression>();
+        selectedCards = new ArrayList<>();
     }
 
-/*
-    public void makeMove(){
-        System.out.println("Make a move from the following set of moves: MAKE_ASSUMPTION, APPLY_RULE, SHOW_GAMEBOARD, SHOW_INVENTORY," +
-                "SHOW_RUlES, SELECT_CARD, CLEAR_SELECTION");
-        input = inputReader.nextLine();
-        switch (input){
-            case "MAKE_ASSUMPTION":
-                this.createExpression();
-                break;
-            case "APPLY_RULE":
-                if(selectedCards.size() == 0){
+
+    public void makeMove() {
+        while (true) {
+            System.out.println("Make a move from the following set of moves: 1. MAKE_ASSUMPTION, 2. APPLY_RULE, 3. SHOW_GAMEBOARD, 4. SHOW_INVENTORY," +
+                    " 5. ADD_CARD_FROM_INVENTORY, 6. SHOW_RUlES, 7. SELECT_CARD, 8. CLEAR_SELECTION");
+            int input = inputReader.nextInt();
+            switch (input){
+                case 1:
+                    Expression expression = this.createExpression();
+                    Collection<Expression> expressions = new ArrayList<>();
+                    expressions.add(expression);
+                    session.pushScope(expression);
+                    this.showGameboard();
+                    break;
+                case 2:
+                    if(selectedCards.size() == 0){
+                        System.out.println("Can't apply rule since no cards are selected");
+                    }else {
+                        applyRule();
+                    }
+                    break;
+                case 3:
+                    showGameboard();
+                    break;
+                case 4:
+                    showInventory();
+                    break;
+                case 5:
+                    this.addCardFromInventory();
+                    break;
+                case 6:
+                    showLegalRules();
+                    break;
+                case 7:
+                    selectCard();
+                    break;
+                case 8:
+                    clearSelection();
+                    break;
+                default:
+                    System.out.println("Invalid argument in makeMove");
+            }
+
+        }
+
+
+    }
+
+    public Expression createExpression() {
+        while (true) {
+            System.out.println("Decide root between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
+            int input = inputReader.nextInt();
+            switch (input) {
+                case 1:
+                    return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
+                case 2:
+                    return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
+                case 3:
+                    return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
+                case 4:
+                    return createProposition();
+                case 5:
+                    return exprFactory.createAbsurdity();
+                default:
                     System.out.println("Invalid argument");
-                    break;
-                }else {
-                    applyRule();
-                    break;
-                }
-            case "SHOW_GAMEBOARD":
-                showGameboard();
-                break;
-            case "SHOW_INVENTORY":
-                showInventory();
-            case "SHOW_RUlES":
-                showLegalRules();
-                break;
-            case "SELECT_CARD":
-                selectCard();
-                break;
-            case "CLEAR_SELECTION":
-                clearSelection();
-                break;
-            default:
-                System.out.println("Invalid argument");
+
+            }
         }
-
-        makeMove();
-
-    }
-
-    public void createExpression() {
-        System.out.println("Decide root between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        Collection<Expression> expression = new ArrayList<>();
-        input = inputReader.nextLine();
-        switch (input) {
-            case "CONJUNCTION":
-                expression.add(exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand()));
-                break;
-            case "DISJUNCTION":
-                expression.add(exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand()));
-                break;
-            case "IMPLICATION":
-                expression.add(exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand()));
-                break;
-            case "PROPOSITION":
-                expression.add(createProposition());
-                break;
-            case "ABSURDITY":
-                expression.add(exprFactory.createAbsurdity());
-                break;
-            default:
-                System.out.println("Invalid argument");
-                this.createExpression();
-
-        }
-        //session.addExpressionToGameBoard(expression);
-        // showCards();
 
     }
 
     private Expression createLeftOperand() {
-        System.out.println("Decide left operator, chose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        input = inputReader.nextLine();
-        switch (input) {
-            case "CONJUNCTION":
-                return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
-            case "DISJUNCTION":
-                return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
-            case "IMPLICATION":
-                return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
-            case "PROPOSITION":
-                return createProposition();
-            case "ABSURDITY":
-                return exprFactory.createAbsurdity();
-            default:
-                System.out.println("Invalid argument");
-                return this.createLeftOperand();
+        while (true) {
+            System.out.println("Decide left operator, chose between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
+            int input = inputReader.nextInt();
+            switch (input) {
+                case 1:
+                    return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
+                case 2:
+                    return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
+                case 3:
+                    return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
+                case 4:
+                    return createProposition();
+                case 5:
+                    return exprFactory.createAbsurdity();
+                default:
+                    System.out.println("Invalid argument");
 
+            }
         }
     }
 
     private Expression createRightOperand() {
-        System.out.println("Decide right operator, choose between: CONJUNCTION, DISJUNCTION, IMPLICATION, PROPOSITION OR ABSURDITY");
-        input = inputReader.nextLine();
-        switch (input) {
-            case "CONJUNCTION":
-                return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
-            case "DISJUNCTION":
-                return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
-            case "IMPLICATION":
-                return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
-            case "PROPOSITION":
-                return createProposition();
-            case "ABSURDITY":
-                return exprFactory.createAbsurdity();
-            default:
-                System.out.println("Invalid argument");
-                return this.createRightOperand();
-
+        while (true) {
+            System.out.println("Decide right operator, choose between: 1. CONJUNCTION, 2. DISJUNCTION, 3. IMPLICATION, 4. PROPOSITION OR 5. ABSURDITY");
+            int input = inputReader.nextInt();
+            switch (input) {
+                case 1:
+                    return exprFactory.createOperator(OperatorType.CONJUNCTION, createLeftOperand(), createRightOperand());
+                case 2:
+                    return exprFactory.createOperator(OperatorType.DISJUNCTION, createLeftOperand(), createRightOperand());
+                case 3:
+                    return exprFactory.createOperator(OperatorType.IMPLICATION, createLeftOperand(), createRightOperand());
+                case 4:
+                    return createProposition();
+                case 5:
+                    return exprFactory.createAbsurdity();
+                default:
+                    System.out.println("Invalid argument");
+            }
         }
+
     }
 
     private Expression createProposition() {
-        System.out.println("Please choose proposition between: P,Q,R,S,T");
-        input = inputReader.nextLine();
-        if (input.equals("P") || input.equals("Q") || input.equals("R") || input.equals("S") || input.equals("T")) {
-            return exprFactory.createProposition(input);
-        } else {
-            System.out.println("Invalid argument");
-            return this.createProposition();
+        while (true) {
+            System.out.println("Please choose proposition between: 1. P, 2. Q, 3. R, 4. S, 5. T");
+            int input = inputReader.nextInt();
+            switch (input){
+                case 1:
+                    return exprFactory.createProposition("P");
+                case 2:
+                    return exprFactory.createProposition("Q");
+                case 3:
+                    return exprFactory.createProposition("R");
+                case 4:
+                    return exprFactory.createProposition("S");
+                case 5:
+                    return exprFactory.createProposition("T");
+                default:
+                    System.out.println("Invalid argument");
+            }
         }
-
     }
 
     private void showGameboard(){
-        List<Expression> expressions = session.getExpressionsOnGameBoard();
-        for (int i = 0; i<expressions.size(); i++){
-            System.out.println("["+i+"]"+expressions.get(i).toString());
+        int i = 0;
+        for (Expression expr : session.getGameBoard()) {
+            System.out.println("["+(i++)+"]"+expr);
         }
-
     }
 
     public void showInventory(){
-        List<Expression> expressions = session.getExpressionsInInventory();
-        for (int i = 0; i<expressions.size();i++){
-            System.out.println("["+i+"]"+expressions.get(i).toString());
+        int i = 0;
+        for (Expression expr : session.getInventory()) {
+            System.out.println("["+(i++)+"]"+expr);
         }
     }
 
     private void selectCard(){
         showGameboard();
-
-        List<Expression> expressions = session.getExpressionsOnGameBoard();
         System.out.println("Select a card by the index");
-        int input = inputReader.nextInt();
-        if(input<expressions.size() && input>=0) {
-            selectedCards.add(expressions.get(input));
-            showLegalRules();
-        }else {
+        while (true) {
+            int input = inputReader.nextInt();
+            if (input < 0) {
+                System.out.println("Invalid argument");
+                continue;
+            }
+            for (Expression expr : session.getGameBoard()) {
+                if (input == 0) {
+                    selectedCards.add(expr);
+                    showLegalRules();
+                    return;
+                } else {
+                    input--;
+                }
+            }
             System.out.println("Invalid argument");
-            this.selectCard();
         }
     }
 
-    private void moveCardFromInventory(){
+    private void addCardFromInventory(){
         showInventory();
-        List<Expression> expressions = session.getExpressionsInInventory();
         System.out.println("Select a card to move by the index");
-        int input = inputReader.nextInt();
-        if(input<expressions.size() && input>=0) {
-            List<Expression> expression = new ArrayList<>();
-            expression.add(expressions.get(input));
-            session.addExpressionToGameBoard(expression);
-        }else {
+        while (true) {
+            int input = inputReader.nextInt();
+            if (input < 0) {
+                System.out.println("Invalid argument");
+                continue;
+            }
+            for (Expression expr : session.getInventory()) {
+                if (input == 0) {
+                    session.addExpressionToGameBoard(expr);
+                    return;
+                } else {
+                    input--;
+                }
+            }
             System.out.println("Invalid argument");
-            this.moveCardFromInventory();
         }
     }
 
     private List<Rule> showLegalRules(){
-        Collection<Rule> rules =  Rule.getLegalRules(session.getCurrentAssumption(),selectedCards);
-        List<Rule> listOfRules = new ArrayList<>(rules);
-        for (int i = 0; i<listOfRules.size(); i++){
-            System.out.println("["+i+"]" + listOfRules.get(i).type.toString()); //Skriv ut expressions också
+        List<Rule> rules = new ArrayList<>(Rule.getLegalRules(session.getAssumption(), selectedCards));
+
+        int i = 0;
+        for (Rule rule : rules) {
+            System.out.println("["+(i++)+"]"+rule.type);
         }
-        return listOfRules;
+        return rules;
     }
 
     private void applyRule(){
         List<Rule> rules = showLegalRules();
-        Collection<String> strings = new ArrayList<>();
-        for (Rule r : rules){
-            strings.add(r.type.toString());
-        }
         int input = inputReader.nextInt();
-        if(input > 0 && input< rules.size()) {
-            session.addExpressionToGameBoard(exprFactory.applyRule(rules.get(input)));
-            showGameboard();
-            clearSelection();
+        while (input < 0 || input >= rules.size()) {
+            System.out.println("Invalid input!");
+            input = inputReader.nextInt();
         }
-
-
+        Rule rule = rules.get(input);
+        switch (rule.type) {
+            case ABSURDITY_ELIMINATION:
+            case DISJUNCTION_INTRODUCTION:
+                System.out.println("Please create card for absurdity elimination/disjunction introduction");
+                Expression expression = this.createExpression();
+                List<Expression> expressions = new ArrayList<>();
+                expressions.addAll(rule.expressions);
+                expressions.add(expression);
+                rule = new Rule(rule.type,expressions);
+                break;
+            case IMPLICATION_INTRODUCTION:
+                session.closeScope();
+                break;
+        }
+        session.addExpressionToInventory(exprFactory.applyRule(rule));
+        clearSelection();
+        showGameboard();
     }
 
-    private void clearSelection(){
+    private void clearSelection() {
         selectedCards.clear();
     }
-    */
+
 }
 
 
