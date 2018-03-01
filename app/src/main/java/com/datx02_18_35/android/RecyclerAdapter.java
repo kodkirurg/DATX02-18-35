@@ -1,7 +1,6 @@
 package com.datx02_18_35.android;
 
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,18 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.datx02_18_35.lib.logicmodel.expression.Absurdity;
-import com.datx02_18_35.lib.logicmodel.expression.Conjunction;
-import com.datx02_18_35.lib.logicmodel.expression.Disjunction;
-import com.datx02_18_35.lib.logicmodel.expression.Expression;
-import com.datx02_18_35.lib.logicmodel.expression.Implication;
-import com.datx02_18_35.lib.logicmodel.expression.Operator;
-import com.datx02_18_35.lib.logicmodel.expression.Proposition;
+import com.datx02_18_35.model.expression.Absurdity;
+import com.datx02_18_35.model.expression.Conjunction;
+import com.datx02_18_35.model.expression.Disjunction;
+import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.Implication;
+import com.datx02_18_35.model.expression.Operator;
+import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 
 import game.logic_game.R;
 

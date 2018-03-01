@@ -3,12 +3,10 @@ package com.datx02_18_35.android;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import game.logic_game.R;
-import com.datx02_18_35.lib.logicmodel.LogicModel;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
