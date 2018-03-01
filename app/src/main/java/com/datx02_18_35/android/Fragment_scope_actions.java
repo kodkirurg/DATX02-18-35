@@ -10,7 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Rule;
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 import game.logic_game.R;
 
@@ -38,6 +43,14 @@ public class Fragment_scope_actions extends Fragment {
 
         // specify an adapter (see also next example)
         ArrayList list = new ArrayList();
+
+        ExpressionFactory expressionFactory = ExpressionFactory.getSingleton();
+        Collection collections = new ArrayList<>();
+        collections.add(expressionFactory.createProposition("P"));
+        collections.add(expressionFactory.createProposition("Q"));
+
+        Collection legalRules =  Rule.getLegalRules(null,collections); // conunction introd
+        Object[] rules = legalRules.toArray();
 
 
 
