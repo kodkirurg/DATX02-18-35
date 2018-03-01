@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -29,6 +30,8 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scope);
 
+
+        View imageView = this.findViewById(android.R.id.content);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
@@ -51,12 +54,27 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         Button resolve_button = (Button) findViewById(R.id.resolve_button); //grab a view and convert it to a button class
         resolve_button.setOnClickListener(this);
 
+
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
         mTextView.setText("Scope 1");
+
+        imageView.setOnTouchListener(new OnSwipeTouchListener(this) {
+            public void onSwipeRight() {
+                showInventory();
+            }
+            public void onSwipeLeft() {
+                showInventory();
+
+            }
+
+        });
+
 
 
     }
@@ -71,13 +89,13 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                /*
+
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft =fm.beginTransaction();
                 int fragcount = fm.getBackStackEntryCount();
                 TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
                 mTextView.setText("Scope "+(fragcount+2));
-                ft.replace(R.id.game_left_side , new FragmentScopeCards()).addToBackStack("").commit(); */
+                ft.replace(R.id.game_left_side , new FragmentScopeCards()).addToBackStack("").commit();
 
                 //somehow clear game board
                 //tell fragment to update
@@ -88,10 +106,12 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     }
     public void showInventory(){
         if (layout.isShown()) {
+            Fx.slide_down(this, layout);
             layout.setVisibility(View.GONE);
 
         }
         else {
+            Fx.slide_up(this, layout);
             layout.setVisibility(View.VISIBLE);
             
         }
@@ -99,13 +119,12 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onBackPressed(){
         if(layout.isShown()) {
-            layout.setVisibility(View.GONE);
+            showInventory();
         }
         else {
             //popScope();           säg till controllern att "popa" scope
 
             FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft =fm.beginTransaction();
             int fragcount = fm.getBackStackEntryCount();
             TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
             if (fragcount!=0){
@@ -128,5 +147,11 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
             }
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
 }

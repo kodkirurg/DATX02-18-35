@@ -17,24 +17,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- This is a centered logo
+<!--
             <ImageView
-                android:id="@+id/toolbar_logo"
+                android:id="@+id/toolbar_back"
                 android:src="@drawable/ic_info_black_24px"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginRight="?attr/actionBarSize"
+                android:clickable="true"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="start" />
                 -->
+
             <TextView
                 android:id="@+id/toolbar_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_gravity="center"
                 android:text="placeholder"
                 />
+            <ImageView
+                android:id="@+id/toolbar_goal"
+                android:src="@drawable/ic_info_black_24px"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                    android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_gravity="end" />
 
         </FrameLayout>
 
