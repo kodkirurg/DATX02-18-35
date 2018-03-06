@@ -133,6 +133,10 @@ public class Session {
         return Rule.finishIncompleteRule(rule,expression);
     }
 
+    public Collection<Rule> getLegalRules(Collection<Expression> expressions){
+        return Rule.getLegalRules(getAssumption(),expressions);
+    }
+
     public boolean checkWin(){
         assert scopes.size()!=0;
         assert scopes!=null;
