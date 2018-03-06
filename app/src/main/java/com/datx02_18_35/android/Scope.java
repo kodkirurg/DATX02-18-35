@@ -31,7 +31,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_scope);
 
 
-        View imageView = this.findViewById(android.R.id.content);
+        View scopeView = this.findViewById(android.R.id.content);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
@@ -64,7 +64,7 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
         TextView mTextView = (TextView) findViewById(R.id.toolbar_text);
         mTextView.setText("Scope 1");
 
-        imageView.setOnTouchListener(new OnSwipeTouchListener(this) {
+        scopeView.setOnTouchListener(new OnSwipeTouchListener(this) {
             public void onSwipeRight() {
                 showInventory();
             }
