@@ -8,6 +8,7 @@ import com.datx02_18_35.model.expression.RuleType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EmptyStackException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -124,6 +125,7 @@ public class Session {
     }
 
     public void applyRule(Rule rule){
+        assertRuleInScope(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
@@ -133,6 +135,10 @@ public class Session {
 
     public Rule finishIncompleteRule(Rule rule, Expression expression){
         return Rule.finishIncompleteRule(rule,expression);
+    }
+
+    public Collection<Rule> getLegalRules(Collection<Expression> expressions){
+        return Rule.getLegalRules(getAssumption(),expressions);
     }
 
     public boolean checkWin(){
@@ -151,4 +157,43 @@ public class Session {
         return false;
 
     }
+
+    private void assertRuleInScope(Rule rule){
+        assert !rule.expressions.isEmpty();
+
+        switch (rule.type){
+            case ABSURDITY_ELIMINATION:
+                assert isExpressionInScope(rule.expressions.get(0));
+                 break;
+            case DISJUNCTION_INTRODUCTION:
+                assert isExpressionInScope(rule.expressions.get(0)) || isExpressionInScope(rule.expressions.get(1));
+                break;
+            default:
+                assert isExpressionInScope(rule.expressions);
+                break;
+        }
+    }
+
+    private boolean isExpressionInScope(Expression expression) {
+        for (Expression existingExpression : getInventory()){
+            if(existingExpression.equals(expression)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isExpressionInScope(Collection<Expression> expressions){
+        Collection<Expression> testExpressions = new HashSet<>(expressions);
+
+        for (Expression existingExpression : getInventory()){
+            testExpressions.remove(existingExpression);
+        }
+        return testExpressions.isEmpty();
+    }
+
+    private Expression createExpression(){
+        throw new NotImplementedException();
+    }
+
 }
