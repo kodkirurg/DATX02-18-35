@@ -1,4 +1,7 @@
-package com.datx02_18_35.controller.actions;
+package com.datx02_18_35.controller.dispatch;
+
+import com.datx02_18_35.controller.dispatch.actions.Action;
+import com.datx02_18_35.controller.dispatch.actions.StopAction;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -8,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public abstract class ActionConsumer {
-    protected ActionConsumer callback;
+    private ActionConsumer callback;
 
     private final BlockingQueue<Action> actionQueue = new LinkedBlockingQueue<>();
 
@@ -23,6 +26,10 @@ public abstract class ActionConsumer {
                     }
                     handleAction(action);
                 } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (UnhandledActionException e) {
+                    e.printStackTrace();
                     break;
                 }
             }
@@ -42,9 +49,14 @@ public abstract class ActionConsumer {
     public void registerCallback(ActionConsumer callback) {
         this.callback = callback;
     }
+    public void callback(Action action) throws InterruptedException {
+        this.callback.sendAction(action);
+    }
     public void sendAction(Action action) throws InterruptedException {
         actionQueue.put(action);
     }
 
-    public abstract void handleAction(Action action);
+
+
+    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException;
 }
