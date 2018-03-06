@@ -137,10 +137,15 @@ public class Session {
     }
 
 
+    public void addExpressionToGameBoard(Collection<Expression> expressions){
+        addExpressionToGameBoard(new ArrayList<Expression>(expressions));
+    }
     public void addExpressionToGameBoard(List<Expression> expressions){
+        assert isExpressionInScope(expressions);
         scopes.peek().addExpressionToGameBoard(expressions);
     }
     public void addExpressionToGameBoard(Expression expression) {
+        assert isExpressionInScope(expression);
         scopes.peek().addExpressionToGameBoard(expression);
     }
 
@@ -166,7 +171,9 @@ public class Session {
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        this.addExpressionToInventory(expFactory.applyRule(rule));
+        Collection<Expression> expressions = expFactory.applyRule(rule);
+        this.addExpressionToInventory(expressions);
+        this.addExpressionToGameBoard(expressions);
     }
 
 

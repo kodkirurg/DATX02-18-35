@@ -54,12 +54,10 @@ public class Scope {
     void addExpressionToInventory(Expression expression) {
         assert expression != null;
         this.inventory.add(expression);
-        this.gameBoard.add(expression);
     }
 
     void addExpressionToInventory(Collection<Expression> expressions) {
         assert expressions != null;
         this.inventory.addAll(expressions);
-        this.gameBoard.addAll(expressions);
     }
 }
