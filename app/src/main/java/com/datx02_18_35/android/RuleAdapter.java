@@ -47,8 +47,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
                 break;
             case ABSURDITY_ELIMINATION:
                 break;
-            case ABSURDITY_INTRODUCTION:
-                break;
             case CONJUNCTION_ELIMINATION:
                 break;
             case IMPLICATION_INTRODUCTION:
