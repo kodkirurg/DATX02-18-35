@@ -126,7 +126,7 @@ public class Rule {
     public static Rule finishIncompleteRule(Rule rule,Expression expression){
         List<Expression> expressions = new ArrayList<>();
         if(rule.type==RuleType.ABSURDITY_ELIMINATION||rule.type==RuleType.DISJUNCTION_INTRODUCTION){
-            if(rule.expressions.size()!=1){
+            if(rule.expressions.size()==1){
                 expressions.addAll(rule.expressions);
                 expressions.add(expression);
                 Rule newRule = new Rule(rule.type, expressions);
