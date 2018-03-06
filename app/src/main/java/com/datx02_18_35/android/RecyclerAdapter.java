@@ -21,6 +21,8 @@ import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import game.logic_game.R;
 
@@ -29,12 +31,13 @@ import game.logic_game.R;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
-    public ArrayList<Expression> dataSet;
-    public boolean rules;
+    ArrayList<Expression> dataSet;
+    HashSet<Integer> selected;
 
 
     RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
+        selected = new HashSet<>();
     }
 
 
@@ -49,7 +52,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-       new CardDeflator(holder,dataSet.get(position));
+        holder.cardView.setOnClickListener(this);
+        holder.cardView.setTag(position);
+        new CardDeflator(holder,dataSet.get(position));
     }
 
 
@@ -72,19 +77,38 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        Log.d("test123","test ");
-        int test = (int) v.getTag();
-        Log.d("test123","" + test);
+        int position = (int) v.getTag();
+
+        if(! selected.contains(position) ){
+
+            //animations
+            v.setBackgroundColor(Color.BLACK);
+            v.setScaleX((float) 1.05);
+            v.setScaleY((float) 1.05 );
+
+            //selection
+            selected.add(position);
+        }
+        else if(selected.contains(position)){
+
+            //animations
+            v.setBackgroundColor(Color.WHITE);
+            v.setScaleX((float) 1);
+            v.setScaleY((float) 1 );
+
+            //de-selection
+            selected.remove(position);
+        }
+        Log.d("test123","" + position);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
         public CardView cardView;
 
 
         public ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
-            itemView.setOnClickListener(this);
         }
 
 
@@ -98,11 +122,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         }
 
-        @Override
-        public void onClick(View view) {
-
-            view.setBackgroundColor(Color.BLACK);
-        }
     }
 
     private static class CardDeflator{
