@@ -29,7 +29,7 @@ public class Rule {
         ArrayList<Rule> legalRules = new ArrayList<>();
         switch(exprs.size()) {
             case 0:
-                legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
+                //legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
 
             case 1:
                 if (assumption != null) {
@@ -62,11 +62,12 @@ public class Rule {
                 } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.equals(exprs.get(0))) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseExprs));
                 }
+                /*
                 if( exprs.get(0) instanceof Negation && ((Negation) exprs.get(0)).operand.equals(exprs.get(1))){
                     legalRules.add(new Rule(RuleType.ABSURDITY_INTRODUCTION,exprs));
                 }else if (exprs.get(1) instanceof Negation && ((Negation) exprs.get(1)).operand.equals(exprs.get(0))){
                     legalRules.add(new Rule(RuleType.ABSURDITY_INTRODUCTION,reverseExprs));
-                }
+                }*/
                 break;
 
             case 3:

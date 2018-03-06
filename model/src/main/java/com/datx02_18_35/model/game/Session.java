@@ -52,7 +52,7 @@ public class Session {
 
     public Iterable<Iterable<Expression>> getInventorys(){
         Iterable<Scope> scopesIter = getScopes();
-        Iterator<Scope> scopesIterator = scopesIter.iterator();
+        final Iterator<Scope> scopesIterator = scopesIter.iterator();
         return new Iterable<Iterable<Expression>>() {
             @Override
             public Iterator<Iterable<Expression>> iterator() {
