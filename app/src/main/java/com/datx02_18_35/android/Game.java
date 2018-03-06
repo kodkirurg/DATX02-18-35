@@ -11,11 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
-import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.actions.Action;
-import com.datx02_18_35.controller.actions.ActionConsumer;
-import com.datx02_18_35.controller.actions.RefreshInventoryAction;
-
 import game.logic_game.R;
 
 public class Game extends AppCompatActivity {
