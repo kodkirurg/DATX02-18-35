@@ -40,22 +40,29 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.frame.setBackgroundColor(Color.BLACK);
+        holder.frame.setBackgroundColor(Color.WHITE);
+        ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
         switch (dataSet.get(position).type) {
             case CONJUNCTION_INTRODUCTION:
-                holder.frame.findViewById(R.id.rule_imageview).setBackground(ContextCompat.getDrawable(holder.frame.getContext(),R.drawable.conjunction_introduction));
+                imageView.setBackgroundResource(R.drawable.conjunction_introduction);
                 break;
             case ABSURDITY_ELIMINATION:
+                imageView.setBackgroundResource(R.drawable.absurdity_elimination);
                 break;
             case CONJUNCTION_ELIMINATION:
+                imageView.setBackgroundResource(R.drawable.conjunction_elimination);
                 break;
             case IMPLICATION_INTRODUCTION:
+                imageView.setBackgroundResource(R.drawable.implication_introduction);
                 break;
             case DISJUNCTION_ELIMINATION:
+                imageView.setBackgroundResource(R.drawable.disjunction_elimination);
                 break;
             case DISJUNCTION_INTRODUCTION:
+                imageView.setBackgroundResource(R.drawable.disjunction_introduction;
                 break;
             case IMPLICATION_ELIMINATION:
+                imageView.setBackgroundResource(R.drawable.implication_elimination);
                 break;
                 default:
                     Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
