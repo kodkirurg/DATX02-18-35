@@ -3,6 +3,7 @@ package com.datx02_18_35.model.game;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.expression.RuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,6 +124,9 @@ public class Session {
     }
 
     public void applyRule(Rule rule){
+        if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
+            this.closeScope();
+        }
         this.addExpressionToInventory(expFactory.applyRule(rule));
     }
 

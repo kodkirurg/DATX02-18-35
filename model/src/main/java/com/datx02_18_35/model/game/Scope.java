@@ -21,7 +21,6 @@ public class Scope {
         assert assumption != null;
         this.assumption = assumption;
         gameBoard.add(assumption);
-        inventory.add(assumption);
     }
 
     Scope(List<Expression> hypothesis) {
