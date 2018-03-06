@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.datx02_18_35.lib.logicmodel.expression.Expression;
-import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
-import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.OperatorType;
 
 import java.util.ArrayList;
 

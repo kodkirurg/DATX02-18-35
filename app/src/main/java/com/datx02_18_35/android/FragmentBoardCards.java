@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.datx02_18_35.lib.logicmodel.expression.Expression;
-import com.datx02_18_35.lib.logicmodel.expression.ExpressionFactory;
-import com.datx02_18_35.lib.logicmodel.expression.OperatorType;
+import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.OperatorType;
 
 import java.util.ArrayList;
 
@@ -45,15 +45,18 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         Expression q1 = exprFact.createProposition("Q");
         Expression r1 = exprFact.createProposition("R");
         Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
-        Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
+        Expression c5 = exprFact.createOperator(OperatorType.DISJUNCTION, r1,q1);
         Expression abs = exprFact.createAbsurdity();
 
         Expression complex = exprFact.createOperator(OperatorType.IMPLICATION, c4,c5);
+        Expression upperC_lowerS = exprFact.createOperator(OperatorType.IMPLICATION, c4,p1);
+        Expression upperS_lowerC = exprFact.createOperator(OperatorType.IMPLICATION, p1,c4);
+        Expression upperC_lowerC = exprFact.createOperator(OperatorType.IMPLICATION, c4,c5);
+        Expression upperCC_lowerCC = exprFact.createOperator(OperatorType.IMPLICATION, upperC_lowerC ,upperC_lowerC );
 
-
-
-        list.add(c4);
-
+        list.add(upperC_lowerS);
+        list.add(upperC_lowerC);
+        list.add(upperCC_lowerCC);
 
         recAdapter = new RecyclerAdapter(list);
 
