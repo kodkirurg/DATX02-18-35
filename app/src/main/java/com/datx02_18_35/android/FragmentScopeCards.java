@@ -70,14 +70,15 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public void addToScope(/*Expression newCard*/){
+    public void addToBoard(/*Expression newCard*/){
         //list.add(newCard);
-        //recyclerView.notifyDataSetChanged();
+        //recAdapter.notifyDataSetChanged();
     }
     public void updateCards(ArrayList<Expression> newList){
         //list=newList;
-        //recyclerView.notifyDataSetChanged();
+        //recAdapter.notifyDataSetChanged();
     }
+
 
 
 }

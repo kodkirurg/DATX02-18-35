@@ -64,7 +64,7 @@ public class FragmentScopeActions extends Fragment {
     }
     public void updateActions() {
         //list=(all the actions);
-        //recyclerView.notifyDataSetChanged();
+        //recAdapter.notifyDataSetChanged();
     }
 
 }
