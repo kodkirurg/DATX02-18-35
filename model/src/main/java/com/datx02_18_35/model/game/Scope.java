@@ -27,7 +27,6 @@ public class Scope {
         assert hypothesis != null;
         this.assumption = null;
         gameBoard.addAll(hypothesis);
-        inventory.addAll(hypothesis);
     }
 
     public Expression getAssumption() {
