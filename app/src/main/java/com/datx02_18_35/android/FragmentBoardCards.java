@@ -60,6 +60,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
 
         recAdapter = new RecyclerAdapter(list);
 
+
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
