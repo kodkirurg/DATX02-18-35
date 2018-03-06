@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import game.logic_game.R;
 
@@ -42,22 +45,25 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
-        ArrayList<Rule> collection = new ArrayList<Rule>();
-
+        Collection<Expression> collection  = new HashSet<>();
 
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
-        Expression r2 = exprFact.createProposition("S");
+        Expression r2 = exprFact.createAbsurdity();
 
-        list.add(r1);
-        list.add(r2);
-
-        collection = new ArrayList<>(Rule.getLegalRules(null,list));
+        collection.add(r2);
 
 
-        recAdapter = new RuleAdapter(collection);
+        Collection<Rule> collectionRules = Rule.getLegalRules(null,collection);
+        
+        ArrayList<Rule> listlist = new ArrayList<Rule>();
+
+        listlist.addAll(collectionRules);
+
+
+
+        recAdapter = new RuleAdapter(listlist);
 
 
         //settings for this fragment
