@@ -15,6 +15,7 @@ import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import game.logic_game.R;
 
@@ -41,14 +42,22 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<Rule> list = new ArrayList<Rule>();
+        ArrayList<Expression> list = new ArrayList<Expression>();
+        ArrayList<Rule> collection = new ArrayList<Rule>();
+
+
 
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
+        Expression r2 = exprFact.createProposition("S");
+
+        list.add(r1);
+        list.add(r2);
+
+        collection = new ArrayList<>(Rule.getLegalRules(null,list));
 
 
-
-        recAdapter = new RuleAdapter(list);
+        recAdapter = new RuleAdapter(collection);
 
 
         //settings for this fragment

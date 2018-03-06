@@ -1,8 +1,11 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,19 +34,40 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public RuleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
-        return new RuleAdapter.ViewHolder(cardView);
+        FrameLayout frame = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_rule, parent,false);
+        return new RuleAdapter.ViewHolder(frame);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.imageView.setBackgroundColor(Color.BLACK);
+        holder.frame.setBackgroundColor(Color.BLACK);
+        switch (dataSet.get(position).type) {
+            case CONJUNCTION_INTRODUCTION:
+                holder.frame.findViewById(R.id.rule_imageview).setBackground(ContextCompat.getDrawable(holder.frame.getContext(),R.drawable.conjunction_introduction));
+                break;
+            case ABSURDITY_ELIMINATION:
+                break;
+            case ABSURDITY_INTRODUCTION:
+                break;
+            case CONJUNCTION_ELIMINATION:
+                break;
+            case IMPLICATION_INTRODUCTION:
+                break;
+            case DISJUNCTION_ELIMINATION:
+                break;
+            case DISJUNCTION_INTRODUCTION:
+                break;
+            case IMPLICATION_ELIMINATION:
+                break;
+                default:
+                    Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dataSet.size();
     }
 
     @Override
@@ -65,12 +89,12 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
-        public ImageView imageView;
+        public FrameLayout frame;
 
 
         public ViewHolder(FrameLayout itemView) {
             super(itemView);
-            imageView= itemView.findViewById(R.id.rule_imageview);
+            frame = itemView;
             itemView.setOnClickListener(this);
         }
 
