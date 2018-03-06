@@ -1,8 +1,11 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,27 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.frame.setBackgroundColor(Color.BLACK);
+        switch (dataSet.get(position).type) {
+            case CONJUNCTION_INTRODUCTION:
+                holder.frame.findViewById(R.id.rule_imageview).setBackground(ContextCompat.getDrawable(holder.frame.getContext(),R.drawable.conjunction_introduction));
+                break;
+            case ABSURDITY_ELIMINATION:
+                break;
+            case ABSURDITY_INTRODUCTION:
+                break;
+            case CONJUNCTION_ELIMINATION:
+                break;
+            case IMPLICATION_INTRODUCTION:
+                break;
+            case DISJUNCTION_ELIMINATION:
+                break;
+            case DISJUNCTION_INTRODUCTION:
+                break;
+            case IMPLICATION_ELIMINATION:
+                break;
+                default:
+                    Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
+        }
     }
 
 
