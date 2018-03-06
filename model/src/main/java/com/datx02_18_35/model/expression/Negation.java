@@ -7,7 +7,7 @@ package com.datx02_18_35.model.expression;
 public class Negation extends Expression {
     Expression operand;
 
-    Negation(Expression operand){
+    public Negation(Expression operand){
         super();
         this.operand = operand;
         hash=calculateHash();

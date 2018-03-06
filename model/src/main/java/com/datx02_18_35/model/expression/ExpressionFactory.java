@@ -128,6 +128,7 @@ public class ExpressionFactory {
                 assert rule.expressions.get(0) instanceof Absurdity;
                 result.add(rule.expressions.get(1));
                 break;
+            /*
             case ABSURDITY_INTRODUCTION:
                 assert rule.expressions.size()==2;
                 Expression expr2 = rule.expressions.get(1);
@@ -142,6 +143,7 @@ public class ExpressionFactory {
                 assert rule.expressions.size()==1;
                 result.add(createOperator(OperatorType.DISJUNCTION,expr1,createNegation(expr1)));
                 break;
+                */
             default:
                 throw new IllegalArgumentException("Unknown rule type!");
         }
