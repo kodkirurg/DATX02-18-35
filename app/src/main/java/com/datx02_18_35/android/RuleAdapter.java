@@ -59,7 +59,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
                 imageView.setBackgroundResource(R.drawable.disjunction_elimination);
                 break;
             case DISJUNCTION_INTRODUCTION:
-                imageView.setBackgroundResource(R.drawable.disjunction_introduction;
+                imageView.setBackgroundResource(R.drawable.disjunction_introduction);
                 break;
             case IMPLICATION_ELIMINATION:
                 imageView.setBackgroundResource(R.drawable.implication_elimination);
