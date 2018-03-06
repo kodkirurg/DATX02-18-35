@@ -128,6 +128,11 @@ public class Session {
         this.addExpressionToInventory(expFactory.applyRule(rule));
     }
 
+
+    public Rule finishIncompleteRule(Rule rule, Expression expression){
+        return Rule.finishIncompleteRule(rule,expression);
+    }
+
     public boolean checkWin(){
         assert scopes.size()!=0;
         assert scopes!=null;
@@ -144,6 +149,7 @@ public class Session {
         return false;
 
     }
+
     private void assertRuleInScope(Rule rule){
         assert !rule.expressions.isEmpty();
 
@@ -181,4 +187,5 @@ public class Session {
     private Expression createExpression(){
         throw new NotImplementedException();
     }
+
 }
