@@ -70,10 +70,7 @@ public class TestSuite {
                 default:
                     System.out.println("Invalid argument in makeMove");
             }
-
         }
-
-
     }
 
     public Expression createExpression() {
@@ -93,10 +90,8 @@ public class TestSuite {
                     return exprFactory.createAbsurdity();
                 default:
                     System.out.println("Invalid argument");
-
             }
         }
-
     }
 
     private Expression createLeftOperand() {
@@ -140,7 +135,6 @@ public class TestSuite {
                     System.out.println("Invalid argument");
             }
         }
-
     }
 
     private Expression createProposition() {
