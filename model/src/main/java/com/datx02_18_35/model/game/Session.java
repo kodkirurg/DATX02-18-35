@@ -7,6 +7,7 @@ import com.datx02_18_35.model.expression.Rule;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EmptyStackException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Session {
         this.hypothesis.addAll(hypothesis);
         this.scopes.push(new Scope(hypothesis));
         this.goal=goal;
-        expFactory = ExpressionFactory.getSingleton();
+        expFactory = new ExpressionFactory(new HashMap<>());
     }
 
     public void pushScope(Expression assumption) {

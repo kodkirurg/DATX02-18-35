@@ -42,11 +42,11 @@ public class FragmentBoardActions extends Fragment {
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
 
-        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
 
         list.add(r1);
-
+*/
 
 
         recAdapter = new RecyclerAdapter(list);

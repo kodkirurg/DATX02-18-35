@@ -30,6 +30,8 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.fragment_board_cards,
                 container, false);
 
@@ -37,7 +39,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         // use a grid layout manager
         recLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(recLayoutManager);
-
+        /*
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
@@ -59,7 +61,8 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         list.add(upperCC_lowerCC);
 
         recAdapter = new RecyclerAdapter(list);
-
+   */
+        recAdapter = new RecyclerAdapter(new ArrayList<Expression>());
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);

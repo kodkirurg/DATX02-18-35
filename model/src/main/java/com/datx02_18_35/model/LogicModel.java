@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class LogicModel {
     public static void main(String[] args) {
+        /*
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
@@ -16,16 +17,16 @@ public class LogicModel {
         ArrayList<Expression> hypo = new ArrayList<>();
         Expression goal = qp1;
         hypo.add(p1);
-
-
         Session session = new Session(hypo,goal);
+
+
 
 
         ExpressionParser expressionParser = new ExpressionParser();
         String stringExpression = "(((!(P)|(Q))&(!((Q)>(T))))&(P))";
         Expression expression = expressionParser.parseString(stringExpression);
         System.out.println(expression.toString());
-
+*/
         //TestSuite testSuite = new TestSuite(exprFact,session);
         // testSuite.makeMove();
 
