@@ -42,7 +42,7 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
-        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression r1 = exprFact.createProposition("R");
@@ -50,7 +50,7 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
         Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
 
         list.add(p1);
-
+*/
 
         recAdapter = new RecyclerAdapter(list);
 

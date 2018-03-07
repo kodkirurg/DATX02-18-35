@@ -2,6 +2,7 @@ package com.datx02_18_35.model.expression;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -10,18 +11,14 @@ import java.util.Collection;
 
 public class ExpressionFactory {
 
-    private static final ExpressionFactory singleton = new ExpressionFactory();
+    private final Map<String, String> symbolMap;
 
-    private ExpressionFactory() {
-
-    }
-
-    public static ExpressionFactory getSingleton() {
-        return singleton;
+    public ExpressionFactory(Map<String, String> symbolMap) {
+        this.symbolMap = symbolMap;
     }
 
     public Proposition createProposition(String id) {
-        return new Proposition(id);
+        return new Proposition(id, symbolMap.get(id));
     }
 
     public Absurdity createAbsurdity(){return new Absurdity();}

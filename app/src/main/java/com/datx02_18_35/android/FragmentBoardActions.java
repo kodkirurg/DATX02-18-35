@@ -47,15 +47,16 @@ public class FragmentBoardActions extends Fragment {
 
 
 
-        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+        /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
         Expression r2 = exprFact.createProposition("S");
 
         list.add(r1);
+
         list.add(r2);
 
         collection = new ArrayList<>(Rule.getLegalRules(null,list));
-
+*/
 
         recAdapter = new RuleAdapter(collection);
 
