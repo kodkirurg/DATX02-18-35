@@ -25,13 +25,12 @@ public class Rule {
     public static Collection<Rule> getLegalRules( Expression assumption, Collection<Expression> expressions){
 
         List<Expression> exprs = new ArrayList<>(expressions);
-
         ArrayList<Rule> legalRules = new ArrayList<>();
         switch(exprs.size()) {
             case 0:
                 //legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
 
-            case 1:
+            case 1: {
                 if (assumption != null) {
                     List<Expression> assumptionAndExpr = new ArrayList<>();
                     assumptionAndExpr.add(assumption);
@@ -39,28 +38,43 @@ public class Rule {
                     legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, assumptionAndExpr));
                 }
 
-                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, exprs));
                 if (exprs.get(0) instanceof Conjunction) {
-                    legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, exprs));
+                    List<Expression> conjunctionExpression = new ArrayList<>(exprs);
+                    legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, conjunctionExpression));
+
+                } else if (exprs.get(0) instanceof Absurdity) {
+                    List<Expression> absurdityExpressions = new ArrayList<>(exprs);
+                    absurdityExpressions.add(null);
+                    legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, absurdityExpressions));
+                    List<Expression> reversedAbsurdityExpressions = new ArrayList<>(absurdityExpressions);
+                    Collections.reverse(reversedAbsurdityExpressions);
+                    legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION,reversedAbsurdityExpressions));
                 }
 
-                else if (exprs.get(0) instanceof Absurdity){
-                legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, exprs));
-                }
-
+                List<Expression> disjunctionExpressions = new ArrayList<>(exprs);
+                disjunctionExpressions.add(null);
+                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, disjunctionExpressions));
+                List<Expression> reversedDisjunctionExpressions = new ArrayList<>(disjunctionExpressions);
+                Collections.reverse(reversedDisjunctionExpressions);
+                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, reversedDisjunctionExpressions));
                 break;
+            }
             case 2:
-                List<Expression> reverseExprs = exprs;
-                Collections.reverse(reverseExprs);
 
-                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, exprs));
-                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, reverseExprs));
+                List<Expression> conjunctionExpressions= new ArrayList<>(exprs);
+                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, conjunctionExpressions));
+                List<Expression> reverseConjunctionExpressions = new ArrayList<>(conjunctionExpressions);
+                Collections.reverse(reverseConjunctionExpressions);
+                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, reverseConjunctionExpressions));
 
                 if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.equals(exprs.get(1))) {
-                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, exprs));
+                    List<Expression> implicationExpressions = new ArrayList<>(exprs);
+                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, implicationExpressions));
 
                 } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.equals(exprs.get(0))) {
-                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseExprs));
+                    List<Expression> reverseImplicationExpressions = new ArrayList<>(exprs);
+                    Collections.reverse(reverseImplicationExpressions);
+                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseImplicationExpressions));
                 }
                 /*
                 if( exprs.get(0) instanceof Negation && ((Negation) exprs.get(0)).operand.equals(exprs.get(1))){

@@ -21,14 +21,12 @@ public class Scope {
         assert assumption != null;
         this.assumption = assumption;
         gameBoard.add(assumption);
-        inventory.add(assumption);
     }
 
     Scope(List<Expression> hypothesis) {
         assert hypothesis != null;
         this.assumption = null;
         gameBoard.addAll(hypothesis);
-        inventory.addAll(hypothesis);
     }
 
     public Expression getAssumption() {
@@ -56,12 +54,10 @@ public class Scope {
     void addExpressionToInventory(Expression expression) {
         assert expression != null;
         this.inventory.add(expression);
-        this.gameBoard.add(expression);
     }
 
     void addExpressionToInventory(Collection<Expression> expressions) {
         assert expressions != null;
         this.inventory.addAll(expressions);
-        this.gameBoard.addAll(expressions);
     }
 }

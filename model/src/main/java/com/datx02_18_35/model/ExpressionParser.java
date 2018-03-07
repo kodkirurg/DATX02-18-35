@@ -9,10 +9,10 @@ import com.datx02_18_35.model.expression.OperatorType;
  */
 
 public class ExpressionParser {
-    ExpressionFactory exprFactory;
+    private ExpressionFactory exprFactory;
 
-    public ExpressionParser(){
-        exprFactory=ExpressionFactory.getSingleton();
+    public ExpressionParser(ExpressionFactory expressionFactory){
+        exprFactory=expressionFactory;
     }
     public Expression parseString(String expression){
         Expression leftexpression;
