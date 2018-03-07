@@ -32,13 +32,13 @@ public class GameManager {
             }
         }
         catch (FileNotFoundException e){
-            System.out.println("File not found, check config file");
+            System.out.println(e.getMessage());
         }
         catch (IOException e){
-
+            System.out.println(e.getMessage());
         }
         catch (Level.LevelParseException e){
-
+            System.out.println(e.getMessage());
         }
     }
 }
