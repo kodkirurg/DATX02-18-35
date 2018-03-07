@@ -11,13 +11,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
+import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.Action;
+
 import game.logic_game.R;
 
 public class Game extends AppCompatActivity {
 
     Toolbar toolbar;
-    private static FragmentInventory inventory= new FragmentInventory();
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -63,8 +66,12 @@ public class Game extends AppCompatActivity {
     }
 
 
-    public static FragmentInventory getInventory(){
-        return inventory;
+    public class BoardCallback extends ActionConsumer {
+
+        @Override
+        public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+
+        }
     }
 
 }
