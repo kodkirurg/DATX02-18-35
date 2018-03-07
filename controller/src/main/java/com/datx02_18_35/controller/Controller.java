@@ -5,6 +5,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
+import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
 /**
@@ -13,7 +14,7 @@ import com.datx02_18_35.model.game.Session;
 
 public class Controller extends ActionConsumer {
 
-    private Session session = null;
+    private Session session = new Session(Level.exampleLevel);
 
     public Controller(ActionConsumer viewCallback) {
         registerCallback(viewCallback);
@@ -23,7 +24,7 @@ public class Controller extends ActionConsumer {
     public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
         if (action instanceof RequestInventoryAction) {
             assert session != null;
-            Action reply = new RefreshInventoryAction(null, null);
+            Action reply = new RefreshInventoryAction(session.getAssumptions(), session.getInventorys());
             callback(reply);
         } else {
             throw new UnhandledActionException(action);
