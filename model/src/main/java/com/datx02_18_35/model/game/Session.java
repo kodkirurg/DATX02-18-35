@@ -22,15 +22,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Session {
     private Stack<Scope> scopes = new Stack<>();
-    private List<Expression> hypothesis = new ArrayList<>();
-    private Expression goal;
-    private ExpressionFactory expFactory;
+    private Level level;
 
-    public Session(List<Expression> hypothesis,Expression goal) {
-        this.hypothesis.addAll(hypothesis);
-        this.scopes.push(new Scope(hypothesis));
-        this.goal=goal;
-        expFactory = new ExpressionFactory(new HashMap<>());
+    public Session(Level level) {
+        this.level = level;
+        this.scopes.push(new Scope(level.hypothesis));
     }
 
     public void pushScope(Expression assumption) {
@@ -98,7 +94,7 @@ public class Session {
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
-                return hypothesis.iterator();
+                return level.hypothesis.iterator();
             }
         };
     }
@@ -172,7 +168,7 @@ public class Session {
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        Collection<Expression> expressions = expFactory.applyRule(rule);
+        Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
     }
@@ -195,7 +191,7 @@ public class Session {
         Scope scope = this.getScopes().iterator().next();
         Iterable<Expression> inventory = scope.getInventory();
         for (Expression e: inventory){
-            if(e.equals(goal)){
+            if(e.equals(level.goal)){
                 return true;
             }
         }
