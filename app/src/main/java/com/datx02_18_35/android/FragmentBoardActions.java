@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import game.logic_game.R;
 
@@ -41,26 +43,32 @@ public class FragmentBoardActions extends Fragment {
 
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
+        ArrayList<Rule> collection = new ArrayList<Rule>();
+
+
 
         /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression r1 = exprFact.createProposition("R");
+        Expression r2 = exprFact.createProposition("S");
 
         list.add(r1);
+
+        list.add(r2);
+
+        collection = new ArrayList<>(Rule.getLegalRules(null,list));
 */
 
-
-        recAdapter = new RecyclerAdapter(list);
+        recAdapter = new RuleAdapter(collection);
 
 
         //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
+        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
         localBehavoir.isLongPressDragEnabled = true;
+        localBehavoir.rules = true;
 
 
         //add drag and drop
         ItemTouchHelper.Callback callback = localBehavoir;
-
-
 
 
         itemTouchHelper = new ItemTouchHelper(callback);
