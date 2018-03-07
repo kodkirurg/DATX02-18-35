@@ -13,7 +13,7 @@ import android.view.View;
 
 public class EditItemTouchHelperCallback<T extends ItemTouchHelperAdapter>  extends ItemTouchHelper.Callback{
 
-    public boolean isLongPressDragEnabled=true;
+    public boolean isLongPressDragEnabled=false;
     public boolean rules;
 
     private final T recyclerAdapter;
