@@ -23,24 +23,19 @@ import java.util.Scanner;
  */
 
 public class Level {
-    private Collection<Expression> hypothesis;
-    private String levelName;
-    private Expression goal;
-    private Map<String,String> idToSymbol;
-    public ExpressionFactory expressionFactory;
+    public final List<Expression> hypothesis;
+    public final String levelName;
+    public final Expression goal;
+    public final ExpressionFactory expressionFactory;
 
-    public static final Level exampleLevel;
 
-    static {
-        Map<String,String> dummyMap = new HashMap<>();
-        ExpressionFactory expressionFactory = new ExpressionFactory(dummyMap);
-        Collection<Expression> hypothesis = new ArrayList<>();
-        Expression p = expressionFactory.createProposition("P");
-        Expression q = expressionFactory.createProposition("Q");
-        hypothesis.add(p);
-        hypothesis.add(q);
-        Expression goal = expressionFactory.createOperator(OperatorType.CONJUNCTION,p,q);
-        exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory);
+
+
+    private Level(String levelName,List<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
+        this.hypothesis=hypothesis;
+        this.goal=goal;
+        this.levelName=levelName;
+        this.expressionFactory=expressionFactory;
     }
 
 
@@ -86,22 +81,9 @@ public class Level {
             }
         }
 
-
         return null;
     }
-    private Level(String levelName,Collection<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
-        this.hypothesis=hypothesis;
-        this.goal=goal;
-        this.idToSymbol=idToSymbol;
-        this.levelName=levelName;
-        this.expressionFactory=expressionFactory;
-    }
 
-    private Level(){
-        Map<String,String> dummyMap= new HashMap<>();
-
-
-    }
 
     public ExpressionFactory getExpressionFactory(){
         return expressionFactory;
@@ -111,5 +93,18 @@ public class Level {
         public InvalidParseFormatException(String string){
             super();
         }
+    }
+
+    public static final Level exampleLevel;
+    static {
+        Map<String,String> dummyMap = new HashMap<>();
+        ExpressionFactory expressionFactory = new ExpressionFactory(dummyMap);
+        List<Expression> hypothesis = new ArrayList<>();
+        Expression p = expressionFactory.createProposition("P");
+        Expression q = expressionFactory.createProposition("Q");
+        hypothesis.add(p);
+        hypothesis.add(q);
+        Expression goal = expressionFactory.createOperator(OperatorType.CONJUNCTION,p,q);
+        exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory);
     }
 }

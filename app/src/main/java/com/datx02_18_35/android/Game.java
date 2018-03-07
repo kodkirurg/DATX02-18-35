@@ -13,15 +13,17 @@ import android.view.MenuItem;
 
 import game.logic_game.R;
 
-public class Game extends AppCompatActivity  {
+public class Game extends AppCompatActivity {
 
     Toolbar toolbar;
     private static FragmentInventory inventory= new FragmentInventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
 
         new Thread(new Runnable() {
             @Override
@@ -53,12 +55,13 @@ public class Game extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Scope.class); //change to scope/assumption classs
+                i = new Intent(this,Scope.class); //change to scope/assumption class
                 break;
         }
         startActivity(i);
         return false;
     }
+
 
     public static FragmentInventory getInventory(){
         return inventory;
