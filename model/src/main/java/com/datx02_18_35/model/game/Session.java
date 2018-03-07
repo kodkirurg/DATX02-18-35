@@ -3,10 +3,12 @@ package com.datx02_18_35.model.game;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.expression.RuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EmptyStackException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +30,7 @@ public class Session {
         this.hypothesis.addAll(hypothesis);
         this.scopes.push(new Scope(hypothesis));
         this.goal=goal;
-        expFactory = ExpressionFactory.getSingleton();
+        expFactory = new ExpressionFactory(new HashMap<>());
     }
 
     public void pushScope(Expression assumption) {
@@ -52,8 +54,7 @@ public class Session {
     }
 
     public Iterable<Iterable<Expression>> getInventorys(){
-        Iterable<Scope> scopesIter = getScopes();
-        final Iterator<Scope> scopesIterator = scopesIter.iterator();
+        final Iterator<Scope> scopesIterator = this.getScopes().iterator();
         return new Iterable<Iterable<Expression>>() {
             @Override
             public Iterator<Iterable<Expression>> iterator() {
@@ -72,26 +73,64 @@ public class Session {
             }
         };
     }
-     public Iterable<Expression> getInventory() {
+    public Iterable<Expression> getAssumptions(){
+        final Iterator<Scope> scopesIterator = this.getScopes().iterator();
+        return new Iterable<Expression>() {
+            @Override
+            public Iterator<Expression> iterator() {
+
+                return new Iterator<Expression>() {
+                    @Override
+                    public boolean hasNext() {
+                        return scopesIterator.hasNext();
+                    }
+
+                    @Override
+                    public Expression next() {
+                        return scopesIterator.next().getAssumption();
+                    }
+                };
+            }
+        };
+    }
+
+    public Iterable<Expression> getHypotheses(){
+        return new Iterable<Expression>() {
+            @Override
+            public Iterator<Expression> iterator() {
+                return hypothesis.iterator();
+            }
+        };
+    }
+
+     public Iterable<Expression> getAllExpressions() {
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
                 return new Iterator<Expression>() {
                     private Iterator<Scope> scopeIter = scopes.iterator();
-                    private Iterator<Expression> inventoryIter = scopeIter.next().getInventory().iterator();
+                    private Iterator<Expression> currentIter = scopeIter.next().getInventory().iterator();
+                    private Iterator<Expression> assumptionIter = getAssumptions().iterator();
+                    private Iterator<Expression> hypothesisIter = getHypotheses().iterator();
 
                     @Override
                     public boolean hasNext() {
-                        return inventoryIter.hasNext() || scopeIter.hasNext();
+                        return currentIter.hasNext() || scopeIter.hasNext() || assumptionIter.hasNext() || hypothesisIter.hasNext() ;
                     }
 
                     @Override
                     public Expression next() {
                         assert this.hasNext();
-                        if (!inventoryIter.hasNext()) {
-                            inventoryIter = scopeIter.next().getInventory().iterator();
+                        if (!currentIter.hasNext()) {
+                            if (scopeIter.hasNext()) {
+                                currentIter = scopeIter.next().getInventory().iterator();
+                            }else if(assumptionIter.hasNext()) {
+                                currentIter = assumptionIter;
+                            }else if(hypothesisIter.hasNext()){
+                                currentIter = hypothesisIter;
+                            }
                         }
-                        return inventoryIter.next();
+                        return currentIter.next();
                     }
                 };
             }
@@ -99,10 +138,15 @@ public class Session {
     }
 
 
+    public void addExpressionToGameBoard(Collection<Expression> expressions){
+        addExpressionToGameBoard(new ArrayList<Expression>(expressions));
+    }
     public void addExpressionToGameBoard(List<Expression> expressions){
+        assert isExpressionInScope(expressions);
         scopes.peek().addExpressionToGameBoard(expressions);
     }
     public void addExpressionToGameBoard(Expression expression) {
+        assert isExpressionInScope(expression);
         scopes.peek().addExpressionToGameBoard(expression);
     }
 
@@ -125,12 +169,21 @@ public class Session {
 
     public void applyRule(Rule rule){
         assertRuleInScope(rule);
-        this.addExpressionToInventory(expFactory.applyRule(rule));
+        if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
+            this.closeScope();
+        }
+        Collection<Expression> expressions = expFactory.applyRule(rule);
+        this.addExpressionToInventory(expressions);
+        this.addExpressionToGameBoard(expressions);
     }
 
 
     public Rule finishIncompleteRule(Rule rule, Expression expression){
         return Rule.finishIncompleteRule(rule,expression);
+    }
+
+    public Collection<Rule> getLegalRules(Collection<Expression> expressions){
+        return Rule.getLegalRules(getAssumption(),expressions);
     }
 
     public boolean checkWin(){
@@ -167,7 +220,7 @@ public class Session {
     }
 
     private boolean isExpressionInScope(Expression expression) {
-        for (Expression existingExpression : getInventory()){
+        for (Expression existingExpression : getAllExpressions()){
             if(existingExpression.equals(expression)){
                 return true;
             }
@@ -178,7 +231,7 @@ public class Session {
     private boolean isExpressionInScope(Collection<Expression> expressions){
         Collection<Expression> testExpressions = new HashSet<>(expressions);
 
-        for (Expression existingExpression : getInventory()){
+        for (Expression existingExpression : getAllExpressions()){
             testExpressions.remove(existingExpression);
         }
         return testExpressions.isEmpty();

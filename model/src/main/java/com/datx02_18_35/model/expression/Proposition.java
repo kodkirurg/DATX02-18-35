@@ -1,5 +1,7 @@
 package com.datx02_18_35.model.expression;
 
+import java.io.IOException;
+
 /**
  * Created by robin on 2018-02-07.
  */
@@ -7,10 +9,12 @@ package com.datx02_18_35.model.expression;
 public class Proposition extends Expression {
 
     private final String id;
+    private final String symbol;
 
-    Proposition(String id) {
+    Proposition(String id, String symbol) {
         super();
         this.id = id;
+        this.symbol = symbol;
         hash=calculateHash();
     }
 
@@ -26,5 +30,9 @@ public class Proposition extends Expression {
 
     public String toString(){
         return "("+ this.id + ")";
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 }
