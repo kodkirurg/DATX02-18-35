@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,32 +24,37 @@ import java.util.Scanner;
  */
 
 public class Level {
+    private static final String SYMBOL="Symbol";
+    private static final String HYPOTHESIS ="Hypothesis";
+    private static final String GOAL="Goal";
+    private static final String TITLE="Title";
+    
     public final List<Expression> hypothesis;
-    public final String levelName;
+    public final String title;
     public final Expression goal;
     public final ExpressionFactory expressionFactory;
 
 
 
 
-    private Level(String levelName,List<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
+    private Level(String title,List<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
         this.hypothesis=hypothesis;
         this.goal=goal;
-        this.levelName=levelName;
+        this.title=title;
         this.expressionFactory=expressionFactory;
     }
 
 
-    public static Level createLevel(String filepath) throws NullPointerException, FileNotFoundException, IOException{
+    public static Level createLevel(String filepath) throws NullPointerException, IOException, LevelParseException{
         Map<String,String> map = new HashMap<>();
         Scanner input = new Scanner(new File(filepath));
         List<String> lineList = new ArrayList<>();
         while(input.hasNextLine()){
             String line = input.nextLine();
             String[] strings =line.split(" ");
-            if(strings[0].equals("Symbol")){
+            if(strings[0].equals(SYMBOL)){
                 if(strings.length!=3){
-                    throw new IllegalArgumentException("Text in file not formatted correctly");
+                    throw new LevelParseException("Text in file not formatted correctly");
                 }else{
                     map.put(strings[1],strings[2]);
                 }
@@ -58,40 +64,47 @@ public class Level {
             }
 
         }
-        ExpressionFactory exprFactory = new ExpressionFactory(map);
-        ExpressionParser exprParser = new ExpressionParser(exprFactory);
-        Collection<Expression> hypo= new ArrayList<>();
+
+
+        ExpressionFactory expressionFactory = new ExpressionFactory(map);
+        ExpressionParser expressionParser = new ExpressionParser(expressionFactory);
+        List<Expression> hypothesis= new ArrayList<>();
         Expression goal = null;
+        String Title = "";
         for(String string:lineList){
             String[] strings=string.split(" ");
             if(strings.length>0){
                 switch (strings[0]){
-                    case "Hypothesis":
+                    case HYPOTHESIS:
                         for(int i=1; i<strings.length;i++){
-                            hypo.add(exprParser.parseString(strings[i]));
+                            hypothesis.add(expressionParser.parseString(strings[i]));
                         }
-                    case "goal":
-                        if(goal==null){
-                            if(strings.length==1) {
-                                goal = exprParser.parseString(strings[1]);
+                    case GOAL:
+                        if(goal==null) {
+                            if (strings.length == 1) {
+                                goal = expressionParser.parseString(strings[1]);
+                            }else{
+                                throw new LevelParseException("Two goals in level file");
                             }
+                        }
+                    case TITLE :
+                        if(strings.length>0){
+                            for (int i=1; i<strings.length;i++){
+                                Title+=strings[i]+" ";
+                            }
+                        }else {
+                            throw new LevelParseException("No title in level file");
                         }
 
                 }
             }
         }
 
-        return null;
+        return new Level(Title,hypothesis,goal,expressionFactory);
     }
-
-
-    public ExpressionFactory getExpressionFactory(){
-        return expressionFactory;
-    }
-
-    class InvalidParseFormatException extends Exception {
-        public InvalidParseFormatException(String string){
-            super();
+    static class LevelParseException extends Exception {
+        LevelParseException(String string){
+            super(string);
         }
     }
 
