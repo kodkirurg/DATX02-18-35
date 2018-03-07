@@ -28,7 +28,7 @@ public class Level {
     private static final String HYPOTHESIS ="Hypothesis";
     private static final String GOAL="Goal";
     private static final String TITLE="Title";
-    
+
     public final List<Expression> hypothesis;
     public final String title;
     public final Expression goal;
