@@ -21,12 +21,14 @@ import java.util.Scanner;
  */
 
 public class Level {
-    private Collection<Expression> hypothesis;
+    private List<Expression> hypothesis;
     private String levelName;
     private Expression goal;
     private Map<String,String> idToSymbol;
 
-
+    public List<Expression> getHypothesis() {
+        return hypothesis;
+    }
 
 
 
@@ -36,7 +38,8 @@ public class Level {
 
         }
     }
-    public Level(String levelName,Collection<Expression> hypothesis, Expression goal, Map<String,String> idToSymbol){
+
+    private Level(String levelName,List<Expression> hypothesis, Expression goal, Map<String,String> idToSymbol){
         this.hypothesis=hypothesis;
         this.goal=goal;
         this.idToSymbol=idToSymbol;

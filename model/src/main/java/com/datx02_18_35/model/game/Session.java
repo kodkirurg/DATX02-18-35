@@ -22,15 +22,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Session {
     private Stack<Scope> scopes = new Stack<>();
-    private List<Expression> hypothesis = new ArrayList<>();
-    private Expression goal;
-    private ExpressionFactory expFactory;
+    private Level level;
 
-    public Session(List<Expression> hypothesis,Expression goal) {
-        this.hypothesis.addAll(hypothesis);
-        this.scopes.push(new Scope(hypothesis));
-        this.goal=goal;
-        expFactory = new ExpressionFactory(new HashMap<>());
+    public Session(Level level) {
+        this.level = level;
+        this.scopes.push(new Scope(level.getHypothesis()));
     }
 
     public void pushScope(Expression assumption) {
