@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
+import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
@@ -27,6 +28,7 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        new Controller(new BoardCallback()).start();
 
         new Thread(new Runnable() {
             @Override
