@@ -41,4 +41,18 @@ public class GameManager {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public List<Level> getLevels(){
+        return levels;
+    }
+
+    public Session startLevel(){
+        throw new NotImplementedException();
+    }
+
+    public boolean quitLevel(){
+        throw new NotImplementedException();
+    }
+
 }
