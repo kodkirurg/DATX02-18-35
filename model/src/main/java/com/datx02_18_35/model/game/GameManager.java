@@ -4,6 +4,8 @@ import com.datx02_18_35.model.Config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,16 +16,29 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 
 public class GameManager {
+    private List<Level> levels;
     private List<String> levelFilePaths;
 
 
     public GameManager(){
+        levelFilePaths = new ArrayList<>();
         try {
             Scanner input = new Scanner(new File(Config.LEVELS_CONFIG_FILENAME));
+            while (input.hasNextLine()) {
+                levelFilePaths.add(input.nextLine());
+            }
+            for (String s : levelFilePaths) {
+                levels.add(Level.createLevel(s));
+            }
         }
         catch (FileNotFoundException e){
+            System.out.println("File not found, check config file");
+        }
+        catch (IOException e){
 
         }
+        catch (Level.LevelParseException e){
 
+        }
     }
 }
