@@ -86,6 +86,9 @@ public class Game extends AppCompatActivity  {
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
+                FragmentManager fm = getFragmentManager();
+                FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
+                frag.updateBoard(data);
             }
         }
     }

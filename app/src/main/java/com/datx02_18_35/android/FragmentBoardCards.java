@@ -18,6 +18,7 @@ import com.datx02_18_35.model.expression.Expression;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import game.logic_game.R;
 
@@ -27,6 +28,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
     public interface inter{
@@ -52,7 +54,6 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
        /* ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
@@ -74,7 +75,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         recAdapter = new RecyclerAdapter(list);
    */
 
-       list.add(null);
+        list.add(null);
         recAdapter = new RecyclerAdapter(list);
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
@@ -102,8 +103,14 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public void setNiceThings(){
-        Log.d("test123","asdasd");
+    public void updateBoard(Iterable<Expression> iterable){
+        ArrayList<Expression> newList = new ArrayList<Expression>();
+        Iterator<Expression> iterator = iterable.iterator();
+        while (iterator.hasNext()){
+            newList.add(iterator.next());
+        }
+        list = newList;
+        recAdapter.notifyDataSetChanged();
     }
 
 }
