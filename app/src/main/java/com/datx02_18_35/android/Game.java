@@ -6,24 +6,37 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.Action;
+import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
+import com.datx02_18_35.model.expression.Expression;
+
+import java.util.Iterator;
+
 import game.logic_game.R;
 
-public class Game extends AppCompatActivity {
+public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-    private static FragmentInventory inventory= new FragmentInventory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        new Controller(new BoardCallback()).start();
 
         new Thread(new Runnable() {
             @Override
@@ -34,13 +47,17 @@ public class Game extends AppCompatActivity {
                 ft.replace(R.id.game_right_side, new FragmentBoardActions());
                 ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();
 
-
+                
                 //Set toolbar
                 toolbar = findViewById(R.id.toolbar);
                 toolbar.setTitle("");
                 setSupportActionBar(toolbar);
             }
         }).start();
+
+
+
+
     }
 
     @Override
@@ -63,8 +80,17 @@ public class Game extends AppCompatActivity {
     }
 
 
-    public static FragmentInventory getInventory(){
-        return inventory;
+    public class BoardCallback extends ActionConsumer {
+
+        @Override
+        public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+            if (action instanceof RefreshGameboardAction){
+                Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
+                FragmentManager fm = getFragmentManager();
+                FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
+                frag.updateBoard(data);
+            }
+        }
     }
 
 }

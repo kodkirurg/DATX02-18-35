@@ -32,6 +32,7 @@ public class FragmentBoardActions extends Fragment {
     private ItemTouchHelper itemTouchHelper;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,5 +90,6 @@ public class FragmentBoardActions extends Fragment {
 
         return view;
     }
+
 
 }
