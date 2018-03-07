@@ -26,7 +26,7 @@ public class Session {
 
     public Session(Level level) {
         this.level = level;
-        this.scopes.push(new Scope(level.getHypothesis()));
+        this.scopes.push(new Scope(level.hypothesis));
     }
 
     public void pushScope(Expression assumption) {
@@ -94,7 +94,7 @@ public class Session {
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
-                return hypothesis.iterator();
+                return level.hypothesis.iterator();
             }
         };
     }
@@ -168,7 +168,7 @@ public class Session {
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        Collection<Expression> expressions = expFactory.applyRule(rule);
+        Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
     }
@@ -191,7 +191,7 @@ public class Session {
         Scope scope = this.getScopes().iterator().next();
         Iterable<Expression> inventory = scope.getInventory();
         for (Expression e: inventory){
-            if(e.equals(goal)){
+            if(e.equals(level.goal)){
                 return true;
             }
         }

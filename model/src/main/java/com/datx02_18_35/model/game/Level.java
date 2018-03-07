@@ -21,15 +21,13 @@ import java.util.Scanner;
  */
 
 public class Level {
-    private List<Expression> hypothesis;
-    private String levelName;
-    private Expression goal;
-    private Map<String,String> idToSymbol;
+    private final Map<String,String> idToSymbol;
+    private final ExpressionParser expressionParser;
 
-    public List<Expression> getHypothesis() {
-        return hypothesis;
-    }
-
+    public final List<Expression> hypothesis;
+    public final String levelName;
+    public final Expression goal;
+    public final ExpressionFactory expressionFactory;
 
 
     public static Level createLevel(String filepath) throws NullPointerException, FileNotFoundException, IOException{
@@ -37,6 +35,7 @@ public class Level {
         while(input.hasNextLine()){
 
         }
+        return null;
     }
 
     private Level(String levelName,List<Expression> hypothesis, Expression goal, Map<String,String> idToSymbol){
