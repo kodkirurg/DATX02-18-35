@@ -19,8 +19,8 @@ public class Controller extends ActionConsumer {
 
     private Session session = new Session(Level.exampleLevel);
 
-    public Controller(ActionConsumer viewCallback) {
-        registerCallback(viewCallback);
+    public Controller() {
+
     }
 
     @Override
@@ -28,7 +28,7 @@ public class Controller extends ActionConsumer {
         if (action instanceof RequestInventoryAction) {
             assert session != null;
             Action reply = new RefreshInventoryAction(session.getAssumptions(), session.getInventorys());
-            callback(reply);
+            action.callback(reply);
         }
         else if (action instanceof ClosedSandboxAction) {
             assert session != null;

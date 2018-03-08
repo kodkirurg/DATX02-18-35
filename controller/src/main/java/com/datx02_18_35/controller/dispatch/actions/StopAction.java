@@ -6,5 +6,5 @@ package com.datx02_18_35.controller.dispatch.actions;
 
 
 //Only used in actionsumer stop
-public class StopAction implements Action {
+public class StopAction extends Action {
 }

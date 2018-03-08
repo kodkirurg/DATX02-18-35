@@ -10,7 +10,7 @@ import com.datx02_18_35.model.expression.Expression;
 /*
 Model requests view to update gameboard Expressions
 */
-public class RefreshGameboardAction implements Action {
+public class RefreshGameboardAction extends Action {
     public final Iterable<Expression> boardExpressions;
 
     public RefreshGameboardAction(Iterable<Expression> boardExpressions){
