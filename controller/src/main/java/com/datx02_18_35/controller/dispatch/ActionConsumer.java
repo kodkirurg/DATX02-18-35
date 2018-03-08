@@ -12,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class ActionConsumer {
 
+    private boolean started = false;
     private final BlockingQueue<Action> actionQueue = new LinkedBlockingQueue<>();
 
     private class ActionScanner implements Runnable {
@@ -35,17 +36,20 @@ public abstract class ActionConsumer {
         }
     }
 
-    public void start() {
+    public synchronized void start() {
+        assert !started;
+        started = true;
         ActionScanner actionScanner = new ActionScanner();
         Thread thread = new Thread(actionScanner);
         thread.start();
     }
 
-    public void stop() throws InterruptedException {
+    public synchronized void stop() throws InterruptedException {
+        assert started;
         sendAction(new StopAction());
     }
 
-    public void sendAction(Action action) throws InterruptedException {
+    public synchronized void sendAction(Action action) throws InterruptedException {
         actionQueue.put(action);
     }
 

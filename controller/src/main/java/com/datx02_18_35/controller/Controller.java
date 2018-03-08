@@ -9,6 +9,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
+import javax.naming.ldap.Control;
 
 
 /**
@@ -18,10 +19,9 @@ import com.datx02_18_35.model.game.Session;
 public class Controller extends ActionConsumer {
 
     private Session session = new Session(Level.exampleLevel);
+    public static final Controller singleton = new Controller();
 
-    public Controller() {
-
-    }
+    private Controller() {}
 
     @Override
     public void handleAction(Action action) throws UnhandledActionException, InterruptedException {

@@ -36,7 +36,7 @@ public class Game extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        new Controller().start();
+        Controller.singleton.start();
 
         new Thread(new Runnable() {
             @Override
