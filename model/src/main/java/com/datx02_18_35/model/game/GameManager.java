@@ -29,7 +29,8 @@ public class GameManager {
         try {
             Scanner input = new Scanner(new File(Config.LEVELS_CONFIG_FILENAME));
             while (input.hasNextLine()) {
-                levelFilePaths.add(input.nextLine());
+                String levelPath = Config.LEVELS_PATH + input.nextLine();
+                levelFilePaths.add(levelPath);
             }
             for (String s : levelFilePaths) {
                 Level level = Level.createLevel(s);
