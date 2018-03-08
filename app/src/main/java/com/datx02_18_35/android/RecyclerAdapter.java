@@ -101,7 +101,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             //de-selection
             selected.remove(position);
         }
-        Log.d("test123","" + position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
