@@ -11,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 
 public abstract class ActionConsumer {
-    private ActionConsumer callback;
 
     private final BlockingQueue<Action> actionQueue = new LinkedBlockingQueue<>();
 
@@ -46,12 +45,6 @@ public abstract class ActionConsumer {
         sendAction(new StopAction());
     }
 
-    public void registerCallback(ActionConsumer callback) {
-        this.callback = callback;
-    }
-    public void callback(Action action) throws InterruptedException {
-        this.callback.sendAction(action);
-    }
     public void sendAction(Action action) throws InterruptedException {
         actionQueue.put(action);
     }
