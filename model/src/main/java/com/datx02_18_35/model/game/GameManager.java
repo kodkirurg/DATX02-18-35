@@ -76,7 +76,7 @@ public class GameManager {
     }
 
 
-    private class LevelNotInListException extends Exception{
+    public class LevelNotInListException extends Exception{
         private LevelNotInListException(String s){
             super(s);
         }

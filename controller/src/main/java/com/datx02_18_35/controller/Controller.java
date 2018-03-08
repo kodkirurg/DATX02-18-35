@@ -7,6 +7,7 @@ import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
+import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
@@ -17,10 +18,21 @@ import com.datx02_18_35.model.game.Session;
 
 public class Controller extends ActionConsumer {
 
-    private Session session = new Session(Level.exampleLevel);
     public static final Controller singleton = new Controller();
 
-    private Controller() {}
+    private GameManager game;
+    private Session session;
+
+
+    private Controller() {
+        game = new GameManager();
+        Level level = game.getLevels().get(0);
+        try {
+            session = game.startLevel(level);
+        } catch (GameManager.LevelNotInListException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
