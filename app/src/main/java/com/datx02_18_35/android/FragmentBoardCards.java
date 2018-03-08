@@ -15,10 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.OperatorType;
+
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import game.logic_game.R;
 
@@ -28,7 +28,12 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private ArrayList<Expression> list = new ArrayList<Expression>();
 
+
+    public interface inter{
+        public void setNiceThings();
+    }
 
 
     @Override
@@ -47,10 +52,9 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         // use a grid layout manager
         recLayoutManager = new GridLayoutManager(getActivity(), spanCount);
         recyclerView.setLayoutManager(recLayoutManager);
-        /*
+
         // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
-        ExpressionFactory exprFact = ExpressionFactory.getSingleton();
+       /* ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");
         Expression q1 = exprFact.createProposition("Q");
         Expression r1 = exprFact.createProposition("R");
@@ -70,7 +74,9 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
 
         recAdapter = new RecyclerAdapter(list);
    */
-        recAdapter = new RecyclerAdapter(new ArrayList<Expression>());
+
+        list.add(null);
+        recAdapter = new RecyclerAdapter(list);
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
@@ -95,6 +101,16 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         itemTouchHelper.startDrag(viewHolder);
+    }
+
+    public void updateBoard(Iterable<Expression> iterable){
+        ArrayList<Expression> newList = new ArrayList<Expression>();
+        Iterator<Expression> iterator = iterable.iterator();
+        while (iterator.hasNext()){
+            newList.add(iterator.next());
+        }
+        list = newList;
+        recAdapter.notifyDataSetChanged();
     }
 
 }

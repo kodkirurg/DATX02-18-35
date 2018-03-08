@@ -32,6 +32,7 @@ public class FragmentBoardActions extends Fragment {
     private ItemTouchHelper itemTouchHelper;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        Collection<Expression> collection  = new HashSet<>();
+        ArrayList collection  = new ArrayList<>();
 
 
         /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
@@ -67,7 +68,7 @@ public class FragmentBoardActions extends Fragment {
         collection = new ArrayList<>(Rule.getLegalRules(null,list));
 */
 
-        recAdapter = new RuleAdapter(listlist);
+        recAdapter = new RuleAdapter(collection);
 
 
         //settings for this fragment
@@ -89,5 +90,6 @@ public class FragmentBoardActions extends Fragment {
 
         return view;
     }
+
 
 }

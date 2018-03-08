@@ -54,7 +54,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         // - replace the contents of the view with that element
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
-        new CardDeflator(holder,dataSet.get(position));
+        if(null != dataSet.get(position)){
+            new CardDeflator(holder,dataSet.get(position));
+        }
     }
 
 
