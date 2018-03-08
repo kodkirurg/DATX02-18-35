@@ -52,29 +52,27 @@ public class GameManager {
     }
 
     public Session startLevel(Level level) throws LevelNotInListException{
-        if(levels.contains(level)){
-            currentSession = new Session(level);
-            return currentSession;
+        if(!levels.contains(level)) {
+            throw new LevelNotInListException("Level is not in GameManagers list of levels");
         }
-        throw new LevelNotInListException("Level is not in GameManagers list of levels");
+        currentSession = new Session(level);
+        return currentSession;
     }
 
     public boolean quitLevel(){
-        if(currentSession!=null){
-            currentSession=null;
-            return true;
+        if(currentSession==null){
+            return false;
         }
+        currentSession=null;
         return false;
-
-
     }
 
     public boolean finishCompleteLevel(){
-        if(currentSession.getLevel().isLevelComplete()){
-            this.quitLevel();
-            return true;
+        if(!currentSession.getLevel().isLevelComplete()){
+            return false;
         }
-        return false;
+        this.quitLevel();
+        return true;
     }
 
 

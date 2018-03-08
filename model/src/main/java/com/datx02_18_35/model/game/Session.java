@@ -190,7 +190,7 @@ public class Session {
         if(scopes.size()>1) {
             return false;
         }
-        for (Expression e: this.getScopes().iterator().next().getInventory()){
+        for (Expression e: scopes.peek().getInventory()){
             if(e.equals(level.goal)){
                 level.completeLevel();
                 return true;
