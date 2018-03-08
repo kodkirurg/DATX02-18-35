@@ -36,6 +36,9 @@ public abstract class ActionConsumer {
         }
     }
 
+    /**
+     * Start the handling service
+     */
     public synchronized void start() {
         assert !started;
         started = true;
@@ -44,16 +47,30 @@ public abstract class ActionConsumer {
         thread.start();
     }
 
+    /**
+     * Stop the handling service
+     * @throws InterruptedException
+     */
     public synchronized void stop() throws InterruptedException {
         assert started;
         sendAction(new StopAction());
     }
 
+    /**
+     * Used to send an action to this consumer
+     * @param action
+     * @throws InterruptedException
+     */
     public synchronized void sendAction(Action action) throws InterruptedException {
         actionQueue.put(action);
     }
 
 
-
+    /**
+     * Implemented by the specific service, throw UnhandledActionException if an unhandled Action is supplied.
+     * @param action
+     * @throws UnhandledActionException
+     * @throws InterruptedException
+     */
     public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException;
 }

@@ -5,11 +5,16 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
+import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
+
+import java.util.Collection;
 
 
 /**
@@ -46,7 +51,13 @@ public class Controller extends ActionConsumer {
             Action reply = new RefreshGameboardAction(session.getGameBoard());
             action.callback(reply);
         }
-        
+        else if (action instanceof RequestRulesAction) {
+            assert session != null;
+            RequestRulesAction rulesAction = (RequestRulesAction)action;
+            Collection<Rule> rules = session.getLegalRules(rulesAction.expressions);
+            Action reply = new RefreshRulesAction(rules);
+            action.callback(reply);
+        }
         else {
             throw new UnhandledActionException(action);
         }
