@@ -3,12 +3,19 @@ package com.datx02_18_35.model;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.OperatorType;
+import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.Session;
 
 import java.util.ArrayList;
 
 public class LogicModel {
     public static void main(String[] args) {
+
+        GameManager game = new GameManager();
+        System.out.println(game.getLevels().size());
+        System.out.println(game.getLevels().get(0).goal.toString());
+        System.out.println(game.getLevels().get(0).hypothesis.get(0).toString());
+        System.out.println(game.getLevels().get(0).hypothesis.get(1).toString());
         /*
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");

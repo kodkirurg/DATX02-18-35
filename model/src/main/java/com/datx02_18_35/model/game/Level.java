@@ -24,10 +24,10 @@ import java.util.Scanner;
  */
 
 public class Level {
-    private static final String SYMBOL="Symbol";
-    private static final String HYPOTHESIS ="Hypothesis";
-    private static final String GOAL="Goal";
-    private static final String TITLE="Title";
+    private static final String SYMBOL="SYMBOL";
+    private static final String HYPOTHESIS ="HYPOTHESIS";
+    private static final String GOAL="GOAL";
+    private static final String TITLE="TITLE";
 
     public final List<Expression> hypothesis;
     public final String title;
@@ -83,13 +83,15 @@ public class Level {
                             hypothesis.add(expressionParser.parseString(strings[i]));
                         }
                     case GOAL:
-                        if(goal==null) {
-                            if (strings.length == 1) {
-                                goal = expressionParser.parseString(strings[1]);
-                            }else{
-                                throw new LevelParseException("Two goals in level file");
-                            }
+                        if(goal==null && strings.length == 2) {
+
+                            goal = expressionParser.parseString(strings[1]);
+
+
+                        }else{
+                            throw new LevelParseException("Two goals in level file");
                         }
+
                     case TITLE :
                         if(strings.length>0){
                             for (int i=1; i<strings.length;i++){
@@ -124,7 +126,7 @@ public class Level {
 
 
 
-    public static final Level exampleLevel;
+  /*  public static final Level exampleLevel;
     static {
         Map<String,String> dummyMap = new HashMap<>();
         ExpressionFactory expressionFactory = new ExpressionFactory(dummyMap);
@@ -135,5 +137,5 @@ public class Level {
         hypothesis.add(q);
         Expression goal = expressionFactory.createOperator(OperatorType.CONJUNCTION,p,q);
         exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory);
-    }
+    }*/
 }

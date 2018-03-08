@@ -5,6 +5,6 @@ package com.datx02_18_35.model;
  */
 
 public class Config {
-    public static final String LEVELS_PATH = "com/datx02_18_35/model/game/levels/";
-    public static final String LEVELS_CONFIG_FILENAME ="com/datx02_18_35/model/game/levels/levels.cfg";
+    public static final String LEVELS_PATH = "model/src/main/java/com/datx02_18_35/model/game/levels/";
+    public static final String LEVELS_CONFIG_FILENAME ="model/src/main/java/com/datx02_18_35/model/game/levels/levels.cfg";
 }
