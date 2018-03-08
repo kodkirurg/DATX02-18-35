@@ -6,7 +6,7 @@ import com.datx02_18_35.model.expression.Expression;
  * Created by robin on 2018-03-01.
  */
 
-public class RefreshInventoryAction implements Action {
+public class RefreshInventoryAction extends Action {
     public final Iterable<Expression> assumptions;
     public final Iterable<Iterable<Expression>> inventories;
     public RefreshInventoryAction(
