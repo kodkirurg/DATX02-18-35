@@ -49,7 +49,7 @@ public class Session {
         return scopes.peek().getGameBoard();
     }
 
-    public Iterable<Iterable<Expression>> getInventorys(){
+    public Iterable<Iterable<Expression>> getInventories(){
         final Iterator<Scope> scopesIterator = this.getScopes().iterator();
         return new Iterable<Iterable<Expression>>() {
             @Override

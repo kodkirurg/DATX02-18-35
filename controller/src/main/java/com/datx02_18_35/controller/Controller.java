@@ -38,7 +38,7 @@ public class Controller extends ActionConsumer {
     public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
         if (action instanceof RequestInventoryAction) {
             assert session != null;
-            Action reply = new RefreshInventoryAction(session.getAssumptions(), session.getInventorys());
+            Action reply = new RefreshInventoryAction(session.getAssumptions(), session.getInventories());
             action.callback(reply);
         }
         else if (action instanceof RequestGameboardAction) {
