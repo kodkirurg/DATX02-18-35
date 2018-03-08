@@ -24,6 +24,7 @@ public class GameManager {
 
 
     public GameManager(){
+        levels = new ArrayList<>();
         levelFilePaths = new ArrayList<>();
         try {
             Scanner input = new Scanner(new File(Config.LEVELS_CONFIG_FILENAME));
