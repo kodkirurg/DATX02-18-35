@@ -12,10 +12,10 @@ public class LogicModel {
     public static void main(String[] args) {
 
         GameManager game = new GameManager();
-        //System.out.println(game.getLevels().size());
-        //System.out.println(game.getLevels().get(0).goal.toString());
-        //System.out.println(game.getLevels().get(0).hypothesis.get(0).toString());
-        //System.out.println(game.getLevels().get(0).hypothesis.get(1).toString());
+        System.out.println(game.getLevels().size());
+        System.out.println(game.getLevels().get(0).goal.toString());
+        System.out.println(game.getLevels().get(0).hypothesis.get(0).toString());
+        System.out.println(game.getLevels().get(0).hypothesis.get(1).toString());
         /*
         ExpressionFactory exprFact = ExpressionFactory.getSingleton();
         Expression p1 = exprFact.createProposition("P");

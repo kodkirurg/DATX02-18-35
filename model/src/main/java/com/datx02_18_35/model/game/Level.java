@@ -126,7 +126,7 @@ public class Level {
 
 
 
-/*
+
     public static final Level exampleLevel;
     static {
         Map<String,String> dummyMap = new HashMap<>();
@@ -136,7 +136,7 @@ public class Level {
         Expression q = expressionFactory.createProposition("Q");
         hypothesis.add(p);
         hypothesis.add(q);
-        Expression goal = expressionFactory.createOperator(OperatorType.CONJUNCTION,p,q);
+        Expression goal = expressionFactory.createOperator(OperatorType.IMPLICATION,p,q);
         exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory);
-    }*/
+    }
 }
