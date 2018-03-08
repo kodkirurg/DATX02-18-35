@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -18,6 +20,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class GameManager {
     private List<Level> levels;
     private List<String> levelFilePaths;
+    private Session currentSession;
+    private Map<Level, Boolean> isLevelComplete = new HashMap<>();
 
 
     public GameManager(){
@@ -28,7 +32,9 @@ public class GameManager {
                 levelFilePaths.add(input.nextLine());
             }
             for (String s : levelFilePaths) {
-                levels.add(Level.createLevel(s));
+                Level level = Level.createLevel(s);
+                levels.add(level);
+                isLevelComplete.put(level,false);
             }
         }
         catch (FileNotFoundException e){
@@ -47,12 +53,37 @@ public class GameManager {
         return levels;
     }
 
-    public Session startLevel(){
-        throw new NotImplementedException();
+    public Session startLevel(Level level) throws LevelNotInListException{
+        if(levels.contains(level)){
+            currentSession = new Session(level);
+            return currentSession;
+        }
+        throw new LevelNotInListException("Level is not in GameManagers list of levels");
     }
 
     public boolean quitLevel(){
-        throw new NotImplementedException();
+        if(currentSession!=null){
+            currentSession=null;
+            return true;
+        }
+        return false;
+
+
     }
 
+    public boolean finishCompleteLevel(){
+        if(currentSession.checkWin()){
+            isLevelComplete.put(currentSession.getLevel(),true);
+            this.quitLevel();
+            return true;
+        }
+        return false;
+    }
+
+
+    private class LevelNotInListException extends Exception{
+        private LevelNotInListException(String s){
+            super(s);
+        }
+    }
 }

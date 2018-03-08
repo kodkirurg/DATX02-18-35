@@ -133,6 +133,8 @@ public class Session {
         };
     }
 
+    public Level getLevel(){return this.level;}
+
 
     public void addExpressionToGameBoard(Collection<Expression> expressions){
         addExpressionToGameBoard(new ArrayList<Expression>(expressions));
@@ -188,16 +190,15 @@ public class Session {
         if(scopes.size()>1) {
             return false;
         }
-        Scope scope = this.getScopes().iterator().next();
-        Iterable<Expression> inventory = scope.getInventory();
-        for (Expression e: inventory){
+        for (Expression e: this.getScopes().iterator().next().getInventory()){
             if(e.equals(level.goal)){
                 return true;
             }
         }
         return false;
-
     }
+
+
 
     private void assertRuleInScope(Rule rule){
         assert !rule.expressions.isEmpty();
@@ -232,6 +233,7 @@ public class Session {
         }
         return testExpressions.isEmpty();
     }
+
 
     private Expression createExpression(){
         throw new NotImplementedException();
