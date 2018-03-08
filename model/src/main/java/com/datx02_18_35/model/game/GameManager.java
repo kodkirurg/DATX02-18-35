@@ -21,7 +21,6 @@ public class GameManager {
     private List<Level> levels;
     private List<String> levelFilePaths;
     private Session currentSession;
-    private Map<Level, Boolean> isLevelComplete = new HashMap<>();
 
 
     public GameManager(){
@@ -34,7 +33,6 @@ public class GameManager {
             for (String s : levelFilePaths) {
                 Level level = Level.createLevel(s);
                 levels.add(level);
-                isLevelComplete.put(level,false);
             }
         }
         catch (FileNotFoundException e){
@@ -50,7 +48,7 @@ public class GameManager {
 
 
     public List<Level> getLevels(){
-        return levels;
+        return new ArrayList<Level>(levels);
     }
 
     public Session startLevel(Level level) throws LevelNotInListException{
@@ -72,8 +70,7 @@ public class GameManager {
     }
 
     public boolean finishCompleteLevel(){
-        if(currentSession.checkWin()){
-            isLevelComplete.put(currentSession.getLevel(),true);
+        if(currentSession.getLevel().isLevelComplete()){
             this.quitLevel();
             return true;
         }

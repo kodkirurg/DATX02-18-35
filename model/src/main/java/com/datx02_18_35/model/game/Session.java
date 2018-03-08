@@ -192,6 +192,7 @@ public class Session {
         }
         for (Expression e: this.getScopes().iterator().next().getInventory()){
             if(e.equals(level.goal)){
+                level.completeLevel();
                 return true;
             }
         }

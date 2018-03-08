@@ -34,6 +34,8 @@ public class Level {
     public final Expression goal;
     public final ExpressionFactory expressionFactory;
 
+    private Boolean isLevelComplete;
+
 
 
 
@@ -42,6 +44,7 @@ public class Level {
         this.goal=goal;
         this.title=title;
         this.expressionFactory=expressionFactory;
+        this.isLevelComplete=false;
     }
 
 
@@ -102,11 +105,24 @@ public class Level {
 
         return new Level(Title,hypothesis,goal,expressionFactory);
     }
+
+    public boolean isLevelComplete(){
+        return isLevelComplete;
+    }
+
+     void completeLevel(){
+        isLevelComplete=true;
+    }
+
+
     static class LevelParseException extends Exception {
         LevelParseException(String string){
             super(string);
         }
     }
+
+
+
 
     public static final Level exampleLevel;
     static {
