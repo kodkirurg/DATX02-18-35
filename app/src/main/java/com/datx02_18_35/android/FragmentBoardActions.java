@@ -6,11 +6,19 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Rule;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import game.logic_game.R;
 
@@ -22,6 +30,7 @@ public class FragmentBoardActions extends Fragment {
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+
 
 
     @Override
@@ -37,22 +46,21 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
+        ArrayList collection  = new ArrayList<>();
 
 
 
-        recAdapter = new RecyclerAdapter(list);
+        recAdapter = new RuleAdapter(collection);
 
 
         //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
+        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
         localBehavoir.isLongPressDragEnabled = true;
+        localBehavoir.rules = true;
 
 
         //add drag and drop
         ItemTouchHelper.Callback callback = localBehavoir;
-
-
 
 
         itemTouchHelper = new ItemTouchHelper(callback);
@@ -61,8 +69,9 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setAdapter(recAdapter);
 
 
-
+        ((Game)getActivity()).ready.release(1);
         return view;
     }
+
 
 }

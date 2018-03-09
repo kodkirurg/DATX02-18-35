@@ -5,19 +5,21 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 
 /**
  * Created by raxxor on 2018-02-11.
  */
 
-public class EditItemTouchHelperCallback extends ItemTouchHelper.Callback {
+public class EditItemTouchHelperCallback<T extends ItemTouchHelperAdapter>  extends ItemTouchHelper.Callback{
 
-    public boolean isLongPressDragEnabled=true;
+    public boolean isLongPressDragEnabled=false;
+    public boolean rules;
+
+    private final T recyclerAdapter;
 
 
-    private final RecyclerAdapter recyclerAdapter;
-
-    public EditItemTouchHelperCallback(RecyclerAdapter adapter) {
+    public EditItemTouchHelperCallback(T adapter) {
         recyclerAdapter = adapter;
     }
 
