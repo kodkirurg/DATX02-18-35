@@ -28,12 +28,12 @@ import game.logic_game.R;
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-    public Semaphore ready=new Semaphore(1);
+    public Semaphore ready=new Semaphore(2);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try {
-            ready.acquire();
+            ready.acquire(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -66,10 +66,6 @@ public class Game extends AppCompatActivity  {
 
             }
         }).start();
-        ready.release();
-
-
-
     }
 
     @Override
@@ -95,14 +91,14 @@ public class Game extends AppCompatActivity  {
     public class BoardCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
-            ready.tryAcquire();
-            Log.d("test123","test");
+            ready.acquire(2);
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 FragmentManager fm = getFragmentManager();
                 FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
                 frag.updateBoard(data);
             }
+            ready.release(2);
         }
     }
 

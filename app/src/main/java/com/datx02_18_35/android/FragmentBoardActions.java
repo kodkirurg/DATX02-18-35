@@ -49,24 +49,6 @@ public class FragmentBoardActions extends Fragment {
         ArrayList collection  = new ArrayList<>();
 
 
-        /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
-        Expression r1 = exprFact.createProposition("R");
-        Expression r2 = exprFact.createAbsurdity();
-
-        collection.add(r2);
-
-
-        Collection<Rule> collectionRules = Rule.getLegalRules(null,collection);
-        
-        ArrayList<Rule> listlist = new ArrayList<Rule>();
-
-
-        list.add(r1);
-
-        list.add(r2);
-
-        collection = new ArrayList<>(Rule.getLegalRules(null,list));
-*/
 
         recAdapter = new RuleAdapter(collection);
 
@@ -87,7 +69,7 @@ public class FragmentBoardActions extends Fragment {
         recyclerView.setAdapter(recAdapter);
 
 
-
+        ((Game)getActivity()).ready.release(1);
         return view;
     }
 

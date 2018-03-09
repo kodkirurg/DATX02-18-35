@@ -64,6 +64,8 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
 
         recyclerView.setAdapter(recAdapter);
 
+
+        ((Game)getActivity()).ready.release(1);
         return view;
     }
 
