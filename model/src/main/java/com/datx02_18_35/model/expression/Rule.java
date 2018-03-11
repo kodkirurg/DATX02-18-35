@@ -29,7 +29,7 @@ public class Rule {
         switch(exprs.size()) {
             case 0:
                 //legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
-
+                break;
             case 1: {
                 if (assumption != null) {
                     List<Expression> assumptionAndExpr = new ArrayList<>();
