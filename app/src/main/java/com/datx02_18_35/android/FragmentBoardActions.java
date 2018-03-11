@@ -68,10 +68,18 @@ public class FragmentBoardActions extends Fragment {
         return view;
     }
 
-    public void updateActions(Collection<Rule> data){
-        collection.add(null);
-        recAdapter.notifyDataSetChanged();
-        collection.addAll(data);
+    public void updateActions(final Collection<Rule> data){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                collection.clear();
+                collection.addAll(data);
+                recAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+
     }
 
 
