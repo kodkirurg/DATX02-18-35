@@ -12,12 +12,10 @@ import java.util.List;
 
 public class RequestApplyRuleAction extends Action {
 
-    public final List<Expression> list;
     public final Rule rule;
 
-    public RequestApplyRuleAction(ActionConsumer callback, Rule rule, List<Expression> list) {
+    public RequestApplyRuleAction(ActionConsumer callback, Rule rule) {
         super(callback);
-        this.list=list;
         this.rule=rule;
     }
 }

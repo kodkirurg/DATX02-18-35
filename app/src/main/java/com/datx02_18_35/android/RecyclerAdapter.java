@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.RequestExpressionSelectionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -114,8 +115,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
             selected=newList;
         }
-        //update rules on board
+        //update rules on board and set selection
         try {
+            Controller.singleton.handleAction(new RequestExpressionSelectionAction(selected));
             Controller.singleton.handleAction(new RequestRulesAction(Game.boardCallback,selected));
         } catch (Exception e) {
             e.printStackTrace();

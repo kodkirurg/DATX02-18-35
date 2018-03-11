@@ -13,6 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
         //set click listener
         holder.frame.setOnClickListener(this);
+        holder.frame.setTag(position);
 
         //set visuals
         holder.frame.setBackgroundColor(Color.WHITE);
@@ -85,7 +89,11 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public void onClick(View v) {
-
+        try {
+            Controller.singleton.handleAction(new RequestApplyRuleAction(Game.boardCallback,dataSet.get((int)v.getTag())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
