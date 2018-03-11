@@ -32,6 +32,7 @@ public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
     public Semaphore ready=new Semaphore(2);
+    public static BoardCallback boardCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class Game extends AppCompatActivity  {
         setContentView(R.layout.activity_game);
 
         Controller.singleton.start();
-        BoardCallback boardCallback = new BoardCallback();
+        boardCallback = new BoardCallback();
         boardCallback.start();
         try {
             Controller.singleton.sendAction(new RequestGameboardAction(boardCallback));
@@ -107,8 +108,6 @@ public class Game extends AppCompatActivity  {
                 FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
                 frag.updateActions(data);
             }
-
-
             ready.release(2);
         }
     }

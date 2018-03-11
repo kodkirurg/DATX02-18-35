@@ -31,11 +31,6 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
-    public interface inter{
-        public void setNiceThings();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

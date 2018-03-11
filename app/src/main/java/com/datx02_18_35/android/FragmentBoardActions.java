@@ -27,7 +27,7 @@ import game.logic_game.R;
 
 public class FragmentBoardActions extends Fragment {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter recAdapter;
+    public RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
     public ArrayList<Rule> collection = new ArrayList<>();
@@ -46,9 +46,10 @@ public class FragmentBoardActions extends Fragment {
         recLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(recLayoutManager);
 
-
+        collection.add(null);
         //attach list to adapter
         recAdapter = new RuleAdapter(collection);
+
 
         //settings for this fragment
         EditItemTouchHelperCallback localBehaviour = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
@@ -68,7 +69,8 @@ public class FragmentBoardActions extends Fragment {
     }
 
     public void updateActions(Collection<Rule> data){
-        collection.clear();
+        collection.add(null);
+        recAdapter.notifyDataSetChanged();
         collection.addAll(data);
     }
 

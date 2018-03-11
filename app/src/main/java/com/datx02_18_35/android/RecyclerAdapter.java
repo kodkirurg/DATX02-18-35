@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
 import com.datx02_18_35.model.expression.Disjunction;
@@ -80,6 +83,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
+        //get position in dataset and extract expression
         int position = (int) v.getTag();
         Expression expr = dataSet.get(position);
 
@@ -109,6 +113,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 newList.add(item);
             }
             selected=newList;
+        }
+        //update rules on board
+        try {
+            Controller.singleton.handleAction(new RequestRulesAction(Game.boardCallback,selected));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
