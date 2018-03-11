@@ -25,7 +25,7 @@ import game.logic_game.R;
  */
 
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
-    ArrayList<Rule> dataSet;
+    private ArrayList<Rule> dataSet;
 
 
     public RuleAdapter(ArrayList<Rule> dataSet){
@@ -40,6 +40,11 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        //set click listener
+        holder.frame.setOnClickListener(this);
+
+        //set visuals
         holder.frame.setBackgroundColor(Color.WHITE);
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
         switch (dataSet.get(position).type) {
@@ -94,13 +99,12 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
-        public FrameLayout frame;
+        FrameLayout frame;
 
 
-        public ViewHolder(FrameLayout itemView) {
+        ViewHolder(FrameLayout itemView) {
             super(itemView);
             frame = itemView;
-            itemView.setOnClickListener(this);
         }
 
 

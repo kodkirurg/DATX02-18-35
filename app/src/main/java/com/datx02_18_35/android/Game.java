@@ -17,9 +17,12 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.Rule;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
@@ -98,8 +101,17 @@ public class Game extends AppCompatActivity  {
                 FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
                 frag.updateBoard(data);
             }
+            else if (action instanceof RefreshRulesAction){
+                Collection<Rule> data = ((RefreshRulesAction) action).rules;
+                FragmentManager fm = getFragmentManager();
+                FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
+                frag.updateActions(data);
+            }
+
+
             ready.release(2);
         }
     }
-
 }
+
+

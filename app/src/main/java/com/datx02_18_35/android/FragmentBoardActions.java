@@ -30,6 +30,7 @@ public class FragmentBoardActions extends Fragment {
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    public ArrayList<Rule> collection = new ArrayList<>();
 
 
 
@@ -45,32 +46,30 @@ public class FragmentBoardActions extends Fragment {
         recLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(recLayoutManager);
 
-        // specify an adapter (see also next example)
-        ArrayList collection  = new ArrayList<>();
 
-
-
+        //attach list to adapter
         recAdapter = new RuleAdapter(collection);
 
-
         //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = true;
-        localBehavoir.rules = true;
+        EditItemTouchHelperCallback localBehaviour = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
+        localBehaviour.isLongPressDragEnabled = true;
+        localBehaviour.rules = true;
 
-
-        //add drag and drop
-        ItemTouchHelper.Callback callback = localBehavoir;
-
-
-        itemTouchHelper = new ItemTouchHelper(callback);
+        //create touch helper and attach
+        itemTouchHelper = new ItemTouchHelper(localBehaviour);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        //attach adapter
         recyclerView.setAdapter(recAdapter);
 
 
         ((Game)getActivity()).ready.release(1);
         return view;
+    }
+
+    public void updateActions(Collection<Rule> data){
+        collection.clear();
+        collection.addAll(data);
     }
 
 

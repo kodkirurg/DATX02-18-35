@@ -18,6 +18,7 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
+import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,13 +32,13 @@ import game.logic_game.R;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
-    ArrayList<Expression> dataSet;
-    HashSet<Integer> selected;
+    private ArrayList<Expression> dataSet;
+    private ArrayList<Expression> selected;
 
 
     RecyclerAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
-        selected = new HashSet<>();
+        selected = new ArrayList<>();
     }
 
 
@@ -80,26 +81,34 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onClick(View v) {
         int position = (int) v.getTag();
+        Expression expr = dataSet.get(position);
 
-        if(! selected.contains(position) ){
-
+        if(! selected.contains(expr) ){
             //animations
             v.setBackgroundColor(Color.BLACK);
             v.setScaleX((float) 1.05);
             v.setScaleY((float) 1.05 );
 
-            //selection
-            selected.add(position);
+            //selection add it to our list
+            selected.add(expr);
         }
-        else if(selected.contains(position)){
+        else if(selected.contains(expr)){
 
             //animations
             v.setBackgroundColor(Color.WHITE);
             v.setScaleX((float) 1);
             v.setScaleY((float) 1 );
 
-            //de-selection
-            selected.remove(position);
+
+            ArrayList<Expression> newList = new ArrayList<>();
+            //de-selection and remove from list
+            for (Expression item : selected ){
+                if(item.equals(expr)){
+                    continue;
+                }
+                newList.add(item);
+            }
+            selected=newList;
         }
     }
 
@@ -136,7 +145,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             //whole card one symbol
             if(expr instanceof Proposition | expr instanceof Absurdity){
-                Log.d("test123", "test");
                 topCardView.removeAllViews();
                 TextView text = new TextView(topCardView.getContext());
                 text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
