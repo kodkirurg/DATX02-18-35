@@ -6,15 +6,22 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestExpressionSelectionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
+import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import jdk.nashorn.internal.ir.RuntimeNode;
 
 
 /**
@@ -57,6 +64,16 @@ public class Controller extends ActionConsumer {
             Collection<Rule> rules = session.getLegalRules(rulesAction.expressions);
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
+        }
+        else if (action instanceof RequestExpressionSelectionAction){
+            RequestExpressionSelectionAction request =  (RequestExpressionSelectionAction) action;
+            session.setSelection(request.list);
+        }
+        else if (action instanceof RequestApplyRuleAction){
+            List<Expression> selected = session.getSelected();
+            Rule rule = ((RequestApplyRuleAction) action).rule;
+            // a few apply directly
+            // 3 special cases
         }
         else {
             throw new UnhandledActionException(action);

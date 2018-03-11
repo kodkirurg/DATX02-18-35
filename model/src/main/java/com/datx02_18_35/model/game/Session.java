@@ -23,6 +23,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Session {
     private Stack<Scope> scopes = new Stack<>();
     private Level level;
+    private List<Expression> selected = new ArrayList<>();
 
     public Session(Level level) {
         this.level = level;
@@ -184,6 +185,13 @@ public class Session {
         return Rule.getLegalRules(getAssumption(),expressions);
     }
 
+    public void setSelection(List<Expression> selected){
+        this.selected=selected;
+    }
+    public List<Expression> getSelected(){
+        return this.selected;
+    }
+
     public boolean checkWin(){
         assert scopes.size()!=0;
         assert scopes!=null;
@@ -234,7 +242,6 @@ public class Session {
         }
         return testExpressions.isEmpty();
     }
-
 
     private Expression createExpression(){
         throw new NotImplementedException();
