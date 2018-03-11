@@ -29,6 +29,8 @@ public class Rule {
         switch(exprs.size()) {
             case 0:
                 //legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
+                // NOTE DO MAKE SURE 0 IS HANDLED(I.E EMPTY LIST),
+                // AND ALWAYS ADD BREAKS IF YOU COMMENT OUT SWITCH CASES.
                 break;
             case 1: {
                 if (assumption != null) {
