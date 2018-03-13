@@ -17,10 +17,6 @@ public class ExpressionFactory {
         this.symbolMap = symbolMap;
     }
 
-    public ExpressionFactory(){
-
-    }
-
     public Proposition createProposition(String id) {
         return new Proposition(id);
     }

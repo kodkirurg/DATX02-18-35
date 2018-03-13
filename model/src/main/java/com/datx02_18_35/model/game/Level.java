@@ -113,9 +113,14 @@ public class Level {
         return isLevelComplete;
     }
 
-     void completeLevel(){
+    public ExpressionFactory getExpressionFactory() {
+        return this.expressionFactory;
+    }
+
+    void completeLevel(){
         isLevelComplete=true;
     }
+
 
 
     static class LevelParseException extends Exception {
@@ -123,9 +128,6 @@ public class Level {
             super(string);
         }
     }
-
-
-
 
     public static final Level exampleLevel;
     static {
