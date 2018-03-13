@@ -13,6 +13,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.UnhandledActionException;
+import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ import game.logic_game.R;
  */
 
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
-    ArrayList<Rule> dataSet;
+    private ArrayList<Rule> dataSet;
 
 
     public RuleAdapter(ArrayList<Rule> dataSet){
@@ -40,33 +43,42 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        //set click listener
+        holder.frame.setOnClickListener(this);
+        holder.frame.setTag(position);
+
+        //set visuals
         holder.frame.setBackgroundColor(Color.WHITE);
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
-        switch (dataSet.get(position).type) {
-            case CONJUNCTION_INTRODUCTION:
-                imageView.setBackgroundResource(R.drawable.conjunction_introduction);
-                break;
-            case ABSURDITY_ELIMINATION:
-                imageView.setBackgroundResource(R.drawable.absurdity_elimination);
-                break;
-            case CONJUNCTION_ELIMINATION:
-                imageView.setBackgroundResource(R.drawable.conjunction_elimination);
-                break;
-            case IMPLICATION_INTRODUCTION:
-                imageView.setBackgroundResource(R.drawable.implication_introduction);
-                break;
-            case DISJUNCTION_ELIMINATION:
-                imageView.setBackgroundResource(R.drawable.disjunction_elimination);
-                break;
-            case DISJUNCTION_INTRODUCTION:
-                imageView.setBackgroundResource(R.drawable.disjunction_introduction);
-                break;
-            case IMPLICATION_ELIMINATION:
-                imageView.setBackgroundResource(R.drawable.implication_elimination);
-                break;
+        if (dataSet.get(position) != null){
+            switch (dataSet.get(position).type) {
+                case CONJUNCTION_INTRODUCTION:
+                    imageView.setBackgroundResource(R.drawable.conjunction_introduction);
+                    break;
+                case ABSURDITY_ELIMINATION:
+                    imageView.setBackgroundResource(R.drawable.absurdity_elimination);
+                    break;
+                case CONJUNCTION_ELIMINATION:
+                    imageView.setBackgroundResource(R.drawable.conjunction_elimination);
+                    break;
+                case IMPLICATION_INTRODUCTION:
+                    imageView.setBackgroundResource(R.drawable.implication_introduction);
+                    break;
+                case DISJUNCTION_ELIMINATION:
+                    imageView.setBackgroundResource(R.drawable.disjunction_elimination);
+                    break;
+                case DISJUNCTION_INTRODUCTION:
+                    imageView.setBackgroundResource(R.drawable.disjunction_introduction);
+                    break;
+                case IMPLICATION_ELIMINATION:
+                    imageView.setBackgroundResource(R.drawable.implication_elimination);
+                    break;
                 default:
                     Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
+            }
         }
+
     }
 
 
@@ -77,7 +89,11 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
 
     @Override
     public void onClick(View v) {
-
+        try {
+            Controller.singleton.handleAction(new RequestApplyRuleAction(Game.boardCallback,dataSet.get((int)v.getTag())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -94,13 +110,12 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> im
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
-        public FrameLayout frame;
+        FrameLayout frame;
 
 
-        public ViewHolder(FrameLayout itemView) {
+        ViewHolder(FrameLayout itemView) {
             super(itemView);
             frame = itemView;
-            itemView.setOnClickListener(this);
         }
 
 

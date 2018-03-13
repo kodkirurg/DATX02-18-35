@@ -6,4 +6,4 @@ SYMBOL Q RedBall
 HYPOTHESIS (P)
 HYPOTHESIS (Q)
 
-GOAL ((P)&(Q));
+GOAL ((P)&(Q))

@@ -17,26 +17,42 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Rule;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
+    public Semaphore ready=new Semaphore(2);
+    public static BoardCallback boardCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
-
-
+        try {
+            ready.acquire(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
         Controller.singleton.start();
+        boardCallback = new BoardCallback();
+        boardCallback.start();
+        try {
+            Controller.singleton.sendAction(new RequestGameboardAction(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -52,12 +68,9 @@ public class Game extends AppCompatActivity  {
                 toolbar = findViewById(R.id.toolbar);
                 toolbar.setTitle("");
                 setSupportActionBar(toolbar);
+
             }
         }).start();
-
-
-
-
     }
 
     @Override
@@ -80,17 +93,27 @@ public class Game extends AppCompatActivity  {
     }
 
 
-    public class BoardCallback extends ActionConsumer {
 
+    public class BoardCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+            ready.acquire(2);
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 FragmentManager fm = getFragmentManager();
                 FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
                 frag.updateBoard(data);
             }
+            else if (action instanceof RefreshRulesAction){
+                Collection<Rule> data = ((RefreshRulesAction) action).rules;
+                FragmentManager fm = getFragmentManager();
+                FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
+                frag.updateActions(data);
+            }
+            ready.release(2);
         }
     }
 
 }
+
+

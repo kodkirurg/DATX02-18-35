@@ -11,13 +11,20 @@ import java.util.Map;
 
 public class ExpressionFactory {
 
-    private final Map<String, String> symbolMap;
+    private  Map<String, String> symbolMap;
 
     public ExpressionFactory(Map<String, String> symbolMap) {
         this.symbolMap = symbolMap;
     }
 
+    public ExpressionFactory(){
+
+    }
+
     public Proposition createProposition(String id) {
+        return new Proposition(id);
+    }
+    public Proposition createPropositionWithMap(String id) {
         return new Proposition(id, symbolMap.get(id));
     }
 

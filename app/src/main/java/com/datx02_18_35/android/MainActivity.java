@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.MediaController;
 
 import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.model.expression.ExpressionFactory;
 
 import game.logic_game.R;
 
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Add listener
         Button start_button = (Button) findViewById(R.id.start_button); //grab a view and convert it to a button class
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
-
+        Controller.singleton.start();
 
 
     }
