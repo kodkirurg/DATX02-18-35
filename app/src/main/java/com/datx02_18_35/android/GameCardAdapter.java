@@ -112,7 +112,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         //update rules on board and set selection
         try {
             Controller.singleton.handleAction(new RequestRulesAction(Game.boardCallback,selected));
-            Controller.singleton.handleAction(new RequestExpressionSelectionAction(selected));
         } catch (Exception e) {
             e.printStackTrace();
         }
