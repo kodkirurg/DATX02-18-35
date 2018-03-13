@@ -12,6 +12,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSession;
 import com.datx02_18_35.controller.dispatch.actions.ShowNewExpressionAction;
+import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
@@ -67,12 +68,15 @@ public class Controller extends ActionConsumer {
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
         }
-        else if (action instanceof RequestApplyRuleAction){
+        else if (action instanceof RequestApplyRuleAction) {
             Rule rule = ((RequestApplyRuleAction) action).rule;
             Collection<Expression> newExpressions = session.applyRule(rule);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
+            if (session.checkWin()) {
+                action.callback(new VictoryConditionMetAction());
+            }
         }
         else {
             throw new UnhandledActionException(action);
