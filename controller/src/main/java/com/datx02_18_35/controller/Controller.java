@@ -35,7 +35,7 @@ public class Controller extends ActionConsumer {
 
     private Controller() {
         game = new GameManager();
-        Level level = game.getLevels().get(0);
+        session = null;
     }
 
     @Override
