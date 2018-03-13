@@ -31,11 +31,6 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
-    public interface inter{
-        public void setNiceThings();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,11 +80,17 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public void updateBoard(Iterable<Expression> iterable){
-        list.clear();
-        for (Expression anIterable : iterable) {
-            list.add(anIterable);
-        }
+    public void updateBoard(final Iterable<Expression> iterable){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                list.clear();
+                for (Expression anIterable : iterable) {
+                    list.add(anIterable);
+                }
+                recAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }
