@@ -9,7 +9,7 @@ import java.io.IOException;
 public class Proposition extends Expression {
 
     private final String id;
-    private final String symbol;
+    private String symbol;
 
     Proposition(String id, String symbol) {
         super();
@@ -17,6 +17,12 @@ public class Proposition extends Expression {
         this.symbol = symbol;
         hash=calculateHash();
     }
+    Proposition(String id) {
+        super();
+        this.id = id;
+        hash=calculateHash();
+    }
+
 
     @Override
     public int calculateHash() {
