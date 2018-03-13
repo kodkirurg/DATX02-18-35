@@ -29,12 +29,12 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
     private ArrayList<Expression> selected;
 
 
-    RecyclerAdapter(ArrayList<Expression> dataSet){
+    GameCardAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
         selected = new ArrayList<>();
     }
@@ -54,7 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         if(null != dataSet.get(position)){
-            new CardDeflator(holder,dataSet.get(position));
+            new CardDeflator(holder.cardView,dataSet.get(position));
         }
     }
 
@@ -112,7 +112,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //update rules on board and set selection
         try {
             Controller.singleton.handleAction(new RequestRulesAction(Game.boardCallback,selected));
-            Controller.singleton.handleAction(new RequestExpressionSelectionAction(selected));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,13 +139,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     }
 
-    private static class CardDeflator{
+    public static class CardDeflator{
         CardView topCardView;
         final String dots = " .. ";
 
         
-        CardDeflator(ViewHolder holder, Expression expr){
-            topCardView = holder.cardView;
+        CardDeflator(CardView cardView, Expression expr){
+            topCardView = cardView;
 
 
             //whole card one symbol

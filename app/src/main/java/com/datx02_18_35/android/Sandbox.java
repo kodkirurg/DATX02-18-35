@@ -34,8 +34,8 @@ public class Sandbox extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        ft.replace(R.id.game_right_side, new FragmentBoardActions());
-        ft.replace(R.id.game_left_side, new FragmentBoardCards()).commit();
+        ft.replace(R.id.sandbox_right_side, new FragmentSandboxOperators());
+        ft.replace(R.id.sandbox_left_side, new FragmentSandboxCards()).commit();
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         this.setSupportActionBar(toolbar);

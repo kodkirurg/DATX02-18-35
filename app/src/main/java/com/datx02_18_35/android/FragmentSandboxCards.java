@@ -1,6 +1,5 @@
 package com.datx02_18_35.android;
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,63 +9,59 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.model.expression.Expression;
 
 import java.util.ArrayList;
 
 import game.logic_game.R;
 
+import static com.datx02_18_35.android.FragmentBoardCards.getWidthDp;
 
+/**
+ * Created by Magnu on 2018-03-13.
+ */
 
+public class FragmentSandboxCards extends Fragment {
 
-public class FragmentScopeActions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_board_actions,
+        View view = inflater.inflate(R.layout.fragment_sandbox_cards,
                 container, false);
 
+        //"screen" re-size
+        int spanCount;
+        int widthDP=Math.round(getWidthDp(getActivity().getApplicationContext())) - 130*2;
+        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.game_recycler_view);
+
+        list.add(null);
+        recyclerView = (RecyclerView) view.findViewById(R.id.sandboxLeft_recycler_view);
         // use a grid layout manager
-        recLayoutManager = new GridLayoutManager(getActivity(), 1);
+        recLayoutManager = new GridLayoutManager(getActivity(), spanCount);
         recyclerView.setLayoutManager(recLayoutManager);
 
-        // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
 
 
-
-
-        recAdapter = new GameCardAdapter(list);
-
-
-        //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
-
-
+        list.add(null);
+        recAdapter = new SandboxCardsAdapter(list);
         //add drag and drop
-        ItemTouchHelper.Callback callback = localBehavoir;
-
-
+        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((SandboxCardsAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
 
 
-
+        //((Game)getActivity()).ready.release(1);
         return view;
-    }
-    public void updateActions() {
-        //list=(all the actions);
-        //recAdapter.notifyDataSetChanged();
     }
 
 }
