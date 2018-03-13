@@ -37,9 +37,9 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.frame.setOnClickListener(this);
         holder.frame.setTag(position);
+        holder.frame.setBackgroundColor(Color.WHITE);
 
         //set visuals
-        holder.frame.setBackgroundColor(Color.WHITE);
         ImageView imageView = holder.frame.findViewById(R.id.operator_imageview);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position)) {
@@ -67,6 +67,26 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
     @Override
     public void onClick(View view) {
 
+        if(Sandbox.maySelectOperator){
+            if(dataSet.get((int)view.getTag())==Sandbox.operatorSelcted){
+                Sandbox.operatorSelcted=null;
+                view.setScaleX((float) 1.00);
+                view.setScaleY((float) 1.00);
+                return;
+            }
+            if(Sandbox.operatorIndex!=-1){
+                view.findViewWithTag(Sandbox.operatorIndex).setScaleX((float) 1.00);
+                view.findViewWithTag(Sandbox.operatorIndex).setScaleY((float) 1.00);
+            }
+            Sandbox.operatorSelcted = dataSet.get((int)view.getTag());
+            //animations
+            view.setScaleX((float) 1.05);
+            view.setScaleY((float) 1.05);
+
+        }
+        else {
+            Log.d("test123", "onClick: "+ "operator selection error");
+        }
     }
 
     @Override

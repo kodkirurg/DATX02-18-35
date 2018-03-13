@@ -57,10 +57,12 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             selected.add(expr);
             view.setScaleX((float) 1.05);
             view.setScaleY((float) 1.05 );
+            Sandbox.maySelectOperator=true;
         }
         else if (selected.size() == 1){
 
             if(selected.contains(expr)){
+                Sandbox.maySelectOperator=false;
                 view.setScaleX((float) 1.00);
                 view.setScaleY((float) 1.00 );
                 ArrayList<Expression> newList = new ArrayList<>();

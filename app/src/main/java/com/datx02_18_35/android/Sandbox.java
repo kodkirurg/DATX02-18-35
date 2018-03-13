@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.datx02_18_35.model.expression.OperatorType;
+
 import game.logic_game.R;
 
 public class Sandbox extends AppCompatActivity {
 
     Toolbar toolbar;
-
+    public static boolean maySelectOperator=false;
+    public static OperatorType operatorSelcted;
+    public static int operatorIndex = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
