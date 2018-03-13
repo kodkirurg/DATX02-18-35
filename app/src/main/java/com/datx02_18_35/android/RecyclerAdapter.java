@@ -3,7 +3,6 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
-import com.datx02_18_35.controller.dispatch.actions.RequestExpressionSelectionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -22,12 +19,9 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
-import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import game.logic_game.R;
 
