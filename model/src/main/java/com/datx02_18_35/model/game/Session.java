@@ -23,7 +23,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Session {
     private Stack<Scope> scopes = new Stack<>();
     private Level level;
-    private List<Expression> selected = new ArrayList<>();
 
     public Session(Level level) {
         this.level = level;
@@ -166,7 +165,7 @@ public class Session {
         return rules;
     }
 
-    public void applyRule(Rule rule){
+    public Collection<Expression> applyRule(Rule rule){
         assertRuleInScope(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
@@ -174,6 +173,7 @@ public class Session {
         Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
+        return expressions;
     }
 
 
@@ -183,13 +183,6 @@ public class Session {
 
     public Collection<Rule> getLegalRules(Collection<Expression> expressions){
         return Rule.getLegalRules(getAssumption(),expressions);
-    }
-
-    public void setSelection(List<Expression> selected){
-        this.selected=selected;
-    }
-    public List<Expression> getSelected(){
-        return this.selected;
     }
 
     public boolean checkWin(){
