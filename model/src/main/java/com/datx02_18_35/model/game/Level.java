@@ -34,11 +34,8 @@ public class Level {
     public final ExpressionFactory expressionFactory;
     public final List<Proposition> propositions;
 
-    private Boolean isLevelComplete;
-
-
-
-
+    private boolean isLevelComplete;
+    
     private Level(String title,List<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
         this.hypothesis=hypothesis;
         this.goal=goal;
