@@ -3,7 +3,6 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.RequestExpressionSelectionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.model.expression.Absurdity;
@@ -22,12 +20,9 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
-import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import game.logic_game.R;
 
@@ -35,12 +30,12 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
     private ArrayList<Expression> selected;
 
 
-    RecyclerAdapter(ArrayList<Expression> dataSet){
+    GameCardAdapter(ArrayList<Expression> dataSet){
         this.dataSet = dataSet;
         selected = new ArrayList<>();
     }
@@ -60,7 +55,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         if(null != dataSet.get(position)){
-            new CardDeflator(holder,dataSet.get(position));
+            new CardDeflator(holder.cardView,dataSet.get(position));
         }
     }
 
@@ -146,13 +141,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     }
 
-    private static class CardDeflator{
+    public static class CardDeflator{
         CardView topCardView;
         final String dots = " .. ";
 
         
-        CardDeflator(ViewHolder holder, Expression expr){
-            topCardView = holder.cardView;
+        CardDeflator(CardView cardView, Expression expr){
+            topCardView = cardView;
 
 
             //whole card one symbol

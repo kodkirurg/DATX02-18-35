@@ -84,7 +84,7 @@ public class Game extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Scope.class); //change to scope/assumption class
+                i = new Intent(this,Sandbox.class);
                 break;
         }
         startActivity(i);
