@@ -10,6 +10,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSession;
 import com.datx02_18_35.controller.dispatch.actions.ShowNewExpressionAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
@@ -34,17 +35,24 @@ public class Controller extends ActionConsumer {
 
     private Controller() {
         game = new GameManager();
-        Level level = game.getLevels().get(0);
-        try {
-            session = game.startLevel(level);
-        } catch (GameManager.LevelNotInListException e) {
-            e.printStackTrace();
-        }
+        session = null;
     }
 
     @Override
     public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
-        if (action instanceof RequestInventoryAction) {
+        if (action instanceof RequestStartNewSession) {
+            assert session == null;
+            Level level = ((RequestStartNewSession) action).level;
+            try {
+                session = game.startLevel(level);
+            } catch (GameManager.LevelNotInListException e) {
+                e.printStackTrace();
+                return;
+            }
+            action.callback(getRefreshInventoryAction());
+            action.callback(getRefreshGameboardAction());
+        }
+        else if (action instanceof RequestInventoryAction) {
             assert session != null;
             action.callback(getRefreshInventoryAction());
         }
@@ -62,8 +70,8 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestApplyRuleAction){
             Rule rule = ((RequestApplyRuleAction) action).rule;
             Collection<Expression> newExpressions = session.applyRule(rule);
-            action.callback(getRefreshGameboardAction());
             action.callback(getRefreshInventoryAction());
+            action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
         }
         else {

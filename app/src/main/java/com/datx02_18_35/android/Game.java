@@ -19,9 +19,11 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSession;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.game.Level;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,6 +50,12 @@ public class Game extends AppCompatActivity  {
         Controller.singleton.start();
         boardCallback = new BoardCallback();
         boardCallback.start();
+        try {
+            Controller.singleton.handleAction(new RequestStartNewSession(boardCallback,Level.exampleLevel));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             Controller.singleton.sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
@@ -85,7 +93,7 @@ public class Game extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Scope.class); //change to scope/assumption class
+                i = new Intent(this,Sandbox.class);
                 break;
         }
         startActivity(i);

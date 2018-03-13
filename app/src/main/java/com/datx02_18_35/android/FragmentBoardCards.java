@@ -9,7 +9,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.datx02_18_35.model.expression.Expression;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import game.logic_game.R;
 
@@ -51,9 +49,9 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
 
 
         list.add(null);
-        recAdapter = new RecyclerAdapter(list);
+        recAdapter = new GameCardAdapter(list);
         //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
+        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
