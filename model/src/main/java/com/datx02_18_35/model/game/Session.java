@@ -165,7 +165,7 @@ public class Session {
         return rules;
     }
 
-    public void applyRule(Rule rule){
+    public Collection<Expression> applyRule(Rule rule){
         assertRuleInScope(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
@@ -173,6 +173,7 @@ public class Session {
         Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
+        return expressions;
     }
 
 
