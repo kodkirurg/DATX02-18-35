@@ -92,6 +92,7 @@ public class Game extends AppCompatActivity  {
     }
 
 
+
     public class BoardCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
@@ -111,6 +112,7 @@ public class Game extends AppCompatActivity  {
             ready.release(2);
         }
     }
+
 }
 
 

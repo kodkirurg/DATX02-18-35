@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start_button: {
-                Intent intent = new Intent(this, Game.class); //create intent
+                Intent intent = new Intent(this, Sandbox.class); //create intent
+                intent.putExtra("STRING_I_NEED", "SANDBOX");
                 startActivity(intent); //start intent
                 break;
             }

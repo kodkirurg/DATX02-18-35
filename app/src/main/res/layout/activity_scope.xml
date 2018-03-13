@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.datx02_18_35.android.Scope">
+    tools:context="com.datx02_18_35.android.Scope"
+    android:id="@+id/scope"
+    >
 
     <include
         layout="@layout/toolbar"

@@ -10,65 +10,67 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
+import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.expression.OperatorType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import game.logic_game.R;
 
+public class FragmentScopeCards extends Fragment implements OnStartDragListener {
 
-
-
-public class Fragment_scope_actions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private ArrayList<Expression> list;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_board_actions,
+        View view = inflater.inflate(R.layout.fragment_board_cards,
                 container, false);
-
 
         recyclerView = (RecyclerView) view.findViewById(R.id.game_recycler_view);
         // use a grid layout manager
-        recLayoutManager = new GridLayoutManager(getActivity(), 1);
+        recLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(recLayoutManager);
 
         // specify an adapter (see also next example)
-        ArrayList list = new ArrayList();
+        list = new ArrayList<Expression>();
 
 
 
 
         recAdapter = new RecyclerAdapter(list);
 
-
-        //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
-
-
         //add drag and drop
-        ItemTouchHelper.Callback callback = localBehavoir;
-
-
-
-
+        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
 
-
-
         return view;
     }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        itemTouchHelper.startDrag(viewHolder);
+    }
+
+    public void addToBoard(/*Expression newCard*/){
+        //list.add(newCard);
+        //recAdapter.notifyDataSetChanged();
+    }
+    public void updateCards(ArrayList<Expression> newList){
+        //list=newList;
+        //recAdapter.notifyDataSetChanged();
+    }
+
+
 
 }
