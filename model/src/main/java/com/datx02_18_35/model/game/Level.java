@@ -1,23 +1,22 @@
 package com.datx02_18_35.model.game;
 
 import com.datx02_18_35.model.ExpressionParser;
+import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.OperatorType;
+import com.datx02_18_35.model.expression.Proposition;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by Jonatan on 2018-03-07.
@@ -33,6 +32,7 @@ public class Level {
     public final String title;
     public final Expression goal;
     public final ExpressionFactory expressionFactory;
+    public final List<Proposition> propositions;
 
     private Boolean isLevelComplete;
 
@@ -45,6 +45,28 @@ public class Level {
         this.title=title;
         this.expressionFactory=expressionFactory;
         this.isLevelComplete=false;
+        this.propositions = new ArrayList<>(extractPropositions(goal, hypothesis));
+    }
+
+    private static Set<Proposition> extractPropositions(Expression goal, List<Expression> hypothesis) {
+        Set<Proposition> propSet = new HashSet<>();
+        propSet.addAll((extractPropositions(goal)));
+        for (Expression expr : hypothesis) {
+            propSet.addAll(extractPropositions(expr));
+        }
+        return propSet;
+    }
+    private static Set<Proposition> extractPropositions(Expression expression) {
+        Set<Proposition> propSet = new HashSet<>();
+        if (expression instanceof Proposition) {
+            Proposition proposition = (Proposition)expression;
+            propSet.add(proposition);
+        } else if (expression instanceof Operator){
+            Operator operator = (Operator)expression;
+            propSet.addAll(extractPropositions(operator.getOperand1()));
+            propSet.addAll(extractPropositions(operator.getOperand2()));
+        }
+        return propSet;
     }
 
 
