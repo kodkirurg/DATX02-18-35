@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import game.logic_game.R;
 
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
+    private ArrayList<Expression> selected = new ArrayList<Expression>();
 
 
     public SandboxCardsAdapter(ArrayList<Expression> dataSet){this.dataSet=dataSet;}
@@ -34,6 +36,8 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.cardView.setOnClickListener(this);
+        holder.cardView.setTag(position);
         holder.cardView.setBackgroundColor(Color.WHITE);
         if(dataSet.get(position)!= null){
             new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
@@ -47,6 +51,35 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     }
     @Override
     public void onClick(View view) {
+        int position = (int)view.getTag();
+        Expression expr = dataSet.get(position);
+        if(selected.size() == 0){
+            selected.add(expr);
+            view.setScaleX((float) 1.05);
+            view.setScaleY((float) 1.05 );
+            Sandbox.maySelectOperator=true;
+        }
+        else if (selected.size() == 1){
+
+            if(selected.contains(expr)){
+                Sandbox.maySelectOperator=false;
+                view.setScaleX((float) 1.00);
+                view.setScaleY((float) 1.00 );
+                ArrayList<Expression> newList = new ArrayList<>();
+                //de-selection and remove from list
+                for (Expression item : selected ){
+                    if(item.equals(expr)){
+                        continue;
+                    }
+                    newList.add(item);
+                }
+                selected=newList;
+            }
+
+        }
+        else{
+            Log.d("test123","too many selections in sandbox");
+        }
 
     }
 
