@@ -72,5 +72,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException;
+    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalGameStateException;
 }

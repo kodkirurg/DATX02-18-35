@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,14 +18,12 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSession;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
@@ -51,7 +48,7 @@ public class Game extends AppCompatActivity  {
         boardCallback = new BoardCallback();
         boardCallback.start();
         try {
-            Controller.singleton.handleAction(new RequestStartNewSession(boardCallback,Level.exampleLevel));
+            Controller.singleton.handleAction(new RequestStartNewSessionAction(boardCallback,Level.exampleLevel));
         } catch (Exception e) {
             e.printStackTrace();
         }
