@@ -36,15 +36,12 @@ public class GameManager {
                 Level level = Level.createLevel(s);
                 levels.add(level);
             }
-        }
-        catch (FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        catch (Level.LevelParseException e){
-            System.out.println(e.getMessage());
+        } catch (Level.LevelParseException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
