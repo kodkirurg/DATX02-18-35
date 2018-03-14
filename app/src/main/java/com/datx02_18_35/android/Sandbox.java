@@ -16,7 +16,7 @@ public class Sandbox extends AppCompatActivity {
     Toolbar toolbar;
     public static boolean maySelectOperator=false;
     public static OperatorType operatorSelcted;
-    public static int operatorIndex = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,4 +54,6 @@ public class Sandbox extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+
 }

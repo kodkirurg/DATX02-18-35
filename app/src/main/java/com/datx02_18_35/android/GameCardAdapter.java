@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,7 +141,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
     public static class CardDeflator{
-        CardView topCardView;
+        final CardView topCardView;
         final String dots = " .. ";
 
         

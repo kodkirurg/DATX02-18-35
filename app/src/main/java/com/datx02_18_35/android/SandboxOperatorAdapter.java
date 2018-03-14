@@ -21,6 +21,8 @@ import game.logic_game.R;
 
 public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<OperatorType> dataSet;
+    private ViewHolder previousSelectedOperatorHolder=null;
+
 
     public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet){
         this.dataSet=dataSet;
@@ -37,6 +39,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.frame.setOnClickListener(this);
         holder.frame.setTag(position);
+        holder.frame.setTag(R.string.viewholders,holder);
         holder.frame.setBackgroundColor(Color.WHITE);
 
         //set visuals
@@ -53,7 +56,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
                     imageView.setBackgroundResource(R.drawable.vertical_conjunction);
                     break;
                 default:
-                    Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
+                    Log.d("test123", "onBindViewHolder in sanbox: Unknown rule, wtf?");
             }
         }
     }
@@ -66,27 +69,30 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
 
     @Override
     public void onClick(View view) {
-
-        if(Sandbox.maySelectOperator){
-            if(dataSet.get((int)view.getTag())==Sandbox.operatorSelcted){
-                Sandbox.operatorSelcted=null;
-                view.setScaleX((float) 1.00);
-                view.setScaleY((float) 1.00);
-                return;
-            }
-            if(Sandbox.operatorIndex!=-1){
-                view.findViewWithTag(Sandbox.operatorIndex).setScaleX((float) 1.00);
-                view.findViewWithTag(Sandbox.operatorIndex).setScaleY((float) 1.00);
-            }
-            Sandbox.operatorSelcted = dataSet.get((int)view.getTag());
-            //animations
-            view.setScaleX((float) 1.05);
-            view.setScaleY((float) 1.05);
-
+        //get position in viewholder from view
+        int pos = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();
+        //get viewholder
+        ViewHolder holder = (SandboxOperatorAdapter.ViewHolder) view.getTag(R.string.viewholders);
+        if(dataSet.get(pos) == Sandbox.operatorSelcted){
+            //Un-select
+            Sandbox.operatorSelcted=null;
+            holder.frame.setScaleX((float) 1);
+            holder.frame.setScaleY((float) 1 );
         }
-        else {
-            Log.d("test123", "onClick: "+ "operator selection error");
+        else if (Sandbox.maySelectOperator){
+            //set new other operator selection
+            holder.frame.setScaleX((float) 1.50);
+            holder.frame.setScaleY((float) 1.50 );
+            Sandbox.operatorSelcted=dataSet.get(pos);
+            if(previousSelectedOperatorHolder!=null){
+                //un-select other operator previously selected
+                previousSelectedOperatorHolder.frame.setScaleX((float) 1);
+                previousSelectedOperatorHolder.frame.setScaleX((float) 1);
+            }
+            previousSelectedOperatorHolder=holder;
         }
+
+
     }
 
     @Override

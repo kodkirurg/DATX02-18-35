@@ -1,6 +1,6 @@
 package com.datx02_18_35.controller;
 
-import com.datx02_18_35.controller.dispatch.IllegalGameStateException;
+import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
@@ -18,10 +18,12 @@ import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
+import com.datx02_18_35.model.game.IllegalRuleException;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -43,10 +45,10 @@ public class Controller extends ActionConsumer {
 
     @Override
     public void handleAction(Action action)
-            throws UnhandledActionException, IllegalGameStateException, InterruptedException {
+            throws UnhandledActionException, IllegalActionException, InterruptedException, IllegalRuleException {
         if (action instanceof RequestStartNewSessionAction) {
             if (session != null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             try {
@@ -60,25 +62,25 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestAbortSessionAction) {
             if (session != null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             session = null;
         }
         else if (action instanceof RequestInventoryAction) {
             if (session == null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             action.callback(getRefreshInventoryAction());
         }
         else if (action instanceof RequestGameboardAction) {
             if (session == null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestRulesAction) {
             if (session == null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             RequestRulesAction rulesAction = (RequestRulesAction) action;
             Collection<Rule> rules = session.getLegalRules(rulesAction.expressions);
@@ -87,10 +89,10 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestApplyRuleAction) {
             if (session == null) {
-                throw new IllegalGameStateException(action);
+                throw new IllegalActionException(action);
             }
             Rule rule = ((RequestApplyRuleAction) action).rule;
-            Collection<Expression> newExpressions = session.applyRule(rule);
+            List<Expression> newExpressions = session.applyRule(rule);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));

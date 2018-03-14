@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import static com.datx02_18_35.android.FragmentBoardCards.getWidthDp;
 
 public class FragmentSandboxCards extends Fragment {
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
@@ -41,16 +42,13 @@ public class FragmentSandboxCards extends Fragment {
         int widthDP=Math.round(getWidthDp(getActivity().getApplicationContext())) - 130*2;
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
-
-        list.add(null);
         recyclerView = (RecyclerView) view.findViewById(R.id.sandboxLeft_recycler_view);
         // use a grid layout manager
         recLayoutManager = new GridLayoutManager(getActivity(), spanCount);
         recyclerView.setLayoutManager(recLayoutManager);
 
 
-
-        list.add(null);
+        list.addAll(Level.exampleLevel.propositions);
         recAdapter = new SandboxCardsAdapter(list);
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((SandboxCardsAdapter) recAdapter);
