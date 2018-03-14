@@ -108,7 +108,7 @@ public class Game extends AppCompatActivity  {
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 FragmentManager fm = getFragmentManager();
                 FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
-                frag.addToBoard(data);
+                frag.updateBoard(data);
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;

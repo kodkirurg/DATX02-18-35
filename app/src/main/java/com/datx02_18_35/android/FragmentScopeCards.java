@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class FragmentScopeCards extends Fragment implements OnStartDragListener {
+public class FragmentScopeCards extends Fragment  {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
@@ -46,19 +46,15 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
         recAdapter = new GameCardAdapter(list);
 
         //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
+        /*ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
-
+        */
         return view;
     }
 
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        itemTouchHelper.startDrag(viewHolder);
-    }
 
     public void addToBoard(/*Expression newCard*/){
         //list.add(newCard);
