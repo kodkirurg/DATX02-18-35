@@ -47,8 +47,6 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         recyclerView.setLayoutManager(recLayoutManager);
 
 
-
-        list.add(null);
         recAdapter = new GameCardAdapter(list);
         //add drag and drop
         ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
@@ -78,15 +76,16 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public void updateBoard(final Iterable<Expression> iterable){
+    public void addToBoard(final Iterable<Expression> iterable){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                list.clear();
                 for (Expression anIterable : iterable) {
-                    list.add(anIterable);
+                    if(!list.contains(anIterable)){
+                        list.add(anIterable);
+                        recAdapter.notifyItemInserted(list.size()-1);
+                    }
                 }
-                recAdapter.notifyDataSetChanged();
             }
         });
     }
