@@ -68,7 +68,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         }
         else if (selected.size() == 1){
 
-            if(selected.contains(expr)){
+            if(selected.contains(expr) & Sandbox.operatorSelcted==null ){
                 Sandbox.maySelectOperator=false;
                 view.setScaleX((float) 1.00);
                 view.setScaleY((float) 1.00 );
@@ -87,16 +87,21 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
                 Expression expression = expressionFactory.createOperator(Sandbox.operatorSelcted,selected.get(0),expr);
 
+
+                //restore animations
                 firstSelected.cardView.setScaleX((float) 1.00);
                 firstSelected.cardView.setScaleY((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
 
+                //restore variables
                 firstSelected=null;
                 selected.clear();
-
                 Sandbox.maySelectOperator=false;
                 Sandbox.operatorSelcted=null;
-                //also restore amination!!!
 
+                //add new expression
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
 

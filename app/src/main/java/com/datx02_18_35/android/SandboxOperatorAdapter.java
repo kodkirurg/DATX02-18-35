@@ -21,7 +21,7 @@ import game.logic_game.R;
 
 public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<OperatorType> dataSet;
-    private ViewHolder previousSelectedOperatorHolder=null;
+    public static ViewHolder previousSelectedOperatorHolder=null;
 
 
     public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet){
