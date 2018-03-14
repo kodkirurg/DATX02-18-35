@@ -76,14 +76,18 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
         if(dataSet.get(pos) == Sandbox.operatorSelcted){
             //Un-select
             Sandbox.operatorSelcted=null;
+            Sandbox.button.setText("Make assumption!");
+            Sandbox.button.setBackgroundColor(Color.GREEN);
             previousSelectedOperatorHolder=null;
             holder.frame.setScaleX((float) 1);
             holder.frame.setScaleY((float) 1 );
         }
         else if (Sandbox.maySelectOperator){
             //set new other operator selection
-            holder.frame.setScaleX((float) 1.50);
-            holder.frame.setScaleY((float) 1.50 );
+            holder.frame.setScaleX((float) 1.30);
+            holder.frame.setScaleY((float) 1.30 );
+            Sandbox.button.setText("No assumption(exit)");
+            Sandbox.button.setBackgroundColor(Color.RED);
             Sandbox.operatorSelcted=dataSet.get(pos);
             if(previousSelectedOperatorHolder!=null){
                 //un-select other operator previously selected

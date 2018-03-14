@@ -23,6 +23,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     Toolbar toolbar;
     public static boolean maySelectOperator=false;
     public static OperatorType operatorSelcted;
+    public static Button button;
 
 
     @Override
@@ -36,6 +37,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
 
         ft.replace(R.id.sandbox_right_side, new FragmentSandboxOperators());
         ft.replace(R.id.sandbox_left_side, new FragmentSandboxCards()).commit();
+        button = findViewById(R.id.sandbox_button);
         findViewById(R.id.sandbox_button).setOnClickListener(this);
     }
 
@@ -58,7 +60,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-        //just in case
+        //Needed
         maySelectOperator=false;
         operatorSelcted=null;
         SandboxCardsAdapter.selected=new ArrayList<Expression>();

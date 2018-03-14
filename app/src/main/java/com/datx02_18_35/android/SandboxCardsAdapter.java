@@ -64,6 +64,10 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             view.setScaleY((float) 1.05 );
             Sandbox.maySelectOperator=true;
             firstSelected=(ViewHolder) view.getTag(R.string.viewholders);
+            if(Sandbox.operatorSelcted==null){
+                Sandbox.button.setText("Make assumption!");
+                Sandbox.button.setBackgroundColor(Color.GREEN);
+            }
         }
         else if (selected.size() == 1){
 
@@ -80,6 +84,8 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                     newList.add(item);
                 }
                 selected=newList;
+                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setBackgroundColor(Color.RED);
 
             }
             else if(Sandbox.operatorSelcted!=null){
@@ -93,6 +99,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
                 SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
                 SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
+                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setBackgroundColor(Color.RED);
+
 
                 //restore variables
                 firstSelected=null;
