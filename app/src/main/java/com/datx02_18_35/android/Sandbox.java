@@ -56,10 +56,4 @@ public class Sandbox extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStop() {
-        maySelectOperator=false;
-        operatorSelcted=null;
-        super.onDestroy();
-    }
 }

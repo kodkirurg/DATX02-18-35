@@ -87,9 +87,15 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
                 Expression expression = expressionFactory.createOperator(Sandbox.operatorSelcted,selected.get(0),expr);
 
-                firstSelected.cardView.setBackgroundColor(Color.BLACK);
+                firstSelected.cardView.setScaleX((float) 1.00);
+                firstSelected.cardView.setScaleY((float) 1.00);
+
+                firstSelected=null;
+                selected.clear();
 
                 Sandbox.maySelectOperator=false;
+                Sandbox.operatorSelcted=null;
+                //also restore amination!!!
 
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
