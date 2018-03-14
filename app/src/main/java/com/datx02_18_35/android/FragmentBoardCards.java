@@ -48,13 +48,8 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
 
 
         recAdapter = new GameCardAdapter(list);
-        //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
-
 
         ((Game)getActivity()).ready.release(1);
         return view;
@@ -89,6 +84,7 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
                 recAdapter.notifyItemRangeInserted(0,list.size());
             }
         });
+        ((GameCardAdapter) recAdapter).resetSelected();
     }
 
 }

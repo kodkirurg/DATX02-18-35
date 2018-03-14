@@ -30,7 +30,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
     private ArrayList<Expression> selected;
 
@@ -41,6 +41,9 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
 
+    public void resetSelected(){
+        selected.clear();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

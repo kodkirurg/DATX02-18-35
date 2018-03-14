@@ -46,12 +46,12 @@ public class FragmentScopeCards extends Fragment implements OnStartDragListener 
         recAdapter = new GameCardAdapter(list);
 
         //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
+        /*ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
-
+        */
         return view;
     }
 
