@@ -20,6 +20,7 @@ import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
+import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.game.IllegalRuleException;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
@@ -38,62 +39,45 @@ public class Controller extends ActionConsumer {
     public static final Controller singleton = new Controller();
 
     private GameManager game;
-    private Session session;
-
 
     private Controller() {
         game = new GameManager();
-        session = null;
     }
 
     @Override
     public void handleAction(Action action)
-            throws UnhandledActionException, IllegalActionException, InterruptedException, IllegalRuleException {
+            throws
+            UnhandledActionException,
+            IllegalActionException,
+            InterruptedException,
+            IllegalGameStateException,
+            GameManager.LevelNotInListException {
         if (action instanceof RequestStartNewSessionAction) {
-            if (session != null) {
-                throw new IllegalActionException(action);
-            }
             Level level = ((RequestStartNewSessionAction) action).level;
-            try {
-                session = game.startLevel(level);
-            } catch (GameManager.LevelNotInListException e) {
-                e.printStackTrace();
-                return;
-            }
+            game.startLevel(level);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestAbortSessionAction) {
-            if (session != null) {
-                throw new IllegalActionException(action);
-            }
-            session = null;
+            game.quitLevel();
         }
         else if (action instanceof RequestInventoryAction) {
-            if (session == null) {
-                throw new IllegalActionException(action);
-            }
+            game.assertSessionInProgress();
             action.callback(getRefreshInventoryAction());
         }
         else if (action instanceof RequestGameboardAction) {
-            if (session == null) {
-                throw new IllegalActionException(action);
-            }
+            game.assertSessionInProgress();
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestRulesAction) {
-            if (session == null) {
-                throw new IllegalActionException(action);
-            }
+            game.assertSessionInProgress();
             RequestRulesAction rulesAction = (RequestRulesAction) action;
-            Collection<Rule> rules = session.getLegalRules(rulesAction.expressions);
+            Collection<Rule> rules = game.getSession().getLegalRules(rulesAction.expressions);
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
         }
         else if (action instanceof RequestApplyRuleAction) {
-            if (session == null) {
-                throw new IllegalActionException(action);
-            }
+            game.assertSessionInProgress();
             Rule rule = ((RequestApplyRuleAction) action).rule;
             switch (rule.type) {
                 case ABSURDITY_ELIMINATION: {
@@ -109,30 +93,31 @@ public class Controller extends ActionConsumer {
                     }
                 }
             }
-            List<Expression> newExpressions = session.applyRule(rule);
+            List<Expression> newExpressions = game.getSession().applyRule(rule);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
-            if (session.checkWin()) {
-                session = null;
+            if (game.getSession().checkWin()) {
+                game.quitLevel();
                 action.callback(new VictoryConditionMetAction());
             }
         }
         else if (action instanceof ClosedSandboxAction) {
+            game.assertSessionInProgress();
             ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
             OpenSandboxAction openAction = closedAction.openAction;
             Expression expression =closedAction.expression;
             switch (openAction.reason) {
                 case ABSURDITY_ELIMINATION:
                 case DISJUNCTION_INTRODUCTION: {
-                    Rule newRule = session.finishIncompleteRule(openAction.incompleteRule, expression);
+                    Rule newRule = game.getSession().finishIncompleteRule(openAction.incompleteRule, expression);
                     // Send action to itself to apply the new complete rule
                     // Use the callback supplied
                     this.sendAction(new RequestApplyRuleAction(closedAction.applyRuleCallback, newRule));
                 }
                 break;
                 case ASSUMPTION: {
-                    session.makeAssumption(expression);
+                    game.getSession().makeAssumption(expression);
                     action.callback(getRefreshInventoryAction());
                     action.callback(getRefreshGameboardAction());
                 }
@@ -145,11 +130,11 @@ public class Controller extends ActionConsumer {
         }
     }
 
-    private Action getRefreshInventoryAction() {
-        return new RefreshInventoryAction(session.getAssumptions(), session.getInventories());
+    private Action getRefreshInventoryAction() throws IllegalGameStateException {
+        return new RefreshInventoryAction(game.getSession().getAssumptions(), game.getSession().getInventories());
     }
 
-    private Action getRefreshGameboardAction() {
-        return new RefreshGameboardAction(session.getGameBoard());
+    private Action getRefreshGameboardAction() throws IllegalGameStateException {
+        return new RefreshGameboardAction(game.getSession().getGameBoard());
     }
 }
