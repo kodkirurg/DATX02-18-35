@@ -2,6 +2,7 @@ package com.datx02_18_35.controller.dispatch;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.StopAction;
+import com.datx02_18_35.model.game.IllegalRuleException;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,7 +27,9 @@ public abstract class ActionConsumer {
                     }
                     try {
                         handleAction(action);
-                    } catch (IllegalGameStateException e) {
+                    } catch (IllegalActionException e) {
+                        e.printStackTrace();
+                    } catch (IllegalRuleException e) {
                         e.printStackTrace();
                     }
                 } catch (InterruptedException e) {
@@ -76,5 +79,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalGameStateException;
+    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalRuleException;
 }
