@@ -4,6 +4,8 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.ClosedSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
@@ -22,6 +24,7 @@ import com.datx02_18_35.model.game.IllegalRuleException;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -92,6 +95,20 @@ public class Controller extends ActionConsumer {
                 throw new IllegalActionException(action);
             }
             Rule rule = ((RequestApplyRuleAction) action).rule;
+            switch (rule.type) {
+                case ABSURDITY_ELIMINATION: {
+                    if (rule.expressions.get(1) == null) {
+                        action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ABSURDITY_ELIMINATION, rule));
+                        return;
+                    }
+                }
+                case DISJUNCTION_INTRODUCTION: {
+                    if (rule.expressions.get(0) == null || rule.expressions.get(1) == null) {
+                        action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.DISJUNCTION_INTRODUCTION, rule));
+                        return;
+                    }
+                }
+            }
             List<Expression> newExpressions = session.applyRule(rule);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
@@ -100,6 +117,33 @@ public class Controller extends ActionConsumer {
                 session = null;
                 action.callback(new VictoryConditionMetAction());
             }
+        }
+        else if (action instanceof ClosedSandboxAction) {
+            ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
+            OpenSandboxAction openAction = closedAction.openAction;
+            Expression expression =closedAction.expression;
+            switch (openAction.reason) {
+                case ABSURDITY_ELIMINATION:
+                case DISJUNCTION_INTRODUCTION: {
+                    Rule newRule = session.finishIncompleteRule(openAction.incompleteRule, expression);
+                    List<Expression> newExpressions = session.applyRule(newRule);
+                    action.callback(getRefreshInventoryAction());
+                    action.callback(getRefreshGameboardAction());
+                    action.callback(new ShowNewExpressionAction(newExpressions));
+                    if (session.checkWin()) {
+                        session = null;
+                        action.callback(new VictoryConditionMetAction());
+                    }
+                }
+                break;
+                case ASSUMPTION: {
+                    session.makeAssumption(expression);
+                    action.callback(getRefreshInventoryAction());
+                    action.callback(getRefreshGameboardAction());
+                }
+                break;
+            }
+
         }
         else {
             throw new UnhandledActionException(action);
