@@ -21,7 +21,7 @@ import game.logic_game.R;
 
 public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<OperatorType> dataSet;
-    private ViewHolder previousSelectedOperatorHolder=null;
+    public static ViewHolder previousSelectedOperatorHolder=null;
 
 
     public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet){
@@ -87,7 +87,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             if(previousSelectedOperatorHolder!=null){
                 //un-select other operator previously selected
                 previousSelectedOperatorHolder.frame.setScaleX((float) 1);
-                previousSelectedOperatorHolder.frame.setScaleX((float) 1);
+                previousSelectedOperatorHolder.frame.setScaleY((float) 1);
             }
             previousSelectedOperatorHolder=holder;
         }
