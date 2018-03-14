@@ -25,7 +25,7 @@ import game.logic_game.R;
 
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    private ArrayList<Expression> selected = new ArrayList<Expression>();
+    public static ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
 
 
@@ -44,7 +44,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
-        Log.d("test123", "onBindViewHolder: "+ dataSet.get(position).toString());
         if(dataSet.get(position)!= null){
             new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
         }
@@ -65,10 +64,14 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             view.setScaleY((float) 1.05 );
             Sandbox.maySelectOperator=true;
             firstSelected=(ViewHolder) view.getTag(R.string.viewholders);
+            if(Sandbox.operatorSelcted==null){
+                Sandbox.button.setText("Make assumption!");
+                Sandbox.button.setBackgroundColor(Color.GREEN);
+            }
         }
         else if (selected.size() == 1){
 
-            if(selected.contains(expr)){
+            if(selected.contains(expr) & Sandbox.operatorSelcted==null ){
                 Sandbox.maySelectOperator=false;
                 view.setScaleX((float) 1.00);
                 view.setScaleY((float) 1.00 );
@@ -81,26 +84,34 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                     newList.add(item);
                 }
                 selected=newList;
+                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setBackgroundColor(Color.RED);
 
             }
             else if(Sandbox.operatorSelcted!=null){
                 ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
                 Expression expression = expressionFactory.createOperator(Sandbox.operatorSelcted,selected.get(0),expr);
 
+
+                //restore animations
                 firstSelected.cardView.setScaleX((float) 1.00);
                 firstSelected.cardView.setScaleY((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
+                SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
+                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setBackgroundColor(Color.RED);
 
+
+                //restore variables
                 firstSelected=null;
                 selected.clear();
-
                 Sandbox.maySelectOperator=false;
                 Sandbox.operatorSelcted=null;
-                //also restore amination!!!
 
+                //add new expression
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
-
-                Log.d("test123", "operator creation" + expression.toString());
             }
 
         }

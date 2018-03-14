@@ -7,18 +7,11 @@
     android:orientation="vertical"
     android:padding="6dp">
 
-    <include
-        android:id="@+id/sandbox_topPanel"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/sandbox_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topPanel"
         android:orientation="horizontal">
 
 
@@ -52,6 +45,24 @@
 
             />
     </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/sandbox_bottom_panel"
+        >
+        <Button
+            android:text="No assumption(exit)"
+            android:background="@color/Red"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/sandbox_button"
+            android:layout_alignParentEnd="true"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+
 
 
 </RelativeLayout>

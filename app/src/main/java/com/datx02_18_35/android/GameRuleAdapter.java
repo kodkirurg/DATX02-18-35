@@ -1,9 +1,6 @@
 package com.datx02_18_35.android;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +11,6 @@ import android.widget.ImageView;
 
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
@@ -27,18 +23,18 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-01.
  */
 
-public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Rule> dataSet;
 
 
-    public RuleAdapter(ArrayList<Rule> dataSet){
+    public GameRuleAdapter(ArrayList<Rule> dataSet){
         this.dataSet=dataSet;
     }
 
     @Override
-    public RuleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GameRuleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         FrameLayout frame = (FrameLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_rule, parent,false);
-        return new RuleAdapter.ViewHolder(frame);
+        return new GameRuleAdapter.ViewHolder(frame);
     }
 
     @Override

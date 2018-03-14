@@ -6,19 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 
 import game.logic_game.R;
 
@@ -48,11 +43,11 @@ public class FragmentBoardActions extends Fragment {
 
         collection.add(null);
         //attach list to adapter
-        recAdapter = new RuleAdapter(collection);
+        recAdapter = new GameRuleAdapter(collection);
 
 
         //settings for this fragment
-        EditItemTouchHelperCallback localBehaviour = new EditItemTouchHelperCallback((RuleAdapter) recAdapter);
+        EditItemTouchHelperCallback localBehaviour = new EditItemTouchHelperCallback((GameRuleAdapter) recAdapter);
         localBehaviour.isLongPressDragEnabled = true;
         localBehaviour.rules = true;
 
