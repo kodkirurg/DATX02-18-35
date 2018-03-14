@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.OperatorType;
+import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,7 @@ import game.logic_game.R;
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
     private ArrayList<Expression> selected = new ArrayList<Expression>();
+    private ViewHolder firstSelected=null;
 
 
     public SandboxCardsAdapter(ArrayList<Expression> dataSet){this.dataSet=dataSet;}
@@ -38,7 +42,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
+        holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
+        Log.d("test123", "onBindViewHolder: "+ dataSet.get(position).toString());
         if(dataSet.get(position)!= null){
             new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
         }
@@ -58,6 +64,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             view.setScaleX((float) 1.05);
             view.setScaleY((float) 1.05 );
             Sandbox.maySelectOperator=true;
+            firstSelected=(ViewHolder) view.getTag(R.string.viewholders);
         }
         else if (selected.size() == 1){
 
@@ -74,6 +81,19 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                     newList.add(item);
                 }
                 selected=newList;
+
+            }
+            else if(Sandbox.operatorSelcted!=null){
+                ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
+                Expression expression = expressionFactory.createOperator(Sandbox.operatorSelcted,selected.get(0),expr);
+
+                firstSelected.cardView.setBackgroundColor(Color.BLACK);
+
+                Sandbox.maySelectOperator=false;
+                dataSet.add(expression);
+                notifyDataSetChanged();
+
+                Log.d("test123", "operator creation" + expression.toString());
             }
 
         }
