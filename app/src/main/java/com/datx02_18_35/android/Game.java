@@ -45,17 +45,17 @@ public class Game extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Controller.singleton.start();
+        Controller.getSingleton().start();
         boardCallback = new BoardCallback();
         boardCallback.start();
         try {
-            Controller.singleton.handleAction(new RequestStartNewSessionAction(boardCallback,Level.exampleLevel));
+            Controller.getSingleton().handleAction(new RequestStartNewSessionAction(boardCallback,Level.exampleLevel));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            Controller.singleton.sendAction(new RequestGameboardAction(boardCallback));
+            Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
