@@ -76,7 +76,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         int position = (int) v.getTag();
         Expression expr = dataSet.get(position);
 
-        if(! selected.contains(expr) ){
+        if(! selected.contains(expr.hashCode()) ){
             //animations
             v.setBackgroundColor(Color.BLACK);
             v.setScaleX((float) 1.05);
@@ -85,7 +85,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             //selection add it to our list
             selected.add(expr);
         }
-        else if(selected.contains(expr)){
+        else if(selected.contains(expr.hashCode())){
 
             //animations
             v.setBackgroundColor(Color.WHITE);
