@@ -76,16 +76,17 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         itemTouchHelper.startDrag(viewHolder);
     }
 
-    public void addToBoard(final Iterable<Expression> iterable){
+    public void updateBoard(final Iterable<Expression> iterable){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                int size =list.size();
+                list.clear();
+                recAdapter.notifyItemRangeRemoved(0,size);
                 for (Expression anIterable : iterable) {
-                    if(!list.contains(anIterable)){
                         list.add(anIterable);
-                        recAdapter.notifyItemInserted(list.size()-1);
-                    }
                 }
+                recAdapter.notifyItemRangeInserted(0,list.size());
             }
         });
     }
