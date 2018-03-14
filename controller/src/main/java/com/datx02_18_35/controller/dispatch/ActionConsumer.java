@@ -24,7 +24,11 @@ public abstract class ActionConsumer {
                     if (action instanceof StopAction) {
                         break;
                     }
-                    handleAction(action);
+                    try {
+                        handleAction(action);
+                    } catch (IllegalGameStateException e) {
+                        e.printStackTrace();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     break;

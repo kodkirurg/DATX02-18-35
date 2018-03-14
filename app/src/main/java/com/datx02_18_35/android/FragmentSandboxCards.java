@@ -23,7 +23,7 @@ import static com.datx02_18_35.android.FragmentBoardCards.getWidthDp;
 
 public class FragmentSandboxCards extends Fragment {
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
