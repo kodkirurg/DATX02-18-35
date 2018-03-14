@@ -69,16 +69,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         return dataSet.size();
     }
 
-    public boolean onItemMove(int indexFrom, int indexTo) {
-        Collections.swap(dataSet,indexFrom,indexTo);
-        notifyItemMoved(indexFrom,indexTo);
-        //implement
-        return true;
-    }
-
-    public void onItemDismiss(int adapterPosition) {
-        //implement
-    }
 
     @Override
     public void onClick(View v) {

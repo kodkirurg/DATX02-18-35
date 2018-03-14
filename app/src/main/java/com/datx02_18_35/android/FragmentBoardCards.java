@@ -80,6 +80,7 @@ public class FragmentBoardCards extends Fragment  {
             }
         });
         ((GameCardAdapter) recAdapter).resetSelected();
+        recyclerView.getRecycledViewPool().clear();
     }
 
 }
