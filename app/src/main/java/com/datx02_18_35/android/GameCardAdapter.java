@@ -141,7 +141,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
     public static class CardDeflator{
-        CardView topCardView;
+        final CardView topCardView;
         final String dots = " .. ";
 
         

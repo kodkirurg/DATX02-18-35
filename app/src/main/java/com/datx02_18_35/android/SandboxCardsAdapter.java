@@ -90,8 +90,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 firstSelected.cardView.setBackgroundColor(Color.BLACK);
 
                 Sandbox.maySelectOperator=false;
+
                 dataSet.add(expression);
-                notifyDataSetChanged();
+                notifyItemInserted(dataSet.size());
 
                 Log.d("test123", "operator creation" + expression.toString());
             }
