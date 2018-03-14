@@ -15,6 +15,7 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
+import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
@@ -114,6 +115,27 @@ public class Game extends AppCompatActivity  {
                 FragmentManager fm = getFragmentManager();
                 FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
                 frag.updateActions(data);
+            }
+            else if (action instanceof OpenSandboxAction){
+                String reason="";
+                switch(((OpenSandboxAction) action).reason){
+                    case ASSUMPTION:{
+                        reason = "Assumption";
+                        break;
+                    }
+                    case ABSURDITY_ELIMINATION: {
+                        reason = "Absurdity elimination";
+                        break;
+                    }
+                    case DISJUNCTION_INTRODUCTION: {
+                        reason = "Disjunction elimination";
+                        break;
+                    }
+
+                }
+                Intent i = new Intent(getApplicationContext(),Sandbox.class);
+                i.putExtra("STRING_I_NEED", reason);
+                startActivity(i);
             }
             ready.release(2);
         }
