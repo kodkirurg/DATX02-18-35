@@ -18,7 +18,7 @@
         android:id="@+id/sandbox_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topPanel"
+        android:layout_below="@id/sandbox_topPanel"
         android:orientation="horizontal">
 
 

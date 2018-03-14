@@ -76,6 +76,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
         if(dataSet.get(pos) == Sandbox.operatorSelcted){
             //Un-select
             Sandbox.operatorSelcted=null;
+            previousSelectedOperatorHolder=null;
             holder.frame.setScaleX((float) 1);
             holder.frame.setScaleY((float) 1 );
         }
@@ -87,7 +88,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             if(previousSelectedOperatorHolder!=null){
                 //un-select other operator previously selected
                 previousSelectedOperatorHolder.frame.setScaleX((float) 1);
-                previousSelectedOperatorHolder.frame.setScaleX((float) 1);
+                previousSelectedOperatorHolder.frame.setScaleY((float) 1);
             }
             previousSelectedOperatorHolder=holder;
         }
