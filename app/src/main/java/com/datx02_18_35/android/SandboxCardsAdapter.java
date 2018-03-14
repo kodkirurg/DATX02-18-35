@@ -25,7 +25,7 @@ import game.logic_game.R;
 
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    private ArrayList<Expression> selected = new ArrayList<Expression>();
+    public static ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
 
 
@@ -44,7 +44,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
-        Log.d("test123", "onBindViewHolder: "+ dataSet.get(position).toString());
         if(dataSet.get(position)!= null){
             new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
         }
@@ -104,8 +103,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 //add new expression
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
-
-                Log.d("test123", "operator creation" + expression.toString());
             }
 
         }
