@@ -51,30 +51,35 @@ public class GameManager {
         return new ArrayList<Level>(levels);
     }
 
-    public Session startLevel(Level level) throws LevelNotInListException{
+    public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
+        assertSessionNotInProgress();
         if(!levels.contains(level)) {
             throw new LevelNotInListException("Level is not in GameManagers list of levels");
         }
         currentSession = new Session(level);
+    }
+
+    public void quitLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        currentSession = null;
+    }
+
+    public Session getSession() throws IllegalGameStateException {
+        assertSessionInProgress();
         return currentSession;
     }
 
-    public boolean quitLevel(){
-        if(currentSession==null){
-            return false;
+    public void assertSessionNotInProgress() throws IllegalGameStateException {
+        if (currentSession != null) {
+            throw new IllegalGameStateException("Session already in progress!");
         }
-        currentSession=null;
-        return false;
     }
 
-    public boolean finishCompleteLevel(){
-        if(!currentSession.getLevel().isLevelComplete()){
-            return false;
+    public void assertSessionInProgress() throws IllegalGameStateException {
+        if (currentSession == null) {
+            throw new IllegalGameStateException("No session in progress!");
         }
-        this.quitLevel();
-        return true;
     }
-
 
     public class LevelNotInListException extends Exception{
         private LevelNotInListException(String s){

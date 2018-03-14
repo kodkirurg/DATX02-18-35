@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,6 +28,23 @@ public class Rule {
         assert expressions != null;
         this.type = type;
         this.expressions = new ArrayList<>(expressions);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(type.name());
+        sb.append("(");
+        Iterator<Expression> iter = expressions.iterator();
+        if (iter.hasNext()) {
+            sb.append(iter.next().toString());
+            while (iter.hasNext()) {
+                sb.append(",");
+                sb.append(iter.next().toString());
+            }
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
     public static List<Rule> getLegalRules( Expression assumption, List<Expression> selection){
