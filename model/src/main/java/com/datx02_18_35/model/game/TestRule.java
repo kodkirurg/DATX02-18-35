@@ -39,7 +39,7 @@ public final class TestRule {
                 if (!(session.isExpressionInScope(exprs.get(0)) || session.isExpressionInScope(exprs.get(1)))) {
                     throw createIllegalRuleExceptionRuleNotInScope(rule);
                 }
-                break;
+            break;
             default:
                 if (!session.isExpressionInScope(exprs)) {
                     throw createIllegalRuleExceptionRuleNotInScope(rule);
@@ -54,6 +54,7 @@ public final class TestRule {
                             "Wrong number of expression in rule! " +
                                     "Expected: 1, Found: " + exprs.size());
                 }
+            break;
             case ABSURDITY_ELIMINATION:
             case DISJUNCTION_ELIMINATION:
             case IMPLICATION_ELIMINATION:
@@ -65,6 +66,7 @@ public final class TestRule {
                             "Wrong number of expression in rule! " +
                                     "Expected: 2, Found: " + exprs.size());
                 }
+            break;
         }
 
         // Check correct types
