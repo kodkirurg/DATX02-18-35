@@ -162,12 +162,12 @@ public class Session {
         this.addExpressionToInventory(expression);
     }
 
-    public Collection<Expression> applyRule(Rule rule) throws IllegalRuleException {
+    public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
         TestRule.assertRuleIsLegal(this, rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
+        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
         return expressions;

@@ -23,6 +23,7 @@ import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.Session;
 
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -91,7 +92,7 @@ public class Controller extends ActionConsumer {
                 throw new IllegalActionException(action);
             }
             Rule rule = ((RequestApplyRuleAction) action).rule;
-            Collection<Expression> newExpressions = session.applyRule(rule);
+            List<Expression> newExpressions = session.applyRule(rule);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
