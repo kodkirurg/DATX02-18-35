@@ -126,14 +126,9 @@ public class Controller extends ActionConsumer {
                 case ABSURDITY_ELIMINATION:
                 case DISJUNCTION_INTRODUCTION: {
                     Rule newRule = session.finishIncompleteRule(openAction.incompleteRule, expression);
-                    List<Expression> newExpressions = session.applyRule(newRule);
-                    action.callback(getRefreshInventoryAction());
-                    action.callback(getRefreshGameboardAction());
-                    action.callback(new ShowNewExpressionAction(newExpressions));
-                    if (session.checkWin()) {
-                        session = null;
-                        action.callback(new VictoryConditionMetAction());
-                    }
+                    // Send action to itself to apply the new complete rule
+                    // Use the callback supplied
+                    this.sendAction(new RequestApplyRuleAction(closedAction.applyRuleCallback, newRule));
                 }
                 break;
                 case ASSUMPTION: {

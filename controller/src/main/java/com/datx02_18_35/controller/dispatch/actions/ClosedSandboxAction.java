@@ -10,9 +10,11 @@ import com.datx02_18_35.model.expression.Expression;
 public class ClosedSandboxAction extends Action {
     public final OpenSandboxAction openAction;
     public final Expression expression;
+    public final ActionConsumer applyRuleCallback;
 
     ClosedSandboxAction(ActionConsumer callback, OpenSandboxAction openAction, Expression expression) {
         super(callback);
+        this.applyRuleCallback = callback;
         this.openAction = openAction;
         this.expression = expression;
     }
