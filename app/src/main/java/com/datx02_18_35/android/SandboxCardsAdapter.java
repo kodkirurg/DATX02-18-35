@@ -56,6 +56,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     public int getItemCount() {
         return dataSet.size();
     }
+
     @Override
     public void onClick(View view) {
         int position = (int)view.getTag();

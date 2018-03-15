@@ -25,15 +25,19 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-15.
  */
 
-public class Tools {
-    public static float getWidthDp(Context context){
+class Tools {
+
+    //screen
+    static float getWidthDp(Context context){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
-    public static class CardDeflator{
+    //"generate card"
+
+    static class CardDeflator{
         final CardView topCardView;
         final String dots = " .. ";
 
@@ -72,17 +76,17 @@ public class Tools {
 
                 // set big operator in middle + no complex on up/down card.
                 if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
-                    rmView(R.id.card_frame_lower);
-                    rmView(R.id.card_frame_upper);
-                    rmView(R.id.card_card_1_1);
-                    rmView(R.id.card_card_2_4);
+                    rmView(R.id.card_frame_lower,topCardView);
+                    rmView(R.id.card_frame_upper,topCardView);
+                    rmView(R.id.card_card_1_1,topCardView);
+                    rmView(R.id.card_card_2_4,topCardView);
 
-                    mParent(R.id.card_card_1_2);
-                    mParent(R.id.card_card_2_3);
+                    mParent(R.id.card_card_1_2,topCardView);
+                    mParent(R.id.card_card_2_3,topCardView);
 
 
-                    sText(R.id.card_text_2,op1.toString());
-                    sText(R.id.card_text_3,op2.toString());
+                    sText(R.id.card_text_2,op1.toString(),topCardView);
+                    sText(R.id.card_text_3,op2.toString(),topCardView);
                 }
                 else{
                     ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);
@@ -100,18 +104,18 @@ public class Tools {
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots);
+                            sText(R.id.card_text_2, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString());
+                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots);
+                            sText(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString());
+                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -127,10 +131,10 @@ public class Tools {
 
 
                         //lower
-                        rmView(R.id.card_frame_lower);
-                        rmView(R.id.card_card_2_4);
-                        mParent(R.id.card_card_2_3);
-                        sText(R.id.card_text_3,op2.toString());
+                        rmView(R.id.card_frame_lower,topCardView);
+                        rmView(R.id.card_card_2_4,topCardView);
+                        mParent(R.id.card_card_2_3,topCardView);
+                        sText(R.id.card_text_3,op2.toString(),topCardView);
                     }
 
                     if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
@@ -142,18 +146,18 @@ public class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots);
+                            sText(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString());
+                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots);
+                            sText(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString());
+                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -169,10 +173,10 @@ public class Tools {
 
 
                         //upper
-                        rmView(R.id.card_frame_upper);
-                        rmView(R.id.card_card_1_1);
-                        mParent(R.id.card_card_1_2);
-                        sText(R.id.card_text_2,op1.toString());
+                        rmView(R.id.card_frame_upper,topCardView);
+                        rmView(R.id.card_card_1_1,topCardView);
+                        mParent(R.id.card_card_1_2,topCardView);
+                        sText(R.id.card_text_2,op1.toString(),topCardView);
                     }
 
                     if( op1 instanceof Operator & op2 instanceof Operator ){
@@ -183,18 +187,18 @@ public class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots);
+                            sText(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString());
+                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots);
+                            sText(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString());
+                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -216,18 +220,18 @@ public class Tools {
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots);
+                            sText(R.id.card_text_2, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString());
+                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots);
+                            sText(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString());
+                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -246,20 +250,20 @@ public class Tools {
         }
 
         //remove view by id
-        private void rmView(int rId){
-            View view = topCardView.findViewById(rId);
+        private static void rmView(int rId,CardView card){
+            View view = card.findViewById(rId);
             ViewGroup viewGroup = (ViewGroup) view.getParent();
             viewGroup.removeView(view);
         }
         //expand to fill by id
-        private void mParent(int rId){
-            View view = topCardView.findViewById(rId);
+        private static void mParent(int rId,CardView card){
+            View view = card.findViewById(rId);
             view.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         //sets text in textview by id.
-        private void sText(int rId,String s){
-            TextView t = topCardView.findViewById(rId);
+        private static void sText(int rId,String s,CardView card){
+            TextView t = card.findViewById(rId);
             t.setText(s);
         }
     }
