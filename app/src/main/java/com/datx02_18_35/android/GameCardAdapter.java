@@ -86,19 +86,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        //get position in dataset and extract expression
-        int position = (int) v.getTag();
-        Expression expr = dataSet.get(position);
-
-        selected.clear();
-        selected.add(expr);
-        selected.add(expr);
-        //update rules on board and set selection
-        try {
-            Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,selected));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

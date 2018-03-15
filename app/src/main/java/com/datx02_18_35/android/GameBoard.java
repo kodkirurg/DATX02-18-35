@@ -40,6 +40,7 @@ public class GameBoard extends AppCompatActivity  {
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final static Semaphore gameChange = new Semaphore(1);
+    public Object[] selected=new Object[3];
 
 
     //recyclerviews
@@ -111,6 +112,17 @@ public class GameBoard extends AppCompatActivity  {
 
         recyclerViewLeft.setAdapter(adapterLeft);
 
+    }
+
+    public synchronized boolean newSelection(Object object){
+        if (object instanceof Expression){
+            Expression expression = (Expression)object;
+        }
+        else if(object instanceof Rule){
+            Rule rule = (Rule)object;
+        }
+
+        return false;
     }
 
     @Override
