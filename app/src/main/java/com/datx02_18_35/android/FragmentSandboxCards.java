@@ -49,10 +49,6 @@ public class FragmentSandboxCards extends Fragment {
 
         list.addAll(Level.exampleLevel.propositions);
         recAdapter = new SandboxCardsAdapter(list);
-        //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((SandboxCardsAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
 

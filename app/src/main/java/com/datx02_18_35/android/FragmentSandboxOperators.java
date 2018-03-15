@@ -23,7 +23,6 @@ public class FragmentSandboxOperators extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
     private ArrayList<OperatorType> list = new ArrayList<OperatorType>();
 
 
@@ -45,10 +44,7 @@ public class FragmentSandboxOperators extends Fragment {
         list.add(OperatorType.DISJUNCTION);
         list.add(OperatorType.CONJUNCTION);
         recAdapter = new SandboxOperatorAdapter(list);
-        //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((SandboxOperatorAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         recyclerView.setAdapter(recAdapter);
 

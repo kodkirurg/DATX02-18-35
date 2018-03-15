@@ -22,7 +22,7 @@ public class FragmentScopeActions extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
+
 
 
     @Override
@@ -46,19 +46,8 @@ public class FragmentScopeActions extends Fragment {
         recAdapter = new GameCardAdapter(list);
 
 
-        //settings for this fragment
-        /*EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
 
-
-        //add drag and drop
-        ItemTouchHelper.Callback callback = localBehavoir;
-
-
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.setAdapter(recAdapter);*/
+        recyclerView.setAdapter(recAdapter);
 
 
 
