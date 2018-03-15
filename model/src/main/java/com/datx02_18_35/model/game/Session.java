@@ -73,6 +73,11 @@ public class Session {
     }
     public Iterable<Expression> getAssumptions(){
         final Iterator<Scope> scopesIterator = this.getScopes().iterator();
+
+        // Skip the first scope
+        scopesIterator.next();
+
+
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
@@ -200,7 +205,6 @@ public class Session {
 
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
-            System.out.printf(existingExpression.toString());
             if(existingExpression.equals(expression)){
                 return true;
             }

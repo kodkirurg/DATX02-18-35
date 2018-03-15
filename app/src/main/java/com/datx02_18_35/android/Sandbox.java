@@ -27,15 +27,12 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     public static boolean maySelectOperator=false;
     public static OperatorType operatorSelcted;
     public static Button button;
-    private Bundle bundle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sandbox);
-
-        bundle = savedInstanceState;
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -58,9 +55,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
                         e.printStackTrace();
                     }
                 }
-                else{
-                    finish();
-                }
+                finish();
                 break;
         }
 
