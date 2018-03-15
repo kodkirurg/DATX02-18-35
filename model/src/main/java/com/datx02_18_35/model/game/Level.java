@@ -29,6 +29,7 @@ public class Level {
     private static final String HYPOTHESIS ="HYPOTHESIS";
     private static final String GOAL="GOAL";
     private static final String TITLE="TITLE";
+    private static final int    HASH_MAGIC_NUMBER = 1_528_680_899;
 
     public final List<Expression> hypothesis;
     public final String title;
@@ -36,27 +37,76 @@ public class Level {
     public final ExpressionFactory expressionFactory;
     public final List<Proposition> propositions;
 
-    private boolean isLevelComplete;
+    private final int hashCode;
     
-    private Level(String title,List<Expression> hypothesis, Expression goal,ExpressionFactory expressionFactory){
+    private Level(
+            String title,
+            List<Expression> hypothesis,
+            Expression goal,
+            ExpressionFactory expressionFactory){
+
         this.hypothesis=hypothesis;
         this.goal=goal;
         this.title=title;
         this.expressionFactory=expressionFactory;
-        this.isLevelComplete=false;
         this.propositions = new ArrayList<>(extractPropositions(goal, hypothesis));
+
+        long magic = HASH_MAGIC_NUMBER;
+        long longHash = magic;
+        long hypothesisHashProduct = 1;
+        for (Expression expr : hypothesis) {
+            hypothesisHashProduct *= expr.hashCode();
+        }
+        magic *= HASH_MAGIC_NUMBER;
+        longHash += title.hashCode()*magic;
+        magic *= HASH_MAGIC_NUMBER;
+        longHash += goal.hashCode()*magic;
+        magic *= HASH_MAGIC_NUMBER;
+        longHash += hypothesisHashProduct*magic;
+        hashCode = (int)longHash;
     }
 
-    public boolean isLevelComplete(){
-        return isLevelComplete;
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Level)) return false;
+        final Level otherLevel = (Level)other;
+        if (!title.equals(otherLevel.title)) return false;
+        if (!goal.equals(otherLevel.goal)) return false;
+        for (Expression thisExpr : hypothesis) {
+            boolean inOtherHypothesis = false;
+            for (Expression otherExpr : otherLevel.hypothesis) {
+                if (thisExpr.equals(otherExpr)) {
+                    inOtherHypothesis = true;
+                    break;
+                }
+            }
+            if (!inOtherHypothesis) {
+                return false;
+            }
+        }
+
+        for (Expression otherExpr : otherLevel.hypothesis) {
+            boolean inThisHypothesis = false;
+            for (Expression thisExpr : hypothesis) {
+                if (otherExpr.equals(thisExpr)) {
+                    inThisHypothesis = true;
+                    break;
+                }
+            }
+            if (!inThisHypothesis) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public ExpressionFactory getExpressionFactory() {
         return this.expressionFactory;
-    }
-
-    void completeLevel(){
-        isLevelComplete=true;
     }
 
     /////////////////////////////////////////////

@@ -44,8 +44,11 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(List<String> levelStrings) throws LevelParseException {
+    public static void init(List<String> levelStrings, byte[] userData) throws LevelParseException {
         singleton = new Controller(levelStrings);
+        if (userData != null) {
+            singleton.game.loadUserData(userData);
+        }
     }
 
     public List<Level> getLevels() {

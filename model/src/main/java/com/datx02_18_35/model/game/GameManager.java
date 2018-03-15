@@ -1,25 +1,87 @@
 package com.datx02_18_35.model.game;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.jws.soap.SOAPBinding;
 
 /**
  * Created by Jonatan on 2018-03-07.
  */
 
 public class GameManager {
-    private List<Level> levels;
+    private final List<Level> levels;
+    private UserData userData;
+
     private Session currentSession;
 
 
     public GameManager(List<String> levelStrings) throws LevelParseException {
         levels = new ArrayList<>();
         for (String levelStr : levelStrings) {
-            levels.add(Level.parseLevel(levelStr));
+            Level level = Level.parseLevel(levelStr);
+            levels.add(level);
         }
-
+        userData = new UserData(levels);
     }
 
+    public byte[] saveUserData() {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutput objOut = null;
+        byte[] byteArray = null;
+        try {
+            objOut = new ObjectOutputStream(byteOut);
+            objOut.writeObject(userData);
+            objOut.flush();
+            byteArray = byteOut.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                byteOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return byteArray;
+    }
+
+    public boolean loadUserData(byte[] data) {
+        boolean success = false;
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
+        ObjectInput objIn = null;
+        try {
+            objIn = new ObjectInputStream(byteIn);
+            Object obj = objIn.readObject();
+            if (obj instanceof UserData) {
+                userData = (UserData)obj;
+                success = true;
+            } else {
+                throw new IllegalArgumentException("data byte array is not a valid UserData object.");
+            }
+        } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
+            e.printStackTrace();
+        } finally {
+            if (objIn != null) {
+                try {
+                    objIn.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return success;
+    }
 
     public List<Level> getLevels(){
         return new ArrayList<Level>(levels);
