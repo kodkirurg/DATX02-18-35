@@ -19,7 +19,7 @@ import game.logic_game.R;
 
 
 public class FragmentScopeActions extends Fragment {
-    private RecyclerView recyclerView;
+    /*private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
 
@@ -57,5 +57,5 @@ public class FragmentScopeActions extends Fragment {
         //list=(all the actions);
         //recAdapter.notifyDataSetChanged();
     }
-
+*/
 }

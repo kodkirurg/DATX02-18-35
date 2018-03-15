@@ -1,5 +1,7 @@
 package com.datx02_18_35.android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,17 +28,25 @@ import game.logic_game.R;
 
 public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
+    Activity activity;
 
 
-    GameRuleAdapter(ArrayList<Rule> dataSet){
+    GameRuleAdapter(ArrayList<Rule> dataSet, Activity activity){
         this.dataSet=dataSet;
+        this.activity=activity;
     }
 
 
-    void updateBoard(Collection<Rule> data){
-        dataSet.clear();
-        dataSet.addAll(data);
-        notifyDataSetChanged();
+    void updateBoard(final Collection<Rule> data){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dataSet.clear();
+                dataSet.addAll(data);
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override

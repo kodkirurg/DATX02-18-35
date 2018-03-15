@@ -42,7 +42,7 @@ public class FragmentInventory extends Fragment {
         ArrayList<Expression> list = new ArrayList<Expression>();
 
 
-        recAdapter = new GameCardAdapter(list);
+        //recAdapter = new GameCardAdapter(list);
 
 
 

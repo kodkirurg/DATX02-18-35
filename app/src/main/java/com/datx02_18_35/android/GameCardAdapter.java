@@ -1,5 +1,7 @@
 package com.datx02_18_35.android;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -35,18 +37,25 @@ import game.logic_game.R;
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    private ArrayList<Expression> selected;
+    private ArrayList<Expression> selected=new ArrayList<>();
+    Activity activity;
 
 
-    GameCardAdapter(ArrayList<Expression> dataSet){
+    GameCardAdapter(ArrayList<Expression> dataSet, Activity activity){
         this.dataSet = dataSet;
-        selected = new ArrayList<>();
+        this.activity=activity;
     }
 
-    void updateBoard(Iterable<Expression> data){
-        dataSet.clear();
-        for (Expression expression : data)
-        {dataSet.add(expression);}
+    void updateBoard(final Iterable<Expression> data){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dataSet.clear();
+                for (Expression expression : data) {dataSet.add(expression);}
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override

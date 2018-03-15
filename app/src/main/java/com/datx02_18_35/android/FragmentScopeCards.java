@@ -18,7 +18,7 @@ import game.logic_game.R;
 
 public class FragmentScopeCards extends Fragment  {
 
-    private RecyclerView recyclerView;
+    /*private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
@@ -49,7 +49,7 @@ public class FragmentScopeCards extends Fragment  {
     }
 
 
-    public void addToBoard(/*Expression newCard*/){
+    public void addToBoard(Expression newCard){
         //list.add(newCard);
         //recAdapter.notifyDataSetChanged();
     }
@@ -58,6 +58,6 @@ public class FragmentScopeCards extends Fragment  {
         //recAdapter.notifyDataSetChanged();
     }
 
-
+*/
 
 }

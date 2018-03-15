@@ -89,7 +89,7 @@ public class GameBoard extends AppCompatActivity  {
         ArrayList<Rule> list = new ArrayList<>();
         list.add(null);
         //attach list to adapter
-        adapterRight = new GameRuleAdapter(list);
+        adapterRight = new GameRuleAdapter(list,this);
 
         //attach adapter
         recyclerViewRight.setAdapter(adapterRight);
@@ -107,7 +107,7 @@ public class GameBoard extends AppCompatActivity  {
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
 
 
-        adapterLeft = new GameCardAdapter(new ArrayList<Expression>());
+        adapterLeft = new GameCardAdapter(new ArrayList<Expression>(),this);
 
         recyclerViewLeft.setAdapter(adapterLeft);
 
@@ -156,7 +156,6 @@ public class GameBoard extends AppCompatActivity  {
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
-                Log.d("test123", "handleAction: " + data.toArray()[0].toString());
                 adapterRight.updateBoard(data);
 
             }
