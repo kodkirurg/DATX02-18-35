@@ -44,9 +44,11 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
+        holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null){
             new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
         }
+        holder.setIsRecyclable(false);
 
     }
 
@@ -56,6 +58,11 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     }
     @Override
     public void onClick(View view) {
+        try {
+            Game.gameChange.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         int position = (int)view.getTag();
         Expression expr = dataSet.get(position);
         if(selected.size() == 0){
@@ -118,7 +125,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         else{
             Log.d("test123","too many selections in sandbox");
         }
-
+        Game.gameChange.release();
     }
 
     @Override

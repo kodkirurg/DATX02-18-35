@@ -23,6 +23,9 @@ import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import game.logic_game.R;
 
@@ -72,6 +75,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
+        try {
+            Game.gameChange.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //get position in dataset and extract expression
         int position = (int) v.getTag();
         Expression expr = dataSet.get(position);
@@ -91,17 +99,13 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             v.setBackgroundColor(Color.WHITE);
             v.setScaleX((float) 1);
             v.setScaleY((float) 1 );
-
-
-            ArrayList<Expression> newList = new ArrayList<>();
+            
             //de-selection and remove from list
             for (Expression item : selected ){
-                if(item.equals(expr)){
-                    continue;
+                if(!item.equals(expr)){
+                    selected.remove(item);
                 }
-                newList.add(item);
             }
-            selected=newList;
         }
         //update rules on board and set selection
         try {
@@ -109,6 +113,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Game.gameChange.release();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
