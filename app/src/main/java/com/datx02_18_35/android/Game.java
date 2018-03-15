@@ -18,6 +18,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.model.expression.Expression;
@@ -53,7 +54,6 @@ public class Game extends AppCompatActivity  {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
@@ -73,6 +73,16 @@ public class Game extends AppCompatActivity  {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
