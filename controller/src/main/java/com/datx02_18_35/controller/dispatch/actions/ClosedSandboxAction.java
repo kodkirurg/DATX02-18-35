@@ -12,7 +12,7 @@ public class ClosedSandboxAction extends Action {
     public final Expression expression;
     public final ActionConsumer applyRuleCallback;
 
-    ClosedSandboxAction(ActionConsumer callback, OpenSandboxAction openAction, Expression expression) {
+    public ClosedSandboxAction(ActionConsumer callback, OpenSandboxAction openAction, Expression expression) {
         super(callback);
         this.applyRuleCallback = callback;
         this.openAction = openAction;

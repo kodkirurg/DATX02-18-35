@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.actions.ClosedSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.OperatorType;
 
@@ -20,10 +23,11 @@ import game.logic_game.R;
 
 public class Sandbox extends AppCompatActivity implements View.OnClickListener {
 
-    Toolbar toolbar;
+
     public static boolean maySelectOperator=false;
     public static OperatorType operatorSelcted;
     public static Button button;
+    private Bundle bundle;
 
 
     @Override
@@ -31,6 +35,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sandbox);
 
+        bundle = savedInstanceState;
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -47,7 +52,11 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
             case R.id.sandbox_button :
                 if(operatorSelcted==null & maySelectOperator ){
                     Expression expression = SandboxCardsAdapter.selected.get(0);
-                    Log.d("test123","exit : " + expression.toString());
+                    try {
+                        Controller.getSingleton().sendAction(new ClosedSandboxAction(Game.boardCallback, Game.sandboxAction,expression));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     finish();
