@@ -22,7 +22,6 @@ import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
 
 import java.util.Collection;
 import java.util.concurrent.Semaphore;
@@ -35,6 +34,7 @@ public class Game extends AppCompatActivity  {
     public Semaphore ready=new Semaphore(2);
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
+    public final static Semaphore gameChange = new Semaphore(1);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +105,7 @@ public class Game extends AppCompatActivity  {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
             ready.acquire(2);
+            gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 FragmentManager fm = getFragmentManager();
@@ -140,6 +141,7 @@ public class Game extends AppCompatActivity  {
                 startActivity(i);
             }
             ready.release(2);
+            gameChange.release();
         }
     }
 

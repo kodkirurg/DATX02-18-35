@@ -86,10 +86,12 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     @Override
     public void onClick(View v) {
         try {
+            Game.gameChange.acquire();
             Controller.getSingleton().sendAction(new RequestApplyRuleAction(Game.boardCallback,dataSet.get((int)v.getTag())));
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Game.gameChange.release();
     }
 
     @Override
