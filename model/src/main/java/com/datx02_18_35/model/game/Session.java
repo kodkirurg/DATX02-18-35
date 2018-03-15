@@ -200,6 +200,7 @@ public class Session {
 
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
+            System.out.printf(existingExpression.toString());
             if(existingExpression.equals(expression)){
                 return true;
             }

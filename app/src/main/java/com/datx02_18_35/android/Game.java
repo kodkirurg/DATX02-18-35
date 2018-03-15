@@ -34,6 +34,7 @@ public class Game extends AppCompatActivity  {
     Toolbar toolbar;
     public Semaphore ready=new Semaphore(2);
     public static BoardCallback boardCallback;
+    public static OpenSandboxAction sandboxAction=null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class Game extends AppCompatActivity  {
         boardCallback = new BoardCallback();
         boardCallback.start();
         try {
-            Controller.getSingleton().handleAction(new RequestStartNewSessionAction(boardCallback,Level.exampleLevel));
+            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Level.exampleLevel));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,7 +100,6 @@ public class Game extends AppCompatActivity  {
     }
 
 
-
     public class BoardCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
@@ -134,6 +134,7 @@ public class Game extends AppCompatActivity  {
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
+                sandboxAction=(OpenSandboxAction) action;
                 i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
             }
