@@ -94,18 +94,12 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             selected.add(expr);
         }
         else if(selected.contains(expr)){
-
             //animations
             v.setBackgroundColor(Color.WHITE);
             v.setScaleX((float) 1);
             v.setScaleY((float) 1 );
-            
-            //de-selection and remove from list
-            for (Expression item : selected ){
-                if(!item.equals(expr)){
-                    selected.remove(item);
-                }
-            }
+           // selected.indexOf(selected);
+
         }
         //update rules on board and set selection
         try {
