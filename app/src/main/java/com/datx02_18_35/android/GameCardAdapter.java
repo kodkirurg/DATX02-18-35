@@ -76,7 +76,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public void onClick(View v) {
         try {
-            Game.gameChange.acquire();
+            GameBoard.gameChange.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -103,11 +103,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
         //update rules on board and set selection
         try {
-            Controller.getSingleton().sendAction(new RequestRulesAction(Game.boardCallback,selected));
+            Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,selected));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Game.gameChange.release();
+        GameBoard.gameChange.release();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{

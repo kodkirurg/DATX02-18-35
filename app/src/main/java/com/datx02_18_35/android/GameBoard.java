@@ -33,7 +33,7 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class Game extends AppCompatActivity  {
+public class GameBoard extends AppCompatActivity  {
 
     Toolbar toolbar;
     public static BoardCallback boardCallback;
@@ -157,14 +157,14 @@ public class Game extends AppCompatActivity  {
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 FragmentManager fm = getFragmentManager();
-                FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
-                frag.updateBoard(data);
+                /*FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
+                frag.updateBoard(data);*/
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 FragmentManager fm = getFragmentManager();
-                FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
-                frag.updateActions(data);
+                /*FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
+                frag.updateActions(data);*/
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";

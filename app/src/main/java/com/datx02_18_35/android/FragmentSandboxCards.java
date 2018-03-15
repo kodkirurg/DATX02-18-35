@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-import static com.datx02_18_35.android.FragmentBoardCards.getWidthDp;
 
 /**
  * Created by Magnu on 2018-03-13.
@@ -39,7 +38,7 @@ public class FragmentSandboxCards extends Fragment {
 
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(getWidthDp(getActivity().getApplicationContext())) - 130*2;
+        int widthDP=Math.round(Tools.getWidthDp(getActivity().getApplicationContext())) - 130*2;
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.sandboxLeft_recycler_view);

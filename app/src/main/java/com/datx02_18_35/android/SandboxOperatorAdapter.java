@@ -70,7 +70,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
     @Override
     public void onClick(View view) {
         try {
-            Game.gameChange.acquire();
+            GameBoard.gameChange.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -101,7 +101,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             }
             previousSelectedOperatorHolder=holder;
         }
-        Game.gameChange.release();
+        GameBoard.gameChange.release();
 
     }
 

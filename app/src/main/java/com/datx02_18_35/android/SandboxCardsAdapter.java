@@ -59,7 +59,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     @Override
     public void onClick(View view) {
         try {
-            Game.gameChange.acquire();
+            GameBoard.gameChange.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -125,7 +125,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         else{
             Log.d("test123","too many selections in sandbox");
         }
-        Game.gameChange.release();
+        GameBoard.gameChange.release();
     }
 
     @Override
