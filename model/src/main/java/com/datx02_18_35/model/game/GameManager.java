@@ -14,7 +14,6 @@ public class GameManager {
 
     public GameManager(List<String> levelStrings) throws LevelParseException {
         levels = new ArrayList<>();
-        levels.add(Level.exampleLevel);
         for (String levelStr : levelStrings) {
             levels.add(Level.parseLevel(levelStr));
         }
