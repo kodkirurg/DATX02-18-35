@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
         try {
             //TODO: Pass list of level files as Strings
-            Controller.init(Level.exampleLevels);
+            Controller.init(Level.exampleLevels, null);
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly
