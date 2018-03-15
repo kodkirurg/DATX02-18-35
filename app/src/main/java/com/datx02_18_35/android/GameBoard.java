@@ -64,9 +64,6 @@ public class GameBoard extends AppCompatActivity  {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
-        /*ft.replace(R.id.game_right_side, new FragmentBoardActions());
-        ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();*/
-
         initLeftSide();
         initRightSide();
 
@@ -155,15 +152,13 @@ public class GameBoard extends AppCompatActivity  {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
-                FragmentManager fm = getFragmentManager();
-                /*FragmentBoardCards frag = (FragmentBoardCards) fm.findFragmentById(R.id.game_left_side);
-                frag.updateBoard(data);*/
+                adapterLeft.updateBoard(data);
+
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
-                FragmentManager fm = getFragmentManager();
-                /*FragmentBoardActions frag = (FragmentBoardActions) fm.findFragmentById(R.id.game_right_side);
-                frag.updateActions(data);*/
+                adapterRight.updateBoard(data);
+
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";

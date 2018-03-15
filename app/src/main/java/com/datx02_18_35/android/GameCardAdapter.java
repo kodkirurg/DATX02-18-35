@@ -43,9 +43,10 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         selected = new ArrayList<>();
     }
 
-
-    public void resetSelected(){
-        selected.clear();
+    void updateBoard(Iterable<Expression> data){
+        dataSet.clear();
+        for (Expression expression : data)
+        {dataSet.add(expression);}
     }
 
     @Override

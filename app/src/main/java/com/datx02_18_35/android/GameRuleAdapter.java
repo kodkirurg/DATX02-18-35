@@ -15,6 +15,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import game.logic_game.R;
@@ -27,8 +28,14 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     private ArrayList<Rule> dataSet;
 
 
-    public GameRuleAdapter(ArrayList<Rule> dataSet){
+    GameRuleAdapter(ArrayList<Rule> dataSet){
         this.dataSet=dataSet;
+    }
+
+
+    void updateBoard(Collection<Rule> data){
+        dataSet.clear();
+        dataSet.addAll(data);
     }
 
     @Override
