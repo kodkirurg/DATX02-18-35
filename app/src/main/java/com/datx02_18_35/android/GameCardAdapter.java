@@ -68,6 +68,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        holder.setIsRecyclable(false);
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         if(null != dataSet.get(position)){
@@ -90,6 +91,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         Expression expr = dataSet.get(position);
 
         selected.clear();
+        selected.add(expr);
         selected.add(expr);
         //update rules on board and set selection
         try {
