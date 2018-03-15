@@ -11,6 +11,7 @@ import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestAssumptionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
@@ -144,6 +145,10 @@ public class Controller extends ActionConsumer {
                 break;
             }
 
+        }
+        else if (action instanceof RequestAssumptionAction) {
+            game.assertSessionInProgress();
+            action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
         }
         else {
             throw new UnhandledActionException(action);
