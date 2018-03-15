@@ -30,7 +30,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-02-08.
  */
 
-public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
     private ArrayList<Expression> selected;
 
@@ -41,6 +41,9 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
 
+    public void resetSelected(){
+        selected.clear();
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,16 +69,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         return dataSet.size();
     }
 
-    public boolean onItemMove(int indexFrom, int indexTo) {
-        Collections.swap(dataSet,indexFrom,indexTo);
-        notifyItemMoved(indexFrom,indexTo);
-        //implement
-        return true;
-    }
-
-    public void onItemDismiss(int adapterPosition) {
-        //implement
-    }
 
     @Override
     public void onClick(View v) {
@@ -112,7 +105,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
         //update rules on board and set selection
         try {
-            Controller.singleton.handleAction(new RequestRulesAction(Game.boardCallback,selected));
+            Controller.getSingleton().sendAction(new RequestRulesAction(Game.boardCallback,selected));
         } catch (Exception e) {
             e.printStackTrace();
         }

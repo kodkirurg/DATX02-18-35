@@ -46,12 +46,12 @@ public class FragmentInventory extends Fragment {
 
 
         //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
+        /*ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
-
+           */
         return frag;
 
     }

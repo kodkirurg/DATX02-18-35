@@ -23,6 +23,7 @@ import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.game.IllegalRuleException;
 import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelParseException;
 import com.datx02_18_35.model.game.Session;
 
 import java.util.ArrayList;
@@ -36,16 +37,30 @@ import java.util.List;
 
 public class Controller extends ActionConsumer {
 
-    public static final Controller singleton = new Controller();
-
-    private GameManager game;
-
-    private Controller() {
-        game = new GameManager();
+    private static Controller singleton = null;
+    public static Controller getSingleton() {
+        if (singleton == null) {
+            throw new IllegalStateException("Singleton not initialized. Call init first.");
+        }
+        return singleton;
+    }
+    public static void init(List<String> levelStrings) throws LevelParseException {
+        singleton = new Controller(levelStrings);
     }
 
+    public List<Level> getLevels() {
+        return game.getLevels();
+    }
+
+    private GameManager game;
+    private Controller(List<String> levelStrings) throws LevelParseException {
+        game = new GameManager(levelStrings);
+    }
+
+
+
     @Override
-    public void handleAction(Action action)
+    protected void handleAction(Action action)
             throws
             UnhandledActionException,
             IllegalActionException,
@@ -86,12 +101,14 @@ public class Controller extends ActionConsumer {
                         return;
                     }
                 }
+                break;
                 case DISJUNCTION_INTRODUCTION: {
                     if (rule.expressions.get(0) == null || rule.expressions.get(1) == null) {
                         action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.DISJUNCTION_INTRODUCTION, rule));
                         return;
                     }
                 }
+                break;
             }
             List<Expression> newExpressions = game.getSession().applyRule(rule);
             action.callback(getRefreshInventoryAction());

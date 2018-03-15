@@ -1,7 +1,7 @@
 package com.datx02_18_35.model.game;
 
 import com.datx02_18_35.model.ExpressionParser;
-import com.datx02_18_35.model.expression.Absurdity;
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Operator;
@@ -11,12 +11,14 @@ import com.datx02_18_35.model.expression.Proposition;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by Jonatan on 2018-03-07.
@@ -45,6 +47,22 @@ public class Level {
         this.propositions = new ArrayList<>(extractPropositions(goal, hypothesis));
     }
 
+    public boolean isLevelComplete(){
+        return isLevelComplete;
+    }
+
+    public ExpressionFactory getExpressionFactory() {
+        return this.expressionFactory;
+    }
+
+    void completeLevel(){
+        isLevelComplete=true;
+    }
+
+    /////////////////////////////////////////////
+    // STATIC FUNCTIONS /////////////////////////
+    /////////////////////////////////////////////
+
     private static Set<Proposition> extractPropositions(Expression goal, List<Expression> hypothesis) {
         Set<Proposition> propSet = new HashSet<>();
         propSet.addAll((extractPropositions(goal)));
@@ -66,87 +84,89 @@ public class Level {
         return propSet;
     }
 
+    private static LevelParseException getWrongNumberOfArgumentsLevelParseException(String token, int lineNumb) {
+        return new LevelParseException("Wrong number of arguments for token " + token + " on line: " + lineNumb);
+    }
+    private static LevelParseException getTooManyGoalsLevelParseException(int lineNumb) {
+        return new LevelParseException("Level file contains more than one goal on line: " + lineNumb);
+    }
+    private static LevelParseException getTooManyTitlesLevelParseException(int lineNumb) {
+        return new LevelParseException("Level file contains more than one title on line: " + lineNumb);
+    }
 
-    public static Level createLevel(String filepath) throws NullPointerException, IOException, LevelParseException{
+    public static Level parseLevel(String levelString) throws LevelParseException{
 
-        Map<String,String> map = new HashMap<>();
-        Scanner input = new Scanner(new File(filepath));
-        List<String> lineList = new ArrayList<>();
-        while(input.hasNextLine()){
-            String line = input.nextLine();
-            String[] strings =line.split(" ");
-            if(strings[0].equals(SYMBOL)){
-                if(strings.length!=3){
-                    throw new LevelParseException("Text in file not formatted correctly");
-                }else{
-                    map.put(strings[1],strings[2]);
+        int lineNumb;
+        Map<String,String> symbolMap = new HashMap<>();
+        String[] lines = levelString.split("\n");
+
+        // Parse SYMBOL
+        lineNumb = 0;
+        for (String line : lines) {
+            String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
+            if (tokens[0].equals(SYMBOL)) {
+                if (tokens.length != 3) {
+                    throw getWrongNumberOfArgumentsLevelParseException(tokens[0], lineNumb);
                 }
-
-            }else{
-                lineList.add(line);
+                else {
+                    symbolMap.put(tokens[1], tokens[2]);
+                }
             }
-
+            lineNumb += 1;
         }
 
-
-        ExpressionFactory expressionFactory = new ExpressionFactory(map);
+        // Initialize members for level
+        ExpressionFactory expressionFactory = new ExpressionFactory(symbolMap);
         ExpressionParser expressionParser = new ExpressionParser(expressionFactory);
         List<Expression> hypothesis= new ArrayList<>();
         Expression goal = null;
-        String Title = "";
-        for(String string:lineList){
-            String[] strings=string.split(" ");
-            if(strings.length>0){
-                switch (strings[0]){
+        String title = null;
+
+        lineNumb = 0;
+        for (String line : lines) {
+            String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
+            if (tokens.length>0) {
+                String argument = Util.join(Util.tail(tokens));
+
+                switch (tokens[0]) {
                     case HYPOTHESIS:
-                        for(int i=1; i<strings.length;i++){
-                            hypothesis.add(expressionParser.parseString(strings[i]));
-                        }
+                        hypothesis.add(expressionParser.parseString(argument));
                         break;
                     case GOAL:
-                        if(goal==null && strings.length == 2) {
-                            goal = expressionParser.parseString(strings[1]);
-                        }else{
-                            throw new LevelParseException("Two goals in level file");
+                        if (goal != null) {
+                            throw getTooManyGoalsLevelParseException(lineNumb);
                         }
+                        goal = expressionParser.parseString(argument);
                         break;
-
                     case TITLE :
-                        if(strings.length>0){
-                            for (int i=1; i<strings.length;i++){
-                                Title+=strings[i]+" ";
-                            }
-                        }else {
-                            throw new LevelParseException("No title in level file");
+                        if (title != null) {
+                            throw getTooManyTitlesLevelParseException(lineNumb);
                         }
+                        title = argument;
                         break;
-
                 }
             }
+            lineNumb += 1;
         }
-
-        return new Level(Title,hypothesis,goal,expressionFactory);
+        return new Level(title,hypothesis,goal,expressionFactory);
     }
 
-    public boolean isLevelComplete(){
-        return isLevelComplete;
+    public static final List<String> exampleLevels;
+    static {
+        exampleLevels = new ArrayList<>();
+        final String levelStr =
+                "TITLE Example Level\n" +
+                "\n" +
+                "SYMBOL P BlueBall\n" +
+                "SYMBOL Q RedBall\n" +
+                "\n" +
+                "HYPOTHESIS (P)\n" +
+                "HYPOTHESIS (Q)\n" +
+                "\n" +
+                "GOAL ((P)&(Q))\n";
+        exampleLevels.add(levelStr);
     }
 
-    public ExpressionFactory getExpressionFactory() {
-        return this.expressionFactory;
-    }
-
-    void completeLevel(){
-        isLevelComplete=true;
-    }
-
-
-
-    static class LevelParseException extends Exception {
-        LevelParseException(String string){
-            super(string);
-        }
-    }
 
     public static final Level exampleLevel;
     static {

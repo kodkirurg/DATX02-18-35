@@ -47,7 +47,7 @@ public class FragmentScopeActions extends Fragment {
 
 
         //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
+        /*EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
         localBehavoir.isLongPressDragEnabled = false;
 
 
@@ -58,7 +58,7 @@ public class FragmentScopeActions extends Fragment {
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        recyclerView.setAdapter(recAdapter);
+        recyclerView.setAdapter(recAdapter);*/
 
 
 

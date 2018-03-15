@@ -20,12 +20,11 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class FragmentBoardCards extends Fragment implements OnStartDragListener {
+public class FragmentBoardCards extends Fragment  {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
     private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
@@ -47,16 +46,9 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
         recyclerView.setLayoutManager(recLayoutManager);
 
 
-
-        list.add(null);
         recAdapter = new GameCardAdapter(list);
-        //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
-
 
         ((Game)getActivity()).ready.release(1);
         return view;
@@ -73,22 +65,22 @@ public class FragmentBoardCards extends Fragment implements OnStartDragListener 
     }
 
 
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        itemTouchHelper.startDrag(viewHolder);
-    }
 
     public void updateBoard(final Iterable<Expression> iterable){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                int size =list.size();
                 list.clear();
+                recAdapter.notifyItemRangeRemoved(0,size);
                 for (Expression anIterable : iterable) {
-                    list.add(anIterable);
+                        list.add(anIterable);
                 }
-                recAdapter.notifyDataSetChanged();
+                recAdapter.notifyItemRangeInserted(0,list.size());
             }
         });
+        ((GameCardAdapter) recAdapter).resetSelected();
+        recyclerView.getRecycledViewPool().clear();
     }
 
 }

@@ -53,7 +53,9 @@ public abstract class ActionConsumer {
      * Start the handling service
      */
     public synchronized void start() {
-        assert !started;
+        if (started) {
+            throw new IllegalStateException("ActionConsumer thread is already running!");
+        }
         started = true;
         ActionScanner actionScanner = new ActionScanner();
         Thread thread = new Thread(actionScanner);
@@ -65,7 +67,9 @@ public abstract class ActionConsumer {
      * @throws InterruptedException
      */
     public synchronized void stop() throws InterruptedException {
-        assert started;
+        if (!started) {
+            throw new IllegalStateException("ActionConsumer is not running!");
+        }
         sendAction(new StopAction());
     }
 
@@ -85,5 +89,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
+    protected abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
 }

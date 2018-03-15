@@ -1,6 +1,7 @@
 package com.datx02_18_35.controller.dispatch.actions;
 
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.IllegalActionException;
 
 /**
  * Created by robin on 2018-03-01.
@@ -26,8 +27,10 @@ public abstract class Action {
      * @param action
      * @throws InterruptedException
      */
-    public void callback(Action action) throws InterruptedException {
-        assert callback != null;
+    public void callback(Action action) throws InterruptedException, IllegalActionException {
+        if (callback == null) {
+            throw new IllegalActionException(this, "This action doesn't support callbacks!");
+        }
         this.callback.sendAction(action);
     }
 }
