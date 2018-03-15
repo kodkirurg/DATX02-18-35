@@ -23,7 +23,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-01.
  */
 
-public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
 
 
@@ -92,20 +92,9 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         }
     }
 
-    @Override
-    public boolean onItemMove(int indexFrom, int indexTo) {
-        Collections.swap(dataSet,indexFrom,indexTo);
-        notifyItemMoved(indexFrom,indexTo);
-        //implement
-        return true;
-    }
 
-    @Override
-    public void onItemDismiss(int position) {
 
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         FrameLayout frame;
 
 
@@ -114,16 +103,6 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
             frame = itemView;
         }
 
-
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
 
         @Override
         public void onClick(View view) {

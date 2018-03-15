@@ -104,7 +104,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
 
 
@@ -114,15 +114,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
 
 
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
 
     }
 

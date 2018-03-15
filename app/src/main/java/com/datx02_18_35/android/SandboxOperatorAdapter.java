@@ -19,7 +19,7 @@ import game.logic_game.R;
  * Created by Magnu on 2018-03-13.
  */
 
-public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<OperatorType> dataSet;
     public static ViewHolder previousSelectedOperatorHolder=null;
 
@@ -97,18 +97,9 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             previousSelectedOperatorHolder=holder;
         }
     }
+    
 
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        return false;
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         FrameLayout frame;
 
 
@@ -117,16 +108,6 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             frame = itemView;
         }
 
-
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
 
         @Override
         public void onClick(View view) {
