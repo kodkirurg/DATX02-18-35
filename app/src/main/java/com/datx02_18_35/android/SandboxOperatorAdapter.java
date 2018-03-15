@@ -97,7 +97,7 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             previousSelectedOperatorHolder=holder;
         }
     }
-    
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         FrameLayout frame;
