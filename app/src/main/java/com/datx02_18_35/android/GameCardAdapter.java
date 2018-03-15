@@ -66,13 +66,13 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.setIsRecyclable(false);
+        //remember to check if selected and highlight on bind.
+
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
-        if(null != dataSet.get(position)){
+        if(null != dataSet.get(position) & !holder.alreadyBound){
             new Tools.CardDeflator(holder.cardView,dataSet.get(position));
+            holder.alreadyBound=true;
         }
     }
 
@@ -91,7 +91,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
-
+        boolean alreadyBound=false;
 
         public ViewHolder(CardView itemView) {
             super(itemView);

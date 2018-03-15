@@ -44,11 +44,10 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
-        holder.setIsRecyclable(false);
-        if(dataSet.get(position)!= null){
+        if(dataSet.get(position)!= null & !holder.alreadyBound){
             new Tools.CardDeflator(holder.cardView, dataSet.get(position));
+            holder.alreadyBound=true;
         }
-        holder.setIsRecyclable(false);
 
     }
 
@@ -126,6 +125,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
+        boolean alreadyBound=false;
 
 
         ViewHolder(CardView itemView) {
