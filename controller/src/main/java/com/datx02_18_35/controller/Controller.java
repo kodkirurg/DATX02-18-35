@@ -48,6 +48,9 @@ public class Controller extends ActionConsumer {
         singleton = new Controller(levelStrings);
     }
 
+    public List<Level> getLevels() {
+        return game.getLevels();
+    }
 
     private GameManager game;
     private Controller(List<String> levelStrings) throws LevelParseException {
