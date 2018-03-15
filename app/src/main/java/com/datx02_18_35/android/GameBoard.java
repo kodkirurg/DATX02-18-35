@@ -5,7 +5,10 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Semaphore;
 
@@ -32,18 +36,20 @@ import game.logic_game.R;
 public class Game extends AppCompatActivity  {
 
     Toolbar toolbar;
-    public Semaphore ready=new Semaphore(2);
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final static Semaphore gameChange = new Semaphore(1);
 
+
+    //recyclerviews
+    public RecyclerView recyclerViewLeft,recyclerViewRight;
+    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
+    public GameRuleAdapter adapterRight;
+    public GameCardAdapter adapterLeft;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        try {
-            ready.acquire(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -64,8 +70,11 @@ public class Game extends AppCompatActivity  {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
 
-        ft.replace(R.id.game_right_side, new FragmentBoardActions());
-        ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();
+        /*ft.replace(R.id.game_right_side, new FragmentBoardActions());
+        ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();*/
+
+        initLeftSide();
+        initRightSide();
 
                 
         //Set toolbar
@@ -75,9 +84,44 @@ public class Game extends AppCompatActivity  {
 
     }
 
+    private void initRightSide() {
+
+        recyclerViewRight = (RecyclerView) findViewById(R.id.game_recycler_view);
+        // use a grid layout manager
+        gridLayoutManagerRight = new GridLayoutManager(getApplication(), 1);
+        recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
+
+        ArrayList<Rule> list = new ArrayList<>();
+        list.add(null);
+        //attach list to adapter
+        adapterRight = new GameRuleAdapter(list);
+
+        //attach adapter
+        recyclerViewRight.setAdapter(adapterRight);
+    }
+
+    private void initLeftSide() {
+        //"screen" re-size
+        int spanCount;
+        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+
+        recyclerViewLeft = (RecyclerView) findViewById(R.id.game_recycler_view);
+        // use a grid layout manager
+        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
+        recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
+
+
+        adapterLeft = new GameCardAdapter(new ArrayList<Expression>());
+
+        recyclerViewLeft.setAdapter(adapterLeft);
+
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //shutdown session
         try {
             Controller.getSingleton().sendAction(new RequestAbortSessionAction());
         } catch (InterruptedException e) {
@@ -85,11 +129,6 @@ public class Game extends AppCompatActivity  {
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,7 +153,6 @@ public class Game extends AppCompatActivity  {
     public class BoardCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
-            ready.acquire(2);
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
@@ -150,7 +188,6 @@ public class Game extends AppCompatActivity  {
                 i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
             }
-            ready.release(2);
             gameChange.release();
         }
     }
