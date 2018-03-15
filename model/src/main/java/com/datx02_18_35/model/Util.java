@@ -10,7 +10,7 @@ public class Util {
     private Util(){}
 
     public static <T> T[] tail(T[] array) {
-        if (array.length == 1) {
+        if (array.length == 0) {
             throw new IllegalArgumentException("Array must contain at least one element.");
         }
         return Arrays.copyOfRange(array, 1, array.length);
