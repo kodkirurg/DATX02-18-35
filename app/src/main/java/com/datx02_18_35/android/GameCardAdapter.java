@@ -80,23 +80,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         int position = (int) v.getTag();
         Expression expr = dataSet.get(position);
 
-        if(! selected.contains(expr) ){
-            //animations
-            v.setBackgroundColor(Color.BLACK);
-            v.setScaleX((float) 1.05);
-            v.setScaleY((float) 1.05 );
-
-            //selection add it to our list
-            selected.add(expr);
-        }
-        else if(selected.contains(expr)){
-            //animations
-            v.setBackgroundColor(Color.WHITE);
-            v.setScaleX((float) 1);
-            v.setScaleY((float) 1 );
-           // selected.indexOf(selected);
-
-        }
+        selected.clear();
+        selected.add(expr);
         //update rules on board and set selection
         try {
             Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,selected));

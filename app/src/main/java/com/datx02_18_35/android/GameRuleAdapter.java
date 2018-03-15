@@ -36,6 +36,7 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     void updateBoard(Collection<Rule> data){
         dataSet.clear();
         dataSet.addAll(data);
+        notifyDataSetChanged();
     }
 
     @Override

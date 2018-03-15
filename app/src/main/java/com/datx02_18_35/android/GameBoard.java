@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,8 +62,6 @@ public class GameBoard extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft =fm.beginTransaction();
 
         initLeftSide();
         initRightSide();
@@ -157,6 +156,7 @@ public class GameBoard extends AppCompatActivity  {
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
+                Log.d("test123", "handleAction: " + data.toArray()[0].toString());
                 adapterRight.updateBoard(data);
 
             }
