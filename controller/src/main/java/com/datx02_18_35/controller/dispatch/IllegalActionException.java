@@ -14,6 +14,11 @@ public class IllegalActionException extends Exception {
         this.action = action;
     }
 
+    public IllegalActionException(Action action, String message) {
+        super(action.toString() + ": " + message);
+        this.action = action;
+    }
+
     public IllegalActionException(IllegalActionException ex) {
         this(ex.action);
     }
