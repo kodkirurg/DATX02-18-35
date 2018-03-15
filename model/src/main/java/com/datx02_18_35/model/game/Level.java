@@ -151,6 +151,22 @@ public class Level {
         return new Level(title,hypothesis,goal,expressionFactory);
     }
 
+    public static final List<String> exampleLevels;
+    static {
+        exampleLevels = new ArrayList<>();
+        final String levelStr =
+                "TITLE Example Level\n" +
+                "\n" +
+                "SYMBOL P BlueBall\n" +
+                "SYMBOL Q RedBall\n" +
+                "\n" +
+                "HYPOTHESIS (P)\n" +
+                "HYPOTHESIS (Q)\n" +
+                "\n" +
+                "GOAL ((P)&(Q))\n";
+        exampleLevels.add(levelStr);
+    }
+
 
     public static final Level exampleLevel;
     static {

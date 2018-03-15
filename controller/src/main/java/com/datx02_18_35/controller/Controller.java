@@ -48,6 +48,9 @@ public class Controller extends ActionConsumer {
         singleton = new Controller(levelStrings);
     }
 
+    public List<Level> getLevels() {
+        return game.getLevels();
+    }
 
     private GameManager game;
     private Controller(List<String> levelStrings) throws LevelParseException {
@@ -57,7 +60,7 @@ public class Controller extends ActionConsumer {
 
 
     @Override
-    public void handleAction(Action action)
+    protected void handleAction(Action action)
             throws
             UnhandledActionException,
             IllegalActionException,
@@ -98,12 +101,14 @@ public class Controller extends ActionConsumer {
                         return;
                     }
                 }
+                break;
                 case DISJUNCTION_INTRODUCTION: {
                     if (rule.expressions.get(0) == null || rule.expressions.get(1) == null) {
                         action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.DISJUNCTION_INTRODUCTION, rule));
                         return;
                     }
                 }
+                break;
             }
             List<Expression> newExpressions = game.getSession().applyRule(rule);
             action.callback(getRefreshInventoryAction());

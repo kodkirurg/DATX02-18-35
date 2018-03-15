@@ -85,5 +85,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
+    protected abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
 }
