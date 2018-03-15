@@ -60,23 +60,25 @@ public class Game extends AppCompatActivity  {
             e.printStackTrace();
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft =fm.beginTransaction();
 
-                ft.replace(R.id.game_right_side, new FragmentBoardActions());
-                ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft =fm.beginTransaction();
+
+        ft.replace(R.id.game_right_side, new FragmentBoardActions());
+        ft.replace(R.id.game_left_side , new FragmentBoardCards()).commit();
 
                 
-                //Set toolbar
-                toolbar = findViewById(R.id.toolbar);
-                toolbar.setTitle("");
-                setSupportActionBar(toolbar);
+        //Set toolbar
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
-            }
-        }).start();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
     }
 
     @Override

@@ -93,15 +93,12 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             v.setScaleY((float) 1 );
 
 
-            ArrayList<Expression> newList = new ArrayList<>();
             //de-selection and remove from list
             for (Expression item : selected ){
-                if(item.equals(expr)){
-                    continue;
+                if(!item.equals(expr)){
+                    selected.remove(item);
                 }
-                newList.add(item);
             }
-            selected=newList;
         }
         //update rules on board and set selection
         try {
