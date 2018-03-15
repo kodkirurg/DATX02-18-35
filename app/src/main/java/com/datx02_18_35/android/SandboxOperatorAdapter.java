@@ -69,11 +69,6 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
 
     @Override
     public void onClick(View view) {
-        try {
-            GameBoard.gameChange.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         //get position in viewholder from view
         int pos = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();
         //get viewholder
@@ -101,8 +96,6 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
             }
             previousSelectedOperatorHolder=holder;
         }
-        GameBoard.gameChange.release();
-
     }
 
     @Override

@@ -58,11 +58,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     }
     @Override
     public void onClick(View view) {
-        try {
-            GameBoard.gameChange.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         int position = (int)view.getTag();
         Expression expr = dataSet.get(position);
         if(selected.size() == 0){
@@ -125,7 +120,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         else{
             Log.d("test123","too many selections in sandbox");
         }
-        GameBoard.gameChange.release();
     }
 
     @Override

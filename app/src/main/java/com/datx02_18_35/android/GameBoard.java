@@ -60,12 +60,6 @@ public class GameBoard extends AppCompatActivity  {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
@@ -76,6 +70,11 @@ public class GameBoard extends AppCompatActivity  {
         initLeftSide();
         initRightSide();
 
+        try {
+            Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
                 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -86,7 +85,7 @@ public class GameBoard extends AppCompatActivity  {
 
     private void initRightSide() {
 
-        recyclerViewRight = (RecyclerView) findViewById(R.id.game_recycler_view);
+        recyclerViewRight = (RecyclerView) findViewById(R.id.game_right_side);
         // use a grid layout manager
         gridLayoutManagerRight = new GridLayoutManager(getApplication(), 1);
         recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
@@ -106,7 +105,7 @@ public class GameBoard extends AppCompatActivity  {
         int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
-        recyclerViewLeft = (RecyclerView) findViewById(R.id.game_recycler_view);
+        recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
         // use a grid layout manager
         gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);

@@ -75,11 +75,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        try {
-            GameBoard.gameChange.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         //get position in dataset and extract expression
         int position = (int) v.getTag();
         Expression expr = dataSet.get(position);
@@ -107,7 +102,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         } catch (Exception e) {
             e.printStackTrace();
         }
-        GameBoard.gameChange.release();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{

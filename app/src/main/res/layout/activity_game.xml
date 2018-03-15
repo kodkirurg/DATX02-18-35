@@ -23,7 +23,7 @@
         android:orientation="horizontal">
 
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/game_right_side"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 
             />
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/game_left_side"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
