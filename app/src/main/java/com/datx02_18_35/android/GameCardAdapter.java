@@ -73,6 +73,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         //remember to check if selected and highlight on bind.
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
+        holder.setIsRecyclable(false);
         if(selected.contains(position)){
             setAnimations(holder.cardView);
         }

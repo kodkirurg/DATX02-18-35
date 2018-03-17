@@ -27,6 +27,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 
@@ -192,13 +193,15 @@ public class GameBoard extends AppCompatActivity  {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
+                for (Expression anIterable : data){
+                    Log.d("expressions", "handleAction: " + anIterable.toString());
+                }
                 adapterLeft.updateBoard(data);
 
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
-
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
@@ -221,6 +224,9 @@ public class GameBoard extends AppCompatActivity  {
                 sandboxAction=(OpenSandboxAction) action;
                 i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
+            }
+            else if(action instanceof VictoryConditionMetAction){
+                Log.d("test123", "handleAction: " + "game is won");
             }
             gameChange.release();
         }
