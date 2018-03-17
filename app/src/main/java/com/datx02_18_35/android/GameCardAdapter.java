@@ -73,6 +73,9 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         //remember to check if selected and highlight on bind.
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
+        if(selected.contains(position)){
+            setAnimations(holder.cardView);
+        }
         if(null != dataSet.get(position) & !holder.alreadyBound){
             new Tools.CardDeflator(holder.cardView,dataSet.get(position));
             holder.alreadyBound=true;
@@ -111,6 +114,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
     void restoreSelections(){
+        try {
+            activity.gameChange.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for(CardView view : selectedView.values()){
             restoreAnimations(view);
         }
@@ -121,6 +129,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        activity.gameChange.release();
     }
     void restoreAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.WHITE);
