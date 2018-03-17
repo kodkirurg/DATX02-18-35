@@ -23,7 +23,9 @@ import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
@@ -118,10 +120,14 @@ public class GameBoard extends AppCompatActivity  {
     //return true if selected card is supposed to highlighted
     public synchronized boolean newSelection(Object object){
         if (object instanceof Expression){
-
+            
         }
         else if(object instanceof Rule){
-
+            try {
+                Controller.getSingleton().sendAction(new RequestApplyRuleAction(boardCallback,(Rule)object));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

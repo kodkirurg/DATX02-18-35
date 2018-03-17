@@ -37,7 +37,7 @@ import game.logic_game.R;
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    private ArrayList<Expression> selected=new ArrayList<>();
+    public ArrayList<Expression> selected=new ArrayList<>();
     Activity activity;
 
 
