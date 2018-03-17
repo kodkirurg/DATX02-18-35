@@ -39,14 +39,13 @@ import game.logic_game.R;
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     ArrayList<Expression> dataSet;
-    ArrayList<Integer> selected;
+    ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
     private GameBoard activity;
 
 
     GameCardAdapter(ArrayList<Expression> dataSet, GameBoard activity){
         this.dataSet = dataSet;
-        selected=new ArrayList<>(5);
         this.activity=activity;
     }
 
@@ -59,6 +58,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 notifyDataSetChanged();
                 selected.clear();
                 selectedView.clear();
+                try {
+                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
