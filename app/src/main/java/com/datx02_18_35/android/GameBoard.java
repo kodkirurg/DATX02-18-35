@@ -40,7 +40,7 @@ public class GameBoard extends AppCompatActivity  {
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final static Semaphore gameChange = new Semaphore(1);
-    public Object[] selected=new Object[3];
+    public ArrayList<Expression> selectedExpressions=new ArrayList<>();
     private int pointer = 0;
 
 
@@ -118,33 +118,10 @@ public class GameBoard extends AppCompatActivity  {
     //return true if selected card is supposed to highlighted
     public synchronized boolean newSelection(Object object){
         if (object instanceof Expression){
-            Expression expression = (Expression)object;
 
-            if (pointer==0){
-                if (selected[pointer]==null){
-                    selected[pointer]=expression;
-                    pointer+=1;
-                }
-                else{
-                    //one expression already selected
-                }
-            }
-            else if(pointer==2){
-                // restore and tell controller to apply rule
-            }
         }
         else if(object instanceof Rule){
-            Rule rule = (Rule)object;
-            if (pointer==1){
-                if (selected[pointer]==null){
-                    selected[pointer]=rule;
-                    pointer+=1;
-                    return true;
-                }
-                else if(selected[pointer]!=null){
-                    // one rule selected already
-                }
-            }
+
         }
         return false;
     }
