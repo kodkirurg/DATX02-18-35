@@ -89,6 +89,14 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()));
     }
 
+    public void setSelection(Expression expression) {
+        //implement
+    }
+
+    public void resetSelection() {
+        //implement
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
         boolean alreadyBound=false;

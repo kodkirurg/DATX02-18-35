@@ -41,9 +41,7 @@ public class GameBoard extends AppCompatActivity  {
     Toolbar toolbar;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
-    public final static Semaphore gameChange = new Semaphore(1);
-    public ArrayList<Expression> selectedExpressions=new ArrayList<>();
-    private int pointer = 0;
+    public final Semaphore gameChange = new Semaphore(1);
 
 
     //recyclerviews
@@ -120,7 +118,22 @@ public class GameBoard extends AppCompatActivity  {
     //return true if selected card is supposed to highlighted
     public synchronized boolean newSelection(Object object){
         if (object instanceof Expression){
-            
+            Expression expression = (Expression) object;
+            //already selected
+            if (adapterLeft.selected.contains(expression)){
+                adapterLeft.resetSelection();
+            }
+            //not selected
+            else if(!adapterLeft.selected.contains(expression)){
+                adapterLeft.setSelection(expression);
+            }
+            //update rightside
+            try {
+                Controller.getSingleton().sendAction(new RequestRulesAction(boardCallback,adapterLeft.selected));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         else if(object instanceof Rule){
             try {
