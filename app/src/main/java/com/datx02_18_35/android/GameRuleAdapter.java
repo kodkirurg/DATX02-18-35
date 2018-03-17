@@ -104,6 +104,7 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     public void onClick(View v) {
         try {
             Controller.getSingleton().sendAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
+            activity.adapterLeft.restoreSelections();
         } catch (Exception e) {
             e.printStackTrace();
         }

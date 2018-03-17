@@ -56,13 +56,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 dataSet.clear();
                 for (Expression expression : data) {dataSet.add(expression);}
                 notifyDataSetChanged();
-                selected.clear();
-                selectedView.clear();
-                try {
-                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                restoreSelections();
             }
         });
 
@@ -77,7 +71,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //remember to check if selected and highlight on bind.
-        holder.setIsRecyclable(false);
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         if(null != dataSet.get(position) & !holder.alreadyBound){
@@ -102,9 +95,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void setSelection(Expression expression, CardView v) {
         selected.add((int) v.getTag());
         selectedView.put((int) v.getTag(),v);
-        v.setBackgroundColor(Color.BLACK);
-        v.setScaleX((float)1.05);
-        v.setScaleY((float)1.05);
+        setAnimations(v);
     }
 
     void resetSelection(Expression expression, CardView v) {
@@ -114,12 +105,32 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 break;
            }
         }
-
         CardView cardView = selectedView.get((int) v.getTag());
+        restoreAnimations(cardView);
+        selectedView.remove(expression.hashCode());
+    }
+
+    void restoreSelections(){
+        for(CardView view : selectedView.values()){
+            restoreAnimations(view);
+        }
+        selected.clear();
+        selectedView.clear();
+        try {
+            Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    void restoreAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.WHITE);
         cardView.setScaleX((float)1.0);
         cardView.setScaleY((float)1.0);
-        selectedView.remove(expression.hashCode());
+    }
+    void setAnimations(CardView cardView){
+        cardView.setBackgroundColor(Color.BLACK);
+        cardView.setScaleX((float)1.05);
+        cardView.setScaleY((float)1.05);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
