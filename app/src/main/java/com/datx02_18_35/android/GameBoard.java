@@ -1,18 +1,18 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 
 import com.datx02_18_35.controller.Controller;
@@ -32,6 +32,7 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
@@ -58,7 +59,9 @@ public class GameBoard extends AppCompatActivity  {
 
         boardCallback = new BoardCallback();
         boardCallback.start();
+
         try {
+            gameChange.acquire();
             Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(0)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,6 @@ public class GameBoard extends AppCompatActivity  {
 
         initLeftSide();
         initRightSide();
-
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
@@ -78,7 +80,7 @@ public class GameBoard extends AppCompatActivity  {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
+        gameChange.release();
     }
 
     private void initRightSide() {
@@ -115,25 +117,32 @@ public class GameBoard extends AppCompatActivity  {
 
     }
 
-    //return true if selected card is supposed to highlighted
-    public synchronized boolean newSelection(Object object){
+    public synchronized void newSelection(Object object, View v) {
+        try {
+            gameChange.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (object instanceof Expression){
             Expression expression = (Expression) object;
             //already selected
-            if (adapterLeft.selected.contains(expression)){
-                adapterLeft.resetSelection();
+            if (adapterLeft.selected.contains((int)v.getTag())){
+                adapterLeft.resetSelection(expression, (CardView) v);
             }
             //not selected
-            else if(!adapterLeft.selected.contains(expression)){
-                adapterLeft.setSelection(expression);
+            else if(!adapterLeft.selected.contains((int)v.getTag())){
+                adapterLeft.setSelection(expression, (CardView) v);
             }
             //update rightside
             try {
-                Controller.getSingleton().sendAction(new RequestRulesAction(boardCallback,adapterLeft.selected));
+                ArrayList<Expression> sendList = new ArrayList<>();
+                for (Integer i : adapterLeft.selected){
+                    sendList.add(adapterLeft.dataSet.get(i));
+                }
+                Controller.getSingleton().sendAction(new RequestRulesAction(boardCallback, sendList));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         else if(object instanceof Rule){
             try {
@@ -142,7 +151,7 @@ public class GameBoard extends AppCompatActivity  {
                 e.printStackTrace();
             }
         }
-        return false;
+        gameChange.release();
     }
 
     @Override

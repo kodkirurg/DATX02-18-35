@@ -1,8 +1,8 @@
 package com.datx02_18_35.android;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +18,6 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import game.logic_game.R;
 
@@ -28,10 +27,10 @@ import game.logic_game.R;
 
 public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
-    Activity activity;
+    GameBoard activity;
 
 
-    GameRuleAdapter(ArrayList<Rule> dataSet, Activity activity){
+    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity){
         this.dataSet=dataSet;
         this.activity=activity;
     }
@@ -103,7 +102,11 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()));
+        try {
+            Controller.getSingleton().sendAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

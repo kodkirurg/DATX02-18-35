@@ -25,6 +25,8 @@ import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,13 +38,15 @@ import game.logic_game.R;
  */
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
-    private ArrayList<Expression> dataSet;
-    public ArrayList<Expression> selected=new ArrayList<>();
-    Activity activity;
+    ArrayList<Expression> dataSet;
+    ArrayList<Integer> selected;
+    HashMap<Integer, CardView> selectedView = new HashMap<>();
+    private GameBoard activity;
 
 
-    GameCardAdapter(ArrayList<Expression> dataSet, Activity activity){
+    GameCardAdapter(ArrayList<Expression> dataSet, GameBoard activity){
         this.dataSet = dataSet;
+        selected=new ArrayList<>(5);
         this.activity=activity;
     }
 
@@ -53,6 +57,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 dataSet.clear();
                 for (Expression expression : data) {dataSet.add(expression);}
                 notifyDataSetChanged();
+                selected.clear();
+                selectedView.clear();
             }
         });
 
@@ -67,7 +73,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         //remember to check if selected and highlight on bind.
-
+        holder.setIsRecyclable(false);
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         if(null != dataSet.get(position) & !holder.alreadyBound){
@@ -86,28 +92,40 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()));
+        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()),(CardView) v);
     }
 
-    public void setSelection(Expression expression) {
-        //implement
+    void setSelection(Expression expression, CardView v) {
+        selected.add((int) v.getTag());
+        selectedView.put((int) v.getTag(),v);
+        v.setBackgroundColor(Color.BLACK);
+        v.setScaleX((float)1.05);
+        v.setScaleY((float)1.05);
     }
 
-    public void resetSelection() {
-        //implement
+    void resetSelection(Expression expression, CardView v) {
+        for(int x =0 ; selected.size() > x ;x++){
+           if (selected.get(x)==v.getTag()){
+                selected.remove(x);
+                break;
+           }
+        }
+
+        CardView cardView = selectedView.get((int) v.getTag());
+        cardView.setBackgroundColor(Color.WHITE);
+        cardView.setScaleX((float)1.0);
+        cardView.setScaleY((float)1.0);
+        selectedView.remove(expression.hashCode());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public CardView cardView;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
         boolean alreadyBound=false;
 
-        public ViewHolder(CardView itemView) {
+        ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
         }
-
-
-
     }
 
 }
