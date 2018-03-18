@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Add listener
         Button start_button = (Button) findViewById(R.id.start_button); //grab a view and convert it to a button class
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         try {
             //TODO: Pass list of level files as Strings
             Controller.init(Level.exampleLevels, null);
@@ -35,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //TODO: Handle this properly
             e.printStackTrace();
         }
-    }
 
+    }
 
     @Override
     public void onClick(View view) {
