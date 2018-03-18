@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 
 import com.datx02_18_35.controller.Controller;
@@ -193,9 +194,6 @@ public class GameBoard extends AppCompatActivity  {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
-                for (Expression anIterable : data){
-                    Log.d("expressions", "handleAction: " + anIterable.toString());
-                }
                 adapterLeft.updateBoard(data);
 
             }
@@ -227,6 +225,13 @@ public class GameBoard extends AppCompatActivity  {
             }
             else if(action instanceof VictoryConditionMetAction){
                 Log.d("test123", "handleAction: " + "game is won");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                    }
+                });
+                finish();
             }
             gameChange.release();
         }
