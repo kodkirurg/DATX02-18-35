@@ -2,6 +2,7 @@ package com.datx02_18_35.model.expression;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 
@@ -18,6 +19,9 @@ public class ExpressionFactory {
     }
 
     public Proposition createProposition(String id) {
+        return new Proposition(id);
+    }
+    public Proposition createPropositionWithMap(String id) {
         return new Proposition(id, symbolMap.get(id));
     }
 
@@ -51,8 +55,8 @@ public class ExpressionFactory {
      * @param rule
      * @return
      */
-    public Collection<Expression> applyRule(Rule rule) {
-        Collection<Expression> result = new ArrayList<>();
+    public List<Expression> applyRule(Rule rule) {
+        List<Expression> result = new ArrayList<>();
         assert rule.expressions.size() >= 1;
         Expression expr1 = rule.expressions.get(0);
 

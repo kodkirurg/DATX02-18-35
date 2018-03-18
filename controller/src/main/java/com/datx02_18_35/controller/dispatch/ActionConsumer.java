@@ -2,6 +2,9 @@ package com.datx02_18_35.controller.dispatch;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.StopAction;
+import com.datx02_18_35.model.game.GameManager;
+import com.datx02_18_35.model.game.IllegalGameStateException;
+import com.datx02_18_35.model.game.IllegalRuleException;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,10 +28,20 @@ public abstract class ActionConsumer {
                         break;
                     }
                     handleAction(action);
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     break;
                 } catch (UnhandledActionException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (IllegalActionException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (GameManager.LevelNotInListException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (IllegalGameStateException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -40,7 +53,9 @@ public abstract class ActionConsumer {
      * Start the handling service
      */
     public synchronized void start() {
-        assert !started;
+        if (started) {
+            throw new IllegalStateException("ActionConsumer thread is already running!");
+        }
         started = true;
         ActionScanner actionScanner = new ActionScanner();
         Thread thread = new Thread(actionScanner);
@@ -52,7 +67,9 @@ public abstract class ActionConsumer {
      * @throws InterruptedException
      */
     public synchronized void stop() throws InterruptedException {
-        assert started;
+        if (!started) {
+            throw new IllegalStateException("ActionConsumer is not running!");
+        }
         sendAction(new StopAction());
     }
 
@@ -72,5 +89,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    public abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException;
+    protected abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
 }

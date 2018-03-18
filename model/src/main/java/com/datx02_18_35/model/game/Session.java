@@ -1,14 +1,16 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.expression.Absurdity;
+import com.datx02_18_35.model.expression.Conjunction;
+import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
+import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.expression.RuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EmptyStackException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +73,11 @@ public class Session {
     }
     public Iterable<Expression> getAssumptions(){
         final Iterator<Scope> scopesIterator = this.getScopes().iterator();
+
+        // Skip the first scope
+        scopesIterator.next();
+
+
         return new Iterable<Expression>() {
             @Override
             public Iterator<Expression> iterator() {
@@ -160,27 +167,23 @@ public class Session {
         this.addExpressionToInventory(expression);
     }
 
-    public Collection<Rule> getAvailableRules(Collection<Expression> expressions){
-        Collection<Rule> rules=Rule.getLegalRules(this.getAssumption(),expressions);
-        return rules;
-    }
-
-    public void applyRule(Rule rule){
-        assertRuleInScope(rule);
+    public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
+        TestRule.assertRuleIsLegal(this, rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        Collection<Expression> expressions = level.expressionFactory.applyRule(rule);
+        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
+        return expressions;
     }
 
 
-    public Rule finishIncompleteRule(Rule rule, Expression expression){
+    public Rule finishIncompleteRule(Rule rule, Expression expression) throws IllegalRuleException {
         return Rule.finishIncompleteRule(rule,expression);
     }
 
-    public Collection<Rule> getLegalRules(Collection<Expression> expressions){
+    public List<Rule> getLegalRules(List<Expression> expressions){
         return Rule.getLegalRules(getAssumption(),expressions);
     }
 
@@ -192,7 +195,6 @@ public class Session {
         }
         for (Expression e: scopes.peek().getInventory()){
             if(e.equals(level.goal)){
-                level.completeLevel();
                 return true;
             }
         }
@@ -200,24 +202,7 @@ public class Session {
     }
 
 
-
-    private void assertRuleInScope(Rule rule){
-        assert !rule.expressions.isEmpty();
-
-        switch (rule.type){
-            case ABSURDITY_ELIMINATION:
-                assert isExpressionInScope(rule.expressions.get(0));
-                 break;
-            case DISJUNCTION_INTRODUCTION:
-                assert isExpressionInScope(rule.expressions.get(0)) || isExpressionInScope(rule.expressions.get(1));
-                break;
-            default:
-                assert isExpressionInScope(rule.expressions);
-                break;
-        }
-    }
-
-    private boolean isExpressionInScope(Expression expression) {
+    public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
             if(existingExpression.equals(expression)){
                 return true;
@@ -226,18 +211,13 @@ public class Session {
         return false;
     }
 
-    private boolean isExpressionInScope(Collection<Expression> expressions){
+    public boolean isExpressionInScope(Collection<Expression> expressions){
         Collection<Expression> testExpressions = new HashSet<>(expressions);
 
         for (Expression existingExpression : getAllExpressions()){
             testExpressions.remove(existingExpression);
         }
         return testExpressions.isEmpty();
-    }
-
-
-    private Expression createExpression(){
-        throw new NotImplementedException();
     }
 
 }

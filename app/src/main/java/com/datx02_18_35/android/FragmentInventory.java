@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.OperatorType;
 
 import java.util.ArrayList;
 
@@ -23,7 +21,7 @@ import game.logic_game.R;
  */
 
 
-public class FragmentInventory extends Fragment implements View.OnClickListener  {
+public class FragmentInventory extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
@@ -32,7 +30,7 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View frag = inflater.inflate(R.layout.inventory_frag, container, false);
+        View frag = inflater.inflate(R.layout.fragment_inventory, container, false);
 
         recyclerView = (RecyclerView) frag.findViewById(R.id.game_recycler_view);
         // use a grid layout manager
@@ -42,33 +40,17 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
         // specify an adapter (see also next example)
         ArrayList<Expression> list = new ArrayList<Expression>();
-        /*ExpressionFactory exprFact = ExpressionFactory.getSingleton();
-        Expression p1 = exprFact.createProposition("P");
-        Expression q1 = exprFact.createProposition("Q");
-        Expression r1 = exprFact.createProposition("R");
-        Expression c4 = exprFact.createOperator(OperatorType.IMPLICATION, p1,q1);
-        Expression c5 = exprFact.createOperator(OperatorType.IMPLICATION, r1,q1);
-
-        list.add(p1);
-*/
-
-        recAdapter = new RecyclerAdapter(list);
 
 
-        //add drag and drop
-        ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //recAdapter = new GameCardAdapter(list);
+
+
 
         recyclerView.setAdapter(recAdapter);
-
-     //   Button addTo_button = (Button)  container.getRootView().findViewById(R.id.addTo_button); //grab a view and convert it to a button class
-     //   addTo_button.setOnClickListener(this);
 
         return frag;
 
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -78,19 +60,12 @@ public class FragmentInventory extends Fragment implements View.OnClickListener 
 
 
     }
-    public void updateInventory(){
 
+
+    public void addToInventory(/*Expression newCard*/){
+        //list.add(newCard);
+        //recyclerView.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.addTo_button: {
-                /*if (something_is_clicked){
-                    take the clicked item and send to scope board
-                }*/
-                break;
-            }
-        }
-    }
+
 }

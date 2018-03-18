@@ -1,10 +1,15 @@
 package com.datx02_18_35.model.expression;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
+import com.datx02_18_35.model.game.IllegalRuleException;
+import com.datx02_18_35.model.game.TestRule;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,138 +20,135 @@ public class Rule {
     public final RuleType type;
     public final List<Expression> expressions;
 
+    public Rule(RuleType type, Expression... expressions) {
+        this(type, Arrays.asList(expressions));
+    }
 
     public Rule(RuleType type, List<Expression> expressions) {
         assert expressions != null;
         this.type = type;
-        this.expressions = expressions;
+        this.expressions = new ArrayList<>(expressions);
     }
 
-    public static Collection<Rule> getLegalRules( Expression assumption, Collection<Expression> expressions){
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(type.name());
+        sb.append("(");
+        Iterator<Expression> iter = expressions.iterator();
+        if (iter.hasNext()) {
+            sb.append(iter.next().toString());
+            while (iter.hasNext()) {
+                sb.append(",");
+                sb.append(iter.next().toString());
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 
-        List<Expression> exprs = new ArrayList<>(expressions);
-        ArrayList<Rule> legalRules = new ArrayList<>();
-        switch(exprs.size()) {
-            case 0:
-                //legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE,exprs));
+    public static List<Rule> getLegalRules( Expression assumption, List<Expression> selection){
 
+        switch(selection.size()) {
+            case 0: {
+                // No applicable rules
+                return new ArrayList<>();
+            }
             case 1: {
+                final List<Rule> legalRules = new ArrayList<>();
+                final Expression fst = selection.get(0);
+
                 if (assumption != null) {
-                    List<Expression> assumptionAndExpr = new ArrayList<>();
-                    assumptionAndExpr.add(assumption);
-                    assumptionAndExpr.addAll(exprs);
-                    legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, assumptionAndExpr));
+                    legalRules.add(new Rule(RuleType.IMPLICATION_INTRODUCTION, assumption, fst));
                 }
 
-                if (exprs.get(0) instanceof Conjunction) {
-                    List<Expression> conjunctionExpression = new ArrayList<>(exprs);
-                    legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, conjunctionExpression));
-
-                } else if (exprs.get(0) instanceof Absurdity) {
-                    List<Expression> absurdityExpressions = new ArrayList<>(exprs);
-                    absurdityExpressions.add(null);
-                    legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, absurdityExpressions));
-                    List<Expression> reversedAbsurdityExpressions = new ArrayList<>(absurdityExpressions);
-                    Collections.reverse(reversedAbsurdityExpressions);
-                    legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION,reversedAbsurdityExpressions));
+                if (fst instanceof Conjunction) {
+                    legalRules.add(new Rule(RuleType.CONJUNCTION_ELIMINATION, fst));
+                }
+                else if (fst instanceof Absurdity) {
+                    legalRules.add(new Rule(RuleType.ABSURDITY_ELIMINATION, fst, null));
                 }
 
-                List<Expression> disjunctionExpressions = new ArrayList<>(exprs);
-                disjunctionExpressions.add(null);
-                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, disjunctionExpressions));
-                List<Expression> reversedDisjunctionExpressions = new ArrayList<>(disjunctionExpressions);
-                Collections.reverse(reversedDisjunctionExpressions);
-                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, reversedDisjunctionExpressions));
-                break;
+                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, fst, null));
+                legalRules.add(new Rule(RuleType.DISJUNCTION_INTRODUCTION, null, fst));
+
+                return legalRules;
             }
-            case 2:
+            case 2: {
+                final List<Rule> legalRules = new ArrayList<>();
+                final Expression fst = selection.get(0);
+                final Expression snd = selection.get(1);
 
-                List<Expression> conjunctionExpressions= new ArrayList<>(exprs);
-                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, conjunctionExpressions));
-                List<Expression> reverseConjunctionExpressions = new ArrayList<>(conjunctionExpressions);
-                Collections.reverse(reverseConjunctionExpressions);
-                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, reverseConjunctionExpressions));
+                legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, selection));
 
-                if (exprs.get(0) instanceof Implication && ((Implication) exprs.get(0)).operand1.equals(exprs.get(1))) {
-                    List<Expression> implicationExpressions = new ArrayList<>(exprs);
-                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, implicationExpressions));
-
-                } else if (exprs.get(1) instanceof Implication && ((Implication) exprs.get(1)).operand1.equals(exprs.get(0))) {
-                    List<Expression> reverseImplicationExpressions = new ArrayList<>(exprs);
-                    Collections.reverse(reverseImplicationExpressions);
-                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, reverseImplicationExpressions));
+                if (fst instanceof Implication && ((Implication) fst).operand1.equals(snd)) {
+                    legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, selection));
                 }
-                /*
-                if( exprs.get(0) instanceof Negation && ((Negation) exprs.get(0)).operand.equals(exprs.get(1))){
-                    legalRules.add(new Rule(RuleType.ABSURDITY_INTRODUCTION,exprs));
-                }else if (exprs.get(1) instanceof Negation && ((Negation) exprs.get(1)).operand.equals(exprs.get(0))){
-                    legalRules.add(new Rule(RuleType.ABSURDITY_INTRODUCTION,reverseExprs));
-                }*/
-                break;
+                return legalRules;
+            }
+            case 3: {
+                final List<Rule> legalRules = new ArrayList<>();
+                final Expression fst = selection.get(0);
+                final Expression snd = selection.get(1);
+                final Expression thd = selection.get(2);
 
-            case 3:
-                Rule disjElimRule;
+                // Disjunction elimination check:
+                // fst:     A | B
+                // snd:     A -> C
+                // thd:     B -> C
+                // result:  C
+                // Check root operators
+                if (   fst instanceof Disjunction
+                    && snd instanceof Implication
+                    && thd instanceof Implication) {
 
-                if (exprs.get(0) instanceof Disjunction && exprs.get(1) instanceof Implication && exprs.get(2) instanceof Implication) {
-                    // First (0) element is disjunction.
-                    disjElimRule = createDisjunctionElimination(((Disjunction) exprs.get(0)), (Implication) exprs.get(1), (Implication) exprs.get(2));
-                } else if (exprs.get(0) instanceof Implication && exprs.get(1) instanceof Disjunction && exprs.get(2) instanceof Implication) {
-                    // Second (1) element is disjunction.
-                    disjElimRule = createDisjunctionElimination(((Disjunction) exprs.get(1)), (Implication) exprs.get(0), (Implication) exprs.get(2));
+                    final Disjunction disj = (Disjunction)fst;
+                    final Implication impl1 = (Implication)snd;
+                    final Implication impl2 = (Implication)thd;
 
-                } else if (exprs.get(0) instanceof Implication && exprs.get(1) instanceof Implication && exprs.get(2) instanceof Disjunction) {
-                    //Third (2) element is disjunction.
-                    disjElimRule = createDisjunctionElimination(((Disjunction) exprs.get(2)), (Implication) exprs.get(0), (Implication) exprs.get(1));
-                } else {
-                    break;
+                    // Check that the assumptions in the implications
+                    // correspond with the operands of the disjunction
+                    // and that the implications matches
+                    if (   disj.getOperand1().equals(impl1.getOperand1())
+                        && disj.getOperand2().equals(impl2.getOperand1())
+                        && impl1.getOperand2().equals(impl2.getOperand2())) {
+
+                        legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, selection));
+                    }
                 }
-                if (disjElimRule != null) {
-                    legalRules.add(disjElimRule);
-                }
-                break;
-            default:
-                break;
+                return legalRules;
+            }
+            default: {
+                // Selection 4 or more expressions
+                // No applicable rules
+                return new ArrayList<>();
+            }
         }
-        return legalRules;
-
     }
 
-    //Help function to create a DisjunctionElimination rule with the order of the expressions: A or B, A>C, B>C
-    private static Rule createDisjunctionElimination(Disjunction disj, Implication impl1, Implication impl2){
-        ArrayList<Expression> exprsOrder = new ArrayList<Expression>();
-        if(impl1.operand2.equals(impl2.operand2)) {
-            if (disj.operand1.equals(impl1.operand1) && disj.operand2.equals(impl2.operand1)) {
-                //Already in the correct order.
-                exprsOrder.add(disj);
-                exprsOrder.add(impl1);
-                exprsOrder.add(impl2);
-
-            }else if(disj.operand2.equals(impl1.operand1) && disj.operand1.equals(impl2.operand1)){
-                //Change order of implications.
-                exprsOrder.add(disj);
-                exprsOrder.add(impl2);
-                exprsOrder.add(impl1);
-
-            }else{
-                // Expressions don't match. Return null.
-                return null;
-            }
-        }else{
-            //Expressions don't match. Return null.
-            return  null;
-        }
-        return new Rule(RuleType.DISJUNCTION_ELIMINATION,exprsOrder);
-    }
-    public static Rule finishIncompleteRule(Rule rule,Expression expression){
+    public static Rule finishIncompleteRule(Rule rule,Expression expression) throws IllegalRuleException {
         List<Expression> expressions = new ArrayList<>();
-        if(rule.type==RuleType.ABSURDITY_ELIMINATION||rule.type==RuleType.DISJUNCTION_INTRODUCTION){
-            if(rule.expressions.size()==1){
-                expressions.addAll(rule.expressions);
-                expressions.add(expression);
-                Rule newRule = new Rule(rule.type, expressions);
-                return newRule;
-            }
+        switch (rule.type) {
+            case ABSURDITY_ELIMINATION:
+                if (false == rule.expressions.get(0) instanceof Absurdity) {
+                    throw new IllegalRuleException(rule, "First argument must be Absurdity");
+                }
+                if (rule.expressions.get(1) != null) {
+                    throw new IllegalRuleException(rule, "Second argument must be null");
+                }
+                return new Rule(RuleType.ABSURDITY_ELIMINATION, rule.expressions.get(0), expression);
+            case DISJUNCTION_INTRODUCTION:
+                if (   rule.expressions.get(0) == null
+                    && rule.expressions.get(1) != null) {
+                    return new Rule(RuleType.DISJUNCTION_INTRODUCTION, expression, rule.expressions.get(1));
+                } else if (rule.expressions.get(0) != null
+                        && rule.expressions.get(1) == null){
+                    return new Rule(RuleType.DISJUNCTION_INTRODUCTION, rule.expressions.get(0), expression);
+                } else {
+                    throw new IllegalRuleException(rule, "Exactly one argument must be null!");
+                }
+            default:
+                throw new IllegalRuleException(rule, "Rule is the wrong type!");
         }
-        throw new IllegalArgumentException("Either RuleType or Expressions of rule is invalid as argument");
     }
 }

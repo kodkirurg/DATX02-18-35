@@ -11,28 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.Rule;
-
 import java.util.ArrayList;
-import java.util.Collection;
 
 import game.logic_game.R;
 
 
 
 
-public class Fragment_scope_actions extends Fragment {
-    private RecyclerView recyclerView;
+public class FragmentScopeActions extends Fragment {
+    /*private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_board_actions,
+        View view = inflater.inflate(null,
                 container, false);
 
 
@@ -47,22 +43,9 @@ public class Fragment_scope_actions extends Fragment {
 
 
 
-        recAdapter = new RecyclerAdapter(list);
+        recAdapter = new GameCardAdapter(list);
 
 
-        //settings for this fragment
-        EditItemTouchHelperCallback localBehavoir = new EditItemTouchHelperCallback((RecyclerAdapter) recAdapter);
-        localBehavoir.isLongPressDragEnabled = false;
-
-
-        //add drag and drop
-        ItemTouchHelper.Callback callback = localBehavoir;
-
-
-
-
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(recAdapter);
 
@@ -70,5 +53,9 @@ public class Fragment_scope_actions extends Fragment {
 
         return view;
     }
-
+    public void updateActions() {
+        //list=(all the actions);
+        //recAdapter.notifyDataSetChanged();
+    }
+*/
 }

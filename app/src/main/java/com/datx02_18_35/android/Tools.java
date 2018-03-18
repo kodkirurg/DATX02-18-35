@@ -1,11 +1,11 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,124 +19,34 @@ import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import game.logic_game.R;
 
 /**
- * Created by raxxor on 2018-02-08.
+ * Created by raxxor on 2018-03-15.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
-    ArrayList<Expression> dataSet;
-    HashSet<Integer> selected;
+class Tools {
 
-
-    RecyclerAdapter(ArrayList<Expression> dataSet){
-        this.dataSet = dataSet;
-        selected = new HashSet<>();
+    //screen
+    static float getWidthDp(Context context){
+        float px = Resources.getSystem().getDisplayMetrics().widthPixels;
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
     }
+    //"generate card"
 
-
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
-        return new ViewHolder(cardView);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.cardView.setOnClickListener(this);
-        holder.cardView.setTag(position);
-        if(null != dataSet.get(position)){
-            new CardDeflator(holder,dataSet.get(position));
-        }
-    }
-
-
-
-    @Override
-    public int getItemCount() {
-        return dataSet.size();
-    }
-
-    public boolean onItemMove(int indexFrom, int indexTo) {
-        Collections.swap(dataSet,indexFrom,indexTo);
-        notifyItemMoved(indexFrom,indexTo);
-        //implement
-        return true;
-    }
-
-    public void onItemDismiss(int adapterPosition) {
-        //implement
-    }
-
-    @Override
-    public void onClick(View v) {
-        int position = (int) v.getTag();
-
-        if(! selected.contains(position) ){
-
-            //animations
-            v.setBackgroundColor(Color.BLACK);
-            v.setScaleX((float) 1.05);
-            v.setScaleY((float) 1.05 );
-
-            //selection
-            selected.add(position);
-        }
-        else if(selected.contains(position)){
-
-            //animations
-            v.setBackgroundColor(Color.WHITE);
-            v.setScaleX((float) 1);
-            v.setScaleY((float) 1 );
-
-            //de-selection
-            selected.remove(position);
-        }
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
-        public CardView cardView;
-
-
-        public ViewHolder(CardView itemView) {
-            super(itemView);
-            cardView = itemView;
-        }
-
-
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
-
-    }
-
-    private static class CardDeflator{
-        CardView topCardView;
+    static class CardDeflator{
+        final CardView topCardView;
         final String dots = " .. ";
 
-        
-        CardDeflator(ViewHolder holder, Expression expr){
-            topCardView = holder.cardView;
 
+        CardDeflator(CardView cardView, Expression expr){
+            topCardView = cardView;
 
             //whole card one symbol
             if(expr instanceof Proposition | expr instanceof Absurdity){
-                Log.d("test123", "test");
                 topCardView.removeAllViews();
                 TextView text = new TextView(topCardView.getContext());
                 text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
@@ -166,17 +76,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 // set big operator in middle + no complex on up/down card.
                 if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
-                    rmView(R.id.card_frame_lower);
-                    rmView(R.id.card_frame_upper);
-                    rmView(R.id.card_card_1_1);
-                    rmView(R.id.card_card_2_4);
+                    rmView(R.id.card_frame_lower,topCardView);
+                    rmView(R.id.card_frame_upper,topCardView);
+                    rmView(R.id.card_card_1_1,topCardView);
+                    rmView(R.id.card_card_2_4,topCardView);
 
-                    mParent(R.id.card_card_1_2);
-                    mParent(R.id.card_card_2_3);
+                    mParent(R.id.card_card_1_2,topCardView);
+                    mParent(R.id.card_card_2_3,topCardView);
 
 
-                    sText(R.id.card_text_2,op1.toString());
-                    sText(R.id.card_text_3,op2.toString());
+                    sText(R.id.card_text_2,op1.toString(),topCardView);
+                    sText(R.id.card_text_3,op2.toString(),topCardView);
                 }
                 else{
                     ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);
@@ -194,18 +104,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots);
+                            sText(R.id.card_text_2, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString());
+                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots);
+                            sText(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString());
+                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -221,10 +131,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
                         //lower
-                        rmView(R.id.card_frame_lower);
-                        rmView(R.id.card_card_2_4);
-                        mParent(R.id.card_card_2_3);
-                        sText(R.id.card_text_3,op2.toString());
+                        rmView(R.id.card_frame_lower,topCardView);
+                        rmView(R.id.card_card_2_4,topCardView);
+                        mParent(R.id.card_card_2_3,topCardView);
+                        sText(R.id.card_text_3,op2.toString(),topCardView);
                     }
 
                     if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
@@ -236,18 +146,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots);
+                            sText(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString());
+                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots);
+                            sText(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString());
+                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -263,10 +173,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
                         //upper
-                        rmView(R.id.card_frame_upper);
-                        rmView(R.id.card_card_1_1);
-                        mParent(R.id.card_card_1_2);
-                        sText(R.id.card_text_2,op1.toString());
+                        rmView(R.id.card_frame_upper,topCardView);
+                        rmView(R.id.card_card_1_1,topCardView);
+                        mParent(R.id.card_card_1_2,topCardView);
+                        sText(R.id.card_text_2,op1.toString(),topCardView);
                     }
 
                     if( op1 instanceof Operator & op2 instanceof Operator ){
@@ -277,18 +187,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots);
+                            sText(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString());
+                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots);
+                            sText(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString());
+                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -310,18 +220,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots);
+                            sText(R.id.card_text_2, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString());
+                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots);
+                            sText(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString());
+                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -340,22 +250,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
 
         //remove view by id
-        private void rmView(int rId){
-            View view = topCardView.findViewById(rId);
+        private static void rmView(int rId,CardView card){
+            View view = card.findViewById(rId);
             ViewGroup viewGroup = (ViewGroup) view.getParent();
             viewGroup.removeView(view);
         }
         //expand to fill by id
-        private void mParent(int rId){
-            View view = topCardView.findViewById(rId);
+        private static void mParent(int rId,CardView card){
+            View view = card.findViewById(rId);
             view.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         //sets text in textview by id.
-        private void sText(int rId,String s){
-            TextView t = topCardView.findViewById(rId);
+        private static void sText(int rId,String s,CardView card){
+            TextView t = card.findViewById(rId);
             t.setText(s);
         }
     }
 }
-
