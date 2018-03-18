@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Add listener
         Button start_button = (Button) findViewById(R.id.start_button); //grab a view and convert it to a button class
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
+        Button quit_button = (Button) findViewById(R.id.quit_button);
+        quit_button.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.start_button: {
                 Intent intent = new Intent(this, GameBoard.class); //create intent
                 startActivity(intent); //start intent
+                break;
+            }
+            case R.id.quit_button : {
+                finish();
                 break;
             }
         }
