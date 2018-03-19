@@ -113,8 +113,9 @@ public class Controller extends ActionConsumer {
                 }
                 break;
             }
-            action.callback(getRefreshInventoryAction());
             List<Expression> newExpressions = game.getSession().applyRule(rule);
+            action.callback(getRefreshInventoryAction());
+            action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
             if (game.getSession().checkWin()) {
                 game.quitLevel();
