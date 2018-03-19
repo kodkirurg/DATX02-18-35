@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quit_button.setOnClickListener(this);
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open("levels.cfg"),"UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"),"UTF-8"));
             String line;
             BufferedReader bufferLine = null;
             while((line=bufferedReader.readLine()) != null){
