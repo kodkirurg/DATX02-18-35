@@ -1,9 +1,11 @@
 package com.datx02_18_35.android;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -27,7 +29,25 @@ import game.logic_game.R;
 
 class Tools {
 
-    public static final String debug = "test123";
+    static final String debug = "test123";
+    private static final String userData = "userData";
+
+
+    //save userdata
+    public static void writeUserData(byte[] array, Context context){
+        String toSave =  Base64.encodeToString(array, Base64.DEFAULT);
+        SharedPreferences preferences = context.getSharedPreferences(userData,Context.MODE_PRIVATE);
+        preferences.edit().putString(userData,toSave).apply();
+    }
+
+
+    //get userdata
+    public static byte[] getUserData(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(userData,Context.MODE_PRIVATE);
+        return Base64.decode(preferences.getString(userData,null), Base64.DEFAULT) ;
+    }
+
+
 
     //screen
     static float getWidthDp(Context context){

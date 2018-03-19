@@ -28,6 +28,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
@@ -198,6 +199,9 @@ public class GameBoard extends AppCompatActivity  {
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 adapterLeft.updateBoard(data);
 
+            }
+            else if (action instanceof SaveUserDataAction){
+                Tools.writeUserData( ((SaveUserDataAction) action).userData, getApplicationContext());
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;

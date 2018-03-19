@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //TODO: Handle this properly
             e.printStackTrace();
         }
-
     }
 
     @Override
