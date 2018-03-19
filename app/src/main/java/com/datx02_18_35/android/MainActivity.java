@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             BufferedReader bufferLine = null;
             while((line=bufferedReader.readLine()) != null){
                 bufferLine = new BufferedReader(new InputStreamReader(getAssets().open(line),"UTF-8"));
-                String level=null,lineInside;
+                String level="",lineInside;
                 while((lineInside = bufferLine.readLine())!=null){
-                    level = level + lineInside;
+                    level = level + lineInside + '\n';
                 }
                 Level.parseLevel(level);
             }
