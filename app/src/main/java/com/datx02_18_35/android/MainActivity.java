@@ -14,6 +14,9 @@ import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.LevelParseException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import game.logic_game.R;
@@ -30,6 +33,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
         Button quit_button = (Button) findViewById(R.id.quit_button);
         quit_button.setOnClickListener(this);
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open("levels.cfg"),"UTF-8"));
+            String line;
+            BufferedReader bufferLine = null;
+            while((line=bufferedReader.readLine()) != null){
+                bufferLine = new BufferedReader(new InputStreamReader(getAssets().open(line),"UTF-8"));
+                String level=null,lineInside;
+                while((lineInside = bufferLine.readLine())!=null){
+                    level = level + lineInside;
+                }
+                Level.parseLevel(level);
+            }
+            bufferLine.close();
+            bufferedReader.close();
+        } catch (Exception e) {
+            Log.d(Tools.debug,"onCreate : MainActivity : read in levels failed: " + e.toString());
+        }
     }
 
     @Override

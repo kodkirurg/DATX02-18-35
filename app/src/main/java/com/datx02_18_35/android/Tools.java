@@ -27,6 +27,8 @@ import game.logic_game.R;
 
 class Tools {
 
+    public static final String debug = "test123";
+
     //screen
     static float getWidthDp(Context context){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;

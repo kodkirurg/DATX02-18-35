@@ -1,9 +1,0 @@
-TITLE Example Level
-
-SYMBOL P BlueBall
-SYMBOL Q RedBall
-
-HYPOTHESIS (P)
-HYPOTHESIS (Q)
-
-GOAL ((P)&(Q))
