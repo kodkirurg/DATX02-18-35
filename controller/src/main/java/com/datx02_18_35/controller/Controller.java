@@ -62,7 +62,7 @@ public class Controller extends ActionConsumer {
         game = new GameManager(levelStrings);
     }
 
-    public boolean isSessionInProgress() {
+    public synchronized boolean isSessionInProgress() {
         return game.isSessionInProgress();
     }
 
