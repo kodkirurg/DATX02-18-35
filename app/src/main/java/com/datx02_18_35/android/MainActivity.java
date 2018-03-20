@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 while((lineInside = bufferLine.readLine())!=null){
                     level = level + lineInside + '\n';
                 }
-                Log.d(Tools.debug, "onCreate: " + level);
                 list.add(level);
             }
             bufferLine.close();

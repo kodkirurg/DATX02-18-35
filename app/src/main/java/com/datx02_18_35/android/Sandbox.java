@@ -51,6 +51,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
                     Expression expression = SandboxCardsAdapter.selected.get(0);
                     try {
                         Controller.getSingleton().sendAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

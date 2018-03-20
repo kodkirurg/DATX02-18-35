@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import game.logic_game.R;
 class Tools {
 
     static final String debug = "test123";
-    private static final String userData = "userData";
+    private static final String userData = "userDatas";
 
 
     //save userdata
@@ -44,7 +45,13 @@ class Tools {
     //get userdata
     public static byte[] getUserData(Context context){
         SharedPreferences preferences = context.getSharedPreferences(userData,Context.MODE_PRIVATE);
-        return Base64.decode(preferences.getString(userData,null), Base64.DEFAULT) ;
+
+        String string = preferences.getString(userData,null);
+        if(string != null){
+            return Base64.decode(string, Base64.DEFAULT);
+        }
+        return null;
+
     }
 
 
