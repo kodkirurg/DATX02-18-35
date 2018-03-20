@@ -31,7 +31,6 @@ public class Util {
         sb.append("LOG [");
         String[] packages = st.getClassName().split("\\.");
         sb.append(packages[packages.length-1]);
-        //sb.append(st.getClassName());
         sb.append(":");
         sb.append(st.getMethodName());
         sb.append(":");
