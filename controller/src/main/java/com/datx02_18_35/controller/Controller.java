@@ -16,6 +16,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.ShowNewExpressionAction;
 import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
@@ -123,6 +124,7 @@ public class Controller extends ActionConsumer {
             if (game.getSession().checkWin()) {
                 game.quitLevel();
                 action.callback(new VictoryConditionMetAction());
+                action.callback(new SaveUserDataAction(game.saveUserData()));
             }
         }
         else if (action instanceof ClosedSandboxAction) {
