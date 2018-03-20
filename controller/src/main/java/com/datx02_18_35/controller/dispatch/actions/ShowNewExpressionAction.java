@@ -13,6 +13,9 @@ import java.util.Set;
 public class ShowNewExpressionAction extends Action {
     public final Set<Expression> expressions;
     public ShowNewExpressionAction(Collection<Expression> expressions) {
+        if (expressions == null) {
+            throw new IllegalArgumentException("expressions can't be null");
+        }
         this.expressions = new HashSet<>(expressions);
     }
 }

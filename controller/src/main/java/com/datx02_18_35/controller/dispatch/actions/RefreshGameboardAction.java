@@ -14,6 +14,9 @@ public class RefreshGameboardAction extends Action {
     public final Iterable<Expression> boardExpressions;
 
     public RefreshGameboardAction(Iterable<Expression> boardExpressions){
+        if (boardExpressions == null) {
+            throw new IllegalArgumentException("boardExpressions can't be null");
+        }
         this.boardExpressions=boardExpressions;
     }
 }

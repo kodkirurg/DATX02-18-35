@@ -91,7 +91,7 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestRulesAction) {
             RequestRulesAction rulesAction = (RequestRulesAction) action;
-            Collection<Rule> rules = game.getSession().getLegalRules(rulesAction.expressions);
+            List<Rule> rules = game.getSession().getLegalRules(rulesAction.expressions);
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
         }
@@ -124,12 +124,11 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof ClosedSandboxAction) {
             ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
-            OpenSandboxAction openAction = closedAction.openAction;
             Expression expression =closedAction.expression;
-            switch (openAction.reason) {
+            switch (closedAction.openReason) {
                 case ABSURDITY_ELIMINATION:
                 case DISJUNCTION_INTRODUCTION: {
-                    Rule newRule = game.getSession().finishIncompleteRule(openAction.incompleteRule, expression);
+                    Rule newRule = game.getSession().finishIncompleteRule(closedAction.incompleteRule, expression);
                     // Send action to itself to apply the new complete rule
                     // Use the callback supplied
                     this.sendAction(new RequestApplyRuleAction(closedAction.applyRuleCallback, newRule));

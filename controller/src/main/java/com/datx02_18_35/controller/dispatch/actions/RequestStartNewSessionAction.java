@@ -12,6 +12,12 @@ public class RequestStartNewSessionAction extends Action {
 
     public RequestStartNewSessionAction(ActionConsumer callback, Level level) {
         super(callback);
+        if (callback == null) {
+            throw new IllegalArgumentException("callback can't be null");
+        }
+        if (level == null) {
+            throw new IllegalArgumentException("level can't be null");
+        }
         this.level = level;
     }
 }

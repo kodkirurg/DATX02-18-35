@@ -15,6 +15,12 @@ public class RequestRulesAction extends Action {
 
     public RequestRulesAction(ActionConsumer callback, List<Expression> expressions) {
         super(callback);
+        if (callback == null) {
+            throw new IllegalArgumentException("callback can't be null");
+        }
+        if (expressions == null) {
+            throw new IllegalArgumentException("expressions can't be null");
+        }
         this.expressions = expressions;
     }
 }

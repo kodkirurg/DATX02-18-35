@@ -13,6 +13,12 @@ public class OpenSandboxAction extends Action {
     public final Rule incompleteRule;
 
     public OpenSandboxAction(Reason reason, Rule incompleteRule) {
+        if (reason == null) {
+            throw new IllegalArgumentException("reason can't be null");
+        }
+        if (incompleteRule == null && reason != Reason.ASSUMPTION) {
+            throw new IllegalArgumentException("incompleteRule can only be null when reason is assumption");
+        }
         this.reason = reason;
         this.incompleteRule = incompleteRule;
     }

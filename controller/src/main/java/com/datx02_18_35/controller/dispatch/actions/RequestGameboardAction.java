@@ -9,5 +9,8 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 public class RequestGameboardAction extends Action {
     public RequestGameboardAction(ActionConsumer callback) {
         super(callback);
+        if (callback == null) {
+            throw new IllegalArgumentException("callback can't be null");
+        }
     }
 }

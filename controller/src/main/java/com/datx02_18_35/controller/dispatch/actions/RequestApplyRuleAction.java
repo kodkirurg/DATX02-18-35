@@ -16,6 +16,12 @@ public class RequestApplyRuleAction extends Action {
 
     public RequestApplyRuleAction(ActionConsumer callback, Rule rule) {
         super(callback);
+        if (callback == null) {
+            throw new IllegalArgumentException("callback can't be null");
+        }
+        if (rule == null) {
+            throw new IllegalArgumentException("rule can't be null");
+        }
         this.rule=rule;
     }
 }

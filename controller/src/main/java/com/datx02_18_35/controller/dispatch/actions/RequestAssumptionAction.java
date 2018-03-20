@@ -9,5 +9,8 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 public class RequestAssumptionAction extends Action {
     public RequestAssumptionAction(ActionConsumer callback) {
         super(callback);
+        if (callback == null) {
+            throw new IllegalArgumentException("callback can't be null");
+        }
     }
 }

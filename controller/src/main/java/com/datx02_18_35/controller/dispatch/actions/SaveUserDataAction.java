@@ -7,6 +7,9 @@ package com.datx02_18_35.controller.dispatch.actions;
 public class SaveUserDataAction extends Action {
     public final byte[] userData;
     public SaveUserDataAction(byte[] userData) {
+        if (userData == null) {
+            throw new IllegalArgumentException("userData can't be null");
+        }
         this.userData = userData;
     }
 }
