@@ -9,4 +9,12 @@ import java.io.Serializable;
 public class LevelProgression implements Serializable {
     public boolean completed = false;
     public int stepsApplied = 0;
+
+    @Override
+    public LevelProgression clone() {
+        LevelProgression lp = new LevelProgression();
+        lp.completed = this.completed;
+        lp.stepsApplied = this.stepsApplied;
+        return lp;
+    }
 }
