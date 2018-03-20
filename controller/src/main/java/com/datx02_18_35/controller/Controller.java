@@ -8,12 +8,14 @@ import com.datx02_18_35.controller.dispatch.actions.ClosedSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAssumptionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
@@ -154,6 +156,10 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestAssumptionAction) {
             game.assertSessionInProgress();
             action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
+        }
+        else if (action instanceof RequestLevelsAction) {
+            game.assertSessionNotInProgress();
+            action.callback(new RefreshLevelsAction(game.getLevelList()));
         }
         else {
             throw new UnhandledActionException(action);

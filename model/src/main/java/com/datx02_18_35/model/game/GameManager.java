@@ -91,6 +91,31 @@ public class GameManager {
         return new ArrayList<Level>(levels);
     }
 
+    public List<Map.Entry<Level,LevelProgression>> getLevelList() {
+        List<Map.Entry<Level,LevelProgression>> list = new ArrayList<>();
+        for (Level level : levels) {
+            list.add(new Map.Entry<Level, LevelProgression>() {
+                private LevelProgression levelProgression = userData.getProgression(level);
+
+                @Override
+                public Level getKey() {
+                    return level;
+                }
+
+                @Override
+                public LevelProgression getValue() {
+                    return levelProgression;
+                }
+
+                @Override
+                public LevelProgression setValue(LevelProgression levelProgression) {
+                    throw new IllegalArgumentException("value is not allowed to be changed");
+                }
+            });
+        }
+        return list;
+    }
+
     public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
         assertSessionNotInProgress();
         if(!levels.contains(level)) {
