@@ -95,7 +95,7 @@ public class GameManager {
         List<Map.Entry<Level,LevelProgression>> list = new ArrayList<>();
         for (Level level : levels) {
             list.add(new Map.Entry<Level, LevelProgression>() {
-                private LevelProgression levelProgression = userData.getProgression(level);
+                private LevelProgression levelProgression = userData.getProgression(level).clone();
 
                 @Override
                 public Level getKey() {
