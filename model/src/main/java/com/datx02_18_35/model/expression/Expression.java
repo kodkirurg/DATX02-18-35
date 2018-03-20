@@ -1,10 +1,12 @@
 package com.datx02_18_35.model.expression;
 
+import java.io.Serializable;
+
 /**
  * Created by robin on 2018-02-07.
  */
 
-public abstract class Expression {
+public abstract class Expression implements Serializable {
 
     protected int hash;
 

@@ -81,7 +81,7 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
-            game.quitLevel();
+            game.quitLevel(false);
         }
         else if (action instanceof RequestInventoryAction) {
             game.assertSessionInProgress();
@@ -122,7 +122,7 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
             if (game.getSession().checkWin()) {
-                game.quitLevel();
+                game.quitLevel(true);
                 action.callback(new VictoryConditionMetAction());
                 action.callback(new SaveUserDataAction(game.saveUserData()));
             }

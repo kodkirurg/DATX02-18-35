@@ -95,8 +95,11 @@ public class GameManager {
         currentSession = new Session(level);
     }
 
-    public void quitLevel() throws IllegalGameStateException {
+    public void quitLevel(boolean finished) throws IllegalGameStateException {
         assertSessionInProgress();
+        if (finished) {
+            userData.getProgression(currentSession.getLevel()).completed = true;
+        }
         currentSession = null;
     }
 
@@ -122,4 +125,5 @@ public class GameManager {
             super(s);
         }
     }
+
 }

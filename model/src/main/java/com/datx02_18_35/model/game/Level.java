@@ -10,6 +10,7 @@ import com.datx02_18_35.model.expression.Proposition;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
  * Created by Jonatan on 2018-03-07.
  */
 
-public class Level {
+public class Level implements Serializable {
     private static final String SYMBOL="SYMBOL";
     private static final String HYPOTHESIS ="HYPOTHESIS";
     private static final String GOAL="GOAL";
