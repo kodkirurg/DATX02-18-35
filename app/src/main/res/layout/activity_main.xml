@@ -7,7 +7,19 @@
     android:layout_height="match_parent"
 
     tools:context="com.datx02_18_35.android.MainActivity">
-
+    
+    <Spinner
+        android:id="@+id/levels_dropdown"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:text="Level"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/start_button"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        ></Spinner>
+    
     <Button
         android:id="@+id/start_button"
         android:layout_width="150dp"
