@@ -19,11 +19,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+
+    private List<String> levelStrings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quit_button.setOnClickListener(this);
 
         try {
+            levelStrings=new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"),"UTF-8"));
             String line;
             BufferedReader bufferLine = null;
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 while((lineInside = bufferLine.readLine())!=null){
                     level = level + lineInside + '\n';
                 }
-                Level.parseLevel(level);
+                levelStrings.add(level);
             }
             bufferLine.close();
             bufferedReader.close();
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         try {
             //TODO: Pass list of level files as Strings
-            Controller.init(Level.exampleLevels, null);
+            Controller.init(levelStrings, null);
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly
