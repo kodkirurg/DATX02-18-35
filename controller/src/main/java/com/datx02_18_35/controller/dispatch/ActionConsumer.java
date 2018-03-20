@@ -22,8 +22,9 @@ public abstract class ActionConsumer {
         @Override
         public void run() {
             while (true) {
+                Action action = null;
                 try {
-                    Action action = actionQueue.take();
+                    action = actionQueue.take();
                     if (action instanceof StopAction) {
                         break;
                     }
@@ -35,6 +36,14 @@ public abstract class ActionConsumer {
                         | GameManager.LevelNotInListException
                         | IllegalGameStateException e) {
                     e.printStackTrace();
+                    if (action != null) {
+                        System.err.println("Faulty Action originated at:");
+                        for (StackTraceElement stackTraceElement : action.stackTrace) {
+                            System.err.println(stackTraceElement);
+                        }
+                    }
+                } finally {
+                    action = null;
                 }
             }
         }
