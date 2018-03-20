@@ -29,21 +29,12 @@ public abstract class ActionConsumer {
                     }
                     handleAction(action);
 
-                } catch (InterruptedException e) {
+                } catch (InterruptedException
+                        | UnhandledActionException
+                        | IllegalActionException
+                        | GameManager.LevelNotInListException
+                        | IllegalGameStateException e) {
                     e.printStackTrace();
-                    break;
-                } catch (UnhandledActionException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (IllegalActionException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (GameManager.LevelNotInListException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                    break;
                 }
             }
         }
