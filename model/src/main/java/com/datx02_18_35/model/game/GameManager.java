@@ -98,9 +98,18 @@ public class GameManager {
     public void quitLevel(boolean finished) throws IllegalGameStateException {
         assertSessionInProgress();
         if (finished) {
-            userData.getProgression(currentSession.getLevel()).completed = true;
+            LevelProgression progression = userData.getProgression(currentSession.getLevel());
+            if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
+                progression.stepsApplied = currentSession.getStepsApplied();
+            }
+            progression.completed = true;
+
         }
         currentSession = null;
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 
     public Session getSession() throws IllegalGameStateException {

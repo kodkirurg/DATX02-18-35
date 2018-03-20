@@ -23,16 +23,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 
 public class Session {
-    private Stack<Scope> scopes = new Stack<>();
+    private Stack<Scope> scopes;
     private Level level;
+    private int stepsApplied;
 
     public Session(Level level) {
         this.level = level;
+        this.scopes = new Stack<>();
         this.scopes.push(new Scope(level.hypothesis));
-    }
-
-    public void pushScope(Expression assumption) {
-        scopes.push(new Scope(assumption));
+        this.stepsApplied = 0;
     }
 
     public void closeScope() throws EmptyStackException {
@@ -163,8 +162,8 @@ public class Session {
         scopes.peek().addExpressionToInventory(expression);
     }
 
-    public void makeAssumption(Expression expression){
-        this.addExpressionToInventory(expression);
+    public void makeAssumption(Expression expression) {
+        this.scopes.push(new Scope(expression));
     }
 
     public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
@@ -175,6 +174,7 @@ public class Session {
         List<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
+        this.stepsApplied += 1;
         return expressions;
     }
 
@@ -201,6 +201,9 @@ public class Session {
         return false;
     }
 
+    public int getStepsApplied() {
+        return this.stepsApplied;
+    }
 
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
