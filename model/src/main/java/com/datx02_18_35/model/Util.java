@@ -1,6 +1,7 @@
 package com.datx02_18_35.model;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * Created by robin on 2018-03-14.
@@ -22,5 +23,20 @@ public class Util {
             sb.append(s);
         }
         return sb.toString();
+    }
+
+    public static void Log(String string) {
+        StackTraceElement st = new Throwable().getStackTrace()[1];
+        StringBuilder sb = new StringBuilder();
+        sb.append("LOG [");
+        String[] packages = st.getClassName().split("\\.");
+        sb.append(packages[packages.length-1]);
+        sb.append(":");
+        sb.append(st.getMethodName());
+        sb.append(":");
+        sb.append(st.getLineNumber());
+        sb.append("]: ");
+        sb.append(string);
+        System.out.println(sb);
     }
 }
