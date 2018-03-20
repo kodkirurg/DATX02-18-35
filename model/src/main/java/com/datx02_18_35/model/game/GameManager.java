@@ -55,7 +55,6 @@ public class GameManager {
                 e.printStackTrace();
             }
         }
-        //System.out.println("GameManager::saveUserData(): Serializing user data, size=" + byteArray.length + "B");
         Util.Log("Serializing user data, size=" + byteArray.length + "B");
 
         return byteArray;
