@@ -8,4 +8,5 @@ import java.io.Serializable;
 
 public class LevelProgression implements Serializable {
     public boolean completed = false;
+    public int stepsApplied = 0;
 }
