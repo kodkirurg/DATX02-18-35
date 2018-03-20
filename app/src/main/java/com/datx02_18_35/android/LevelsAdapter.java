@@ -5,10 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import game.logic_game.R;
 
@@ -17,11 +21,11 @@ import game.logic_game.R;
  */
 
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder>  {
-    private ArrayList<Level> levels;
+    private List<Map.Entry<Level,LevelProgression>> levels;
     Levels activity;
 
 
-    LevelsAdapter(ArrayList<Level> levels, Levels activity){
+    LevelsAdapter(ArrayList<Map.Entry<Level,LevelProgression>> levels, Levels activity){
         this.levels=levels;
         this.activity=activity;
     }
@@ -34,12 +38,29 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        String title = levels.get(position).getKey().title;
+        ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
     }
 
     @Override
     public int getItemCount() {
-        return levels.size();
+        if(levels==null){
+            return 0;
+        }
+        else{
+            return levels.size();
+        }
+
+    }
+
+    public void updateLevels(final List<Map.Entry<Level, LevelProgression>> levelList) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                levels=levelList;
+                notifyDataSetChanged();
+            }
+        });
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
