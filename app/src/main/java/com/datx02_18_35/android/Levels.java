@@ -2,8 +2,11 @@ package com.datx02_18_35.android;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
 
@@ -12,7 +15,7 @@ import game.logic_game.R;
 public class Levels extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    GridLayoutManager gridLayoutManager;
+    LinearLayoutManager linearLayoutManager;
     LevelsAdapter adapter;
 
     @Override
@@ -24,13 +27,18 @@ public class Levels extends AppCompatActivity {
 
 
         //dynamic span count later
-        gridLayoutManager = new GridLayoutManager(getApplication(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         //add levels
+        ArrayList<Level> list = new ArrayList<>();
+        list.addAll(Controller.getSingleton().getLevels());
+        list.addAll(Controller.getSingleton().getLevels());
+        list.addAll(Controller.getSingleton().getLevels());
+        list.addAll(Controller.getSingleton().getLevels());
 
 
-        adapter = new LevelsAdapter(new ArrayList<>(),this);
+        adapter = new LevelsAdapter(list,this);
         recyclerView.setAdapter(adapter);
 
 
