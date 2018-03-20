@@ -71,31 +71,34 @@ public class Controller extends ActionConsumer {
             InterruptedException,
             IllegalGameStateException,
             GameManager.LevelNotInListException {
-        if(game.assertSessionNotInProgress() & !(action instanceof RequestStartNewSessionAction)){
-            new Error("no session in progress").printStackTrace();
-        }
-        else if (action instanceof RequestStartNewSessionAction) {
+        if (action instanceof RequestStartNewSessionAction) {
+            game.assertSessionNotInProgress();
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestAbortSessionAction) {
+            game.assertSessionInProgress();
             game.quitLevel();
         }
         else if (action instanceof RequestInventoryAction) {
+            game.assertSessionInProgress();
             action.callback(getRefreshInventoryAction());
         }
         else if (action instanceof RequestGameboardAction) {
+            game.assertSessionInProgress();
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestRulesAction) {
+            game.assertSessionInProgress();
             RequestRulesAction rulesAction = (RequestRulesAction) action;
             List<Rule> rules = game.getSession().getLegalRules(rulesAction.expressions);
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
         }
         else if (action instanceof RequestApplyRuleAction) {
+            game.assertSessionInProgress();
             Rule rule = ((RequestApplyRuleAction) action).rule;
             switch (rule.type) {
                 case ABSURDITY_ELIMINATION: {
@@ -123,6 +126,7 @@ public class Controller extends ActionConsumer {
             }
         }
         else if (action instanceof ClosedSandboxAction) {
+            game.assertSessionInProgress();
             ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
             Expression expression =closedAction.expression;
             switch (closedAction.openReason) {
@@ -144,6 +148,7 @@ public class Controller extends ActionConsumer {
 
         }
         else if (action instanceof RequestAssumptionAction) {
+            game.assertSessionInProgress();
             action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
         }
         else {
