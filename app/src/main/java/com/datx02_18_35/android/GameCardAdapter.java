@@ -126,7 +126,10 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         selected.clear();
         selectedView.clear();
         try {
-            Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
+            if(!GameBoard.victory){
+                Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
