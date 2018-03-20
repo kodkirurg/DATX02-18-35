@@ -48,6 +48,7 @@ public class GameBoard extends AppCompatActivity  {
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
+    public static boolean victory=false;
 
 
     //recyclerviews
@@ -164,7 +165,9 @@ public class GameBoard extends AppCompatActivity  {
         super.onDestroy();
         //shutdown session
         try {
-            Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+            if(!victory){
+                Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -230,7 +233,7 @@ public class GameBoard extends AppCompatActivity  {
                 startActivity(i);
             }
             else if(action instanceof VictoryConditionMetAction){
-                Log.d("test123", "handleAction: " + "game is won");
+                victory=true;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
