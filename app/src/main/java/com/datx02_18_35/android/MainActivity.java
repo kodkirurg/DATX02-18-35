@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.MediaController;
+import android.widget.Spinner;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
@@ -23,9 +26,12 @@ import java.util.List;
 
 import game.logic_game.R;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+
 
     List<String> list = new ArrayList<>();
+    private List<String> levelStrings;
+    private int check=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quit_button.setOnClickListener(this);
 
         try {
+            levelStrings=new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"),"UTF-8"));
             String line;
             BufferedReader bufferLine = null;
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     level = level + lineInside + '\n';
                 }
                 list.add(level);
+
             }
             bufferLine.close();
             bufferedReader.close();
@@ -63,11 +71,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             //TODO: Pass list of level files as Strings
             Controller.init(list,Tools.getUserData(getApplicationContext()));
+
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly
             e.printStackTrace();
         }
+
+
+        Spinner spinner = findViewById(R.id.levels_dropdown);
+        spinner.setOnItemSelectedListener(this);
+        int size = Controller.getSingleton().getLevels().size();
+        ArrayList<String> intList = new ArrayList<>();
+        for(int i=0;i<size;i++){
+            intList.add(""+(i+1));
+        }
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,intList);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
     }
 
     @Override
@@ -82,6 +104,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
             }
+            case R.id.levels_dropdown :{
+
+
+            }
         }
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
+        if(++check>1) {
+            int levelNumber = Integer.parseInt((String) parent.getItemAtPosition(pos));
+            Intent intent = new Intent(this, GameBoard.class);
+            intent.putExtra("levelInt", levelNumber);
+            startActivity(intent);
+        }
+    }
+    public void onNothingSelected(AdapterView<?> parent){
+
+    }
+
+
 }

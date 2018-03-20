@@ -65,10 +65,11 @@ public class GameBoard extends AppCompatActivity  {
 
         boardCallback = new BoardCallback();
         boardCallback.start();
-
+        Intent myIntent= getIntent();
         try {
             gameChange.acquire();
-            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(0)));
+            int levelInt=myIntent.getIntExtra("levelInt",1);
+            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(levelInt-1)));
         } catch (Exception e) {
             e.printStackTrace();
         }
