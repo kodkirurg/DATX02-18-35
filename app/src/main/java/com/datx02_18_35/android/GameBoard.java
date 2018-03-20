@@ -239,6 +239,9 @@ public class GameBoard extends AppCompatActivity  {
                 });
                 finish();
             }
+            else if(action instanceof SaveUserDataAction){
+                return;
+            }
             gameChange.release();
         }
     }
