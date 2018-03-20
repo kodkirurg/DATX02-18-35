@@ -1,5 +1,7 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.Util;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -53,6 +55,9 @@ public class GameManager {
                 e.printStackTrace();
             }
         }
+        //System.out.println("GameManager::saveUserData(): Serializing user data, size=" + byteArray.length + "B");
+        Util.Log("Serializing user data, size=" + byteArray.length + "B");
+
         return byteArray;
     }
 
