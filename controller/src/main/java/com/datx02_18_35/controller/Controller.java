@@ -11,6 +11,7 @@ import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestAssumptionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
@@ -44,8 +45,11 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(List<String> levelStrings) throws LevelParseException {
+    public static void init(List<String> levelStrings, byte[] userData) throws LevelParseException {
         singleton = new Controller(levelStrings);
+        if (userData != null) {
+            singleton.game.loadUserData(userData);
+        }
     }
 
     public List<Level> getLevels() {
@@ -67,7 +71,10 @@ public class Controller extends ActionConsumer {
             InterruptedException,
             IllegalGameStateException,
             GameManager.LevelNotInListException {
-        if (action instanceof RequestStartNewSessionAction) {
+        if(game.assertSessionNotInProgress() & !(action instanceof RequestStartNewSessionAction)){
+            new Error("no session in progress").printStackTrace();
+        }
+        else if (action instanceof RequestStartNewSessionAction) {
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
             action.callback(getRefreshInventoryAction());
@@ -77,22 +84,18 @@ public class Controller extends ActionConsumer {
             game.quitLevel();
         }
         else if (action instanceof RequestInventoryAction) {
-            game.assertSessionInProgress();
             action.callback(getRefreshInventoryAction());
         }
         else if (action instanceof RequestGameboardAction) {
-            game.assertSessionInProgress();
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestRulesAction) {
-            game.assertSessionInProgress();
             RequestRulesAction rulesAction = (RequestRulesAction) action;
             Collection<Rule> rules = game.getSession().getLegalRules(rulesAction.expressions);
             Action reply = new RefreshRulesAction(rules);
             action.callback(reply);
         }
         else if (action instanceof RequestApplyRuleAction) {
-            game.assertSessionInProgress();
             Rule rule = ((RequestApplyRuleAction) action).rule;
             switch (rule.type) {
                 case ABSURDITY_ELIMINATION: {
@@ -120,7 +123,6 @@ public class Controller extends ActionConsumer {
             }
         }
         else if (action instanceof ClosedSandboxAction) {
-            game.assertSessionInProgress();
             ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
             OpenSandboxAction openAction = closedAction.openAction;
             Expression expression =closedAction.expression;
@@ -141,6 +143,9 @@ public class Controller extends ActionConsumer {
                 break;
             }
 
+        }
+        else if (action instanceof RequestAssumptionAction) {
+            action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
         }
         else {
             throw new UnhandledActionException(action);

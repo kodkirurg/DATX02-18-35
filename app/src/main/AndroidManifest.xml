@@ -16,9 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.datx02_18_35.android.Game" />
+        <activity android:name="com.datx02_18_35.android.GameBoard" />
         <activity android:name="com.datx02_18_35.android.Scope" />
-        <activity android:name="com.datx02_18_35.android.Sandbox"></activity>
+        <activity android:name="com.datx02_18_35.android.Sandbox" />
+        <activity android:name="com.datx02_18_35.android.Levels"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,7 @@ import game.logic_game.R;
  * Created by Magnu on 2018-03-13.
  */
 
-public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
     public static ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
@@ -44,11 +44,10 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
-        holder.setIsRecyclable(false);
-        if(dataSet.get(position)!= null){
-            new GameCardAdapter.CardDeflator(holder.cardView, dataSet.get(position));
+        if(dataSet.get(position)!= null & !holder.alreadyBound){
+            new Tools.CardDeflator(holder.cardView, dataSet.get(position));
+            holder.alreadyBound=true;
         }
-        holder.setIsRecyclable(false);
 
     }
 
@@ -56,6 +55,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     public int getItemCount() {
         return dataSet.size();
     }
+
     @Override
     public void onClick(View view) {
         int position = (int)view.getTag();
@@ -120,22 +120,12 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         else{
             Log.d("test123","too many selections in sandbox");
         }
-
-    }
-
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        return false;
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
+        boolean alreadyBound=false;
 
 
         ViewHolder(CardView itemView) {
@@ -144,15 +134,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         }
 
 
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
 
         @Override
         public void onClick(View view) {

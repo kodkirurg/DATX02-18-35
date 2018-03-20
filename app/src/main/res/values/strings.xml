@@ -5,4 +5,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="viewholders">viewholders</string>
     <string name="no_assumption">No assumption</string>
+    <string name="level">level</string>
 </resources>

@@ -18,7 +18,7 @@ import game.logic_game.R;
 
 public class FragmentScopeCards extends Fragment  {
 
-    private RecyclerView recyclerView;
+    /*private RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
     private ItemTouchHelper itemTouchHelper;
@@ -29,7 +29,7 @@ public class FragmentScopeCards extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_board_cards,
+        View view = inflater.inflate(null,
                 container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.game_recycler_view);
@@ -45,18 +45,11 @@ public class FragmentScopeCards extends Fragment  {
 
         recAdapter = new GameCardAdapter(list);
 
-        //add drag and drop
-        /*ItemTouchHelper.Callback callback = new EditItemTouchHelperCallback((GameCardAdapter) recAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.setAdapter(recAdapter);
-        */
         return view;
     }
 
 
-    public void addToBoard(/*Expression newCard*/){
+    public void addToBoard(Expression newCard){
         //list.add(newCard);
         //recAdapter.notifyDataSetChanged();
     }
@@ -65,6 +58,6 @@ public class FragmentScopeCards extends Fragment  {
         //recAdapter.notifyDataSetChanged();
     }
 
-
+*/
 
 }

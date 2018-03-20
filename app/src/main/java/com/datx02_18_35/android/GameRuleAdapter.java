@@ -1,6 +1,8 @@
 package com.datx02_18_35.android;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +17,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 
 import game.logic_game.R;
 
@@ -23,12 +25,27 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-01.
  */
 
-public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements ItemTouchHelperAdapter, View.OnClickListener {
+public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
+    GameBoard activity;
 
 
-    public GameRuleAdapter(ArrayList<Rule> dataSet){
+    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity){
         this.dataSet=dataSet;
+        this.activity=activity;
+    }
+
+
+    void updateBoard(final Collection<Rule> data){
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dataSet.clear();
+                dataSet.addAll(data);
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -86,26 +103,16 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     @Override
     public void onClick(View v) {
         try {
-            Controller.getSingleton().sendAction(new RequestApplyRuleAction(Game.boardCallback,dataSet.get((int)v.getTag())));
+            Controller.getSingleton().sendAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
+            activity.adapterLeft.restoreSelections();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public boolean onItemMove(int indexFrom, int indexTo) {
-        Collections.swap(dataSet,indexFrom,indexTo);
-        notifyItemMoved(indexFrom,indexTo);
-        //implement
-        return true;
-    }
 
-    @Override
-    public void onItemDismiss(int position) {
 
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener ,ItemTouchHelperViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         FrameLayout frame;
 
 
@@ -114,16 +121,6 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
             frame = itemView;
         }
 
-
-        @Override
-        public void onItemSelected() {
-
-        }
-
-        @Override
-        public void onItemClear() {
-
-        }
 
         @Override
         public void onClick(View view) {
