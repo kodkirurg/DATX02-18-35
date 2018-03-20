@@ -117,6 +117,10 @@ public class GameManager {
         return currentSession;
     }
 
+    public boolean isSessionInProgress() {
+        return currentSession != null;
+    }
+
     public void assertSessionNotInProgress() throws IllegalGameStateException {
         if (currentSession != null) {
             throw new IllegalGameStateException("Session in progress!");

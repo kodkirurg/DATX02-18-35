@@ -62,7 +62,9 @@ public class Controller extends ActionConsumer {
         game = new GameManager(levelStrings);
     }
 
-
+    public boolean isSessionInProgress() {
+        return game.isSessionInProgress();
+    }
 
     @Override
     protected void handleAction(Action action)
