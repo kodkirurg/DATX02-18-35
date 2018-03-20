@@ -124,6 +124,4 @@ public final class TestRule {
         return new IllegalRuleException(rule, sb.toString());
     }
 
-
-
 }
