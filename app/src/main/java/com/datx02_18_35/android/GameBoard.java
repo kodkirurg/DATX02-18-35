@@ -284,7 +284,7 @@ public class GameBoard extends AppCompatActivity  {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"You are a winner!",Toast.LENGTH_LONG).show();
                     }
                 });
                 finish();
