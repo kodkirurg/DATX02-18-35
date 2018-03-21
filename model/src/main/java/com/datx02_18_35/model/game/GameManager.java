@@ -140,7 +140,12 @@ public class GameManager {
         progression.completed = true;
     }
 
-    public boolean startNextLevel() {
+    public boolean startNextLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        if (!currentSession.checkWin()) {
+            throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
+        }
+
         Level lastLevel = currentSession.getLevel();
         Iterator<Level> levelIterator = levels.iterator();
         while (levelIterator.hasNext()) {
