@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -124,17 +125,47 @@ public class GameManager {
         currentSession = new Session(level);
     }
 
-    public void quitLevel(boolean finished) throws IllegalGameStateException {
+    public void quitLevel() throws IllegalGameStateException {
         assertSessionInProgress();
-        if (finished) {
-            LevelProgression progression = userData.getProgression(currentSession.getLevel());
-            if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
-                progression.stepsApplied = currentSession.getStepsApplied();
-            }
-            progression.completed = true;
 
-        }
         currentSession = null;
+    }
+
+    public void voidFinishLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        LevelProgression progression = userData.getProgression(currentSession.getLevel());
+        if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
+            progression.stepsApplied = currentSession.getStepsApplied();
+        }
+        progression.completed = true;
+    }
+
+    public boolean startNextLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        if (!currentSession.checkWin()) {
+            throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
+        }
+
+        Level lastLevel = currentSession.getLevel();
+        Iterator<Level> levelIterator = levels.iterator();
+        while (levelIterator.hasNext()) {
+            if (levelIterator.next().equals(lastLevel)) {
+                if (levelIterator.hasNext()) {
+                    try {
+                        quitLevel();
+                        startLevel(levelIterator.next());
+                        return true;
+                    } catch (IllegalGameStateException | LevelNotInListException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     public UserData getUserData() {
