@@ -9,7 +9,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,30 +21,25 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestAssumptionAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
-import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelParseException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
-
-import static com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction.Reason.ASSUMPTION;
 
 public class GameBoard extends AppCompatActivity  {
 
