@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -30,6 +32,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
 import com.datx02_18_35.model.expression.Expression;
@@ -44,10 +47,13 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity  {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener {
 
+    Button nextLevel;
+    Button mainMenu;
     Toolbar toolbar;
     FrameLayout layout;
+    RelativeLayout victoryScreen;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
@@ -86,7 +92,17 @@ public class GameBoard extends AppCompatActivity  {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-                
+
+        //Set up victory screen buttons and layout
+        victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
+        victoryScreen.setVisibility(View.GONE);
+        nextLevel = (Button) findViewById(R.id.next_level);
+        nextLevel.setOnClickListener(this);
+        mainMenu = (Button) findViewById(R.id.main_menu);
+        mainMenu.setOnClickListener(this);
+
+
+
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -278,14 +294,40 @@ public class GameBoard extends AppCompatActivity  {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        victoryScreen.setVisibility(View.VISIBLE);
                     }
                 });
-                finish();
+                ;
             }
             else if(action instanceof SaveUserDataAction){
                 return;
             }
             gameChange.release();
+        }
+    }
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.next_level:{
+                try {
+                    Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    victoryScreen.setVisibility(View.GONE);
+                }
+                catch (InterruptedException e){
+
+                }
+                break;
+            }
+            case R.id.main_menu: {
+                try {
+                    Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+                    finish();
+                }
+                catch (InterruptedException e){
+
+                }
+                break;
+            }
         }
     }
 
