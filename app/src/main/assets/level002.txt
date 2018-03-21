@@ -1,4 +1,8 @@
-TITLE Example Level2
+TITLE Basic Implication
+
+DESCRIPTION START
+pleb pleb pleb...
+DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall

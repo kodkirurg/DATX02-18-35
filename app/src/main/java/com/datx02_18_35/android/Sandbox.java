@@ -2,18 +2,13 @@ package com.datx02_18_35.android;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.actions.ClosedSandboxAction;
-import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.OperatorType;
 

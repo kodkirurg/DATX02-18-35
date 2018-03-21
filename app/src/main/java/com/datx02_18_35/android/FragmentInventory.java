@@ -4,16 +4,15 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.game.Level;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
