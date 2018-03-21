@@ -1,8 +1,10 @@
 package com.datx02_18_35.android;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -20,7 +22,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-18.
  */
 
-public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder>  {
+public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener {
     private List<Map.Entry<Level,LevelProgression>> levels;
     Levels activity;
 
@@ -40,6 +42,17 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         String title = levels.get(position).getKey().title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
+        holder.cardView.setTag(position);
+        holder.cardView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view){
+        int position= (int)view.getTag();
+        Intent intent = new Intent(view.getContext(),GameBoard.class);
+        intent.putExtra("levelInt",position);
+        System.out.println("clickedyclick");
+        view.getContext().startActivity(intent);
     }
 
     @Override
