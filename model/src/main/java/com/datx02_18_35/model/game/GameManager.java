@@ -123,7 +123,7 @@ public class GameManager {
             throw new LevelNotInListException("Level is not in GameManagers list of levels");
         }
         currentSession = new Session(level);
-        Util.Log("Starting new level. Title=" + level.title + ", Description=" + level.description);
+        Util.Log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
     }
 
     public void quitLevel() throws IllegalGameStateException {

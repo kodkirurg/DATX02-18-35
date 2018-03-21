@@ -217,8 +217,12 @@ public class Level implements Serializable {
                     }
                     break;
                     case DESCRIPTION: {
+                        if (description != null) {
+                            throw getTooManyDescriptionsParseException(lineNumb);
+                        }
                         if (argument.equals(DESCRIPTION_START)) {
                             StringBuilder descriptionBuilder = new StringBuilder();
+                            boolean firstLine = true;
                             while (lineIterator.hasNext()) {
                                 String descriptionLine = lineIterator.next();
                                 String[] descriptionTokens = descriptionLine.split("\\s+");
@@ -238,7 +242,11 @@ public class Level implements Serializable {
                                     }
 
                                 } else {
+                                    if (!firstLine) {
+                                        descriptionBuilder.append("\n");
+                                    }
                                     descriptionBuilder.append(descriptionLine);
+                                    firstLine = false;
                                 }
                                 lineNumb += 1;
                             }
@@ -251,6 +259,9 @@ public class Level implements Serializable {
                 }
             }
             lineNumb += 1;
+        }
+        if (description == null) {
+            description = "";
         }
         return new Level(title,hypothesis,goal,expressionFactory, description);
     }
