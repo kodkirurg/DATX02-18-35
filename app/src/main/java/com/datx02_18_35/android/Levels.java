@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestLevelsAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
 import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
@@ -53,7 +55,15 @@ public class Levels extends AppCompatActivity {
 
     }
 
-
+    public void startLevel(Level level){
+        try {
+            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(callback,level));
+            Intent intent = new Intent(this, GameBoard.class); //create intent
+            startActivity(intent); //start intent
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     public class LevelsCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {

@@ -80,8 +80,6 @@ public class Controller extends ActionConsumer {
             game.assertSessionNotInProgress();
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
-            action.callback(getRefreshInventoryAction());
-            action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
