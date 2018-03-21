@@ -72,10 +72,11 @@ public class GameManager {
                 userData = (UserData)obj;
                 success = true;
             } else {
-                throw new IllegalArgumentException("data byte array is not a valid UserData object.");
+                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
             }
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            e.printStackTrace();
+            Util.Log("userData byte array is invalid, falling back to default values." +
+                    "The following exception was caught: \n" + e);
         } finally {
             if (objIn != null) {
                 try {
