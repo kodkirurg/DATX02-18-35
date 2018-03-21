@@ -1,8 +1,6 @@
 package com.datx02_18_35.android;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,7 @@ import android.widget.ImageView;
 
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;

@@ -1,35 +1,18 @@
 package com.datx02_18_35.android;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
-import com.datx02_18_35.model.expression.Absurdity;
-import com.datx02_18_35.model.expression.Conjunction;
-import com.datx02_18_35.model.expression.Disjunction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Implication;
-import com.datx02_18_35.model.expression.Operator;
-import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import game.logic_game.R;
 

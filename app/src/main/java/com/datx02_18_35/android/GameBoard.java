@@ -9,7 +9,6 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,25 +23,24 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestStartNextLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
-import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
+
+import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
+
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelParseException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
@@ -242,10 +240,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Sandbox.class);
+                try {
+                    Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
-        startActivity(i);
         return false;
     }
 
@@ -268,6 +269,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
+                sandboxAction =(OpenSandboxAction) action;
                 switch(((OpenSandboxAction) action).reason){
                     case ASSUMPTION:{
                         reason = "Assumption";
@@ -284,8 +286,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
-                sandboxAction=(OpenSandboxAction) action;
-                i.putExtra("STRING_I_NEED", reason);
+                //sandboxAction=(OpenSandboxAction) action;
+                //i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
             }
             else if(action instanceof VictoryConditionMetAction){
@@ -293,8 +295,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+<<<<<<< HEAD
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
                         victoryScreen.setVisibility(View.VISIBLE);
+=======
+                        Toast.makeText(getApplicationContext(),"You are a winner!",Toast.LENGTH_LONG).show();
+>>>>>>> 6655413225985d3e6eb83f09f8251dd198aa30cb
                     }
                 });
                 ;
