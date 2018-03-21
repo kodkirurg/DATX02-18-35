@@ -159,6 +159,9 @@ public class Level implements Serializable {
                 "Level file contains an unexpected argument to " + DESCRIPTION + " on line: " + lineNumb
                 + ". Found: " + found + ", expected: " + expected);
     }
+    private static LevelParseException getDescriptionEndOfFileException() {
+        return new LevelParseException("Reached end of file while parsing level description");
+    }
 
     public static Level parseLevel(String levelString) throws LevelParseException {
 
@@ -223,6 +226,7 @@ public class Level implements Serializable {
                         if (argument.equals(DESCRIPTION_START)) {
                             StringBuilder descriptionBuilder = new StringBuilder();
                             boolean firstLine = true;
+                            boolean descriptionFinished = false;
                             while (lineIterator.hasNext()) {
                                 String descriptionLine = lineIterator.next();
                                 String[] descriptionTokens = descriptionLine.split("\\s+");
@@ -232,6 +236,7 @@ public class Level implements Serializable {
                                     String descriptionArgument = Util.join(Util.tail(descriptionTokens));
                                     if (descriptionArgument.equals(DESCRIPTION_END)) {
                                         description = descriptionBuilder.toString();
+                                        descriptionFinished = true;
                                         break;
                                     }
                                     else {
@@ -249,6 +254,9 @@ public class Level implements Serializable {
                                     firstLine = false;
                                 }
                                 lineNumb += 1;
+                            }
+                            if (!descriptionFinished) {
+                                throw getDescriptionEndOfFileException();
                             }
                         }
                         else {
