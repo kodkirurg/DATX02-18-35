@@ -1,6 +1,7 @@
 package com.datx02_18_35.model;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -17,13 +18,33 @@ public class Util {
         return Arrays.copyOfRange(array, 1, array.length);
     }
 
-    public static String join(String[] array) {
+    public static String join(CharSequence delimiter, Iterable<? extends CharSequence> elements) {
+        return joinImpl(delimiter, elements);
+    }
+    public static String join(CharSequence delimiter, CharSequence... elements) {
+        return joinImpl(delimiter, Arrays.asList(elements));
+    }
+    public static String join(Iterable<? extends CharSequence> elements) {
+        return joinImpl("", elements);
+    }
+    public static String join(CharSequence... elements) {
+        return joinImpl("", Arrays.asList(elements));
+    }
+
+    // Helper functions for the above join functions
+    private static String joinImpl(CharSequence delimiter, Iterable<? extends CharSequence> elements) {
         StringBuilder sb = new StringBuilder();
-        for (String s : array) {
-            sb.append(s);
+        Iterator<? extends CharSequence> elemIterator = elements.iterator();
+        if (elemIterator.hasNext()) {
+            sb.append(elemIterator.next());
+        }
+        while (elemIterator.hasNext()) {
+            sb.append(delimiter);
+            sb.append(elemIterator.next());
         }
         return sb.toString();
     }
+
 
     public static void Log(String string) {
         StackTraceElement st = new Throwable().getStackTrace()[1];

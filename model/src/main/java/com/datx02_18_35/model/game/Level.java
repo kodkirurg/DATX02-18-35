@@ -199,31 +199,30 @@ public class Level implements Serializable {
             String line = lineIterator.next();
             String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
             if (tokens.length>0) {
-                String argument = Util.join(Util.tail(tokens));
                 switch (tokens[0]) {
                     case HYPOTHESIS: {
-                        hypothesis.add(expressionParser.parseString(argument));
+                        hypothesis.add(expressionParser.parseString(Util.join(Util.tail(tokens))));
                     }
                     break;
                     case GOAL: {
                         if (goal != null) {
                             throw getTooManyGoalsLevelParseException(lineNumb);
                         }
-                        goal = expressionParser.parseString(argument);
+                        goal = expressionParser.parseString(Util.join(Util.tail(tokens)));
                     }
                     break;
                     case TITLE: {
                         if (title != null) {
                             throw getTooManyTitlesLevelParseException(lineNumb);
                         }
-                        title = argument;
+                        title = Util.join(" ", Util.tail(tokens));
                     }
                     break;
                     case DESCRIPTION: {
                         if (description != null) {
                             throw getTooManyDescriptionsParseException(lineNumb);
                         }
-                        if (argument.equals(DESCRIPTION_START)) {
+                        if (Util.join(" ", Util.tail(tokens)).equals(DESCRIPTION_START)) {
                             StringBuilder descriptionBuilder = new StringBuilder();
                             boolean firstLine = true;
                             boolean descriptionFinished = false;
@@ -233,7 +232,7 @@ public class Level implements Serializable {
                                 if (descriptionTokens.length > 0
                                     && descriptionTokens[0].equals(DESCRIPTION)) {
 
-                                    String descriptionArgument = Util.join(Util.tail(descriptionTokens));
+                                    String descriptionArgument = Util.join(" ", Util.tail(descriptionTokens));
                                     if (descriptionArgument.equals(DESCRIPTION_END)) {
                                         description = descriptionBuilder.toString();
                                         descriptionFinished = true;
@@ -261,7 +260,7 @@ public class Level implements Serializable {
                         }
                         else {
                             throw getUnexpectedDescriptionArgumentException(
-                                    lineNumb, argument, DESCRIPTION_START);
+                                    lineNumb, Util.join(" ", Util.tail(tokens)), DESCRIPTION_START);
                         }
                     }
                 }
