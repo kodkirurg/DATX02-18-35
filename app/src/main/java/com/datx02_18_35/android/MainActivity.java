@@ -26,12 +26,11 @@ import java.util.List;
 
 import game.logic_game.R;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     List<String> list = new ArrayList<>();
-    private List<String> levelStrings;
-    private int check=0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +44,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quit_button.setOnClickListener(this);
 
         try {
-            levelStrings=new ArrayList<>();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"),"UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"), "UTF-8"));
             String line;
             BufferedReader bufferLine = null;
-            while((line=bufferedReader.readLine()) != null){
-                bufferLine = new BufferedReader(new InputStreamReader(getAssets().open(line),"UTF-8"));
-                String level="",lineInside;
-                while((lineInside = bufferLine.readLine())!=null){
+            while ((line = bufferedReader.readLine()) != null) {
+                bufferLine = new BufferedReader(new InputStreamReader(getAssets().open(line), "UTF-8"));
+                String level = "", lineInside;
+                while ((lineInside = bufferLine.readLine()) != null) {
                     level = level + lineInside + '\n';
                 }
                 list.add(level);
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bufferLine.close();
             bufferedReader.close();
         } catch (Exception e) {
-            Log.d(Tools.debug,"onCreate : MainActivity : read in levels failed: " + e.toString());
+            Log.d(Tools.debug, "onCreate : MainActivity : read in levels failed: " + e.toString());
         }
     }
 
@@ -70,26 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         try {
             //TODO: Pass list of level files as Strings
-            Controller.init(list,Tools.getUserData(getApplicationContext()));
-
+            Controller.init(list, Tools.getUserData(getApplicationContext()));
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly
             e.printStackTrace();
         }
-
-
-        Spinner spinner = findViewById(R.id.levels_dropdown);
-        spinner.setOnItemSelectedListener(this);
-        int size = Controller.getSingleton().getLevels().size();
-        ArrayList<String> intList = new ArrayList<>();
-        for(int i=0;i<size;i++){
-            intList.add(""+(i+1));
-        }
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,intList);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-
     }
 
     @Override
@@ -100,29 +84,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent); //start intent
                 break;
             }
-            case R.id.quit_button : {
+            case R.id.quit_button: {
                 finish();
                 break;
             }
-            case R.id.levels_dropdown :{
-
-
-            }
         }
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
-        if(++check>1) {
-            int levelNumber = Integer.parseInt((String) parent.getItemAtPosition(pos));
-            Intent intent = new Intent(this, GameBoard.class);
-            intent.putExtra("levelInt", levelNumber);
-            startActivity(intent);
-        }
-    }
-    public void onNothingSelected(AdapterView<?> parent){
-
-    }
-
-
 }

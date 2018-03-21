@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,6 +54,26 @@ class Tools {
         }
         return null;
 
+    }
+    public static void slide_left(Context ctx, View v){
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+    public static void slide_right(Context ctx, View v){
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
     }
 
 

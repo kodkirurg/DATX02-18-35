@@ -32,21 +32,6 @@ public class FragmentInventory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View frag = inflater.inflate(R.layout.fragment_inventory, container, false);
 
-        recyclerView = (RecyclerView) frag.findViewById(R.id.game_recycler_view);
-        // use a grid layout manager
-        recLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(recLayoutManager);
-
-
-        // specify an adapter (see also next example)
-        ArrayList<Expression> list = new ArrayList<Expression>();
-
-
-        //recAdapter = new GameCardAdapter(list);
-
-
-
-        recyclerView.setAdapter(recAdapter);
 
         return frag;
 
