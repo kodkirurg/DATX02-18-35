@@ -1,5 +1,7 @@
 package com.datx02_18_35.android;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +47,7 @@ import game.logic_game.R;
 public class GameBoard extends AppCompatActivity  {
 
     Toolbar toolbar;
+    FrameLayout layout;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
@@ -77,6 +80,7 @@ public class GameBoard extends AppCompatActivity  {
 
         initLeftSide();
         initRightSide();
+        initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
@@ -122,6 +126,41 @@ public class GameBoard extends AppCompatActivity  {
 
         recyclerViewLeft.setAdapter(adapterLeft);
 
+    }
+    private void initInventory() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft =fm.beginTransaction();
+        View gameView = this.findViewById(android.R.id.content);
+
+
+        layout = (FrameLayout)findViewById(R.id.inventory_container);
+        ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
+        layout.setVisibility(View.GONE);
+
+        gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
+            public void onSwipeRight() {
+                showInventory();
+            }
+            public void onSwipeLeft() {
+                closeInventory();
+            }
+
+        });
+    }
+
+    public void closeInventory(){
+        if (layout.isShown()) {
+            Tools.slide_left(this, layout);
+            layout.setVisibility(View.GONE);
+
+        }
+    }
+    public void showInventory(){
+        if (!layout.isShown()){
+            Tools.slide_right(this, layout);
+            layout.setVisibility(View.VISIBLE);
+
+        }
     }
 
     public synchronized void newSelection(Object object, View v) {
