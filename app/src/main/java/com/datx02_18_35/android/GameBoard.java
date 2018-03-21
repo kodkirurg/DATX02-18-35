@@ -27,6 +27,7 @@ import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestAssumptionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
@@ -43,6 +44,8 @@ import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
+
+import static com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction.Reason.ASSUMPTION;
 
 public class GameBoard extends AppCompatActivity  {
 
@@ -226,10 +229,13 @@ public class GameBoard extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Sandbox.class);
+                try {
+                    Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
-        startActivity(i);
         return false;
     }
 
@@ -252,6 +258,7 @@ public class GameBoard extends AppCompatActivity  {
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
+                sandboxAction =(OpenSandboxAction) action;
                 switch(((OpenSandboxAction) action).reason){
                     case ASSUMPTION:{
                         reason = "Assumption";
@@ -268,8 +275,8 @@ public class GameBoard extends AppCompatActivity  {
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
-                sandboxAction=(OpenSandboxAction) action;
-                i.putExtra("STRING_I_NEED", reason);
+                //sandboxAction=(OpenSandboxAction) action;
+                //i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
             }
             else if(action instanceof VictoryConditionMetAction){
