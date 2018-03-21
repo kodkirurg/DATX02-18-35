@@ -273,6 +273,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
             }
+            else if(action instanceof SaveUserDataAction){
+                Tools.writeUserData(((SaveUserDataAction)action).userData,getApplicationContext());
+            }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
                 sandboxAction =(OpenSandboxAction) action;
@@ -309,9 +312,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         victoryScreen.setVisibility(View.VISIBLE);
                     }
                 });
-            }
-            else if(action instanceof SaveUserDataAction){
-                return;
             }
             gameChange.release();
         }
