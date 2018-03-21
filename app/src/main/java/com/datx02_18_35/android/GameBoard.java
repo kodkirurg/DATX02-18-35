@@ -24,6 +24,7 @@ import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
@@ -55,6 +56,8 @@ public class GameBoard extends AppCompatActivity  {
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Iterable<Expression>> inventories;
+    public static Iterable<Expression> assumptions;
 
 
     //recyclerviews
@@ -278,6 +281,10 @@ public class GameBoard extends AppCompatActivity  {
                 //sandboxAction=(OpenSandboxAction) action;
                 //i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
+            }
+            else if (action instanceof RefreshInventoryAction){
+                inventories = ((RefreshInventoryAction) action).inventories;
+                assumptions = ((RefreshInventoryAction) action).assumptions;
             }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
