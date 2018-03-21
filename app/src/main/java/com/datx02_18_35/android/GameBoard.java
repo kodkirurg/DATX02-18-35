@@ -24,6 +24,7 @@ import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
@@ -295,15 +296,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-<<<<<<< HEAD
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
                         victoryScreen.setVisibility(View.VISIBLE);
-=======
-                        Toast.makeText(getApplicationContext(),"You are a winner!",Toast.LENGTH_LONG).show();
->>>>>>> 6655413225985d3e6eb83f09f8251dd198aa30cb
                     }
                 });
-                ;
             }
             else if(action instanceof SaveUserDataAction){
                 return;
