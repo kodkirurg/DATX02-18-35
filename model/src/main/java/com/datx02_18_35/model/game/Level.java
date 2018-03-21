@@ -145,7 +145,7 @@ public class Level implements Serializable {
         return new LevelParseException("Level file contains more than one title on line: " + lineNumb);
     }
 
-    public static Level parseLevel(String levelString) throws LevelParseException{
+    public static Level parseLevel(String levelString) throws LevelParseException {
 
         int lineNumb;
         Map<String,String> symbolMap = new HashMap<>();

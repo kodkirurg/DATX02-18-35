@@ -18,6 +18,7 @@ import com.datx02_18_35.controller.dispatch.actions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.ShowNewExpressionAction;
 import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
@@ -83,9 +84,16 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
         }
+        else if (action instanceof RequestStartNextLevelAction) {
+            game.assertSessionInProgress();
+            game.startNextLevel();
+            game.assertSessionInProgress();
+            action.callback(getRefreshInventoryAction());
+            action.callback(getRefreshGameboardAction());
+        }
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
-            game.quitLevel(false);
+            game.quitLevel();
         }
         else if (action instanceof RequestInventoryAction) {
             game.assertSessionInProgress();
@@ -126,7 +134,7 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
             if (game.getSession().checkWin()) {
-                game.quitLevel(true);
+                game.voidFinishLevel();
                 action.callback(new VictoryConditionMetAction());
                 action.callback(new SaveUserDataAction(game.saveUserData()));
             }
