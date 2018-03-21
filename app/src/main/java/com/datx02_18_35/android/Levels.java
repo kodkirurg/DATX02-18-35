@@ -9,11 +9,8 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.controller.dispatch.actions.RefreshLevelsAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestLevelsAction;
-import com.datx02_18_35.model.game.Level;
-
-import java.util.ArrayList;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshLevelsAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestLevelsAction;
 
 import game.logic_game.R;
 
