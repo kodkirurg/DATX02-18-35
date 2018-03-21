@@ -106,12 +106,12 @@ public class Scope extends AppCompatActivity implements View.OnClickListener {
     }
     public void showInventory(){
         if (layout.isShown()) {
-            Fx.slide_down(this, layout);
+            Tools.slide_left(this, layout);
             layout.setVisibility(View.GONE);
 
         }
         else {
-            Fx.slide_up(this, layout);
+            Tools.slide_right(this, layout);
             layout.setVisibility(View.VISIBLE);
             
         }

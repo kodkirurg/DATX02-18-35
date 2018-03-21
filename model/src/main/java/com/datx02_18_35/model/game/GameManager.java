@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -71,10 +72,11 @@ public class GameManager {
                 userData = (UserData)obj;
                 success = true;
             } else {
-                throw new IllegalArgumentException("data byte array is not a valid UserData object.");
+                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
             }
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            e.printStackTrace();
+            Util.Log("userData byte array is invalid, falling back to default values." +
+                    "The following exception was caught: \n" + e);
         } finally {
             if (objIn != null) {
                 try {
@@ -122,19 +124,50 @@ public class GameManager {
             throw new LevelNotInListException("Level is not in GameManagers list of levels");
         }
         currentSession = new Session(level);
+        Util.Log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
     }
 
-    public void quitLevel(boolean finished) throws IllegalGameStateException {
+    public void quitLevel() throws IllegalGameStateException {
         assertSessionInProgress();
-        if (finished) {
-            LevelProgression progression = userData.getProgression(currentSession.getLevel());
-            if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
-                progression.stepsApplied = currentSession.getStepsApplied();
-            }
-            progression.completed = true;
 
-        }
         currentSession = null;
+    }
+
+    public void voidFinishLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        LevelProgression progression = userData.getProgression(currentSession.getLevel());
+        if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
+            progression.stepsApplied = currentSession.getStepsApplied();
+        }
+        progression.completed = true;
+    }
+
+    public boolean startNextLevel() throws IllegalGameStateException {
+        assertSessionInProgress();
+        if (!currentSession.checkWin()) {
+            throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
+        }
+
+        Level lastLevel = currentSession.getLevel();
+        Iterator<Level> levelIterator = levels.iterator();
+        while (levelIterator.hasNext()) {
+            if (levelIterator.next().equals(lastLevel)) {
+                if (levelIterator.hasNext()) {
+                    try {
+                        quitLevel();
+                        startLevel(levelIterator.next());
+                        return true;
+                    } catch (IllegalGameStateException | LevelNotInListException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     public UserData getUserData() {

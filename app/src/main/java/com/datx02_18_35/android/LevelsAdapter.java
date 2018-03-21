@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import game.logic_game.R;
 /**
  * Created by raxxor on 2018-03-18.
  */
+
 
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener  {
     private List<Map.Entry<Level,LevelProgression>> dataSet;
@@ -43,6 +45,8 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
         String title = dataSet.get(position).getKey().title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
+        holder.cardView.setTag(position);
+        holder.cardView.setOnClickListener(this);
     }
 
     @Override

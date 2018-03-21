@@ -47,5 +47,51 @@
             />
     </RelativeLayout>
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/inventory_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="234dp" >
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/victory_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="120dp"
+        android:visibility="visible"
+        android:background="@color/Black"
+
+
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            >
+            <Button
+                android:id="@+id/next_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next Level"
+/>
+
+            <Button
+                android:id="@+id/main_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/next_level"
+                android:text="Main Menu"
+                />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
-package com.datx02_18_35.controller.dispatch.actions;
+package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
+import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.LevelProgression;
 

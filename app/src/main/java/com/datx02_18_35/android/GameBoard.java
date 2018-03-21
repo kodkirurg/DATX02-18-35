@@ -1,5 +1,7 @@
 package com.datx02_18_35.android;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +9,13 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
@@ -20,35 +23,45 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.controller.dispatch.actions.OpenSandboxAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.RequestStartNewSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.SaveUserDataAction;
-import com.datx02_18_35.controller.dispatch.actions.VictoryConditionMetAction;
+
+
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
+
+
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelParseException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity  {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener {
 
+    Button nextLevel;
+    Button mainMenu;
     Toolbar toolbar;
+    FrameLayout layout;
+    RelativeLayout victoryScreen;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Iterable<Expression>> inventories;
+    public static Iterable<Expression> assumptions;
 
 
     //recyclerviews
@@ -69,7 +82,7 @@ public class GameBoard extends AppCompatActivity  {
         try {
             gameChange.acquire();
             int levelInt=myIntent.getIntExtra("levelInt",1);
-            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(levelInt-1)));
+            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(levelInt)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,12 +90,23 @@ public class GameBoard extends AppCompatActivity  {
 
         initLeftSide();
         initRightSide();
+        //initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-                
+
+        //Set up victory screen buttons and layout
+        victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
+        victoryScreen.setVisibility(View.GONE);
+        nextLevel = (Button) findViewById(R.id.next_level);
+        nextLevel.setOnClickListener(this);
+        mainMenu = (Button) findViewById(R.id.main_menu);
+        mainMenu.setOnClickListener(this);
+
+
+
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -122,6 +146,41 @@ public class GameBoard extends AppCompatActivity  {
 
         recyclerViewLeft.setAdapter(adapterLeft);
 
+    }
+    /*private void initInventory() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft =fm.beginTransaction();
+        View gameView = this.findViewById(android.R.id.content);
+
+
+        layout = (FrameLayout)findViewById(R.id.inventory_container);
+        ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
+        layout.setVisibility(View.GONE);
+
+        gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
+            public void onSwipeRight() {
+                showInventory();
+            }
+            public void onSwipeLeft() {
+                closeInventory();
+            }
+
+        });
+    }*/
+
+    public void closeInventory(){
+        if (layout.isShown()) {
+            Tools.slide_left(this, layout);
+            layout.setVisibility(View.GONE);
+
+        }
+    }
+    public void showInventory(){
+        if (!layout.isShown()){
+            Tools.slide_right(this, layout);
+            layout.setVisibility(View.VISIBLE);
+
+        }
     }
 
     public synchronized void newSelection(Object object, View v) {
@@ -187,10 +246,13 @@ public class GameBoard extends AppCompatActivity  {
         Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                i = new Intent(this,Sandbox.class);
+                try {
+                    Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
-        startActivity(i);
         return false;
     }
 
@@ -213,6 +275,7 @@ public class GameBoard extends AppCompatActivity  {
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
+                sandboxAction =(OpenSandboxAction) action;
                 switch(((OpenSandboxAction) action).reason){
                     case ASSUMPTION:{
                         reason = "Assumption";
@@ -229,9 +292,13 @@ public class GameBoard extends AppCompatActivity  {
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
-                sandboxAction=(OpenSandboxAction) action;
-                i.putExtra("STRING_I_NEED", reason);
+                //sandboxAction=(OpenSandboxAction) action;
+                //i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
+            }
+            else if (action instanceof RefreshInventoryAction){
+                inventories = ((RefreshInventoryAction) action).inventories;
+                assumptions = ((RefreshInventoryAction) action).assumptions;
             }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
@@ -239,14 +306,39 @@ public class GameBoard extends AppCompatActivity  {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        victoryScreen.setVisibility(View.VISIBLE);
                     }
                 });
-                finish();
             }
             else if(action instanceof SaveUserDataAction){
                 return;
             }
             gameChange.release();
+        }
+    }
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.next_level:{
+                try {
+                    Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    victoryScreen.setVisibility(View.GONE);
+                }
+                catch (InterruptedException e){
+
+                }
+                break;
+            }
+            case R.id.main_menu: {
+                try {
+                    Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+                    finish();
+                }
+                catch (InterruptedException e){
+
+                }
+                break;
+            }
         }
     }
 
