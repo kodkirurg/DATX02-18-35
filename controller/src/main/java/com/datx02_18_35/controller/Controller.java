@@ -4,6 +4,8 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
@@ -81,6 +83,10 @@ public class Controller extends ActionConsumer {
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
+        }
+        else if(action instanceof RequestSymbolMap){
+            Action reply = new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap());
+            action.callback(reply);
         }
         else if (action instanceof RequestStartNextLevelAction) {
             game.assertSessionInProgress();

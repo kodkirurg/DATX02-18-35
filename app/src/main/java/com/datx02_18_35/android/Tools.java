@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,16 @@ import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
 import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
+
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 
+import java.util.Map;
+
 import game.logic_game.R;
+
+
 
 /**
  * Created by raxxor on 2018-03-15.
@@ -93,7 +97,7 @@ class Tools {
         final String dots = " .. ";
 
 
-        CardDeflator(CardView cardView, Expression expr){
+        CardDeflator(CardView cardView, Expression expr, Map<String,String> symbolMap){
             topCardView = cardView;
 
             //whole card one symbol
@@ -136,8 +140,8 @@ class Tools {
                     mParent(R.id.card_card_2_3,topCardView);
 
 
-                    sText(R.id.card_text_2,op1.toString(),topCardView);
-                    sText(R.id.card_text_3,op2.toString(),topCardView);
+                    sSymbol( op1,topCardView,R.id.card_image_2,symbolMap);
+                    sSymbol( op2,topCardView,R.id.card_image_3,symbolMap);
                 }
                 else{
                     ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);
@@ -155,18 +159,19 @@ class Tools {
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_2);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
+                            sSymbol( upper_left,topCardView,R.id.card_image_2,symbolMap);
+                            sSymbol(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots,topCardView);
+                            sSymbol(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
+                            sSymbol(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -185,7 +190,7 @@ class Tools {
                         rmView(R.id.card_frame_lower,topCardView);
                         rmView(R.id.card_card_2_4,topCardView);
                         mParent(R.id.card_card_2_3,topCardView);
-                        sText(R.id.card_text_3,op2.toString(),topCardView);
+                        sSymbol(R.id.card_text_3,op2.toString(),topCardView);
                     }
 
                     if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
@@ -197,18 +202,18 @@ class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots,topCardView);
+                            sSymbol(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
+                            sSymbol(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots,topCardView);
+                            sSymbol(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
+                            sSymbol(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -227,7 +232,7 @@ class Tools {
                         rmView(R.id.card_frame_upper,topCardView);
                         rmView(R.id.card_card_1_1,topCardView);
                         mParent(R.id.card_card_1_2,topCardView);
-                        sText(R.id.card_text_2,op1.toString(),topCardView);
+                        sSymbol(R.id.card_text_2,op1.toString(),topCardView);
                     }
 
                     if( op1 instanceof Operator & op2 instanceof Operator ){
@@ -238,18 +243,18 @@ class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sText(R.id.card_text_3,dots,topCardView);
+                            sSymbol(R.id.card_text_3,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_3,lower_left.toString(),topCardView);
+                            sSymbol(R.id.card_text_3,lower_left.toString(),topCardView);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sText(R.id.card_text_4,dots,topCardView);
+                            sSymbol(R.id.card_text_4,dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_4,lower_right.toString(),topCardView);
+                            sSymbol(R.id.card_text_4,lower_right.toString(),topCardView);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -271,18 +276,18 @@ class Tools {
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sText(R.id.card_text_2, dots,topCardView);
+                            sSymbol(R.id.card_text_2, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_2, upper_left.toString(),topCardView);
+                            sSymbol(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sText(R.id.card_text_1, dots,topCardView);
+                            sSymbol(R.id.card_text_1, dots,topCardView);
                         }
                         else{
-                            sText(R.id.card_text_1, upper_right.toString(),topCardView);
+                            sSymbol(R.id.card_text_1, upper_right.toString(),topCardView);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -313,9 +318,25 @@ class Tools {
             view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         //sets text in textview by id.
-        private static void sText(int rId,String s,CardView card){
-            TextView t = card.findViewById(rId);
-            t.setText(s);
+        private static void sSymbol(Expression expression,CardView cardView,int rId, Map<String,String> symbolMap){
+            ImageView imageView = cardView.findViewById(rId);
+
+            String symbol = symbolMap.get(expression.toString());
+            switch (symbol.toLowerCase()){
+                case "redball":
+                    imageView.setImageResource(R.drawable.redball);
+                    break;
+                case "blueball" :
+                    imageView.setImageResource(R.drawable.blueball);
+                    break;
+                    default:
+                        imageView.setImageResource(R.drawable.dots);
+                        break;
+
+            }
+        }
+        private static void sDotsSymbol(CardView cardView,int rId){
+            ( (ImageView) cardView.findViewById(rId) ).setImageResource(R.drawable.dots);
         }
     }
 }

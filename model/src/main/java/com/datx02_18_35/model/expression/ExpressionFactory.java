@@ -19,6 +19,10 @@ public class ExpressionFactory implements Serializable {
         this.symbolMap = symbolMap;
     }
 
+    public Map<String,String> getSymbolMap(){
+        return symbolMap;
+    }
+
     public Proposition createProposition(String id) {
         return new Proposition(id);
     }
