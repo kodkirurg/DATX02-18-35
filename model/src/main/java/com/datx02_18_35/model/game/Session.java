@@ -206,6 +206,15 @@ public class Session {
         return this.stepsApplied;
     }
 
+
+    public int getScopeInt(){
+        int i=0;
+        for(Scope scopes:this.getScopes()){
+            i++;
+        }
+        return i;
+    }
+
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
             if(existingExpression.equals(expression)){

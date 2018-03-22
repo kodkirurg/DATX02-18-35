@@ -27,7 +27,9 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
@@ -56,6 +58,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
+    TextView scopeLevel;
     FrameLayout layout;
     RelativeLayout victoryScreen;
     public static BoardCallback boardCallback;
@@ -112,8 +115,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        scopeLevel = findViewById(R.id.toolbar_text);
+        scopeLevel.setText("scope 0");
         gameChange.release();
     }
 
@@ -251,6 +255,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             case R.id.item_assumption:
                 try {
                     Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                    scopeLevel.setText("");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -306,6 +311,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 inventories = ((RefreshInventoryAction) action).inventories;
                 assumptions = ((RefreshInventoryAction) action).assumptions;
             }
+            else if(action instanceof RefreshScopeLevelAction){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scopeLevel.setText("Scope: " + ((RefreshScopeLevelAction) action).scopeLevel);
+                    }
+                });
+            }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
                 runOnUiThread(new Runnable() {
@@ -325,6 +338,19 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            Controller.getSingleton().sendAction(new RequestScopeLevelAction(GameBoard.boardCallback));
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
     public void onClick(View view){
         switch (view.getId()){
             case R.id.next_level:{
@@ -334,7 +360,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     victoryScreen.setVisibility(View.GONE);
                 }
                 catch (InterruptedException e){
-
+                    e.printStackTrace();
                 }
                 break;
             }
@@ -344,7 +370,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     finish();
                 }
                 catch (InterruptedException e){
-
+                    e.printStackTrace();
                 }
                 break;
             }

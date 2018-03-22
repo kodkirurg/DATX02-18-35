@@ -1,10 +1,10 @@
-TITLE Empty Level
+TITLE Implication introduction
 
 DESCRIPTION START
-nothing to see here
+Make Assumption
 DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
 
-GOAL ((P)->(P))
+GOAL ((P)>(P))

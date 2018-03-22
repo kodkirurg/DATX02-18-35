@@ -4,6 +4,8 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
@@ -131,6 +133,7 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
             if (game.getSession().checkWin()) {
                 LevelProgression progression = game.getUserData().getProgression(game.getSession().getLevel());
                 int previousScore;
@@ -176,6 +179,10 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestLevelsAction) {
             game.assertSessionNotInProgress();
             action.callback(new RefreshLevelsAction(game.getLevelList()));
+        }
+        else if (action instanceof RequestScopeLevelAction){
+            game.assertSessionInProgress();
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
         }
         else {
             throw new UnhandledActionException(action);
