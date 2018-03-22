@@ -144,7 +144,7 @@ public class Controller extends ActionConsumer {
                     previousScore = -1;
                 }
                 game.voidFinishLevel();
-                int currentScore = progression.stepsApplied;
+                int currentScore = game.getSession().getStepsApplied();
                 action.callback(new VictoryConditionMetAction(currentScore, previousScore));
                 action.callback(new SaveUserDataAction(game.saveUserData()));
                 Util.Log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
