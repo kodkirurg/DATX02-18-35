@@ -103,6 +103,7 @@ class Tools {
             //whole card one symbol
             if(expr instanceof Proposition | expr instanceof Absurdity){
                 topCardView.removeAllViews();
+
                 TextView text = new TextView(topCardView.getContext());
                 text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
                 text.setGravity(Gravity.CENTER);
@@ -189,7 +190,8 @@ class Tools {
                         rmView(R.id.card_frame_lower,topCardView);
                         rmView(R.id.card_card_2_4,topCardView);
                         mParent(R.id.card_card_2_3,topCardView);
-                        sSymbol(R.id.card_text_3,op2.toString(),topCardView);
+
+                        sSymbol(op2,topCardView,R.id.card_image_3,symbolMap);
                     }
 
                     if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
@@ -201,18 +203,18 @@ class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sSymbol(R.id.card_text_3,dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_3);
                         }
                         else{
-                            sSymbol(R.id.card_text_3,lower_left.toString(),topCardView);
+                            sSymbol(lower_left,topCardView,R.id.card_image_3,symbolMap);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sSymbol(R.id.card_text_4,dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_4);
                         }
                         else{
-                            sSymbol(R.id.card_text_4,lower_right.toString(),topCardView);
+                            sSymbol( lower_right,topCardView,R.id.card_image_4,symbolMap);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -231,7 +233,7 @@ class Tools {
                         rmView(R.id.card_frame_upper,topCardView);
                         rmView(R.id.card_card_1_1,topCardView);
                         mParent(R.id.card_card_1_2,topCardView);
-                        sSymbol(R.id.card_text_2,op1.toString(),topCardView);
+                        sSymbol(op1,topCardView,R.id.card_image_2,symbolMap);
                     }
 
                     if( op1 instanceof Operator & op2 instanceof Operator ){
@@ -242,18 +244,18 @@ class Tools {
 
                         //lower left
                         if(lower_left instanceof Operator){
-                            sSymbol(R.id.card_text_3,dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_3);
                         }
                         else{
-                            sSymbol(R.id.card_text_3,lower_left.toString(),topCardView);
+                            sSymbol( lower_left,topCardView,R.id.card_image_3,symbolMap);
                         }
 
                         //lower left
                         if(lower_right instanceof Operator){
-                            sSymbol(R.id.card_text_4,dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_4);
                         }
                         else{
-                            sSymbol(R.id.card_text_4,lower_right.toString(),topCardView);
+                            sSymbol(lower_right,topCardView,R.id.card_image_4,symbolMap);
                         }
                         //Lower middle
                         if(lower instanceof Implication){
@@ -275,18 +277,18 @@ class Tools {
 
                         //Upper left
                         if( upper_left instanceof Operator ){
-                            sSymbol(R.id.card_text_2, dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_2);
                         }
                         else{
-                            sSymbol(R.id.card_text_2, upper_left.toString(),topCardView);
+                            sSymbol( upper_left,topCardView,R.id.card_image_2,symbolMap);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sSymbol(R.id.card_text_1, dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_1);
                         }
                         else{
-                            sSymbol(R.id.card_text_1, upper_right.toString(),topCardView);
+                            sSymbol( upper_right,topCardView,R.id.card_image_1,symbolMap);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
@@ -319,8 +321,11 @@ class Tools {
         //sets text in textview by id.
         private static void sSymbol(Expression expression,CardView cardView,int rId, Map<String,String> symbolMap){
             ImageView imageView = cardView.findViewById(rId);
+            String symbol = "";
+            if(symbolMap.containsKey(expression.toString())){
+                symbol = symbolMap.get(expression.toString());
+            }
 
-            String symbol = symbolMap.get(expression.toString());
             switch (symbol.toLowerCase()){
                 case "redball":
                     imageView.setImageResource(R.drawable.redball);

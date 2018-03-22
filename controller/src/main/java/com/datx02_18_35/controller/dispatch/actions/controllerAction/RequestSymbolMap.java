@@ -8,10 +8,9 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
  */
 
 public class RequestSymbolMap extends Action {
-    ActionConsumer callback;
 
     public RequestSymbolMap(ActionConsumer callback){
-        this.callback=callback;
+        super(callback);
     }
 
 }

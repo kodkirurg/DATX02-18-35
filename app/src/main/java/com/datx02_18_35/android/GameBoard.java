@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -290,6 +291,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if(action instanceof RefreshSymbolMap){
                 symbolMap=((RefreshSymbolMap) action).symbolMap;
+                Log.d(Tools.debug, "handleAction: " + "refresh map");
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
