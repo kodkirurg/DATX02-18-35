@@ -151,7 +151,6 @@ public class GameManager {
                 }
                 return false;
             }
-            return false;
         }
         return false;
     }
