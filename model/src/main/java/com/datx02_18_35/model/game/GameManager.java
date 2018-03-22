@@ -141,6 +141,20 @@ public class GameManager {
         }
         progression.completed = true;
     }
+    public boolean hasNextLevel(){
+        Level lastLevel = currentSession.getLevel();
+        Iterator<Level> levelIterator = levels.iterator();
+        while(levelIterator.hasNext()){
+            if (levelIterator.next().equals(lastLevel)){
+                if(levelIterator.hasNext()){
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        return false;
+    }
 
     public boolean startNextLevel() throws IllegalGameStateException {
         assertSessionInProgress();

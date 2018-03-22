@@ -325,11 +325,18 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        if(!((VictoryConditionMetAction) action).hasNextLevel){
+                            nextLevel.setVisibility(View.GONE); 
+                        }
                         victoryScreen.setVisibility(View.VISIBLE);
                         int currentScore = ((VictoryConditionMetAction) action).currentScore;
                         int previousScore= ((VictoryConditionMetAction) action).previousScore;
-                        scoreView.setText("You scored: "+currentScore +"\n"+"Your previous best score was: " + previousScore);
-
+                        if(previousScore<0) {
+                            scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                        }
+                        else {
+                            scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                        }
 
                     }
                 });
