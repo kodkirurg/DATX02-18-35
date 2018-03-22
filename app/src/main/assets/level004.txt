@@ -1,0 +1,10 @@
+TITLE Empty Level
+
+DESCRIPTION START
+nothing to see here
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+GOAL ((P)->(P))

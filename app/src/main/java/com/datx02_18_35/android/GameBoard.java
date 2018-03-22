@@ -27,6 +27,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
@@ -329,6 +330,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             case R.id.next_level:{
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
                     victoryScreen.setVisibility(View.GONE);
                 }
                 catch (InterruptedException e){

@@ -124,13 +124,14 @@ public class Session {
                     public Expression next() {
                         assert this.hasNext();
                         if (!currentIter.hasNext()) {
-                            if (scopeIter.hasNext()) {
+                            if (scopeIter.hasNext() && scopeIter.next().getInventory().iterator().hasNext()) {
                                 currentIter = scopeIter.next().getInventory().iterator();
                             }else if(assumptionIter.hasNext()) {
                                 currentIter = assumptionIter;
                             }else if(hypothesisIter.hasNext()){
                                 currentIter = hypothesisIter;
                             }
+
                         }
                         return currentIter.next();
                     }
@@ -216,7 +217,6 @@ public class Session {
 
     public boolean isExpressionInScope(Collection<Expression> expressions){
         Collection<Expression> testExpressions = new HashSet<>(expressions);
-
         for (Expression existingExpression : getAllExpressions()){
             testExpressions.remove(existingExpression);
         }
