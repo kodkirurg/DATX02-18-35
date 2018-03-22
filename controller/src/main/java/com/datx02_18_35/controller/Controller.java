@@ -76,7 +76,9 @@ public class Controller extends ActionConsumer {
             IllegalGameStateException,
             GameManager.LevelNotInListException {
         if (action instanceof RequestStartNewSessionAction) {
-            game.assertSessionNotInProgress();
+            if(game.getSession()!=null){
+                game.quitLevel();
+            }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
         }

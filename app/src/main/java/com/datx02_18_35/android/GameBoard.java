@@ -83,7 +83,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         try {
             gameChange.acquire();
             int levelInt=myIntent.getIntExtra("levelInt",1);
-            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(levelInt)));
         } catch (Exception e) {
             e.printStackTrace();
         }

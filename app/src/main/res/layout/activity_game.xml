@@ -53,17 +53,16 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="234dp" >
+      >
     </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/victory_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
-        android:layout_marginBottom="120dp"
+        android:layout_margin="30dp"
         android:visibility="visible"
-        android:background="@color/Black"
+        android:background="@color/GhostWhite"
 
 
         >

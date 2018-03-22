@@ -175,7 +175,6 @@ public class GameManager {
     }
 
     public Session getSession() throws IllegalGameStateException {
-        assertSessionInProgress();
         return currentSession;
     }
 
