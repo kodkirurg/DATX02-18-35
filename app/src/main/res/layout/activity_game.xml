@@ -73,17 +73,37 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             >
+            <TextView
+                android:id="@+id/win_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You completed the level. Good job!"
+                android:background="@color/White"
+                android:layout_centerHorizontal="true"
+
+                />
+            <TextView
+                android:id="@+id/win_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/White"
+                android:layout_below="@+id/win_textview"
+            />
             <Button
                 android:id="@+id/next_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/win_score"
                 android:text="Next Level"
-/>
+            />
 
             <Button
                 android:id="@+id/main_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/next_level"
                 android:text="Main Menu"
                 />

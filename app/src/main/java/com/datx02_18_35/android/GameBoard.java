@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -50,7 +51,7 @@ import java.util.concurrent.Semaphore;
 import game.logic_game.R;
 
 public class GameBoard extends AppCompatActivity implements View.OnClickListener {
-
+    TextView scoreView;
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
@@ -104,6 +105,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         nextLevel.setOnClickListener(this);
         mainMenu = (Button) findViewById(R.id.main_menu);
         mainMenu.setOnClickListener(this);
+        scoreView = (TextView) findViewById(R.id.win_score);
+
 
 
 
@@ -259,7 +262,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public class BoardCallback extends ActionConsumer {
         @Override
-        public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+        public void handleAction(final Action action) throws UnhandledActionException, InterruptedException {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
@@ -310,6 +313,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
                         victoryScreen.setVisibility(View.VISIBLE);
+                        int currentScore = ((VictoryConditionMetAction) action).currentScore;
+                        int previousScore= ((VictoryConditionMetAction) action).previousScore;
+                        scoreView.setText("You scored: "+currentScore +"\n"+"Your previous best score was: " + previousScore);
+
+
                     }
                 });
             }
