@@ -1,6 +1,6 @@
 TITLE Example Level3
 
-SYMBOL S BlueBall
+SYMBOL P BlueBall
 SYMBOL Q RedBall
 
 HYPOTHESIS ((P)&(Q))

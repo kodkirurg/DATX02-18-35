@@ -8,6 +8,7 @@ import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,16 +118,6 @@ class Tools {
                 sSymbol(expr,imageView,symbolMap);
                 card.addView(imageView);
                 topCardView.addView(card);
-
-                /*
-                TextView text = new TextView(topCardView.getContext());
-                text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-                text.setGravity(Gravity.CENTER);
-                text.setText(expr.toString());
-                text.setTextSize(40);
-                text.setTextColor(Color.BLUE);
-                topCardView.addView(text);
-                */
             }
             else {
                 Operator op = (Operator) expr;
@@ -157,8 +148,10 @@ class Tools {
                     mParent(R.id.card_card_2_3,topCardView);
 
 
-                    sSymbol( op1,topCardView,R.id.card_image_2,symbolMap);
-                    sSymbol( op2,topCardView,R.id.card_image_3,symbolMap);
+                    Log.d(Tools.debug, "CardDeflator: " + "op1 : " + op1 +  "    op2 :" +op2);
+
+                    sSymbol( (Proposition)op1,topCardView,R.id.card_image_2,symbolMap);
+                    sSymbol((Proposition) op2,topCardView,R.id.card_image_3,symbolMap);
                 }
                 else{
                     ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);
@@ -350,6 +343,7 @@ class Tools {
                     imageView.setImageResource(R.drawable.blueball);
                     break;
                     default:
+                        Log.d(Tools.debug, "CardDeflator: " + symbol.toLowerCase());
                         imageView.setImageResource(R.drawable.dots);
                         break;
 
