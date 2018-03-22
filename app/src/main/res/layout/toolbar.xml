@@ -36,7 +36,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_gravity="center"
-                android:text="placeholder"
+                android:text="@string/levelTitle"
                 />
             <ImageView
                 android:id="@+id/toolbar_goal"

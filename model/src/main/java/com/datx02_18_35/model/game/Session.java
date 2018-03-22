@@ -124,13 +124,14 @@ public class Session {
                     public Expression next() {
                         assert this.hasNext();
                         if (!currentIter.hasNext()) {
-                            if (scopeIter.hasNext()) {
+                            if (scopeIter.hasNext() && scopeIter.next().getInventory().iterator().hasNext()) {
                                 currentIter = scopeIter.next().getInventory().iterator();
                             }else if(assumptionIter.hasNext()) {
                                 currentIter = assumptionIter;
                             }else if(hypothesisIter.hasNext()){
                                 currentIter = hypothesisIter;
                             }
+
                         }
                         return currentIter.next();
                     }
@@ -205,6 +206,15 @@ public class Session {
         return this.stepsApplied;
     }
 
+
+    public int getScopeInt(){
+        int i=0;
+        for(Scope scopes:this.getScopes()){
+            i++;
+        }
+        return i;
+    }
+
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
             if(existingExpression.equals(expression)){
@@ -216,7 +226,6 @@ public class Session {
 
     public boolean isExpressionInScope(Collection<Expression> expressions){
         Collection<Expression> testExpressions = new HashSet<>(expressions);
-
         for (Expression existingExpression : getAllExpressions()){
             testExpressions.remove(existingExpression);
         }

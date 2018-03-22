@@ -29,6 +29,8 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
@@ -39,7 +41,6 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAppl
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
@@ -60,6 +61,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
+    TextView scopeLevel;
     FrameLayout layout;
     RelativeLayout victoryScreen;
     public static BoardCallback boardCallback;
@@ -122,8 +124,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        scopeLevel = findViewById(R.id.toolbar_text);
+        scopeLevel.setText("scope 0");
         gameChange.release();
     }
 
@@ -261,6 +264,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             case R.id.item_assumption:
                 try {
                     Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                    scopeLevel.setText("");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -320,17 +324,32 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 inventories = ((RefreshInventoryAction) action).inventories;
                 assumptions = ((RefreshInventoryAction) action).assumptions;
             }
+            else if(action instanceof RefreshScopeLevelAction){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scopeLevel.setText("Scope: " + ((RefreshScopeLevelAction) action).scopeLevel);
+                    }
+                });
+            }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        if(!((VictoryConditionMetAction) action).hasNextLevel){
+                            nextLevel.setVisibility(View.GONE); 
+                        }
                         victoryScreen.setVisibility(View.VISIBLE);
                         int currentScore = ((VictoryConditionMetAction) action).currentScore;
                         int previousScore= ((VictoryConditionMetAction) action).previousScore;
-                        scoreView.setText("You scored: "+currentScore +"\n"+"Your previous best score was: " + previousScore);
-
+                        if(previousScore<0) {
+                            scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                        }
+                        else {
+                            scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                        }
 
                     }
                 });
@@ -339,15 +358,29 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            Controller.getSingleton().sendAction(new RequestScopeLevelAction(GameBoard.boardCallback));
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
     public void onClick(View view){
         switch (view.getId()){
             case R.id.next_level:{
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
                     victoryScreen.setVisibility(View.GONE);
                 }
                 catch (InterruptedException e){
-
+                    e.printStackTrace();
                 }
                 break;
             }
@@ -357,7 +390,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     finish();
                 }
                 catch (InterruptedException e){
-
+                    e.printStackTrace();
                 }
                 break;
             }
