@@ -1,0 +1,10 @@
+TITLE Implication introduction
+
+DESCRIPTION START
+Make Assumption
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+GOAL ((P)>(P))

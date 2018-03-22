@@ -13,7 +13,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -21,6 +24,13 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
+
+
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
@@ -32,6 +42,8 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRule
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
+
+
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 
@@ -41,14 +53,20 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity  {
-
+public class GameBoard extends AppCompatActivity implements View.OnClickListener {
+    TextView scoreView;
+    Button nextLevel;
+    Button mainMenu;
     Toolbar toolbar;
+    TextView scopeLevel;
     FrameLayout layout;
+    RelativeLayout victoryScreen;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Iterable<Expression>> inventories;
+    public static Iterable<Expression> assumptions;
 
 
     //recyclerviews
@@ -69,7 +87,6 @@ public class GameBoard extends AppCompatActivity  {
         try {
             gameChange.acquire();
             int levelInt=myIntent.getIntExtra("levelInt",1);
-            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(boardCallback,Controller.getSingleton().getLevels().get(levelInt)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,17 +94,30 @@ public class GameBoard extends AppCompatActivity  {
 
         initLeftSide();
         initRightSide();
-        initInventory();
+        //initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-                
+
+        //Set up victory screen buttons and layout
+        victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
+        victoryScreen.setVisibility(View.GONE);
+        nextLevel = (Button) findViewById(R.id.next_level);
+        nextLevel.setOnClickListener(this);
+        mainMenu = (Button) findViewById(R.id.main_menu);
+        mainMenu.setOnClickListener(this);
+        scoreView = (TextView) findViewById(R.id.win_score);
+
+
+
+
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        scopeLevel = findViewById(R.id.toolbar_text);
+        scopeLevel.setText("scope 0");
         gameChange.release();
     }
 
@@ -124,7 +154,7 @@ public class GameBoard extends AppCompatActivity  {
         recyclerViewLeft.setAdapter(adapterLeft);
 
     }
-    private void initInventory() {
+    /*private void initInventory() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
         View gameView = this.findViewById(android.R.id.content);
@@ -143,7 +173,7 @@ public class GameBoard extends AppCompatActivity  {
             }
 
         });
-    }
+    }*/
 
     public void closeInventory(){
         if (layout.isShown()) {
@@ -225,6 +255,7 @@ public class GameBoard extends AppCompatActivity  {
             case R.id.item_assumption:
                 try {
                     Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                    scopeLevel.setText("");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -236,7 +267,7 @@ public class GameBoard extends AppCompatActivity  {
 
     public class BoardCallback extends ActionConsumer {
         @Override
-        public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+        public void handleAction(final Action action) throws UnhandledActionException, InterruptedException {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
@@ -249,6 +280,9 @@ public class GameBoard extends AppCompatActivity  {
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
+            }
+            else if(action instanceof SaveUserDataAction){
+                Tools.writeUserData(((SaveUserDataAction)action).userData,getApplicationContext());
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
@@ -273,20 +307,80 @@ public class GameBoard extends AppCompatActivity  {
                 //i.putExtra("STRING_I_NEED", reason);
                 startActivity(i);
             }
+            else if (action instanceof RefreshInventoryAction){
+                inventories = ((RefreshInventoryAction) action).inventories;
+                assumptions = ((RefreshInventoryAction) action).assumptions;
+            }
+            else if(action instanceof RefreshScopeLevelAction){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        scopeLevel.setText("Scope: " + ((RefreshScopeLevelAction) action).scopeLevel);
+                    }
+                });
+            }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"You are a winner!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
+                        if(!((VictoryConditionMetAction) action).hasNextLevel){
+                            nextLevel.setVisibility(View.GONE); 
+                        }
+                        victoryScreen.setVisibility(View.VISIBLE);
+                        int currentScore = ((VictoryConditionMetAction) action).currentScore;
+                        int previousScore= ((VictoryConditionMetAction) action).previousScore;
+                        if(previousScore<0) {
+                            scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                        }
+                        else {
+                            scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                        }
+
                     }
                 });
-                finish();
-            }
-            else if(action instanceof SaveUserDataAction){
-                return;
             }
             gameChange.release();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            Controller.getSingleton().sendAction(new RequestScopeLevelAction(GameBoard.boardCallback));
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.next_level:{
+                try {
+                    Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
+                    victoryScreen.setVisibility(View.GONE);
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                break;
+            }
+            case R.id.main_menu: {
+                try {
+                    Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+                    finish();
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                break;
+            }
         }
     }
 

@@ -1,4 +1,10 @@
-TITLE Example Level1
+TITLE Basic Conjunction
+
+DESCRIPTION START
+In this level you'll learn about conjunctions.
+Select two cards and apply the conjunction introduction rule on them.
+Note that the order matters!
+DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
@@ -7,11 +13,3 @@ HYPOTHESIS (P)
 HYPOTHESIS (Q)
 
 GOAL ((P)&(Q))
-
-DESCRIPTION START
-Bla bla
-
-Hej hej
-
-Do this shit
-DESCRIPTION END

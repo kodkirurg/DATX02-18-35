@@ -4,6 +4,8 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
@@ -22,12 +24,14 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStar
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.ShowNewExpressionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.LevelParseException;
+import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.List;
 
@@ -74,11 +78,11 @@ public class Controller extends ActionConsumer {
             IllegalGameStateException,
             GameManager.LevelNotInListException {
         if (action instanceof RequestStartNewSessionAction) {
-            game.assertSessionNotInProgress();
+            if(game.getSession()!=null){
+                game.quitLevel();
+            }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
-            action.callback(getRefreshInventoryAction());
-            action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestStartNextLevelAction) {
             game.assertSessionInProgress();
@@ -129,10 +133,21 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
             if (game.getSession().checkWin()) {
+                LevelProgression progression = game.getUserData().getProgression(game.getSession().getLevel());
+                int previousScore;
+                if (progression.completed) {
+                    previousScore = progression.stepsApplied;
+                }
+                else {
+                    previousScore = -1;
+                }
                 game.voidFinishLevel();
-                action.callback(new VictoryConditionMetAction());
+                int currentScore = game.getSession().getStepsApplied();
+                action.callback(new VictoryConditionMetAction(currentScore, previousScore,game.hasNextLevel()));
                 action.callback(new SaveUserDataAction(game.saveUserData()));
+                Util.Log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
             }
         }
         else if (action instanceof ClosedSandboxAction) {
@@ -164,6 +179,10 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestLevelsAction) {
             game.assertSessionNotInProgress();
             action.callback(new RefreshLevelsAction(game.getLevelList()));
+        }
+        else if (action instanceof RequestScopeLevelAction){
+            game.assertSessionInProgress();
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
         }
         else {
             throw new UnhandledActionException(action);

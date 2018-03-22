@@ -72,10 +72,11 @@ public class GameManager {
                 userData = (UserData)obj;
                 success = true;
             } else {
-                throw new IllegalArgumentException("data byte array is not a valid UserData object.");
+                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
             }
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            e.printStackTrace();
+            Util.Log("userData byte array is invalid, falling back to default values." +
+                    "The following exception was caught: \n" + e);
         } finally {
             if (objIn != null) {
                 try {
@@ -140,6 +141,19 @@ public class GameManager {
         }
         progression.completed = true;
     }
+    public boolean hasNextLevel(){
+        Level lastLevel = currentSession.getLevel();
+        Iterator<Level> levelIterator = levels.iterator();
+        while(levelIterator.hasNext()){
+            if (levelIterator.next().equals(lastLevel)){
+                if(levelIterator.hasNext()){
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
 
     public boolean startNextLevel() throws IllegalGameStateException {
         assertSessionInProgress();
@@ -174,7 +188,6 @@ public class GameManager {
     }
 
     public Session getSession() throws IllegalGameStateException {
-        assertSessionInProgress();
         return currentSession;
     }
 
