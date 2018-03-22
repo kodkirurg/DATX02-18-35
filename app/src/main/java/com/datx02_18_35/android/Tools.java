@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
@@ -104,6 +106,19 @@ class Tools {
             if(expr instanceof Proposition | expr instanceof Absurdity){
                 topCardView.removeAllViews();
 
+                CardView card =  new CardView(topCardView.getContext());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                );
+                params.setMargins(5,5,5,5);
+                card.setLayoutParams(params);
+                ImageView imageView = new ImageView(topCardView.getContext());
+                sSymbol(expr,imageView,symbolMap);
+                card.addView(imageView);
+                topCardView.addView(card);
+
+                /*
                 TextView text = new TextView(topCardView.getContext());
                 text.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
                 text.setGravity(Gravity.CENTER);
@@ -111,6 +126,7 @@ class Tools {
                 text.setTextSize(40);
                 text.setTextColor(Color.BLUE);
                 topCardView.addView(text);
+                */
             }
             else {
                 Operator op = (Operator) expr;
@@ -336,6 +352,25 @@ class Tools {
                     default:
                         imageView.setImageResource(R.drawable.dots);
                         break;
+
+            }
+        }
+        private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
+            String symbol = "";
+            if(symbolMap.containsKey(expression.toString())){
+                symbol = symbolMap.get(expression.toString());
+            }
+
+            switch (symbol.toLowerCase()){
+                case "redball":
+                    imageView.setImageResource(R.drawable.redball);
+                    break;
+                case "blueball" :
+                    imageView.setImageResource(R.drawable.blueball);
+                    break;
+                default:
+                    imageView.setImageResource(R.drawable.dots);
+                    break;
 
             }
         }
