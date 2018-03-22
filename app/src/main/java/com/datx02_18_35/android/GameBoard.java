@@ -27,7 +27,9 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
@@ -46,6 +48,8 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
@@ -63,6 +67,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static boolean victory=false;
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
+    public static Map<String, String> symbolMap;
 
 
     //recyclerviews
@@ -107,6 +112,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scoreView = (TextView) findViewById(R.id.win_score);
 
 
+        try {
+            Controller.getSingleton().sendAction(new RequestSymbolMap(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         //Set toolbar
@@ -277,6 +287,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if(action instanceof SaveUserDataAction){
                 Tools.writeUserData(((SaveUserDataAction)action).userData,getApplicationContext());
+            }
+            else if(action instanceof RefreshSymbolMap){
+                symbolMap=((RefreshSymbolMap) action).symbolMap;
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";

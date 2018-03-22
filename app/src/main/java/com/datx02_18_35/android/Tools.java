@@ -163,15 +163,14 @@ class Tools {
                         }
                         else{
                             sSymbol( upper_left,topCardView,R.id.card_image_2,symbolMap);
-                            sSymbol(R.id.card_text_2, upper_left.toString(),topCardView);
                         }
 
                         //Upper right
                         if( upper_right instanceof Operator ){
-                            sSymbol(R.id.card_text_1, dots,topCardView);
+                            sDotsSymbol(topCardView,R.id.card_image_1);
                         }
                         else{
-                            sSymbol(R.id.card_text_1, upper_right.toString(),topCardView);
+                            sSymbol( upper_right,topCardView,R.id.card_image_1,symbolMap);
                         }
                         //Upper middle
                         if(upper instanceof Implication){
