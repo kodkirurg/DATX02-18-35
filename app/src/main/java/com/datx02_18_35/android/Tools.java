@@ -146,10 +146,7 @@ class Tools {
 
                     mParent(R.id.card_card_1_2,topCardView);
                     mParent(R.id.card_card_2_3,topCardView);
-
-
-                    Log.d(Tools.debug, "CardDeflator: " + "op1 : " + op1 +  "    op2 :" +op2);
-
+                    
                     sSymbol( (Proposition)op1,topCardView,R.id.card_image_2,symbolMap);
                     sSymbol((Proposition) op2,topCardView,R.id.card_image_3,symbolMap);
                 }

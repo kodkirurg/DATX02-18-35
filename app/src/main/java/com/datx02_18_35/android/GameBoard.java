@@ -295,7 +295,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if(action instanceof RefreshSymbolMap){
                 symbolMap=((RefreshSymbolMap) action).symbolMap;
-                Log.d(Tools.debug, "handleAction: " + "refresh map");
             }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
