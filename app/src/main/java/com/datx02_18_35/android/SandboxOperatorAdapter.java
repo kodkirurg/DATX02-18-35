@@ -47,13 +47,13 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
         if (dataSet.get(position) != null){
             switch (dataSet.get(position)) {
                 case IMPLICATION:
-                    imageView.setBackgroundResource(R.drawable.vertical_implication);
+                    Tools.setImage(imageView,R.drawable.vertical_implication);
                     break;
                 case DISJUNCTION:
-                    imageView.setBackgroundResource(R.drawable.vertical_disjunction);
+                    Tools.setImage(imageView,R.drawable.vertical_disjunction);
                     break;
                 case CONJUNCTION:
-                    imageView.setBackgroundResource(R.drawable.vertical_conjunction);
+                    Tools.setImage(imageView,R.drawable.vertical_conjunction);
                     break;
                 default:
                     Log.d("test123", "onBindViewHolder in sanbox: Unknown rule, wtf?");

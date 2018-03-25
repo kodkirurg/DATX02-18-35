@@ -3,6 +3,8 @@ package com.datx02_18_35.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.widget.CardView;
@@ -115,9 +117,9 @@ class Tools {
                 params.setMargins(5,5,5,5);
                 card.setLayoutParams(params);
                 ImageView imageView = new ImageView(topCardView.getContext());
-                sSymbol(expr,imageView,symbolMap);
                 card.addView(imageView);
                 topCardView.addView(card);
+                sSymbol(expr,imageView,symbolMap);
             }
             else {
                 Operator op = (Operator) expr;
@@ -334,14 +336,13 @@ class Tools {
 
             switch (symbol.toLowerCase()){
                 case "redball":
-                    imageView.setImageResource(R.drawable.redball);
+                    setImage(imageView,R.drawable.redball);
                     break;
                 case "blueball" :
-                    imageView.setImageResource(R.drawable.blueball);
+                    setImage(imageView,R.drawable.blueball);
                     break;
                     default:
-                        Log.d(Tools.debug, "CardDeflator: " + symbol.toLowerCase());
-                        imageView.setImageResource(R.drawable.dots);
+                        setImage(imageView,R.drawable.dots);
                         break;
 
             }
@@ -354,19 +355,71 @@ class Tools {
 
             switch (symbol.toLowerCase()){
                 case "redball":
-                    imageView.setImageResource(R.drawable.redball);
+                    setImage(imageView,R.drawable.redball);
                     break;
                 case "blueball" :
-                    imageView.setImageResource(R.drawable.blueball);
+                    setImage(imageView,R.drawable.blueball);
                     break;
                 default:
-                    imageView.setImageResource(R.drawable.dots);
+                    setImage(imageView,R.drawable.dots);
                     break;
 
             }
         }
+
         private static void sDotsSymbol(CardView cardView,int rId){
             ( (ImageView) cardView.findViewById(rId) ).setImageResource(R.drawable.dots);
         }
     }
+    public static void setImage(ImageView image, int rId){
+        int imageHeight = 100;
+        int imageWidth = 100;
+        image.setImageBitmap(decodeSampledBitmapFromResource(image.getResources(), rId, imageWidth, imageHeight));
+
+    }
+
+
+    //imported code from the official Android documentation
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+
+    //imported code from the official Android documentation
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+
 }

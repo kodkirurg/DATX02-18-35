@@ -65,25 +65,25 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         if (dataSet.get(position) != null){
             switch (dataSet.get(position).type) {
                 case CONJUNCTION_INTRODUCTION:
-                    imageView.setBackgroundResource(R.drawable.conjunction_introduction);
+                    Tools.setImage(imageView,R.drawable.conjunction_introduction);
                     break;
                 case ABSURDITY_ELIMINATION:
-                    imageView.setBackgroundResource(R.drawable.absurdity_elimination);
+                    Tools.setImage(imageView,R.drawable.absurdity_elimination);
                     break;
                 case CONJUNCTION_ELIMINATION:
-                    imageView.setBackgroundResource(R.drawable.conjunction_elimination);
+                    Tools.setImage(imageView,R.drawable.conjunction_elimination);
                     break;
                 case IMPLICATION_INTRODUCTION:
-                    imageView.setBackgroundResource(R.drawable.implication_introduction);
+                    Tools.setImage(imageView,R.drawable.implication_introduction);
                     break;
                 case DISJUNCTION_ELIMINATION:
-                    imageView.setBackgroundResource(R.drawable.disjunction_elimination);
+                    Tools.setImage(imageView,R.drawable.disjunction_elimination);
                     break;
                 case DISJUNCTION_INTRODUCTION:
-                    imageView.setBackgroundResource(R.drawable.disjunction_introduction);
+                    Tools.setImage(imageView,R.drawable.disjunction_introduction);
                     break;
                 case IMPLICATION_ELIMINATION:
-                    imageView.setBackgroundResource(R.drawable.implication_elimination);
+                    Tools.setImage(imageView,R.drawable.implication_elimination);
                     break;
                 default:
                     Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
