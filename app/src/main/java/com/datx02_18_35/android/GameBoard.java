@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,6 +128,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         scopeLevel = findViewById(R.id.toolbar_text);
         scopeLevel.setText("scope 0");
+
+
+        ImageView infoButton = findViewById(R.id.toolbar_goal);
+        infoButton.setOnClickListener(this);
+
+
         gameChange.release();
     }
 
@@ -259,7 +266,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menu) {
-        Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
                 try {
@@ -372,6 +378,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.toolbar_goal :
+                Log.d(Tools.debug, "onClick: ");
+                break;
             case R.id.next_level:{
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
