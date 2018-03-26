@@ -1,6 +1,5 @@
 package com.datx02_18_35.android;
 
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelCollection;
 import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.ArrayList;
@@ -23,13 +23,15 @@ import game.logic_game.R;
 
 
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener  {
-    private List<Map.Entry<Level,LevelProgression>> dataSet;
-    Levels activity;
+    private List<Level> levelList;
+    private Map<Level, LevelProgression> progressionMap;
+    private final Levels levelsActivity;
 
 
-    LevelsAdapter(ArrayList<Map.Entry<Level,LevelProgression>> levels, Levels activity){
-        this.dataSet =levels;
-        this.activity=activity;
+    LevelsAdapter(Levels levelsActivity){
+        this.levelsActivity = levelsActivity;
+        this.levelList = null;
+        this.progressionMap = null;
     }
 
     @Override
@@ -43,9 +45,9 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setTag(position);
 
-        String title = dataSet.get(position).getKey().title;
+        String title = levelList.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
-        String description = dataSet.get(position).getKey().description;
+        String description = levelList.get(position).description;
         ((TextView) holder.cardView.findViewById(R.id.card_level_description)).setText(description);
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
@@ -53,20 +55,24 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        if(dataSet ==null){
+        if(levelList ==null){
             return 0;
         }
         else{
-            return dataSet.size();
+            return levelList.size();
         }
 
     }
 
-    public void updateLevels(final List<Map.Entry<Level, LevelProgression>> levelList) {
-        activity.runOnUiThread(new Runnable() {
+    public void updateLevels(final LevelCollection _levelCollection, final Map<Level, LevelProgression> _progressionMap) {
+        this.levelsActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dataSet = levelList;
+                levelList = new ArrayList<>();
+                for (Level level : _levelCollection.getAllLevels()) {
+                    levelList.add(level);
+                }
+                progressionMap = _progressionMap;
                 notifyDataSetChanged();
             }
         });
@@ -75,7 +81,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     @Override
     public void onClick(View view) {
         int position = (int) view.getTag();
-        activity.startLevel(dataSet.get(position).getKey());
+        levelsActivity.startLevel(levelList.get(position));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -9,33 +9,29 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.jws.soap.SOAPBinding;
 
 /**
  * Created by Jonatan on 2018-03-07.
  */
 
 public class GameManager {
-    private final List<Level> levels;
+    private final LevelCollection levelCollection;
     private UserData userData;
 
     private Session currentSession;
 
 
     public GameManager(List<String> levelStrings) throws LevelParseException {
-        levels = new ArrayList<>();
+        levelCollection = new LevelCollection();
         for (String levelStr : levelStrings) {
             Level level = Level.parseLevel(levelStr);
-            levels.add(level);
+            levelCollection.add(level);
         }
-        userData = new UserData(levels);
+        userData = new UserData(levelCollection.getAllLevels());
     }
 
     public byte[] saveUserData() {
@@ -89,13 +85,19 @@ public class GameManager {
         return success;
     }
 
-    public List<Level> getLevels(){
-        return new ArrayList<Level>(levels);
+    public LevelCollection getLevelCollection() {
+        return levelCollection;
     }
 
+    public Map<Level, LevelProgression> getProgressionMapReadOnly() {
+        return userData.getProgressionMapReadOnly();
+    }
+
+
+    @Deprecated
     public List<Map.Entry<Level,LevelProgression>> getLevelList() {
         List<Map.Entry<Level,LevelProgression>> list = new ArrayList<>();
-        for (Level level : levels) {
+        for (Level level : levelCollection.getAllLevels()) {
             list.add(new Map.Entry<Level, LevelProgression>() {
                 private LevelProgression levelProgression = userData.getProgression(level).clone();
 
@@ -120,8 +122,8 @@ public class GameManager {
 
     public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
         assertSessionNotInProgress();
-        if(!levels.contains(level)) {
-            throw new LevelNotInListException("Level is not in GameManagers list of levels");
+        if(!levelCollection.contains(level)) {
+            throw new LevelNotInListException("Level is not in GameManager's list of levels");
         }
         currentSession = new Session(level);
         Util.Log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
@@ -141,46 +143,31 @@ public class GameManager {
         }
         progression.completed = true;
     }
+
+
+
     public boolean hasNextLevel(){
         Level lastLevel = currentSession.getLevel();
-        Iterator<Level> levelIterator = levels.iterator();
-        while(levelIterator.hasNext()){
-            if (levelIterator.next().equals(lastLevel)){
-                if(levelIterator.hasNext()){
-                    return true;
-                }
-                return false;
-            }
-        }
-        return false;
+        return levelCollection.getNextLevel(lastLevel) != null;
     }
 
-    public boolean startNextLevel() throws IllegalGameStateException {
+    public void startNextLevel() throws IllegalGameStateException {
         assertSessionInProgress();
         if (!currentSession.checkWin()) {
             throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
         }
-
-        Level lastLevel = currentSession.getLevel();
-        Iterator<Level> levelIterator = levels.iterator();
-        while (levelIterator.hasNext()) {
-            if (levelIterator.next().equals(lastLevel)) {
-                if (levelIterator.hasNext()) {
-                    try {
-                        quitLevel();
-                        startLevel(levelIterator.next());
-                        return true;
-                    } catch (IllegalGameStateException | LevelNotInListException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                }
-                else {
-                    return false;
-                }
-            }
+        Level nextLevel = levelCollection.getNextLevel(currentSession.getLevel());
+        if (nextLevel == null) {
+            throw new IllegalGameStateException("Can't proceed to next level as there are no more left");
         }
-        return false;
+
+        quitLevel();
+        try {
+            startLevel(nextLevel);
+        } catch (LevelNotInListException e) {
+            throw new IllegalGameStateException("Unknown level fetched from LevelCollection. This really should not happen");
+        }
+
     }
 
     public UserData getUserData() {

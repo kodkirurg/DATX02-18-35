@@ -40,7 +40,7 @@ public class Levels extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new LevelsAdapter(null, this);
+        adapter = new LevelsAdapter(this);
         recyclerView.setAdapter(adapter);
 
         callback = new LevelsCallback();
@@ -67,7 +67,8 @@ public class Levels extends AppCompatActivity {
         @Override
         public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
             if(action instanceof RefreshLevelsAction){
-               adapter.updateLevels( ((RefreshLevelsAction) action).levelList);
+                RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
+                adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.progressionMap);
             }
         }
     }
