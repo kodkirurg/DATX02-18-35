@@ -66,6 +66,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Expression> hypothesis;
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
@@ -99,6 +100,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         //initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,13 @@
-TITLE test_abs
+TITLE *Title goes here*
 
-SYMBOL P RedBall
+DESCRIPTION START
+*Text goes here*
+DESCRIPTION END
 
-HYPOTHESIS (#)
+SYMBOL P BlueBall
+SYMBOL Q RedBall
 
-GOAL (P)
+HYPOTHESIS ((P)>(#))
+
+
+GOAL ((P)>(Q))
