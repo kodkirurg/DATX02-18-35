@@ -1,7 +1,5 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,17 +29,17 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
@@ -51,7 +49,6 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 

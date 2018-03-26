@@ -1,4 +1,4 @@
-package com.datx02_18_35.controller.dispatch.actions.viewActions;
+package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.Action;
