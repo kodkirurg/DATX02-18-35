@@ -99,8 +99,8 @@ public class Rule {
 
                 // Disjunction elimination check:
                 // fst:     A | B
-                // snd:     A -> C
-                // thd:     B -> C
+                // snd:     A/B -> C
+                // thd:     B/A -> C
                 // result:  C
                 // Check root operators
                 if (   fst instanceof Disjunction
@@ -123,6 +123,10 @@ public class Rule {
                         }
                     }
                 }
+
+                // fst:     B/A -> C
+                // snd:     A | B
+                // thd:     B/A -> C
                 else if(snd instanceof Disjunction
                             && fst instanceof Implication
                             && thd instanceof Implication){
@@ -141,6 +145,10 @@ public class Rule {
                         }
 
                     }
+
+                    // fst:     B/A -> C
+                    // snd:     B/A -> C
+                    // thd:     A | B
                 }else if(thd instanceof Disjunction
                         && fst instanceof Implication
                         && snd instanceof Implication){
