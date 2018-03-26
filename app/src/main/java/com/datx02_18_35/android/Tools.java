@@ -39,7 +39,7 @@ import game.logic_game.R;
  * Created by raxxor on 2018-03-15.
  */
 
-class Tools {
+class   Tools {
 
     static final String debug = "test123";
     private static final String userData = "userDatas";
@@ -148,9 +148,17 @@ class Tools {
 
                     mParent(R.id.card_card_1_2,topCardView);
                     mParent(R.id.card_card_2_3,topCardView);
-                    
-                    sSymbol( (Proposition)op1,topCardView,R.id.card_image_2,symbolMap);
-                    sSymbol((Proposition) op2,topCardView,R.id.card_image_3,symbolMap);
+
+                    if(op1 instanceof Proposition) {
+                        sSymbol((Proposition) op1, topCardView, R.id.card_image_2, symbolMap);
+                    }else {
+                        sSymbol((Absurdity) op1,topCardView,R.id.card_image_2,symbolMap);
+                    }
+                    if(op2 instanceof Proposition) {
+                        sSymbol((Proposition) op2, topCardView, R.id.card_image_3, symbolMap);
+                    }else {
+                        sSymbol((Absurdity) op2, topCardView, R.id.card_image_3, symbolMap);
+                    }
                 }
                 else{
                     ImageView upperImage = topCardView.findViewById(R.id.card_image_upper);

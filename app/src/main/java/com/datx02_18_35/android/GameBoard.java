@@ -1,7 +1,5 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,17 +35,19 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
@@ -57,7 +57,6 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
@@ -69,12 +68,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel;
-    FrameLayout layout;
+    RelativeLayout layout;
     RelativeLayout victoryScreen;
+    private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Expression> hypothesis;
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
@@ -83,10 +84,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight;
-    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,invRecyclerView;
+    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight,invRecLayoutManager;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
+    public InventoryAdapter invRecAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,13 +105,20 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         initLeftSide();
         initRightSide();
-        //initInventory();
+        initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -169,7 +178,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     private void initLeftSide() {
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - (20+130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
@@ -183,14 +192,35 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         recyclerViewLeft.setAdapter(adapterLeft);
 
     }
-    /*private void initInventory() {
-        FragmentManager fm = getFragmentManager();
+    private void initInventory() {
+        int spanCount;
+        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+
+      /*  Iterator<Iterable<Expression>> invIterator = GameBoard.inventories.iterator();
+
+         while (invIterator.hasNext()) {
+            Iterable<Expression> inventory = invIterator.next();
+            Iterator<Expression> expressionIterator = inventory.iterator();
+            while (expressionIterator.hasNext()) {
+                inventoryList.add(expressionIterator.next());
+            }
+        }*/
+
+
+        invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
+        invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
+        invRecyclerView.setLayoutManager(invRecLayoutManager);
+        invRecAdapter = new InventoryAdapter(new ArrayList<Expression>(), this);
+        invRecyclerView.setAdapter(invRecAdapter);
+
+        /*FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
+
+*/
         View gameView = this.findViewById(android.R.id.content);
-
-
-        layout = (FrameLayout)findViewById(R.id.inventory_container);
-        ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
+        layout = (RelativeLayout)findViewById(R.id.inventory_container);
+       // ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
         layout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -202,19 +232,32 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
 
         });
-    }*/
+    }
 
     public void closeInventory(){
         if (layout.isShown()) {
             Tools.slide_left(this, layout);
             layout.setVisibility(View.GONE);
+            recyclerViewRight.setVisibility(View.VISIBLE);
+            recyclerViewLeft.setVisibility(View.VISIBLE);
+
 
         }
     }
     public void showInventory(){
+        try {
+            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         if (!layout.isShown()){
             Tools.slide_right(this, layout);
             layout.setVisibility(View.VISIBLE);
+            recyclerViewRight.setVisibility(View.GONE);
+            recyclerViewLeft.setVisibility(View.GONE);
+            //invRecAdapter.updateInventory();
+
 
         }
     }
@@ -375,7 +418,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             gameChange.release();
         }
     }
-
+    @Override
+    public void onBackPressed(){
+        if(layout.isShown()){
+            closeInventory();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
     @Override
     public void onResume(){
         super.onResume();

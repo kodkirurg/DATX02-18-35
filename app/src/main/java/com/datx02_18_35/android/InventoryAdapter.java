@@ -8,8 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import game.logic_game.R;
 
@@ -19,7 +24,14 @@ import game.logic_game.R;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    public InventoryAdapter(ArrayList<Expression> dataSet){this.dataSet=dataSet;}
+    private ArrayList<Expression> newSet;
+    GameBoard activity;
+
+
+    public InventoryAdapter(ArrayList<Expression> dataSet, GameBoard activity){
+        this.dataSet = dataSet;
+        this.activity = activity;
+    }
 
 
     @Override
@@ -43,6 +55,24 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             new Tools.CardDeflator(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
             holder.alreadyBound = true;
         }
+    }
+    public void updateInventory() {
+        Iterator<Iterable<Expression>> invIterator = GameBoard.inventories.iterator();
+
+        while (invIterator.hasNext()) {
+            Iterable<Expression> inventory = invIterator.next();
+            Iterator<Expression> expressionIterator = inventory.iterator();
+            while (expressionIterator.hasNext()) {
+                newSet.add(expressionIterator.next());
+            }
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dataSet = newSet;
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

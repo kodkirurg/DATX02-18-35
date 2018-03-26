@@ -4,25 +4,27 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestLevelsAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNewSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestLevelsAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNewSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.ShowNewExpressionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
@@ -100,6 +102,10 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
             game.quitLevel();
+        }
+        else if (action instanceof RequestHypothesisAction) {
+            game.assertSessionInProgress();
+            action.callback(new RefreshHypothesisAction(game.getSession().getHypotheses()));
         }
         else if (action instanceof RequestInventoryAction) {
             game.assertSessionInProgress();
