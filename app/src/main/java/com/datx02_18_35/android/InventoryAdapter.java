@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
 import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,6 @@ import game.logic_game.R;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    private ArrayList<Expression> newSet;
     GameBoard activity;
 
 
@@ -56,20 +57,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             holder.alreadyBound = true;
         }
     }
-    public void updateInventory() {
-        Iterator<Iterable<Expression>> invIterator = GameBoard.inventories.iterator();
-
-        while (invIterator.hasNext()) {
-            Iterable<Expression> inventory = invIterator.next();
-            Iterator<Expression> expressionIterator = inventory.iterator();
-            while (expressionIterator.hasNext()) {
-                newSet.add(expressionIterator.next());
-            }
-        }
+    public void updateInventory(final ArrayList<Expression> newSet) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dataSet = newSet;
+                dataSet.clear();
+                dataSet.addAll(newSet);
                 notifyDataSetChanged();
             }
         });

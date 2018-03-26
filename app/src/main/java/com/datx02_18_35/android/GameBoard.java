@@ -26,10 +26,12 @@ import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
@@ -70,6 +72,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
     public static Iterable<Expression> hypothesis;
+    public static ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
@@ -103,6 +106,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         catch (Exception e){
             e.printStackTrace();
         }
+        try {
+            Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         initLeftSide();
@@ -114,6 +122,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
         //Set up victory screen buttons and layout
         victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
@@ -180,34 +189,21 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     }
     private void initInventory() {
-        int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
-        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
-
-      /*  Iterator<Iterable<Expression>> invIterator = GameBoard.inventories.iterator();
-
-         while (invIterator.hasNext()) {
-            Iterable<Expression> inventory = invIterator.next();
-            Iterator<Expression> expressionIterator = inventory.iterator();
-            while (expressionIterator.hasNext()) {
-                inventoryList.add(expressionIterator.next());
-            }
-        }*/
+        int spanCount=3;
+        //int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        //for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
 
         invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
         invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
         invRecyclerView.setLayoutManager(invRecLayoutManager);
-        invRecAdapter = new InventoryAdapter(new ArrayList<Expression>(), this);
+        invRecAdapter = new InventoryAdapter(hypothesisList, this);
         invRecyclerView.setAdapter(invRecAdapter);
 
-        /*FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft =fm.beginTransaction();
 
-*/
+
         View gameView = this.findViewById(android.R.id.content);
         layout = (RelativeLayout)findViewById(R.id.inventory_container);
-       // ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
         layout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -225,6 +221,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         if (layout.isShown()) {
             Tools.slide_left(this, layout);
             layout.setVisibility(View.GONE);
+            invRecyclerView.setVisibility(View.GONE);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
 
@@ -232,18 +229,28 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
-        try {
-            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
+        ArrayList<Expression> newSet = new ArrayList<Expression>();
+
+        for (Expression expr: GameBoard.hypothesis){
+            newSet.add(expr);
         }
-        catch (Exception e){
-            e.printStackTrace();
+        for (Expression expr: GameBoard.assumptions){
+            newSet.add(expr);
         }
+
+        for (Iterable<Expression> iter: GameBoard.inventories){
+            for (Expression expr :iter) {
+                newSet.add(expr);
+            }
+        }
+
         if (!layout.isShown()){
             Tools.slide_right(this, layout);
             layout.setVisibility(View.VISIBLE);
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
-            //invRecAdapter.updateInventory();
+            invRecyclerView.setVisibility(View.VISIBLE);
+            invRecAdapter.updateInventory(newSet);
 
 
         }
@@ -371,6 +378,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             else if (action instanceof RefreshInventoryAction){
                 inventories = ((RefreshInventoryAction) action).inventories;
                 assumptions = ((RefreshInventoryAction) action).assumptions;
+            }
+            else if (action instanceof RefreshHypothesisAction){
+                hypothesis = ((RefreshHypothesisAction) action).hypothesis;
             }
             else if(action instanceof RefreshScopeLevelAction){
                 runOnUiThread(new Runnable() {

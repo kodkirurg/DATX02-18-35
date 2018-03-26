@@ -97,6 +97,7 @@ public class Controller extends ActionConsumer {
             game.startNextLevel();
             game.assertSessionInProgress();
             action.callback(getRefreshInventoryAction());
+            action.callback(getRefreshHypothesisAction());
             action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestAbortSessionAction) {
@@ -207,5 +208,8 @@ public class Controller extends ActionConsumer {
 
     private Action getRefreshGameboardAction() throws IllegalGameStateException {
         return new RefreshGameboardAction(game.getSession().getGameBoard());
+    }
+    private Action getRefreshHypothesisAction() throws IllegalGameStateException {
+        return new RefreshHypothesisAction(game.getSession().getHypotheses());
     }
 }
