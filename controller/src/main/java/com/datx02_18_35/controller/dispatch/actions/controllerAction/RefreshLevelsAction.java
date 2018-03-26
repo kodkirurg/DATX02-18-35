@@ -2,6 +2,7 @@ package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelCollection;
 import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.List;
@@ -12,12 +13,17 @@ import java.util.Map;
  */
 
 public class RefreshLevelsAction extends Action {
-    public final List<Map.Entry<Level,LevelProgression>> levelList;
+    public final LevelCollection levelCollection;
+    public final Map<Level, LevelProgression> progressionMap;
 
-    public RefreshLevelsAction(List<Map.Entry<Level,LevelProgression>> levelList) {
-        if (levelList == null) {
+    public RefreshLevelsAction(LevelCollection levelCollection, Map<Level, LevelProgression> progressionMap) {
+        if (levelCollection == null) {
             throw new IllegalArgumentException("levelList can't be null");
         }
-        this.levelList = levelList;
+        if (progressionMap == null) {
+            throw new IllegalArgumentException("progressionMap can't be null");
+        }
+        this.levelCollection = levelCollection;
+        this.progressionMap = progressionMap;
     }
 }
