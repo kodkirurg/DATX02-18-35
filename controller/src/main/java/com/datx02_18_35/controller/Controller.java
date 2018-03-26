@@ -60,10 +60,6 @@ public class Controller extends ActionConsumer {
         }
     }
 
-    public List<Level> getLevels() {
-        return game.getLevels();
-    }
-
     private GameManager game;
     private Controller(List<String> levelStrings) throws LevelParseException {
         game = new GameManager(levelStrings);
@@ -190,7 +186,7 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestLevelsAction) {
             game.assertSessionNotInProgress();
-            action.callback(new RefreshLevelsAction(game.getLevelList()));
+            action.callback(new RefreshLevelsAction(game.getLevelCollection(), game.getProgressionMapReadOnly()));
         }
         else if (action instanceof RequestScopeLevelAction){
             game.assertSessionInProgress();
