@@ -203,10 +203,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     private void initInventory() {
         int spanCount=3;
-        //int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
-        //for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
-
-
         invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
         invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
         invRecyclerView.setLayoutManager(invRecLayoutManager);
@@ -242,6 +238,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
+        try {
+            Controller.getSingleton().sendAction(new RequestInventoryAction(boardCallback));
+            Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ArrayList<Expression> newSet = new ArrayList<Expression>();
 
         for (Expression expr: GameBoard.hypothesis){
