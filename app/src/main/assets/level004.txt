@@ -1,10 +1,15 @@
-TITLE Implication introduction
+TITLE Checking competence of player
 
 DESCRIPTION START
-Make Assumption
+Lets check out if you've understood the earlier levels.
 DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
+SYMBOL R YellowRectangle
 
-GOAL ((P)>(P))
+HYPOTHESIS ((P)&(Q))
+HYPOTHESIS ((Q)>(R))
+
+
+GOAL (R)

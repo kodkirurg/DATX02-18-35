@@ -1,13 +1,14 @@
-TITLE Basic Implication
+TITLE Conjunction Elimination
 
 DESCRIPTION START
-pleb pleb pleb...
+In this level you will learn how to use conjunction elimination.
+Select the conjunction card and apply the conjunction elimination rule on it.
+How to reach the goal from there you learned in the last level.
 DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
 
-HYPOTHESIS (P)
-HYPOTHESIS ((P)>(Q))
+HYPOTHESIS ((P)&(Q))
 
-GOAL (Q)
+GOAL ((Q)&(P))
