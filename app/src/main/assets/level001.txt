@@ -1,4 +1,4 @@
-TITLE Basic Conjunction
+TITLE Conjunction Introduction
 
 DESCRIPTION START
 In this level you'll learn about conjunctions.
