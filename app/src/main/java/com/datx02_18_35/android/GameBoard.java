@@ -7,14 +7,20 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +35,8 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
+
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
@@ -60,8 +68,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel;
-    FrameLayout layout;
+    RelativeLayout layout;
     RelativeLayout victoryScreen;
+    private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
@@ -70,13 +79,16 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
+    public boolean infoWindowClicked=true;
+    public PopupWindow popupWindow;
 
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight;
-    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,invRecyclerView;
+    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight,invRecLayoutManager;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
+    public InventoryAdapter invRecAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,11 +105,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         initLeftSide();
         initRightSide();
-        //initInventory();
+        initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
 
@@ -129,10 +147,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scopeLevel.setText("scope 0");
 
 
+        //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
 
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
+        // Inflate the custom layout/view
+        View popUpView = inflater.inflate(R.layout.pop_up_window,null);
+        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         gameChange.release();
     }
 
@@ -155,7 +178,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     private void initLeftSide() {
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - (20+130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
@@ -169,14 +192,35 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         recyclerViewLeft.setAdapter(adapterLeft);
 
     }
-    /*private void initInventory() {
-        FragmentManager fm = getFragmentManager();
+    private void initInventory() {
+        int spanCount;
+        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
+        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+
+      /*  Iterator<Iterable<Expression>> invIterator = GameBoard.inventories.iterator();
+
+         while (invIterator.hasNext()) {
+            Iterable<Expression> inventory = invIterator.next();
+            Iterator<Expression> expressionIterator = inventory.iterator();
+            while (expressionIterator.hasNext()) {
+                inventoryList.add(expressionIterator.next());
+            }
+        }*/
+
+
+        invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
+        invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
+        invRecyclerView.setLayoutManager(invRecLayoutManager);
+        invRecAdapter = new InventoryAdapter(new ArrayList<Expression>(), this);
+        invRecyclerView.setAdapter(invRecAdapter);
+
+        /*FragmentManager fm = getFragmentManager();
         FragmentTransaction ft =fm.beginTransaction();
+
+*/
         View gameView = this.findViewById(android.R.id.content);
-
-
-        layout = (FrameLayout)findViewById(R.id.inventory_container);
-        ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
+        layout = (RelativeLayout)findViewById(R.id.inventory_container);
+       // ft.replace(R.id.inventory_container, new FragmentInventory()).commit();
         layout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -188,19 +232,32 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
 
         });
-    }*/
+    }
 
     public void closeInventory(){
         if (layout.isShown()) {
             Tools.slide_left(this, layout);
             layout.setVisibility(View.GONE);
+            recyclerViewRight.setVisibility(View.VISIBLE);
+            recyclerViewLeft.setVisibility(View.VISIBLE);
+
 
         }
     }
     public void showInventory(){
+        try {
+            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         if (!layout.isShown()){
             Tools.slide_right(this, layout);
             layout.setVisibility(View.VISIBLE);
+            recyclerViewRight.setVisibility(View.GONE);
+            recyclerViewLeft.setVisibility(View.GONE);
+            //invRecAdapter.updateInventory();
+
 
         }
     }
@@ -361,7 +418,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             gameChange.release();
         }
     }
-
+    @Override
+    public void onBackPressed(){
+        if(layout.isShown()){
+            closeInventory();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
     @Override
     public void onResume(){
         super.onResume();
@@ -378,7 +443,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view){
         switch (view.getId()){
             case R.id.toolbar_goal :
-                Log.d(Tools.debug, "onClick: ");
+                if(!infoWindowClicked){
+                    infoWindowClicked=true;
+                    popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
+                    Log.d(Tools.debug, "onClick: " + "show pop-up");
+
+                }
+                else if(infoWindowClicked){
+                    infoWindowClicked=false;
+                    popupWindow.dismiss();
+                    Log.d(Tools.debug, "onClick: " + "dismiss pop-up");
+                }
                 break;
             case R.id.next_level:{
                 try {

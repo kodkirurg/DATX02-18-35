@@ -4,7 +4,9 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -100,6 +102,10 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
             game.quitLevel();
+        }
+        else if (action instanceof RequestHypothesisAction) {
+            game.assertSessionInProgress();
+            action.callback(new RefreshHypothesisAction(game.getSession().getHypotheses()));
         }
         else if (action instanceof RequestInventoryAction) {
             game.assertSessionInProgress();
