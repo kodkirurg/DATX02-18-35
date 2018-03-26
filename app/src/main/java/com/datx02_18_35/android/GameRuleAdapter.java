@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
 import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
