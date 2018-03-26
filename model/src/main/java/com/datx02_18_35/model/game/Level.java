@@ -7,9 +7,7 @@ import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.OperatorType;
 import com.datx02_18_35.model.expression.Proposition;
-
-import java.io.File;
-import java.io.IOException;
+;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Created by Jonatan on 2018-03-07.
@@ -34,6 +30,7 @@ public class Level implements Serializable {
     private static final String DESCRIPTION="DESCRIPTION";
     private static final String DESCRIPTION_START="START";
     private static final String DESCRIPTION_END="END";
+    private static final String DIFFICULTY="DIFFICULTY";
     private static final int    HASH_MAGIC_NUMBER = 1_528_680_899;
 
     public final List<Expression> hypothesis;
@@ -42,15 +39,17 @@ public class Level implements Serializable {
     public final ExpressionFactory expressionFactory;
     public final List<Proposition> propositions;
     public final String description;
+    public final int difficulty;
 
     private final int hashCode;
-    
+
     private Level(
             String title,
             List<Expression> hypothesis,
             Expression goal,
             ExpressionFactory expressionFactory,
-            String description){
+            String description,
+            int difficulty){
 
         this.hypothesis=hypothesis;
         this.goal=goal;
@@ -58,6 +57,7 @@ public class Level implements Serializable {
         this.expressionFactory=expressionFactory;
         this.propositions = new ArrayList<>(extractPropositions(goal, hypothesis));
         this.description = description;
+        this.difficulty = difficulty;
 
         long magic = HASH_MAGIC_NUMBER;
         long longHash = magic;
@@ -142,7 +142,7 @@ public class Level implements Serializable {
         return propSet;
     }
 
-    private static LevelParseException getWrongNumberOfArgumentsLevelParseException(String token, int lineNumb) {
+    private static LevelParseException getWrongNumberOfArgumentsLevelParseException(int lineNumb, String token) {
         return new LevelParseException("Wrong number of arguments for token " + token + " on line: " + lineNumb);
     }
     private static LevelParseException getTooManyGoalsLevelParseException(int lineNumb) {
@@ -154,10 +154,17 @@ public class Level implements Serializable {
     private static LevelParseException getTooManyDescriptionsParseException(int lineNumb) {
         return new LevelParseException("Level file contains more than one description on line: " + lineNumb);
     }
+    private static LevelParseException getTooManyDifficultiesParseException(int lineNumb) {
+        return new LevelParseException("Level file contains more than one difficulty on line: " + lineNumb);
+    }
     private static LevelParseException getUnexpectedDescriptionArgumentException(int lineNumb, String found, String expected) {
         return new LevelParseException(
                 "Level file contains an unexpected argument to " + DESCRIPTION + " on line: " + lineNumb
                 + ". Found: " + found + ", expected: " + expected);
+    }
+    private static LevelParseException getInvalidDifficultyException(int lineNumb, String found) {
+        return new LevelParseException("Level file contains an invalid difficulty on line" + lineNumb +
+                ". Found: " + found + ", expected non-negative number.");
     }
     private static LevelParseException getDescriptionEndOfFileException() {
         return new LevelParseException("Reached end of file while parsing level description");
@@ -175,7 +182,7 @@ public class Level implements Serializable {
             String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
             if (tokens[0].equals(SYMBOL)) {
                 if (tokens.length != 3) {
-                    throw getWrongNumberOfArgumentsLevelParseException(tokens[0], lineNumb);
+                    throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
                 }
                 else {
                     symbolMap.put("(" +tokens[1] + ")", tokens[2]);
@@ -191,8 +198,9 @@ public class Level implements Serializable {
         Expression goal = null;
         String title = null;
         String description = null;
+        int difficulty = -1;
 
-        // Parse HYPOTHESIS, GOAL, TITLE, DESCRIPTION
+        // Parse HYPOTHESIS, GOAL, TITLE, DESCRIPTION, DIFFICULTY
         lineNumb = 0;
         Iterator<String> lineIterator = lines.iterator();
         while (lineIterator.hasNext()) {
@@ -216,6 +224,23 @@ public class Level implements Serializable {
                             throw getTooManyTitlesLevelParseException(lineNumb);
                         }
                         title = Util.join(" ", Util.tail(tokens));
+                    }
+                    break;
+                    case DIFFICULTY: {
+                        if (difficulty != -1) {
+                            throw getTooManyDifficultiesParseException(lineNumb);
+                        }
+                        if (tokens.length != 2) {
+                            throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
+                        }
+                        try {
+                            difficulty = Integer.parseInt(tokens[1]);
+                        } catch (NumberFormatException e) {
+                            throw getInvalidDifficultyException(lineNumb, tokens[1]);
+                        }
+                        if (difficulty < 0) {
+                            throw getInvalidDifficultyException(lineNumb, tokens[1]);
+                        }
                     }
                     break;
                     case DESCRIPTION: {
@@ -270,7 +295,7 @@ public class Level implements Serializable {
         if (description == null) {
             description = "";
         }
-        return new Level(title,hypothesis,goal,expressionFactory, description);
+        return new Level(title,hypothesis,goal,expressionFactory, description, difficulty);
     }
 
     public static final List<String> exampleLevels;
@@ -300,6 +325,6 @@ public class Level implements Serializable {
         hypothesis.add(p);
         hypothesis.add(q);
         Expression goal = expressionFactory.createOperator(OperatorType.IMPLICATION,p,q);
-        exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory, "This is a dummy level");
+        exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory, "This is a dummy level", 0);
     }
 }
