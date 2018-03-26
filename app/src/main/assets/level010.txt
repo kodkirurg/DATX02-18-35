@@ -1,0 +1,7 @@
+TITLE test_abs
+
+SYMBOL P RedBall
+
+HYPOTHESIS (#)
+
+GOAL (P)
