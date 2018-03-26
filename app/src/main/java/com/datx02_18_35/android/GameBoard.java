@@ -9,14 +9,20 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +78,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
+    public boolean infoWindowClicked=true;
+    public PopupWindow popupWindow;
 
 
     //recyclerviews
@@ -130,10 +138,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scopeLevel.setText("scope 0");
 
 
+        //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
 
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
+        // Inflate the custom layout/view
+        View popUpView = inflater.inflate(R.layout.pop_up_window,null);
+        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         gameChange.release();
     }
 
@@ -379,7 +392,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view){
         switch (view.getId()){
             case R.id.toolbar_goal :
-                Log.d(Tools.debug, "onClick: ");
+                if(!infoWindowClicked){
+                    infoWindowClicked=true;
+                    popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
+                    Log.d(Tools.debug, "onClick: " + "show pop-up");
+
+                }
+                else if(infoWindowClicked){
+                    infoWindowClicked=false;
+                    popupWindow.dismiss();
+                    Log.d(Tools.debug, "onClick: " + "dismiss pop-up");
+                }
                 break;
             case R.id.next_level:{
                 try {
