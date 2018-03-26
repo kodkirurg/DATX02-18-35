@@ -4,6 +4,7 @@ package com.datx02_18_35.model.expression;
 
 import com.datx02_18_35.model.game.IllegalRuleException;
 import com.datx02_18_35.model.game.TestRule;
+// import com.sun.istack.internal.Pool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,27 +99,76 @@ public class Rule {
 
                 // Disjunction elimination check:
                 // fst:     A | B
-                // snd:     A -> C
-                // thd:     B -> C
+                // snd:     A/B -> C
+                // thd:     B/A -> C
                 // result:  C
                 // Check root operators
                 if (   fst instanceof Disjunction
                     && snd instanceof Implication
                     && thd instanceof Implication) {
+                    {
+                        final Disjunction disj = (Disjunction) fst;
+                        final Implication impl1 = (Implication) snd;
+                        final Implication impl2 = (Implication) thd;
 
-                    final Disjunction disj = (Disjunction)fst;
-                    final Implication impl1 = (Implication)snd;
-                    final Implication impl2 = (Implication)thd;
+                        // Check that the assumptions in the implications
+                        // correspond with the operands of the disjunction
+                        // and that the implications matches
 
-                    // Check that the assumptions in the implications
-                    // correspond with the operands of the disjunction
-                    // and that the implications matches
-                    if (   disj.getOperand1().equals(impl1.getOperand1())
-                        && disj.getOperand2().equals(impl2.getOperand1())
-                        && impl1.getOperand2().equals(impl2.getOperand2())) {
 
-                        legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, selection));
+                        if (checkDisjunctionElimination(disj, impl1, impl2)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj,impl1,impl2));
+                        } else if (checkDisjunctionElimination(disj, impl2, impl1)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj, impl2, impl1));
+                        }
                     }
+                }
+
+                // fst:     B/A -> C
+                // snd:     A | B
+                // thd:     B/A -> C
+                else if(snd instanceof Disjunction
+                            && fst instanceof Implication
+                            && thd instanceof Implication){
+                    {
+                        final Disjunction disj = (Disjunction) snd;
+                        final Implication impl1 = (Implication) fst;
+                        final Implication impl2 = (Implication) thd;
+
+                        // Check that the assumptions in the implications
+                        // correspond with the operands of the disjunction
+                        // and that the implications matches
+                        if (checkDisjunctionElimination(disj, impl1, impl2)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj,impl1,impl2));
+                        } else if (checkDisjunctionElimination(disj, impl2, impl1)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj, impl2, impl1));
+                        }
+
+                    }
+
+                    // fst:     B/A -> C
+                    // snd:     B/A -> C
+                    // thd:     A | B
+                }else if(thd instanceof Disjunction
+                        && fst instanceof Implication
+                        && snd instanceof Implication){
+                    {
+                        final Disjunction disj = (Disjunction) thd;
+                        final Implication impl1 = (Implication) fst;
+                        final Implication impl2 = (Implication) snd;
+
+                        // Check that the assumptions in the implications
+                        // correspond with the operands of the disjunction
+                        // and that the implications matches
+
+
+                        if (checkDisjunctionElimination(disj, impl1, impl2)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj,impl1,impl2));
+                        } else if (checkDisjunctionElimination(disj, impl2, impl1)) {
+                            legalRules.add(new Rule(RuleType.DISJUNCTION_ELIMINATION, disj, impl2, impl1));
+                        }
+                    }
+
                 }
                 return legalRules;
             }
@@ -154,5 +204,15 @@ public class Rule {
             default:
                 throw new IllegalRuleException(rule, "Rule is the wrong type!");
         }
+    }
+
+    public static boolean checkDisjunctionElimination(Disjunction disj,Implication impl1,Implication impl2){
+        // Input must be in the following form:
+        // fst:     A | B
+        // snd:     A -> C
+        // thd:     B -> C
+        return(   (disj.getOperand1().equals(impl1.getOperand1())
+                && disj.getOperand2().equals(impl2.getOperand1())
+                && impl1.getOperand2().equals(impl2.getOperand2())));
     }
 }

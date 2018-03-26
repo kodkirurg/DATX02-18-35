@@ -1,0 +1,15 @@
+TITLE Disjunction Elimination
+
+DESCRIPTION START
+*Text goes here*
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+SYMBOL R YellowRectangle
+
+HYPOTHESIS ((P)|(Q))
+HYPOTHESIS ((P)>(R))
+HYPOTHESIS ((Q)>(R))
+
+GOAL    (R)
