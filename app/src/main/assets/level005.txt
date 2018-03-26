@@ -1,16 +1,11 @@
-TITLE Implication Introduction
+TITLE Deletion and Inventory
 
 DESCRIPTION START
-In this Level you will learn how to create implication cards from almost nothing.
-First thing you need to do is make an assumption. An assumption is just what it sounds like. We assume a card is present on the gameboard and 'poof'
-we get that card on the gameboard. If we can derive/craft another card based on this assumption we can then create an implication card from our
-assumption to the derived card.
-Try this by making an assumption by click the toolbar in the topleft and selecting "Assumption"
+Here we will learn how to use inventory.
 DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
 
-HYPOTHESIS ((P)&(Q))
 
-GOAL ((Q)&(P))
+GOAL (((P)>(P))>((P)>(P)))
