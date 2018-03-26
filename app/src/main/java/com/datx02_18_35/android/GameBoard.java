@@ -1,7 +1,5 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,18 +29,19 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestScopeLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestStartNextLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestSymbolMap;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.OpenSandboxAction;
+
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAbortSessionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestApplyRuleAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestAssumptionAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestGameboardAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RequestRulesAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAbortSessionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestAssumptionAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestGameboardAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
@@ -51,8 +51,6 @@ import com.datx02_18_35.model.expression.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
@@ -71,6 +69,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static OpenSandboxAction sandboxAction=null;
     public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
+    public static Iterable<Expression> hypothesis;
     public static Iterable<Iterable<Expression>> inventories;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
@@ -111,6 +110,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -137,6 +137,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         setSupportActionBar(toolbar);
         scopeLevel = findViewById(R.id.toolbar_text);
         scopeLevel.setText("scope 0");
+
+
+        ImageView infoButton = findViewById(R.id.toolbar_goal);
+        infoButton.setOnClickListener(this);
+
+
         gameChange.release();
     }
 
@@ -303,7 +309,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menu) {
-        Intent i = null;
         switch(menu.getItemId()){
             case R.id.item_assumption:
                 try {
@@ -424,6 +429,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.toolbar_goal :
+                Log.d(Tools.debug, "onClick: ");
+                break;
             case R.id.next_level:{
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));

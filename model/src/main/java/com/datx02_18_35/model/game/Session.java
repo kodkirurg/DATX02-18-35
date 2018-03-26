@@ -122,16 +122,23 @@ public class Session {
 
                     @Override
                     public Expression next() {
+                        Boolean newIter = false;
                         assert this.hasNext();
                         if (!currentIter.hasNext()) {
-                            if (scopeIter.hasNext() && scopeIter.next().getInventory().iterator().hasNext()) {
-                                currentIter = scopeIter.next().getInventory().iterator();
-                            }else if(assumptionIter.hasNext()) {
+                            if (scopeIter.hasNext()){
+                                Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
+                                if(testIter.hasNext()) {
+                                    System.out.println("ScopeInvIterator");
+                                    currentIter = testIter;
+                                    newIter=true;
+                                }
+                            }if (assumptionIter.hasNext()&&!newIter) {
                                 currentIter = assumptionIter;
-                            }else if(hypothesisIter.hasNext()){
+                                System.out.println("AssumptionIterator");
+                                newIter=true;
+                            }if(hypothesisIter.hasNext()&&!newIter){
                                 currentIter = hypothesisIter;
                             }
-
                         }
                         return currentIter.next();
                     }
@@ -169,10 +176,10 @@ public class Session {
 
     public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
         TestRule.assertRuleIsLegal(this, rule);
+        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
         this.stepsApplied += 1;
