@@ -75,7 +75,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel,openArrow,closeArrow;
-    RelativeLayout layout;
+    RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
@@ -220,8 +220,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         View gameView = this.findViewById(android.R.id.content);
-        layout = (RelativeLayout)findViewById(R.id.inventory_container);
-        layout.setVisibility(View.GONE);
+        inventoryLayout = (RelativeLayout)findViewById(R.id.inventory_container);
+        inventoryLayout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
             public void onSwipeRight() {
@@ -235,11 +235,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void closeInventory(){
-        if (layout.isShown()) {
-            Tools.slide_left(this, layout);
+        if (inventoryLayout.isShown()) {
+            Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
-            layout.setVisibility(View.GONE);
+            inventoryLayout.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.GONE);
 
 
@@ -269,9 +269,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
         }
 
-        if (!layout.isShown()){
-            Tools.slide_right(this, layout);
-            layout.setVisibility(View.VISIBLE);
+        if (!inventoryLayout.isShown()){
+            Fx.slide_right(this, inventoryLayout);
+            inventoryLayout.setVisibility(View.VISIBLE);
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.VISIBLE);
@@ -423,7 +423,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
                         if(!((VictoryConditionMetAction) action).hasNextLevel){
-                            nextLevel.setVisibility(View.GONE); 
+                            nextLevel.setVisibility(View.GONE);
                         }
                         victoryScreen.setVisibility(View.VISIBLE);
                         int currentScore = ((VictoryConditionMetAction) action).currentScore;
@@ -443,7 +443,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     @Override
     public void onBackPressed(){
-        if(layout.isShown()){
+        if(inventoryLayout.isShown()){
             closeInventory();
         }
         else if(scopeLevelInt>1){
