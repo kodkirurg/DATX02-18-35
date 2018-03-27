@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import game.logic_game.R;
 
 public class Fx {
+    View view;
 //...
     /**
      *
@@ -49,7 +50,7 @@ public class Fx {
         }
     }
     public static void slide_left(Context ctx, View v){
-        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_left);
         if(a != null){
             a.reset();
             if(v != null){
@@ -59,7 +60,7 @@ public class Fx {
         }
     }
     public static void slide_right(Context ctx, View v){
-        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_right);
         if(a != null){
             a.reset();
             if(v != null){
