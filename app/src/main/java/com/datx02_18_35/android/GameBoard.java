@@ -174,8 +174,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         // Inflate the custom layout/view
         View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-        View viewToCover = findViewById(R.id.game_board_bottom);
-        popupWindow = new PopupWindow(popUpView,  viewToCover.getLayoutParams().width,  viewToCover.getLayoutParams().height);
+
+        popupWindow = new PopupWindow(popUpView);
         gameChange.release();
     }
 
@@ -482,13 +482,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             case R.id.toolbar_goal :
                 if(!infoWindowClicked){
                     infoWindowClicked=true;
-                    int height = findViewById(R.id.activity_game).getHeight();
-                    int width = findViewById(R.id.activity_game).getWidth();
-                    popupWindow.setWidth(width * 2 / 3);
-                    popupWindow.setHeight(height * 2 / 3);
+                    View bigView = findViewById(R.id.game_board_bottom);
+                    int height = bigView.getHeight() * 2 /3;
+                    int width = bigView.getWidth() * 2 /3;
+                    popupWindow.setWidth(width);
+                    popupWindow.setHeight(height);
                     popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
                 }
-                else if(infoWindowClicked){
+                else {
                     infoWindowClicked=false;
                     popupWindow.dismiss();
                 }
