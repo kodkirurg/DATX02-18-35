@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
@@ -44,8 +46,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onClick(View view) {
-        Expression selectedCard = dataSet.get((int) view.getTag());
-        setAnimations((CardView) view);
+        if (view!=null) {
+            Expression selectedCard = dataSet.get((int) view.getTag());
+            try {
+                Controller.getSingleton().sendAction(new RequestMoveFromInventoryAction(selectedCard,GameBoard.boardCallback));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+            setAnimations((CardView) view);
     }
 
     @Override
@@ -71,7 +80,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
     void setAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.BLACK);
-        Tools.select(cardView.getContext(), cardView);
+        Tools.selectAnimation(cardView.getContext(), cardView);
     }
 
     @Override

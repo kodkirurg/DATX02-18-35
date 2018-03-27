@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -69,7 +70,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
-    TextView scopeLevel;
+    TextView scopeLevel,openArrow,closeArrow;
     RelativeLayout layout;
     RelativeLayout victoryScreen;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
@@ -80,6 +81,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Expression> hypothesis;
     public static ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
     public static Iterable<Iterable<Expression>> inventories;
+    public static int scopeLevelInt;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public boolean infoWindowClicked=true;
@@ -147,7 +149,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        ((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
+        ((TextView)findViewById(R.id.open_inventory)).setOnClickListener(this);
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -229,16 +232,18 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void closeInventory(){
         if (layout.isShown()) {
             Tools.slide_left(this, layout);
-            layout.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.GONE);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+            invRecyclerView.setVisibility(View.GONE);
+
 
 
         }
     }
     public void showInventory(){
         try {
+            Controller.getSingleton().sendAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().sendAction(new RequestInventoryAction(boardCallback));
             Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
         } catch (InterruptedException e) {
@@ -398,6 +403,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 hypothesis = ((RefreshHypothesisAction) action).hypothesis;
             }
             else if(action instanceof RefreshScopeLevelAction){
+                scopeLevelInt=((RefreshScopeLevelAction) action).scopeLevel;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -486,6 +492,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 catch (InterruptedException e){
                     e.printStackTrace();
                 }
+                break;
+            }
+            case R.id.close_inventory:{
+                closeInventory();
+                break;
+            }
+            case R.id.open_inventory:{
+                showInventory();
                 break;
             }
         }

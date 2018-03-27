@@ -64,7 +64,7 @@ class   Tools {
         return null;
 
     }
-    public static void delete(Context ctx, View v){
+    public static void deleteAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.delete);
         if(a != null){
             a.reset();
@@ -74,7 +74,7 @@ class   Tools {
             }
         }
     }
-    public static void select(Context ctx, View v){
+    public static void selectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.select);
         if(a != null){
             a.reset();
@@ -84,7 +84,7 @@ class   Tools {
             }
         }
     }
-    public static void deselect(Context ctx, View v){
+    public static void deselectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.deselect);
         if(a != null){
             a.reset();
