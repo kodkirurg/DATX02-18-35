@@ -18,7 +18,37 @@ public class Fx {
      * @param ctx
      * @param v
      */
-    public static void slide_down(Context ctx, View v){
+    public static void deleteAnimation(Context ctx, View v){
+        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.delete);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+    public static void selectAnimation(Context ctx, View v){
+        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.select);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+    public static void deselectAnimation(Context ctx, View v){
+        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.deselect);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+    public static void slide_left(Context ctx, View v){
         Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
         if(a != null){
             a.reset();
@@ -28,7 +58,7 @@ public class Fx {
             }
         }
     }
-    public static void slide_up(Context ctx, View v){
+    public static void slide_right(Context ctx, View v){
         Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
         if(a != null){
             a.reset();

@@ -33,6 +33,7 @@ import java.util.Map;
 
 import game.logic_game.R;
 
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -64,56 +65,6 @@ class   Tools {
         return null;
 
     }
-    public static void deleteAnimation(Context ctx, View v){
-        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.delete);
-        if(a != null){
-            a.reset();
-            if(v != null){
-                v.clearAnimation();
-                v.startAnimation(a);
-            }
-        }
-    }
-    public static void selectAnimation(Context ctx, View v){
-        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.select);
-        if(a != null){
-            a.reset();
-            if(v != null){
-                v.clearAnimation();
-                v.startAnimation(a);
-            }
-        }
-    }
-    public static void deselectAnimation(Context ctx, View v){
-        Animation a =AnimationUtils.loadAnimation(ctx, R.anim.deselect);
-        if(a != null){
-            a.reset();
-            if(v != null){
-                v.clearAnimation();
-                v.startAnimation(a);
-            }
-        }
-    }
-    public static void slide_left(Context ctx, View v){
-        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);
-        if(a != null){
-            a.reset();
-            if(v != null){
-                v.clearAnimation();
-                v.startAnimation(a);
-            }
-        }
-    }
-    public static void slide_right(Context ctx, View v){
-        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_up);
-        if(a != null){
-            a.reset();
-            if(v != null){
-                v.clearAnimation();
-                v.startAnimation(a);
-            }
-        }
-    }
 
 
 
@@ -126,7 +77,7 @@ class   Tools {
         return dp;
     }
     //"generate card"
-
+    
 
 
 
