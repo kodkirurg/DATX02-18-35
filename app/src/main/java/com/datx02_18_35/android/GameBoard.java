@@ -62,6 +62,8 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -89,7 +91,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public static Level level;
-    public boolean infoWindowClicked=true;
+    public boolean infoWindowClicked=false;
     public PopupWindow popupWindow;
 
 
@@ -172,7 +174,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         // Inflate the custom layout/view
         View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        View viewToCover = findViewById(R.id.game_board_bottom);
+        popupWindow = new PopupWindow(popUpView,  viewToCover.getLayoutParams().width,  viewToCover.getLayoutParams().height);
         gameChange.release();
     }
 
@@ -292,10 +295,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             //already selected
             if (adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.resetSelection(expression, (CardView) v);
+                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.GONE);
             }
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
+                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
             }
             //update rightside
             try {

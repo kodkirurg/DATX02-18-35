@@ -33,6 +33,7 @@ import java.util.Map;
 
 import game.logic_game.R;
 
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -100,6 +101,7 @@ class   Tools {
                 card.addView(imageView);
                 topCardView.addView(card);
                 sSymbol(expr,imageView,symbolMap);
+
             }
             else {
                 Operator op = (Operator) expr;
@@ -300,6 +302,16 @@ class   Tools {
                     }
                 }
             }
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+            );
+            TextView textView = new TextView(topCardView.getContext());
+            textView.setLayoutParams(params);
+            textView.setId(R.id.card_number_text_view);
+            textView.setText("HELLO");
+            topCardView.addView(textView);
+            topCardView.findViewById(R.id.card_number_text_view).setElevation(topCardView.getElevation()+1);
         }
 
         //remove view by id

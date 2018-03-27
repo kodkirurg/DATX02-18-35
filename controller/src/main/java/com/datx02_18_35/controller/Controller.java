@@ -42,6 +42,7 @@ import com.datx02_18_35.model.game.LevelParseException;
 import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -57,16 +58,16 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(List<String> levelStrings, byte[] userData) throws LevelParseException {
-        singleton = new Controller(levelStrings);
+    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException {
+        singleton = new Controller(configFiles);
         if (userData != null) {
             singleton.game.loadUserData(userData);
         }
     }
 
     private GameManager game;
-    private Controller(List<String> levelStrings) throws LevelParseException {
-        game = new GameManager(levelStrings);
+    private Controller(Map<String, String> configFiles) throws LevelParseException {
+        game = new GameManager(configFiles);
     }
 
     public synchronized boolean isSessionInProgress() {
