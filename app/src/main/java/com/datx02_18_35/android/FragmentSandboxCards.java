@@ -50,7 +50,7 @@ public class FragmentSandboxCards extends Fragment {
         recAdapter = new SandboxCardsAdapter(list);
 
         recyclerView.setAdapter(recAdapter);
-        
+
         return view;
     }
 

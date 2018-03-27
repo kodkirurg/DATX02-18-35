@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.datx02_18_35.android.GameBoard" />
-        <activity android:name="com.datx02_18_35.android.Scope" />
         <activity android:name="com.datx02_18_35.android.Sandbox" />
         <activity android:name="com.datx02_18_35.android.Levels" />
     </application>
