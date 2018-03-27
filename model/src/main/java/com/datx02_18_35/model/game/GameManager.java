@@ -10,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +24,11 @@ public class GameManager {
     private Session currentSession;
 
 
-    public GameManager(List<String> levelStrings) throws LevelParseException {
-        levelCollection = new LevelCollection();
-        for (String levelStr : levelStrings) {
-            Level level = Level.parseLevel(levelStr);
-            levelCollection.add(level);
-        }
-        userData = new UserData(levelCollection.getAllLevels());
+    public GameManager(Map<String, String> configFiles) throws LevelParseException {
+        levelCollection = new LevelCollection(configFiles);
+        userData = new UserData(levelCollection);
     }
+
 
     public byte[] saveUserData() {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
@@ -93,32 +89,6 @@ public class GameManager {
         return userData.getProgressionMapReadOnly();
     }
 
-
-    @Deprecated
-    public List<Map.Entry<Level,LevelProgression>> getLevelList() {
-        List<Map.Entry<Level,LevelProgression>> list = new ArrayList<>();
-        for (Level level : levelCollection.getAllLevels()) {
-            list.add(new Map.Entry<Level, LevelProgression>() {
-                private LevelProgression levelProgression = userData.getProgression(level).clone();
-
-                @Override
-                public Level getKey() {
-                    return level;
-                }
-
-                @Override
-                public LevelProgression getValue() {
-                    return levelProgression;
-                }
-
-                @Override
-                public LevelProgression setValue(LevelProgression levelProgression) {
-                    throw new IllegalArgumentException("value is not allowed to be changed");
-                }
-            });
-        }
-        return list;
-    }
 
     public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
         assertSessionNotInProgress();
