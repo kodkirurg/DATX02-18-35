@@ -89,7 +89,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public static Level level;
-    public boolean infoWindowClicked=true;
+    public boolean infoWindowClicked=false;
     public PopupWindow popupWindow;
 
 
@@ -172,7 +172,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         // Inflate the custom layout/view
         View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        View viewToCover = findViewById(R.id.game_board_bottom);
+        popupWindow = new PopupWindow(popUpView,  viewToCover.getLayoutParams().width,  viewToCover.getLayoutParams().height);
         gameChange.release();
     }
 
