@@ -4,9 +4,13 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -84,6 +88,10 @@ public class Controller extends ActionConsumer {
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
+        }
+        else if (action instanceof RequestCurrentLevelAction){
+            Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
+            action.callback(reply);
         }
         else if(action instanceof RequestSymbolMap){
             Action reply = new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap());
@@ -192,6 +200,18 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestScopeLevelAction){
             game.assertSessionInProgress();
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
+        }
+        else if( action instanceof RequestMoveFromInventoryAction){
+            game.assertSessionInProgress();
+            game.getSession().addExpressionToGameBoard(((RequestMoveFromInventoryAction) action).expression);
+            action.callback(getRefreshGameboardAction());
+        }
+        else if( action instanceof RequestCloseScopeAction){
+            game.assertSessionInProgress();
+            game.getSession().closeScope();
+            action.callback(getRefreshGameboardAction());
+            action.callback(getRefreshInventoryAction());
             action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
         }
         else {

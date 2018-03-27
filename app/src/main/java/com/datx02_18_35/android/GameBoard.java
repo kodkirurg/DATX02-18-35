@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -32,11 +33,14 @@ import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -56,6 +60,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,7 +74,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
-    TextView scopeLevel;
+    TextView scopeLevel,openArrow,closeArrow;
     RelativeLayout layout;
     RelativeLayout victoryScreen;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
@@ -80,8 +85,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Expression> hypothesis;
     public static ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
     public static Iterable<Iterable<Expression>> inventories;
+    public static int scopeLevelInt;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
+    public static Level level;
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
 
@@ -126,7 +133,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
-
+            Controller.getSingleton().sendAction(new RequestCurrentLevelAction(boardCallback));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -147,7 +154,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        ((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
+        ((TextView)findViewById(R.id.open_inventory)).setOnClickListener(this);
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -203,10 +211,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     private void initInventory() {
         int spanCount=3;
-        //int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - 130*2;
-        //for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
-
-
         invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
         invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
         invRecyclerView.setLayoutManager(invRecLayoutManager);
@@ -233,15 +237,23 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void closeInventory(){
         if (layout.isShown()) {
             Tools.slide_left(this, layout);
-            layout.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.GONE);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+            invRecyclerView.setVisibility(View.GONE);
+
 
 
         }
     }
     public void showInventory(){
+        try {
+            Controller.getSingleton().sendAction(new RequestScopeLevelAction(boardCallback));
+            Controller.getSingleton().sendAction(new RequestInventoryAction(boardCallback));
+            Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ArrayList<Expression> newSet = new ArrayList<Expression>();
 
         for (Expression expr: GameBoard.hypothesis){
@@ -355,12 +367,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             else if (action instanceof SaveUserDataAction){
                 Tools.writeUserData( ((SaveUserDataAction) action).userData, getApplicationContext());
             }
+            else if (action instanceof RefreshCurrentLevelAction){
+                level = ((RefreshCurrentLevelAction) action).level;
+            }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
-            }
-            else if(action instanceof SaveUserDataAction){
-                Tools.writeUserData(((SaveUserDataAction)action).userData,getApplicationContext());
             }
             else if(action instanceof RefreshSymbolMap){
                 symbolMap=((RefreshSymbolMap) action).symbolMap;
@@ -396,6 +408,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 hypothesis = ((RefreshHypothesisAction) action).hypothesis;
             }
             else if(action instanceof RefreshScopeLevelAction){
+                scopeLevelInt=((RefreshScopeLevelAction) action).scopeLevel;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -432,6 +445,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onBackPressed(){
         if(layout.isShown()){
             closeInventory();
+        }
+        else if(scopeLevelInt>1){
+            try{
+                Controller.getSingleton().sendAction(new RequestCloseScopeAction(GameBoard.boardCallback));
+
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         else {
             super.onBackPressed();
@@ -484,6 +506,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 catch (InterruptedException e){
                     e.printStackTrace();
                 }
+                break;
+            }
+            case R.id.close_inventory:{
+                closeInventory();
+                break;
+            }
+            case R.id.open_inventory:{
+                showInventory();
                 break;
             }
         }

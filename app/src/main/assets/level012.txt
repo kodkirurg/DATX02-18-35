@@ -1,0 +1,17 @@
+TITLE *Title goes here*
+
+DESCRIPTION START
+*Text goes here*
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+SYMBOL R YellowRectangle
+SYMBOL S GreenRectangle
+
+HYPOTHESIS ((P)|((Q)|(R)))
+HYPOTHESIS ((P)>(S))
+HYPOTHESIS ((Q)>(S))
+HYPOTHESIS ((R)>(S))
+
+GOAL (S)
