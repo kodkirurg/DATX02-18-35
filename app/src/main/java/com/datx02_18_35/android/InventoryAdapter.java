@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
@@ -49,7 +50,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         if (view!=null) {
             Expression selectedCard = dataSet.get((int) view.getTag());
             try {
-                Controller.getSingleton().sendAction(new RequestMoveFromInventoryAction(selectedCard,GameBoard.boardCallback));
+                Controller.getSingleton().sendAction(new RequestMoveFromInventoryAction(GameBoard.boardCallback,selectedCard));
             } catch (Exception e) {
                 e.printStackTrace();
             }
