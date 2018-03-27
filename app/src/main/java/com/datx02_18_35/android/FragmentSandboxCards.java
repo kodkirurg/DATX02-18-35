@@ -26,7 +26,6 @@ public class FragmentSandboxCards extends Fragment {
     public RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
     private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
@@ -47,13 +46,11 @@ public class FragmentSandboxCards extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
 
-        list.addAll(Level.exampleLevel.propositions);
+        list.addAll(GameBoard.level.propositions);
         recAdapter = new SandboxCardsAdapter(list);
 
         recyclerView.setAdapter(recAdapter);
-
-
-        //((Game)getActivity()).ready.release(1);
+        
         return view;
     }
 
