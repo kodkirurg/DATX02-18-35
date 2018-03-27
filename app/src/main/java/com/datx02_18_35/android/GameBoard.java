@@ -71,7 +71,7 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity implements View.OnClickListener {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener, OnTOuch {
     TextView scoreView;
     Button nextLevel;
     Button mainMenu;
@@ -93,6 +93,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Level level;
     public boolean infoWindowClicked=false;
     public PopupWindow popupWindow;
+    public View popUpView;
 
 
     //recyclerviews
@@ -170,12 +171,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
 
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        // Inflate the custom layout/view
-        View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-
-        popupWindow = new PopupWindow(popUpView);
         gameChange.release();
     }
 
@@ -331,6 +326,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             if(!victory){
                 Controller.getSingleton().sendAction(new RequestAbortSessionAction());
             }
+            popupWindow.dismiss();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -479,14 +475,27 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.popup_exit_button :
+                popupWindow.dismiss();
+                infoWindowClicked=false;
+                break;
             case R.id.toolbar_goal :
                 if(!infoWindowClicked){
                     infoWindowClicked=true;
+                    // Inflate the custom layout/view
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    popUpView = inflater.inflate(R.layout.pop_up_window,null);
+                    popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(this);
+                    popupWindow = new PopupWindow(popUpView);
+
+
                     View bigView = findViewById(R.id.game_board_bottom);
                     int height = bigView.getHeight() * 2 /3;
                     int width = bigView.getWidth() * 2 /3;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
+                    CardDeflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap);
+                    ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                     popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
                 }
                 else {
