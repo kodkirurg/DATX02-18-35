@@ -59,6 +59,8 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -288,10 +290,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             //already selected
             if (adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.resetSelection(expression, (CardView) v);
+                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.GONE);
             }
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
+                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
             }
             //update rightside
             try {
