@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -43,7 +44,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onClick(View view) {
-
+        Expression selectedCard = dataSet.get((int) view.getTag());
+        setAnimations((CardView) view);
     }
 
     @Override
@@ -66,6 +68,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 notifyDataSetChanged();
             }
         });
+    }
+    void setAnimations(CardView cardView){
+        cardView.setBackgroundColor(Color.BLACK);
+        Tools.select(cardView.getContext(), cardView);
     }
 
     @Override
