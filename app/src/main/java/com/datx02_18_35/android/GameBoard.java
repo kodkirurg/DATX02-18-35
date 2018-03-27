@@ -71,7 +71,7 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity implements View.OnClickListener, OnTOuch {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener {
     TextView scoreView;
     Button nextLevel;
     Button mainMenu;

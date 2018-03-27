@@ -49,8 +49,6 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
         String title = levelList.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
-        String description = levelList.get(position).description;
-        ((TextView) holder.cardView.findViewById(R.id.card_level_description)).setText(description);
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
     }
