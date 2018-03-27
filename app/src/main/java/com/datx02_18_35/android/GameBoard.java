@@ -482,14 +482,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             case R.id.toolbar_goal :
                 if(!infoWindowClicked){
                     infoWindowClicked=true;
+                    int height = findViewById(R.id.activity_game).getHeight();
+                    int width = findViewById(R.id.activity_game).getWidth();
+                    popupWindow.setWidth(width * 2 / 3);
+                    popupWindow.setHeight(height * 2 / 3);
                     popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
-                    Log.d(Tools.debug, "onClick: " + "show pop-up");
-
                 }
                 else if(infoWindowClicked){
                     infoWindowClicked=false;
                     popupWindow.dismiss();
-                    Log.d(Tools.debug, "onClick: " + "dismiss pop-up");
                 }
                 break;
             case R.id.next_level:{
