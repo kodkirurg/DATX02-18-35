@@ -4,9 +4,11 @@ import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
@@ -40,6 +42,7 @@ import com.datx02_18_35.model.game.LevelParseException;
 import com.datx02_18_35.model.game.LevelProgression;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -55,16 +58,16 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(List<String> levelStrings, byte[] userData) throws LevelParseException {
-        singleton = new Controller(levelStrings);
+    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException {
+        singleton = new Controller(configFiles);
         if (userData != null) {
             singleton.game.loadUserData(userData);
         }
     }
 
     private GameManager game;
-    private Controller(List<String> levelStrings) throws LevelParseException {
-        game = new GameManager(levelStrings);
+    private Controller(Map<String, String> configFiles) throws LevelParseException {
+        game = new GameManager(configFiles);
     }
 
     public synchronized boolean isSessionInProgress() {
@@ -85,6 +88,10 @@ public class Controller extends ActionConsumer {
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
+        }
+        else if (action instanceof RequestCurrentLevelAction){
+            Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
+            action.callback(reply);
         }
         else if(action instanceof RequestSymbolMap){
             Action reply = new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap());

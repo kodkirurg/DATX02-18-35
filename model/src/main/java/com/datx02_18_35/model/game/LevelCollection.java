@@ -1,113 +1,105 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.Util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+
 
 /**
  * Created by robin on 2018-03-26.
  */
 
 public class LevelCollection {
-    private final Map<Integer, LevelCategory> categories;
 
-    public LevelCollection() {
-        categories = new HashMap<>();
-    }
+    private static final String CATEGORY = "CATEGORY";
+    private static final String NO_CATEGORY_NAME = "<NO CATEGORY>";
+    private static final String LEVEL_LIST_FILENAME = "levels.txt";
 
-    public void add(Level level) {
-        LevelCategory category = categories.get(level.difficulty);
-        if (category == null) {
-            category = new LevelCategory(level.difficulty);
-            categories.put(level.difficulty, category);
-        }
-        category.add(level);
-    }
 
-    public Iterable<LevelCategory> getCategories() {
-        return this.categories.values();
-    }
+    private final List<LevelCategory> categories;
+    private final Map<Level, LevelCategory> levelCategoryMap;
 
-    public LevelCategory getCategory(int difficulty) {
-        return categories.get(difficulty);
-    }
-
-    public LevelCategory getNextCategory(int difficulty) {
-        int lowestDifficulty = Integer.MAX_VALUE;
-        for (LevelCategory category : categories.values()) {
-            if (category.getDifficulty() > difficulty
-                && category.getDifficulty() < lowestDifficulty) {
-                lowestDifficulty = category.getDifficulty();
+    public LevelCollection(Map<String, String> configFiles) throws LevelParseException {
+        categories = parseLevelList(configFiles);
+        levelCategoryMap = new HashMap<>();
+        for (LevelCategory category : categories) {
+            for (Level level : category.getLevels()) {
+                levelCategoryMap.put(level, category);
             }
         }
-        if (lowestDifficulty == Integer.MAX_VALUE) {
-            return null;
-        }
-        else {
-            return getCategory(lowestDifficulty);
-        }
-    }
-
-    public Level getNextLevel(Level lastLevel) {
-        LevelCategory category = categories.get(lastLevel.difficulty);
-        Iterator<Level> levelIterator = category.getLevels().iterator();
-        while (levelIterator.hasNext()) {
-            if (levelIterator.next().equals(lastLevel)) {
-                if (levelIterator.hasNext()) {
-                    return levelIterator.next();
-                }
-                else {
-                    LevelCategory nextCategory = getNextCategory(lastLevel.difficulty);
-                    if (nextCategory == null) {
-                        return null;
-                    }
-                    Iterator<Level> nextLevels = nextCategory.getLevels().iterator();
-                    if (!nextLevels.hasNext()) {
-                        return null;
-                    }
-                    return nextLevels.next();
-                }
-            }
-        }
-        throw new IllegalStateException("Current level is not in LevelCollection, this should never happen!");
     }
 
     public boolean contains(Level level) {
-        for (Level otherLevel : getAllLevels()) {
-            if (otherLevel.equals(level)) {
-                return true;
+        return levelCategoryMap.containsKey(level);
+    }
+
+
+    public List<LevelCategory> getCategories() {
+        return categories;
+    }
+
+    public Level getNextLevel(Level level) {
+        LevelCategory category = levelCategoryMap.get(level);
+        Level nextLevel = category.getNextLevel(level);
+        if (nextLevel != null) {
+            return nextLevel;
+        }
+
+        for (int categoryIndex = categories.indexOf(category) + 1;
+             categoryIndex < categories.size();
+             categoryIndex++) {
+
+            nextLevel = categories.get(categoryIndex).getFirstLevel();
+            if (nextLevel != null) {
+                return nextLevel;
             }
         }
-        return false;
+        return null;
+
+
     }
 
-    public Iterable<Level> getAllLevels() {
-        return new Iterable<Level>() {
-            @Override
-            public Iterator<Level> iterator() {
-                return new Iterator<Level>() {
-                    private Iterator<LevelCategory> categoryIterator = getCategories().iterator();
-                    private Iterator<Level> levelIterator = null;
+    private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException {
+        String levelList = configFiles.get(LEVEL_LIST_FILENAME);
+        String[] lines = levelList.replaceFirst("[\n\r]+", "").split("[\n|\r]+");
+        Iterator<String> lineIterator = Arrays.asList(lines).iterator();
 
-                    @Override
-                    public boolean hasNext() {
-                        if (levelIterator != null && levelIterator.hasNext()) {
-                            return true;
-                        }
-                        else {
-                            return categoryIterator.hasNext();
-                        }
-                    }
+        List<LevelCategory> categories = new ArrayList<>();
+        List<Level> categoryLevels = new ArrayList<>();
+        String categoryName = NO_CATEGORY_NAME;
 
-                    @Override
-                    public Level next() {
-                        if (levelIterator == null || !levelIterator.hasNext()) {
-                            levelIterator = categoryIterator.next().getLevels().iterator();
-                        }
-                        return levelIterator.next();
-                    }
-                };
+        int totalLevels = 0;
+
+        while (lineIterator.hasNext()) {
+            String line = lineIterator.next();
+            if (line.startsWith(CATEGORY + " ")) {
+                categories.add(new LevelCategory(categoryName, categoryLevels));
+                categoryLevels = new ArrayList<>();
+                categoryName = line.replaceFirst(CATEGORY + " ", "");
             }
-        };
+            else {
+                String levelText = configFiles.get(line);
+                if (levelText == null) {
+                    Util.Log("Level file not found: " + line);
+                    continue;
+                }
+                categoryLevels.add(Level.parseLevel(levelText));
+                totalLevels += 1;
+            }
+        }
+        categories.add(new LevelCategory(categoryName, categoryLevels));
+
+        Util.Log("Loaded levels! Categories: " + categories.size() + ", levels: " + totalLevels);
+
+        return categories;
     }
+
 }

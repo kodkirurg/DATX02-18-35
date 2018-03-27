@@ -1,6 +1,8 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +13,21 @@ import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.model.game.LevelParseException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
-    List<String> list = new ArrayList<>();
-
+    private static final String MODEL_CONFIG_PATH = "modelConfig";
+    private Map<String, String> modelConfigFiles = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,28 +35,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //Add listener
-        Button start_button = (Button) findViewById(R.id.start_button); //grab a view and convert it to a button class
+        Button start_button = findViewById(R.id.start_button); //grab a view and convert it to a button class
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
-        Button quit_button = (Button) findViewById(R.id.quit_button);
+        Button quit_button = findViewById(R.id.quit_button);
         quit_button.setOnClickListener(this);
 
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open("levels.txt"), "UTF-8"));
-            String line;
-            BufferedReader bufferLine = null;
-            while ((line = bufferedReader.readLine()) != null) {
-                bufferLine = new BufferedReader(new InputStreamReader(getAssets().open(line), "UTF-8"));
-                String level = "", lineInside;
-                while ((lineInside = bufferLine.readLine()) != null) {
-                    level = level + lineInside + '\n';
-                }
-                list.add(level);
 
+        // Read model config files
+        try {
+            AssetManager assets = getApplicationContext().getAssets();
+            String[] modelConfigFilenames = assets.list(MODEL_CONFIG_PATH);
+
+            for (String filename : modelConfigFilenames) {
+                String filepath = MODEL_CONFIG_PATH + "/" + filename;
+                InputStream inputStream = assets.open(filepath);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while (null != (line = reader.readLine())) {
+                    stringBuilder.append(line).append("\n");
+                }
+                modelConfigFiles.put(filename, stringBuilder.toString());
             }
-            bufferLine.close();
-            bufferedReader.close();
-        } catch (Exception e) {
-            Log.d(Tools.debug, "onCreate : MainActivity : read in levels failed: " + e.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -59,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         try {
             //TODO: Pass list of level files as Strings
-            Controller.init(list, Tools.getUserData(getApplicationContext()));
+            Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly

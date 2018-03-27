@@ -15,10 +15,12 @@ public class UserData implements Serializable {
     private final HashMap<Level, LevelProgression> progression;
 
 
-    public UserData(Iterable<Level> levels) {
+    public UserData(LevelCollection levelCollection) {
         progression = new HashMap<>();
-        for (Level level : levels) {
-            progression.put(level, new LevelProgression());
+        for (LevelCategory category : levelCollection.getCategories()) {
+            for (Level level : category.getLevels()) {
+                progression.put(level, new LevelProgression());
+            }
         }
     }
 

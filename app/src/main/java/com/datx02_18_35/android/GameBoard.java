@@ -33,12 +33,14 @@ import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
+import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -58,6 +60,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.game.Level;
 
 import org.w3c.dom.Text;
 
@@ -87,7 +90,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static int scopeLevelInt;
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
-    public boolean infoWindowClicked=true;
+    public static Level level;
+    public boolean infoWindowClicked=false;
     public PopupWindow popupWindow;
 
 
@@ -131,7 +135,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         initInventory();
         try {
             Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
-
+            Controller.getSingleton().sendAction(new RequestCurrentLevelAction(boardCallback));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -170,7 +174,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         // Inflate the custom layout/view
         View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        View viewToCover = findViewById(R.id.game_board_bottom);
+        popupWindow = new PopupWindow(popUpView,  viewToCover.getLayoutParams().width,  viewToCover.getLayoutParams().height);
         gameChange.release();
     }
 
@@ -367,12 +372,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             else if (action instanceof SaveUserDataAction){
                 Tools.writeUserData( ((SaveUserDataAction) action).userData, getApplicationContext());
             }
+            else if (action instanceof RefreshCurrentLevelAction){
+                level = ((RefreshCurrentLevelAction) action).level;
+            }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
-            }
-            else if(action instanceof SaveUserDataAction){
-                Tools.writeUserData(((SaveUserDataAction)action).userData,getApplicationContext());
             }
             else if(action instanceof RefreshSymbolMap){
                 symbolMap=((RefreshSymbolMap) action).symbolMap;

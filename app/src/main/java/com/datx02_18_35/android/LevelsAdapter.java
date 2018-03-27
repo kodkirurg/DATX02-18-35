@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.game.LevelCategory;
 import com.datx02_18_35.model.game.LevelCollection;
 import com.datx02_18_35.model.game.LevelProgression;
 
@@ -69,8 +71,11 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
             @Override
             public void run() {
                 levelList = new ArrayList<>();
-                for (Level level : _levelCollection.getAllLevels()) {
-                    levelList.add(level);
+                for (LevelCategory category : _levelCollection.getCategories()) {
+                    for (Level level : category.getLevels()) {
+
+                        levelList.add(level);
+                    }
                 }
                 progressionMap = _progressionMap;
                 notifyDataSetChanged();
