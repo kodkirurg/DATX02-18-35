@@ -326,7 +326,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             if(!victory){
                 Controller.getSingleton().sendAction(new RequestAbortSessionAction());
             }
-            popupWindow.dismiss();
+            if(infoWindowClicked){
+                popupWindow.dismiss();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
