@@ -38,6 +38,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInve
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -440,6 +441,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onBackPressed(){
         if(layout.isShown()){
             closeInventory();
+        }
+        else if(scopeLevelInt>1){
+            try{
+                Controller.getSingleton().sendAction(new RequestCloseScopeAction(GameBoard.boardCallback));
+
+            }
+            catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         else {
             super.onBackPressed();

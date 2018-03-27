@@ -6,6 +6,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
@@ -198,6 +199,12 @@ public class Controller extends ActionConsumer {
             game.assertSessionInProgress();
             game.getSession().addExpressionToGameBoard(((RequestMoveFromInventoryAction) action).expression);
             action.callback(getRefreshGameboardAction());
+        }
+        else if( action instanceof RequestCloseScopeAction){
+            game.assertSessionInProgress();
+            game.getSession().closeScope();
+            action.callback(getRefreshGameboardAction());
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
         }
         else {
             throw new UnhandledActionException(action);

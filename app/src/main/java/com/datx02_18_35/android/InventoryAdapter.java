@@ -55,7 +55,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 e.printStackTrace();
             }
         }
-            setAnimations((CardView) view);
+            //setAnimations((CardView) view);
     }
 
     @Override
