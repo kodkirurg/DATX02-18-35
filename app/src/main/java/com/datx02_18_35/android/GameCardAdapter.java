@@ -61,7 +61,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            new Tools.CardDeflator(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
+            CardDeflator.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
             holder.alreadyBound=true;
         }
     }
