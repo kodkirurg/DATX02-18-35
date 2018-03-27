@@ -210,6 +210,7 @@ public class Controller extends ActionConsumer {
             game.assertSessionInProgress();
             game.getSession().closeScope();
             action.callback(getRefreshGameboardAction());
+            action.callback(getRefreshInventoryAction());
             action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
         }
         else {
