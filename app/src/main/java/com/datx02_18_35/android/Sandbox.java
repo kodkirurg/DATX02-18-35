@@ -4,8 +4,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
@@ -22,6 +24,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     public static boolean maySelectOperator=false;
     public static OperatorType operatorSelcted;
     public static Button button;
+    public static String reason;
 
 
     @Override
@@ -36,6 +39,9 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         ft.replace(R.id.sandbox_left_side, new FragmentSandboxCards()).commit();
         button = findViewById(R.id.sandbox_button);
         findViewById(R.id.sandbox_button).setOnClickListener(this);
+        reason = getIntent().getStringExtra("reason");
+        button.setText("No " + reason + "(exit)");
+
     }
 
     @Override

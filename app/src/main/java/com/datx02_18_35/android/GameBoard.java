@@ -298,7 +298,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
-                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
+               ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
             }
             //update rightside
             try {
@@ -388,22 +388,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 sandboxAction =(OpenSandboxAction) action;
                 switch(((OpenSandboxAction) action).reason){
                     case ASSUMPTION:{
-                        reason = "Assumption";
+                        reason = "assumption";
                         break;
                     }
                     case ABSURDITY_ELIMINATION: {
-                        reason = "Absurdity elimination";
+                        reason = "absurdity elimination";
                         break;
                     }
                     case DISJUNCTION_INTRODUCTION: {
-                        reason = "Disjunction elimination";
+                        reason = "disjunction introduction";
                         break;
                     }
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
                 //sandboxAction=(OpenSandboxAction) action;
-                //i.putExtra("STRING_I_NEED", reason);
+                i.putExtra("reason", reason);
                 startActivity(i);
             }
             else if (action instanceof RefreshInventoryAction){
