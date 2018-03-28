@@ -1,6 +1,8 @@
 package com.datx02_18_35.android;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -490,6 +493,16 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(this);
                     popupWindow = new PopupWindow(popUpView);
 
+                    findViewById(R.id.activity_game).setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if(infoWindowClicked){
+                                popupWindow.dismiss();
+                                infoWindowClicked=false;
+                            }
+                            return true;
+                        }
+                    });
 
                     View bigView = findViewById(R.id.game_board_bottom);
                     int height = bigView.getHeight() * 2 /3;
