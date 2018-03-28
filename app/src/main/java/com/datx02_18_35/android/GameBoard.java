@@ -505,8 +505,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     });
 
                     View bigView = findViewById(R.id.game_board_bottom);
-                    int height = bigView.getHeight() * 2 /3;
-                    int width = bigView.getWidth() * 2 /3;
+                    int height = bigView.getHeight() * 4 / 5;
+                    int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
                     CardDeflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap);
