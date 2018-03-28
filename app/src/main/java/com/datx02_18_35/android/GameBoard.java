@@ -1,6 +1,7 @@
 package com.datx02_18_35.android;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -76,7 +78,7 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity implements View.OnClickListener {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener,Animation.AnimationListener {
     TextView scoreView;
     Button nextLevel;
     Button mainMenu;
@@ -84,6 +86,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     TextView scopeLevel,openArrow,closeArrow;
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
+    Animation a;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
@@ -171,7 +174,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scopeLevel = findViewById(R.id.toolbar_text);
         scopeLevel.setText("scope 0");
 
-
+        a = AnimationUtils.loadAnimation(this, R.anim.slide_right);
         //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
@@ -239,11 +242,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void closeInventory(){
         if (inventoryLayout.isShown()) {
-            Fx.slide_left(this, inventoryLayout);
+            startAnimation("slide_left", this, inventoryLayout);
+            //Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
-            inventoryLayout.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.GONE);
+            //inventoryLayout.setVisibility(View.GONE);
+            //invRecyclerView.setVisibility(View.GONE);
 
 
 
@@ -281,6 +285,20 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             invRecAdapter.updateInventory(newSet);
 
 
+        }
+    }
+    public void startAnimation(String s, Context ctx, View v ){
+        switch (s) {
+            case "slide_left":
+                a = AnimationUtils.loadAnimation(ctx, R.anim.slide_left);
+                a.setAnimationListener(this);
+        }
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
         }
     }
 
@@ -362,6 +380,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        inventoryLayout.setVisibility(View.GONE);
+        invRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
     }
 
 
