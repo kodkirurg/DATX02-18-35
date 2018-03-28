@@ -4,13 +4,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.game.Level;
 
 import java.util.ArrayList;
 
@@ -26,7 +24,6 @@ public class FragmentSandboxCards extends Fragment {
     public RecyclerView recyclerView;
     private RecyclerView.Adapter recAdapter;
     private RecyclerView.LayoutManager recLayoutManager;
-    private ItemTouchHelper itemTouchHelper;
     private ArrayList<Expression> list = new ArrayList<Expression>();
 
 
@@ -47,13 +44,11 @@ public class FragmentSandboxCards extends Fragment {
         recyclerView.setLayoutManager(recLayoutManager);
 
 
-        list.addAll(Level.exampleLevel.propositions);
+        list.addAll(GameBoard.level.usedSymbols);
         recAdapter = new SandboxCardsAdapter(list);
 
         recyclerView.setAdapter(recAdapter);
 
-
-        //((Game)getActivity()).ready.release(1);
         return view;
     }
 

@@ -1,0 +1,13 @@
+TITLE *Title goes here*
+
+DESCRIPTION START
+*Text goes here*
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+HYPOTHESIS P > (P > Q)
+HYPOTHESIS P
+
+GOAL Q

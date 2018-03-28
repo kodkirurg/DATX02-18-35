@@ -1,0 +1,17 @@
+TITLE Conjunction Introduction
+
+DIFFICULTY 0
+
+DESCRIPTION START
+In this level you'll learn about conjunctions.
+Select two cards and apply the conjunction introduction rule on them.
+Note that the order matters!
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+HYPOTHESIS P
+HYPOTHESIS Q
+
+GOAL P & Q

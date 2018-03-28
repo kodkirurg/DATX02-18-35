@@ -1,0 +1,15 @@
+TITLE Checking competence of player
+
+DESCRIPTION START
+Lets check out if you've understood the earlier levels.
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+SYMBOL R YellowRectangle
+
+HYPOTHESIS P & Q
+HYPOTHESIS Q > R
+
+
+GOAL R

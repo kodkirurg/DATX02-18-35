@@ -1,0 +1,11 @@
+TITLE Deletion and Inventory
+
+DESCRIPTION START
+Here we will learn how to use inventory.
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+
+GOAL (P > P) > (P > P)

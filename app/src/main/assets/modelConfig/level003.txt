@@ -1,0 +1,16 @@
+TITLE Basic Implication
+
+DESCRIPTION START
+Here we introduce a new kind of card, the implication card.
+The implication card can be combined with whatever card is to the left of the implication arrow to produce the card to the right of the implication arrow
+Go ahead and give it a try by first selecting the implication card and then the card with the blue ball.
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+
+HYPOTHESIS P > Q
+HYPOTHESIS P
+
+
+GOAL Q

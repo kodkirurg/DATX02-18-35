@@ -23,16 +23,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 
 public class Session {
-    private Stack<Scope> scopes = new Stack<>();
+    private Stack<Scope> scopes;
     private Level level;
+    private int stepsApplied;
 
     public Session(Level level) {
         this.level = level;
+        this.scopes = new Stack<>();
         this.scopes.push(new Scope(level.hypothesis));
-    }
-
-    public void pushScope(Expression assumption) {
-        scopes.push(new Scope(assumption));
+        this.stepsApplied = 0;
     }
 
     public void closeScope() throws EmptyStackException {
@@ -123,13 +122,21 @@ public class Session {
 
                     @Override
                     public Expression next() {
+                        Boolean newIter = false;
                         assert this.hasNext();
                         if (!currentIter.hasNext()) {
-                            if (scopeIter.hasNext()) {
-                                currentIter = scopeIter.next().getInventory().iterator();
-                            }else if(assumptionIter.hasNext()) {
+                            if (scopeIter.hasNext()){
+                                Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
+                                if(testIter.hasNext()) {
+                                    System.out.println("ScopeInvIterator");
+                                    currentIter = testIter;
+                                    newIter=true;
+                                }
+                            }if (assumptionIter.hasNext()&&!newIter) {
                                 currentIter = assumptionIter;
-                            }else if(hypothesisIter.hasNext()){
+                                System.out.println("AssumptionIterator");
+                                newIter=true;
+                            }if(hypothesisIter.hasNext()&&!newIter){
                                 currentIter = hypothesisIter;
                             }
                         }
@@ -163,18 +170,19 @@ public class Session {
         scopes.peek().addExpressionToInventory(expression);
     }
 
-    public void makeAssumption(Expression expression){
-        this.addExpressionToInventory(expression);
+    public void makeAssumption(Expression expression) {
+        this.scopes.push(new Scope(expression));
     }
 
     public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
         TestRule.assertRuleIsLegal(this, rule);
+        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
         }
-        List<Expression> expressions = level.expressionFactory.applyRule(rule);
         this.addExpressionToInventory(expressions);
         this.addExpressionToGameBoard(expressions);
+        this.stepsApplied += 1;
         return expressions;
     }
 
@@ -201,6 +209,18 @@ public class Session {
         return false;
     }
 
+    public int getStepsApplied() {
+        return this.stepsApplied;
+    }
+
+
+    public int getScopeInt(){
+        int i=0;
+        for(Scope scopes:this.getScopes()){
+            i++;
+        }
+        return i;
+    }
 
     public boolean isExpressionInScope(Expression expression) {
         for (Expression existingExpression : getAllExpressions()){
@@ -213,7 +233,6 @@ public class Session {
 
     public boolean isExpressionInScope(Collection<Expression> expressions){
         Collection<Expression> testExpressions = new HashSet<>(expressions);
-
         for (Expression existingExpression : getAllExpressions()){
             testExpressions.remove(existingExpression);
         }

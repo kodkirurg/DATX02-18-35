@@ -1,5 +1,6 @@
 package com.datx02_18_35.model.expression;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.Map;
  * Created by robin on 2018-02-07.
  */
 
-public class ExpressionFactory {
+public class ExpressionFactory implements Serializable {
 
     private final Map<String, String> symbolMap;
 
     public ExpressionFactory(Map<String, String> symbolMap) {
         this.symbolMap = symbolMap;
+    }
+
+    public Map<String,String> getSymbolMap(){
+        return symbolMap;
     }
 
     public Proposition createProposition(String id) {

@@ -56,7 +56,6 @@ public final class TestRule {
                 }
             break;
             case ABSURDITY_ELIMINATION:
-            case DISJUNCTION_ELIMINATION:
             case IMPLICATION_ELIMINATION:
             case CONJUNCTION_INTRODUCTION:
             case DISJUNCTION_INTRODUCTION:
@@ -67,6 +66,10 @@ public final class TestRule {
                                     "Expected: 2, Found: " + exprs.size());
                 }
             break;
+            case DISJUNCTION_ELIMINATION:
+                if(rule.expressions.size()!=3){
+                    throw new IllegalRuleException(rule,"Wrong number of expression in rule!"+"Expected: 3, Found "+exprs.size());
+                }
         }
 
         // Check correct types
@@ -123,7 +126,5 @@ public final class TestRule {
         }
         return new IllegalRuleException(rule, sb.toString());
     }
-
-
 
 }

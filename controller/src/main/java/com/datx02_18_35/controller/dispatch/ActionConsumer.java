@@ -22,28 +22,28 @@ public abstract class ActionConsumer {
         @Override
         public void run() {
             while (true) {
+                Action action = null;
                 try {
-                    Action action = actionQueue.take();
+                    action = actionQueue.take();
                     if (action instanceof StopAction) {
                         break;
                     }
                     handleAction(action);
 
-                } catch (InterruptedException e) {
+                } catch (InterruptedException
+                        | UnhandledActionException
+                        | IllegalActionException
+                        | GameManager.LevelNotInListException
+                        | IllegalGameStateException e) {
                     e.printStackTrace();
-                    break;
-                } catch (UnhandledActionException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (IllegalActionException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (GameManager.LevelNotInListException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (IllegalGameStateException e) {
-                    e.printStackTrace();
-                    break;
+                    if (action != null) {
+                        System.err.println("Faulty Action originated at:");
+                        for (StackTraceElement stackTraceElement : action.stackTrace) {
+                            System.err.println(stackTraceElement);
+                        }
+                    }
+                } finally {
+                    action = null;
                 }
             }
         }
