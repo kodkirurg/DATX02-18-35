@@ -65,7 +65,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
         if(dataSet.get(position)!= null & !holder.alreadyBound) {
-            new Tools.CardDeflator(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
+            CardDeflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
             holder.alreadyBound = true;
         }
     }
@@ -81,7 +81,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
     void setAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.BLACK);
-        Tools.selectAnimation(cardView.getContext(), cardView);
+        Fx.selectAnimation(cardView.getContext(), cardView);
     }
 
     @Override

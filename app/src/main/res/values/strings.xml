@@ -7,4 +7,5 @@
     <string name="no_assumption">No assumption</string>
     <string name="level">level</string>
     <string name="levelTitle">Variabel för varje nivå</string>
+    <string name="undefined">UNDEFINED</string>
 </resources>

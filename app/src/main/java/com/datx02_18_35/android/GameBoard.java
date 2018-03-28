@@ -1,6 +1,8 @@
 package com.datx02_18_35.android;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -62,6 +65,8 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -75,7 +80,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel,openArrow,closeArrow;
-    RelativeLayout layout;
+    RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
@@ -89,8 +94,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public static Level level;
-    public boolean infoWindowClicked=true;
+    public boolean infoWindowClicked=false;
     public PopupWindow popupWindow;
+    public View popUpView;
 
 
     //recyclerviews
@@ -168,11 +174,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
 
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        // Inflate the custom layout/view
-        View popUpView = inflater.inflate(R.layout.pop_up_window,null);
-        popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         gameChange.release();
     }
 
@@ -220,8 +221,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         View gameView = this.findViewById(android.R.id.content);
-        layout = (RelativeLayout)findViewById(R.id.inventory_container);
-        layout.setVisibility(View.GONE);
+        inventoryLayout = (RelativeLayout)findViewById(R.id.inventory_container);
+        inventoryLayout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
             public void onSwipeRight() {
@@ -235,11 +236,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void closeInventory(){
-        if (layout.isShown()) {
-            Tools.slide_left(this, layout);
+        if (inventoryLayout.isShown()) {
+            Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
-            layout.setVisibility(View.GONE);
+            inventoryLayout.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.GONE);
 
 
@@ -269,9 +270,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
         }
 
-        if (!layout.isShown()){
-            Tools.slide_right(this, layout);
-            layout.setVisibility(View.VISIBLE);
+        if (!inventoryLayout.isShown()){
+            Fx.slide_right(this, inventoryLayout);
+            inventoryLayout.setVisibility(View.VISIBLE);
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.VISIBLE);
@@ -292,10 +293,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             //already selected
             if (adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.resetSelection(expression, (CardView) v);
+                ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.GONE);
             }
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
+               ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
             }
             //update rightside
             try {
@@ -325,6 +328,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         try {
             if(!victory){
                 Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+            }
+            if(infoWindowClicked){
+                popupWindow.dismiss();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -382,22 +388,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 sandboxAction =(OpenSandboxAction) action;
                 switch(((OpenSandboxAction) action).reason){
                     case ASSUMPTION:{
-                        reason = "Assumption";
+                        reason = "assumption";
                         break;
                     }
                     case ABSURDITY_ELIMINATION: {
-                        reason = "Absurdity elimination";
+                        reason = "absurdity elimination";
                         break;
                     }
                     case DISJUNCTION_INTRODUCTION: {
-                        reason = "Disjunction elimination";
+                        reason = "disjunction introduction";
                         break;
                     }
 
                 }
                 Intent i = new Intent(getApplicationContext(),Sandbox.class);
                 //sandboxAction=(OpenSandboxAction) action;
-                //i.putExtra("STRING_I_NEED", reason);
+                i.putExtra("reason", reason);
                 startActivity(i);
             }
             else if (action instanceof RefreshInventoryAction){
@@ -423,7 +429,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     public void run() {
                         Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
                         if(!((VictoryConditionMetAction) action).hasNextLevel){
-                            nextLevel.setVisibility(View.GONE); 
+                            nextLevel.setVisibility(View.GONE);
                         }
                         victoryScreen.setVisibility(View.VISIBLE);
                         int currentScore = ((VictoryConditionMetAction) action).currentScore;
@@ -443,7 +449,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     @Override
     public void onBackPressed(){
-        if(layout.isShown()){
+        if(inventoryLayout.isShown()){
             closeInventory();
         }
         else if(scopeLevelInt>1){
@@ -474,17 +480,42 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.popup_exit_button :
+                popupWindow.dismiss();
+                infoWindowClicked=false;
+                break;
             case R.id.toolbar_goal :
                 if(!infoWindowClicked){
                     infoWindowClicked=true;
-                    popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
-                    Log.d(Tools.debug, "onClick: " + "show pop-up");
+                    // Inflate the custom layout/view
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    popUpView = inflater.inflate(R.layout.pop_up_window,null);
+                    popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(this);
+                    popupWindow = new PopupWindow(popUpView);
 
+                    findViewById(R.id.activity_game).setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if(infoWindowClicked){
+                                popupWindow.dismiss();
+                                infoWindowClicked=false;
+                            }
+                            return true;
+                        }
+                    });
+
+                    View bigView = findViewById(R.id.game_board_bottom);
+                    int height = bigView.getHeight() * 4 / 5;
+                    int width = bigView.getWidth()  - bigView.getWidth() / 15;
+                    popupWindow.setWidth(width);
+                    popupWindow.setHeight(height);
+                    CardDeflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap);
+                    ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
+                    popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
                 }
-                else if(infoWindowClicked){
+                else {
                     infoWindowClicked=false;
                     popupWindow.dismiss();
-                    Log.d(Tools.debug, "onClick: " + "dismiss pop-up");
                 }
                 break;
             case R.id.next_level:{

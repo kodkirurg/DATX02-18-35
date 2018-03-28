@@ -44,8 +44,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
+        holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
-            new Tools.CardDeflator(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
+            CardDeflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
             holder.alreadyBound=true;
         }
 
@@ -67,7 +68,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             Sandbox.maySelectOperator=true;
             firstSelected=(ViewHolder) view.getTag(R.string.viewholders);
             if(Sandbox.operatorSelcted==null){
-                Sandbox.button.setText("Make assumption!");
+                Sandbox.button.setText("Make " + Sandbox.reason + "!");
                 Sandbox.button.setBackgroundColor(Color.GREEN);
             }
         }
@@ -86,7 +87,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                     newList.add(item);
                 }
                 selected=newList;
-                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setText("No " + Sandbox.reason +"(exit)");
                 Sandbox.button.setBackgroundColor(Color.RED);
 
             }
@@ -101,7 +102,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
                 SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
                 SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
-                Sandbox.button.setText("No assumption(exit)");
+                Sandbox.button.setText("No " + Sandbox.reason +"(exit)");
                 Sandbox.button.setBackgroundColor(Color.RED);
 
 
