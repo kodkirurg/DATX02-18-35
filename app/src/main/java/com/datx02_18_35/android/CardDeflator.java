@@ -275,6 +275,12 @@ public class CardDeflator{
             case "blueball" :
                 Tools.setImage(imageView,R.drawable.blueball);
                 break;
+            case "greentriangle" :
+                Tools.setImage(imageView,R.drawable.greentriangle);
+                break;
+            case "yellowrectangle":
+                Tools.setImage(imageView,R.drawable.yellowrectangle);
+                break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);
                 break;
@@ -293,6 +299,12 @@ public class CardDeflator{
                 break;
             case "blueball" :
                 Tools.setImage(imageView,R.drawable.blueball);
+                break;
+            case "greentriangle" :
+                Tools.setImage(imageView,R.drawable.greentriangle);
+                break;
+            case "yellowrectangle":
+                Tools.setImage(imageView,R.drawable.yellowrectangle);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);

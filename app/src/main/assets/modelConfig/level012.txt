@@ -6,8 +6,8 @@ DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
-SYMBOL R YellowRectangle
-SYMBOL S GreenRectangle
+SYMBOL R GreenTriangle
+SYMBOL S YellowRectangle
 
 HYPOTHESIS ((P)|((Q)|(R)))
 HYPOTHESIS ((P)>(S))
