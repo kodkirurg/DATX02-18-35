@@ -1,0 +1,18 @@
+TITLE Hard shit
+
+
+DESCRIPTION START
+Good luck solving this
+Requires Classical logic, I think...
+DESCRIPTION END
+
+SYMBOL P BlueBall
+SYMBOL Q RedBall
+SYMBOL R GreenTriangle
+SYMBOL S YellowRectangle
+
+HYPOTHESIS P > (Q > #)
+HYPOTHESIS (P > #) > R
+HYPOTHESIS (S | R) > #
+
+GOAL (Q | S) > #

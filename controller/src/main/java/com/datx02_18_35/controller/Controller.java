@@ -35,6 +35,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.game.ExpressionParseException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.game.Level;
@@ -58,7 +59,7 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException {
+    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException, ExpressionParseException {
         singleton = new Controller(configFiles);
         if (userData != null) {
             singleton.game.loadUserData(userData);
@@ -66,7 +67,7 @@ public class Controller extends ActionConsumer {
     }
 
     private GameManager game;
-    private Controller(Map<String, String> configFiles) throws LevelParseException {
+    private Controller(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
         game = new GameManager(configFiles);
     }
 

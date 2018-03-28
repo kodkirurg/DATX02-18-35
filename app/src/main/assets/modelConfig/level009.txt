@@ -7,6 +7,6 @@ DESCRIPTION END
 SYMBOL P BlueBall
 SYMBOL Q RedBall
 
-HYPOTHESIS (P)
+HYPOTHESIS P
 
-GOAL    ((Q)>((Q)&(P)))
+GOAL Q > (Q & P)

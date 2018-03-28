@@ -1,6 +1,5 @@
 package com.datx02_18_35.model.game;
 
-import com.datx02_18_35.model.ExpressionParser;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
@@ -36,7 +35,7 @@ public class Level implements Serializable {
     public final String title;
     public final Expression goal;
     public final ExpressionFactory expressionFactory;
-    public final List<Proposition> propositions;
+    public final List<Expression> usedSymbols;
     public final String description;
 
     private final int hashCode;
@@ -52,7 +51,9 @@ public class Level implements Serializable {
         this.goal=goal;
         this.title=title;
         this.expressionFactory=expressionFactory;
-        this.propositions = new ArrayList<>(extractPropositions(goal, hypothesis));
+        this.usedSymbols = new ArrayList<>();
+        this.usedSymbols.addAll(extractPropositions(goal, hypothesis));
+        this.usedSymbols.add(expressionFactory.createAbsurdity());
         this.description = description;
 
         long magic = HASH_MAGIC_NUMBER;
@@ -166,7 +167,7 @@ public class Level implements Serializable {
         return new LevelParseException("Reached end of file while parsing level description");
     }
 
-    public static Level parseLevel(String levelString) throws LevelParseException {
+    public static Level parseLevel(String levelString) throws LevelParseException, ExpressionParseException {
 
         int lineNumb;
         Map<String,String> symbolMap = new HashMap<>();
