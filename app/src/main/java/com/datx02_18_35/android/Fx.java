@@ -69,4 +69,14 @@ public class Fx {
             }
         }
     }
+    public static void blink_animation(Context ctx, View v){
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.blink);
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
 }

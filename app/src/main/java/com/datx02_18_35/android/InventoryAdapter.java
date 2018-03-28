@@ -55,7 +55,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 e.printStackTrace();
             }
         }
-            //setAnimations((CardView) view);
+        Fx.blink_animation(view.getContext(), view);
     }
 
     @Override
@@ -78,10 +78,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 notifyDataSetChanged();
             }
         });
-    }
-    void setAnimations(CardView cardView){
-        cardView.setBackgroundColor(Color.BLACK);
-        Fx.selectAnimation(cardView.getContext(), cardView);
     }
 
     @Override

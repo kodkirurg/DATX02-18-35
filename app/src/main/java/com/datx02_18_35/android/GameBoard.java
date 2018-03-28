@@ -1,5 +1,7 @@
 package com.datx02_18_35.android;
 
+import android.app.Activity;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
@@ -294,11 +296,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             if (adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.resetSelection(expression, (CardView) v);
                 // ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.GONE);
+
             }
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
                // ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
+
             }
             //update rightside
             try {
@@ -545,6 +549,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             case R.id.open_inventory:{
                 showInventory();
+                break;
+            }
+            case R.id.trash_can:{
                 break;
             }
         }
