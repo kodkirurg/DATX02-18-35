@@ -38,16 +38,31 @@
                 android:layout_gravity="center"
                 android:text="@string/levelTitle"
                 />
-            <ImageView
-                android:id="@+id/toolbar_goal"
-                android:src="@drawable/ic_info_black_24px"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_gravity="end" />
+                android:layout_height="match_parent"
+                android:layout_gravity="end">
+                <ImageView
+                    android:id="@+id/trash_can"
+                    android:src="@android:drawable/ic_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="start" />
+                <ImageView
+                    android:id="@+id/toolbar_goal"
+                    android:src="@drawable/ic_info_black_24px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="end" />
+            </LinearLayout>
 
         </FrameLayout>
+
 
 
 
