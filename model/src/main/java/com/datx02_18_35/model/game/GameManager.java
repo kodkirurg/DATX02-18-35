@@ -24,7 +24,7 @@ public class GameManager {
     private Session currentSession;
 
 
-    public GameManager(Map<String, String> configFiles) throws LevelParseException {
+    public GameManager(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
         levelCollection = new LevelCollection(configFiles);
         userData = new UserData(levelCollection);
     }

@@ -8,7 +8,7 @@ SYMBOL P BlueBall
 SYMBOL Q RedBall
 SYMBOL # Absurdity
 
-HYPOTHESIS ((P)>(#))
+HYPOTHESIS P > #
 
 
-GOAL ((P)>(Q))
+GOAL P > Q

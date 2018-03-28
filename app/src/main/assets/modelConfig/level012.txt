@@ -9,9 +9,9 @@ SYMBOL Q RedBall
 SYMBOL R GreenTriangle
 SYMBOL S YellowRectangle
 
-HYPOTHESIS ((P)|((Q)|(R)))
-HYPOTHESIS ((P)>(S))
-HYPOTHESIS ((Q)>(S))
-HYPOTHESIS ((R)>(S))
+HYPOTHESIS P | (Q | R)
+HYPOTHESIS P > S
+HYPOTHESIS Q > S
+HYPOTHESIS R > S
 
-GOAL (S)
+GOAL       S

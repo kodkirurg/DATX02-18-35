@@ -8,4 +8,4 @@ SYMBOL P BlueBall
 SYMBOL Q RedBall
 
 
-GOAL (((P)>(P))>((P)>(P)))
+GOAL (P > P) > (P > P)

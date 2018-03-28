@@ -27,7 +27,7 @@ public class LevelCollection {
     private final List<LevelCategory> categories;
     private final Map<Level, LevelCategory> levelCategoryMap;
 
-    public LevelCollection(Map<String, String> configFiles) throws LevelParseException {
+    public LevelCollection(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
         categories = parseLevelList(configFiles);
         levelCategoryMap = new HashMap<>();
         for (LevelCategory category : categories) {
@@ -67,7 +67,7 @@ public class LevelCollection {
 
     }
 
-    private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException {
+    private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
         String levelList = configFiles.get(LEVEL_LIST_FILENAME);
         String[] lines = levelList.replaceFirst("[\n\r]+", "").split("[\n|\r]+");
         Iterator<String> lineIterator = Arrays.asList(lines).iterator();

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.model.game.ExpressionParseException;
 import com.datx02_18_35.model.game.LevelParseException;
 
 import java.io.BufferedReader;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
             Controller.getSingleton().start();
         } catch (LevelParseException e) {
+            //TODO: Handle this properly
+            e.printStackTrace();
+        } catch (ExpressionParseException e) {
             //TODO: Handle this properly
             e.printStackTrace();
         }

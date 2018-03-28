@@ -8,8 +8,8 @@ SYMBOL P BlueBall
 SYMBOL Q RedBall
 SYMBOL R GreenTriangle
 
-HYPOTHESIS ((P)|(Q))
-HYPOTHESIS ((P)>(R))
-HYPOTHESIS ((Q)>(R))
+HYPOTHESIS P | Q
+HYPOTHESIS P > R
+HYPOTHESIS Q > R
 
-GOAL    (R)
+GOAL       R
