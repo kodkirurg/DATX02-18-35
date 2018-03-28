@@ -281,6 +281,9 @@ public class CardDeflator{
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
                 break;
+            case "absurdity":
+                Tools.setImage(imageView,R.drawable.absurdity);
+                break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);
                 break;
@@ -305,6 +308,9 @@ public class CardDeflator{
                 break;
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
+                break;
+            case "absurdity":
+                Tools.setImage(imageView,R.drawable.absurdity);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);
