@@ -7,16 +7,6 @@
     android:id="@+id/victory_screen"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-
-        >
-
-
-    </RelativeLayout>
-
             <include
                 layout="@layout/card_expression"
                 android:id="@+id/victoryScreen_goalCard"
