@@ -87,6 +87,10 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public void onClick(View v) {
         ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()),(CardView) v);
+        if(((GameBoard)activity).infoWindowClicked){
+            ((GameBoard)activity).infoWindowClicked=false;
+            ((GameBoard)activity).popupWindow.dismiss();
+        }
     }
 
     void setSelection(Expression expression, CardView v) {

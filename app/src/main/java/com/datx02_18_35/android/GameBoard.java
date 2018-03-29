@@ -572,7 +572,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(this);
                     popupWindow = new PopupWindow(popUpView);
 
-                    findViewById(R.id.activity_game).setOnTouchListener(new View.OnTouchListener() {
+
+                    View.OnTouchListener clickedOutside = new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             if(infoWindowClicked){
@@ -581,7 +582,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                             }
                             return true;
                         }
-                    });
+                    };
+
+
+                    //views touched that will remove the pop-up
+                    findViewById(R.id.activity_game).setOnTouchListener(clickedOutside);
+                    findViewById(R.id.game_left_side).setOnTouchListener(clickedOutside);
+                    findViewById(R.id.game_right_side).setOnTouchListener(clickedOutside);
 
                     View bigView = findViewById(R.id.game_board_bottom);
                     int height = bigView.getHeight() * 4 / 5;
