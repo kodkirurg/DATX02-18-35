@@ -19,6 +19,9 @@ public class Fx {
      * @param ctx
      * @param v
      */
+
+
+
     public static void deleteAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.delete);
         if(a != null){

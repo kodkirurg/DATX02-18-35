@@ -1,9 +1,11 @@
 package com.datx02_18_35.android;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,6 +68,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDat
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
 
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Rule;
 import com.datx02_18_35.model.game.Level;
@@ -412,6 +416,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if (action instanceof RefreshCurrentLevelAction){
                 level = ((RefreshCurrentLevelAction) action).level;
+                adapterLeft.updateGoal(level.goal);
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
@@ -464,20 +469,56 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
-                        if(!((VictoryConditionMetAction) action).hasNextLevel){
-                            nextLevel.setVisibility(View.GONE);
-                        }
-                        victoryScreen.setVisibility(View.VISIBLE);
-                        int currentScore = ((VictoryConditionMetAction) action).currentScore;
-                        int previousScore= ((VictoryConditionMetAction) action).previousScore;
-                        if(previousScore<0) {
-                            scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
-                        }
-                        else {
-                            scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
-                        }
+                        Expression goal=((VictoryConditionMetAction) action).goal;
+                        int position=adapterLeft.dataSet.indexOf(goal);
+                        adapterLeft.dataSet.remove(position);
+                        adapterLeft.notifyItemRemoved(position);
+                        final CardView cardView = (CardView) LayoutInflater.from(
+                                getCurrentFocus().getContext()).inflate
+                                (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
+                        CardDeflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap);
+                        ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
 
+                        cardView.animate().setListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                ((ViewGroup)cardView.getParent()).removeView(cardView);
+                                if(!((VictoryConditionMetAction) action).hasNextLevel){
+                                    nextLevel.setVisibility(View.GONE);
+                                }
+                                victoryScreen.setVisibility(View.VISIBLE);
+                                int currentScore = ((VictoryConditionMetAction) action).currentScore;
+                                int previousScore= ((VictoryConditionMetAction) action).previousScore;
+                                if(previousScore<0) {
+                                    scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                                }
+                                else {
+                                    scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
+
+                            }
+                        });
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        int cardHeight=cardView.getLayoutParams().height;
+                        int cardWidth=cardView.getLayoutParams().width;
+                        cardView.setX((float) displayMetrics.widthPixels/2-cardWidth/2 );
+                        cardView.setY((float) displayMetrics.heightPixels/2-cardHeight/2);
+                        cardView.animate().setDuration(5000).scaleY(2).scaleX(2).start();
                     }
                 });
             }

@@ -23,6 +23,7 @@ import game.logic_game.R;
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     int currentHighestSelectedCard=0;
+    Expression goal;
     ArrayList<Expression> dataSet;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
@@ -47,6 +48,10 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     }
 
+    void updateGoal(Expression goal){
+        this.goal=goal;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
@@ -64,6 +69,9 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
             CardDeflator.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
+            if(dataSet.get(position).equals(goal)){
+                setVictoryAnimation(holder.cardView);
+            }
             holder.alreadyBound=true;
         }
     }
@@ -144,6 +152,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void setAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.BLACK);
         Fx.selectAnimation(cardView.getContext(), cardView);
+    }
+
+    //TO-DO: Something cool wtih the card that made you win
+    void setVictoryAnimation(CardView cardView){
+
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
