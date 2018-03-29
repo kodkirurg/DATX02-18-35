@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
@@ -21,6 +22,7 @@ import game.logic_game.R;
  */
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
+    int currentHighestSelectedCard=0;
     ArrayList<Expression> dataSet;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
@@ -82,16 +84,33 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void setSelection(Expression expression, CardView v) {
         selected.add((int) v.getTag());
         selectedView.put((int) v.getTag(),v);
+        v.findViewById(R.id.card_number_text_view).setVisibility(View.VISIBLE);
+        currentHighestSelectedCard++;
+        ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+currentHighestSelectedCard);
         setAnimations(v);
     }
 
     void resetSelection(Expression expression, CardView v) {
-        for(int x =0 ; selected.size() > x ;x++){
+        v.findViewById(R.id.card_number_text_view).setVisibility(View.GONE);
+        int deSelectNumber = Integer.parseInt(((TextView)v.findViewById(R.id.card_number_text_view)).getText().toString());
+        currentHighestSelectedCard--;
+        int loopstop=selected.size();
+        for(int x =0 ; loopstop > x ;x++){
+            CardView cardViewNumberChange = selectedView.get(selected.get(x));
+            cardViewNumberChange.setVisibility(View.GONE);
+            TextView textView = cardViewNumberChange.findViewById(R.id.card_number_text_view);
+            int selectionNumber = Integer.parseInt(textView.getText().toString());
+            if(selectionNumber>deSelectNumber){
+                selectionNumber=selectionNumber-1;
+                textView.setText(""+selectionNumber);
+            }
            if (selected.get(x)==v.getTag()){
                 selected.remove(x);
-                break;
+                x--;
+                loopstop--;
            }
         }
+
         CardView cardView = selectedView.get((int) v.getTag());
         restoreAnimations(cardView);
         selectedView.remove(expression.hashCode());

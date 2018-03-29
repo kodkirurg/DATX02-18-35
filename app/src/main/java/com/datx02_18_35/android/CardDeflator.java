@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -246,6 +247,11 @@ public class CardDeflator{
                 }
             }
         }
+        TextView cardNumberView = new TextView(cardView.getContext());
+        cardNumberView.setId(R.id.card_number_text_view);
+        cardNumberView.setElevation(cardView.getElevation()+1);
+        cardNumberView.setVisibility(View.GONE);
+        cardView.addView(cardNumberView);
     }
 
     //remove view by id
