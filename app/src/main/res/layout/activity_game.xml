@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/topPanel"
         android:orientation="horizontal">
+
         <FrameLayout
             android:layout_width="30dp"
             android:layout_height="match_parent"
@@ -53,10 +54,9 @@
             android:layout_margin="3dp"
             android:background="@color/WhiteSmoke"
             android:layout_alignParentLeft="true"
-
-
-
             />
+
+
     </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -89,61 +89,9 @@
         </FrameLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/victory_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="30dp"
-        android:visibility="visible"
-        android:background="@color/GhostWhite"
 
-
-        >
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            >
-            <TextView
-                android:id="@+id/win_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="You completed the level. Good job!"
-                android:background="@color/White"
-                android:layout_centerHorizontal="true"
-
-                />
-            <TextView
-                android:id="@+id/win_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@color/White"
-                android:layout_below="@+id/win_textview"
-            />
-            <Button
-                android:id="@+id/next_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/win_score"
-                android:text="Next Level"
-            />
-
-            <Button
-                android:id="@+id/main_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/next_level"
-                android:text="Main Menu"
-                />
-
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
+    <include
+        layout="@layout/victory_screen"
+        />
 
 </RelativeLayout>

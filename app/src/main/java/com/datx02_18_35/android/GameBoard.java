@@ -404,7 +404,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public class BoardCallback extends ActionConsumer {
         @Override
-        public void handleAction(final Action action) throws UnhandledActionException, InterruptedException {
+        public void handleAction(final Action action) throws InterruptedException {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
@@ -478,7 +478,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
                         CardDeflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap);
                         ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
-
+                        CardDeflator.deflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap);
                         cardView.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
@@ -494,11 +494,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                                 victoryScreen.setVisibility(View.VISIBLE);
                                 int currentScore = ((VictoryConditionMetAction) action).currentScore;
                                 int previousScore= ((VictoryConditionMetAction) action).previousScore;
+                                final String s = "You've completed the goal! Good job! \n";
                                 if(previousScore<0) {
-                                    scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                                    scoreView.setText(s + "You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
                                 }
                                 else {
-                                    scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                                    scoreView.setText(s + "You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
                                 }
                             }
 
