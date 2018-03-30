@@ -103,6 +103,7 @@ public class Controller extends ActionConsumer {
             game.assertSessionInProgress();
             game.startNextLevel();
             game.assertSessionInProgress();
+            action.callback(new RefreshCurrentLevelAction(game.getSession().getLevel()));
             action.callback(new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap()));
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshHypothesisAction());
