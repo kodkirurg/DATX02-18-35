@@ -1,6 +1,6 @@
-package com.datx02_18_35.model.game;
+package com.datx02_18_35.model.rules;
 
-import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.game.IllegalGameStateException;
 
 /**
  * Created by robin on 2018-03-14.

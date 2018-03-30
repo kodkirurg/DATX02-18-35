@@ -1,14 +1,16 @@
-package com.datx02_18_35.model.expression;
+package com.datx02_18_35.model.rules;
 
 
 
-import com.datx02_18_35.model.game.IllegalRuleException;
-import com.datx02_18_35.model.game.TestRule;
+import com.datx02_18_35.model.expression.Absurdity;
+import com.datx02_18_35.model.expression.Conjunction;
+import com.datx02_18_35.model.expression.Disjunction;
+import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.expression.Implication;
 // import com.sun.istack.internal.Pool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 import java.util.Iterator;
 import java.util.List;
@@ -82,10 +84,10 @@ public class Rule {
 
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, selection));
 
-                if (fst instanceof Implication && ((Implication) fst).operand1.equals(snd)) {
+                if (fst instanceof Implication && ((Implication) fst).getOperand1().equals(snd)) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, selection));
                 }
-                if (snd instanceof Implication && ((Implication) snd).operand1.equals(fst)){
+                if (snd instanceof Implication && ((Implication) snd).getOperand1().equals(fst)){
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, snd,fst));
                 }
 

@@ -1,7 +1,7 @@
 package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.rules.Rule;
 
 import java.util.List;
 

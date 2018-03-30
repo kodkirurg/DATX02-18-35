@@ -1,4 +1,4 @@
-package com.datx02_18_35.model.game;
+package com.datx02_18_35.model.level;
 
 import java.io.Serializable;
 

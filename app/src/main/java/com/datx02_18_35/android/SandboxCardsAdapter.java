@@ -7,13 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.Operator;
-import com.datx02_18_35.model.expression.OperatorType;
-import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.level.Level;
 
 import java.util.ArrayList;
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -246,6 +247,11 @@ public class CardDeflator{
                 }
             }
         }
+        TextView cardNumberView = new TextView(cardView.getContext());
+        cardNumberView.setId(R.id.card_number_text_view);
+        cardNumberView.setElevation(cardView.getElevation()+1);
+        cardNumberView.setVisibility(View.GONE);
+        cardView.addView(cardNumberView);
     }
 
     //remove view by id
@@ -263,32 +269,7 @@ public class CardDeflator{
     //sets text in textview by id.
     private static void sSymbol(Expression expression,CardView cardView,int rId, Map<String,String> symbolMap){
         ImageView imageView = cardView.findViewById(rId);
-        String symbol = "";
-        if(symbolMap.containsKey(expression.toString())){
-            symbol = symbolMap.get(expression.toString());
-        }
-
-        switch (symbol.toLowerCase()){
-            case "redball":
-                Tools.setImage(imageView,R.drawable.redball);
-                break;
-            case "blueball" :
-                Tools.setImage(imageView,R.drawable.blueball);
-                break;
-            case "greentriangle" :
-                Tools.setImage(imageView,R.drawable.greentriangle);
-                break;
-            case "yellowrectangle":
-                Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
-            case "absurdity":
-                Tools.setImage(imageView,R.drawable.absurdity);
-                break;
-            default:
-                Tools.setImage(imageView,R.drawable.dots);
-                break;
-
-        }
+        sSymbol(expression, imageView, symbolMap);
     }
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
         String symbol = "";

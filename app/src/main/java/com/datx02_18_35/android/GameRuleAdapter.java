@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
-import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.rules.Rule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -103,6 +103,10 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         try {
             Controller.getSingleton().sendAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
             activity.adapterLeft.restoreSelections();
+            if(((GameBoard)activity).infoWindowClicked){
+                ((GameBoard)activity).infoWindowClicked=false;
+                ((GameBoard)activity).popupWindow.dismiss();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,9 +1,12 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelCategory;
+import com.datx02_18_35.model.level.LevelCollection;
+import com.datx02_18_35.model.level.LevelProgression;
+
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**

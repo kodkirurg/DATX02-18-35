@@ -1,11 +1,10 @@
 package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelCollection;
-import com.datx02_18_35.model.game.LevelProgression;
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelCollection;
+import com.datx02_18_35.model.level.LevelProgression;
 
-import java.util.List;
 import java.util.Map;
 
 /**

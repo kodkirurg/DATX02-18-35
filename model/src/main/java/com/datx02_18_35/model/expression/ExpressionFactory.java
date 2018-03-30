@@ -1,8 +1,9 @@
 package com.datx02_18_35.model.expression;
 
+import com.datx02_18_35.model.rules.Rule;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

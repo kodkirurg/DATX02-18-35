@@ -34,13 +34,13 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.ShowNewExpr
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.ExpressionParseException;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelParseException;
-import com.datx02_18_35.model.game.LevelProgression;
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelParseException;
+import com.datx02_18_35.model.level.LevelProgression;
 
 import java.util.List;
 import java.util.Map;
@@ -89,6 +89,7 @@ public class Controller extends ActionConsumer {
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
+
         }
         else if (action instanceof RequestCurrentLevelAction){
             Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
@@ -102,9 +103,6 @@ public class Controller extends ActionConsumer {
             game.assertSessionInProgress();
             game.startNextLevel();
             game.assertSessionInProgress();
-            action.callback(getRefreshInventoryAction());
-            action.callback(getRefreshHypothesisAction());
-            action.callback(getRefreshGameboardAction());
         }
         else if (action instanceof RequestAbortSessionAction) {
             game.assertSessionInProgress();
@@ -164,7 +162,7 @@ public class Controller extends ActionConsumer {
                 }
                 game.voidFinishLevel();
                 int currentScore = game.getSession().getStepsApplied();
-                action.callback(new VictoryConditionMetAction(currentScore, previousScore,game.hasNextLevel()));
+                action.callback(new VictoryConditionMetAction(game.getSession().getLevel().goal,currentScore, previousScore,game.hasNextLevel()));
                 action.callback(new SaveUserDataAction(game.saveUserData()));
                 Util.Log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
             }

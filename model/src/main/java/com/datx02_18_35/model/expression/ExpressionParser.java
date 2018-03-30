@@ -1,8 +1,4 @@
-package com.datx02_18_35.model.game;
-
-import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.ExpressionFactory;
-import com.datx02_18_35.model.expression.OperatorType;
+package com.datx02_18_35.model.expression;
 
 /**
  * Created by Jonatan on 2018-02-28.

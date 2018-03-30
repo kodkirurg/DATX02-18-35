@@ -1,18 +1,15 @@
 package com.datx02_18_35.android;
 
-import android.app.Activity;
-import android.content.ContextWrapper;
+import android.animation.Animator;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,19 +19,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
@@ -64,10 +58,8 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
-
-import org.w3c.dom.Text;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.level.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +68,7 @@ import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
-public class GameBoard extends AppCompatActivity implements View.OnClickListener {
+public class GameBoard extends AppCompatActivity implements View.OnClickListener,Animation.AnimationListener {
     TextView scoreView;
     Button nextLevel;
     Button mainMenu;
@@ -84,6 +76,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     TextView scopeLevel,openArrow,closeArrow;
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
+    Animation a;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
@@ -171,7 +164,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scopeLevel = findViewById(R.id.toolbar_text);
         scopeLevel.setText("scope 0");
 
-
+        a = AnimationUtils.loadAnimation(this, R.anim.slide_right);
         //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
@@ -239,11 +232,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void closeInventory(){
         if (inventoryLayout.isShown()) {
-            Fx.slide_left(this, inventoryLayout);
+            startAnimation("slide_left", this, inventoryLayout);
+            //Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
-            inventoryLayout.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.GONE);
+            //inventoryLayout.setVisibility(View.GONE);
+            //invRecyclerView.setVisibility(View.GONE);
 
 
 
@@ -283,6 +277,20 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+    public void startAnimation(String s, Context ctx, View v ){
+        switch (s) {
+            case "slide_left":
+                a = AnimationUtils.loadAnimation(ctx, R.anim.slide_left);
+                a.setAnimationListener(this);
+        }
+        if(a != null){
+            a.reset();
+            if(v != null){
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
 
     public synchronized void newSelection(Object object, View v) {
         try {
@@ -295,13 +303,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             //already selected
             if (adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.resetSelection(expression, (CardView) v);
-                // ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.GONE);
 
             }
             //not selected
             else if(!adapterLeft.selected.contains((int)v.getTag())){
                 adapterLeft.setSelection(expression, (CardView) v);
-               // ((TextView)v.findViewById(R.id.card_number_text_view)).setVisibility(View.VISIBLE);
+
 
             }
             //update rightside
@@ -364,10 +371,26 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         return false;
     }
 
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        inventoryLayout.setVisibility(View.GONE);
+        invRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
+
 
     public class BoardCallback extends ActionConsumer {
         @Override
-        public void handleAction(final Action action) throws UnhandledActionException, InterruptedException {
+        public void handleAction(final Action action) throws InterruptedException {
             gameChange.acquire();
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
@@ -379,6 +402,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if (action instanceof RefreshCurrentLevelAction){
                 level = ((RefreshCurrentLevelAction) action).level;
+                adapterLeft.updateGoal(level.goal);
             }
             else if (action instanceof RefreshRulesAction){
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
@@ -431,20 +455,57 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"You are winner!",Toast.LENGTH_LONG).show();
-                        if(!((VictoryConditionMetAction) action).hasNextLevel){
-                            nextLevel.setVisibility(View.GONE);
-                        }
-                        victoryScreen.setVisibility(View.VISIBLE);
-                        int currentScore = ((VictoryConditionMetAction) action).currentScore;
-                        int previousScore= ((VictoryConditionMetAction) action).previousScore;
-                        if(previousScore<0) {
-                            scoreView.setText("You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
-                        }
-                        else {
-                            scoreView.setText("You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
-                        }
+                        Expression goal=((VictoryConditionMetAction) action).goal;
+                        int position=adapterLeft.dataSet.indexOf(goal);
+                        adapterLeft.dataSet.remove(position);
+                        adapterLeft.notifyItemRemoved(position);
+                        final CardView cardView = (CardView) LayoutInflater.from(
+                                getCurrentFocus().getContext()).inflate
+                                (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
+                        CardDeflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap);
+                        ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
+                        CardDeflator.deflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap);
+                        cardView.animate().setListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
 
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                ((ViewGroup)cardView.getParent()).removeView(cardView);
+                                if(!((VictoryConditionMetAction) action).hasNextLevel){
+                                    nextLevel.setVisibility(View.GONE);
+                                }
+                                victoryScreen.setVisibility(View.VISIBLE);
+                                int currentScore = ((VictoryConditionMetAction) action).currentScore;
+                                int previousScore= ((VictoryConditionMetAction) action).previousScore;
+                                final String s = "You've completed the goal! Good job! \n";
+                                if(previousScore<0) {
+                                    scoreView.setText(s + "You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                                }
+                                else {
+                                    scoreView.setText(s + "You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                                }
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
+
+                            }
+                        });
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        int cardHeight=cardView.getLayoutParams().height;
+                        int cardWidth=cardView.getLayoutParams().width;
+                        cardView.setX((float) displayMetrics.widthPixels/2-cardWidth/2 );
+                        cardView.setY((float) displayMetrics.heightPixels/2-cardHeight/2);
+                        cardView.animate().setDuration(5000).scaleY(2).scaleX(2).start();
                     }
                 });
             }
@@ -497,7 +558,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(this);
                     popupWindow = new PopupWindow(popUpView);
 
-                    findViewById(R.id.activity_game).setOnTouchListener(new View.OnTouchListener() {
+
+                    View.OnTouchListener clickedOutside = new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             if(infoWindowClicked){
@@ -506,7 +568,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                             }
                             return true;
                         }
-                    });
+                    };
+
+
+                    //views touched that will remove the pop-up
+                    findViewById(R.id.activity_game).setOnTouchListener(clickedOutside);
+                    findViewById(R.id.game_left_side).setOnTouchListener(clickedOutside);
+                    findViewById(R.id.game_right_side).setOnTouchListener(clickedOutside);
 
                     View bigView = findViewById(R.id.game_board_bottom);
                     int height = bigView.getHeight() * 4 / 5;
@@ -526,7 +594,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
                     Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
-                    victoryScreen.setVisibility(View.GONE);
+                    Intent intent = new Intent(this, GameBoard.class); //create intent
+                    startActivity(intent); //start intent
+                    finish();
                 }
                 catch (InterruptedException e){
                     e.printStackTrace();

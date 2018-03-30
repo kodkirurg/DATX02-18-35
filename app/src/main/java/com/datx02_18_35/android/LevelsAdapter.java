@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.datx02_18_35.model.Util;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelCategory;
-import com.datx02_18_35.model.game.LevelCollection;
-import com.datx02_18_35.model.game.LevelProgression;
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelCategory;
+import com.datx02_18_35.model.level.LevelCollection;
+import com.datx02_18_35.model.level.LevelProgression;
 
 import java.util.ArrayList;
 import java.util.List;

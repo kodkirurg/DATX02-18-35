@@ -1,12 +1,14 @@
-package com.datx02_18_35.model.game;
+package com.datx02_18_35.model.rules;
 
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
 import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.expression.RuleType;
+import com.datx02_18_35.model.game.Session;
+import com.datx02_18_35.model.rules.IllegalRuleException;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.rules.RuleType;
 
 import java.util.Iterator;
 import java.util.List;

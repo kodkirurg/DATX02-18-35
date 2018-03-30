@@ -1,4 +1,4 @@
-package com.datx02_18_35.model.expression;
+package com.datx02_18_35.model.rules;
 
 /**
  * Created by robin on 2018-02-14.
