@@ -84,10 +84,10 @@ public class Rule {
 
                 legalRules.add(new Rule(RuleType.CONJUNCTION_INTRODUCTION, selection));
 
-                if (fst instanceof Implication && ((Implication) fst).operand1.equals(snd)) {
+                if (fst instanceof Implication && ((Implication) fst).getOperand1().equals(snd)) {
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, selection));
                 }
-                if (snd instanceof Implication && ((Implication) snd).operand1.equals(fst)){
+                if (snd instanceof Implication && ((Implication) snd).getOperand1().equals(fst)){
                     legalRules.add(new Rule(RuleType.IMPLICATION_ELIMINATION, snd,fst));
                 }
 
