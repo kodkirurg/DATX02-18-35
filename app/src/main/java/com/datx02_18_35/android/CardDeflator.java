@@ -269,32 +269,7 @@ public class CardDeflator{
     //sets text in textview by id.
     private static void sSymbol(Expression expression,CardView cardView,int rId, Map<String,String> symbolMap){
         ImageView imageView = cardView.findViewById(rId);
-        String symbol = "";
-        if(symbolMap.containsKey(expression.toString())){
-            symbol = symbolMap.get(expression.toString());
-        }
-
-        switch (symbol.toLowerCase()){
-            case "redball":
-                Tools.setImage(imageView,R.drawable.redball);
-                break;
-            case "blueball" :
-                Tools.setImage(imageView,R.drawable.blueball);
-                break;
-            case "greentriangle" :
-                Tools.setImage(imageView,R.drawable.greentriangle);
-                break;
-            case "yellowrectangle":
-                Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
-            case "absurdity":
-                Tools.setImage(imageView,R.drawable.absurdity);
-                break;
-            default:
-                Tools.setImage(imageView,R.drawable.dots);
-                break;
-
-        }
+        sSymbol(expression, imageView, symbolMap);
     }
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
         String symbol = "";
