@@ -594,7 +594,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 try {
                     Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
                     Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
-                    victoryScreen.setVisibility(View.GONE);
+                    Intent intent = new Intent(this, GameBoard.class); //create intent
+                    startActivity(intent); //start intent
+                    finish();
                 }
                 catch (InterruptedException e){
                     e.printStackTrace();
