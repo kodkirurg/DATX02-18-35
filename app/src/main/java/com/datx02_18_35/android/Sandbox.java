@@ -43,7 +43,9 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sandbox);
 
-        //init stuff here
+        //init sandbox board
+        initRightSide();
+        initLeftSide();
 
 
         button = findViewById(R.id.sandbox_button);
@@ -60,8 +62,8 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         int widthDP=Math.round(Tools.getWidthDp(this) - 130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
-        recyclerViewLeft = findViewById(R.id.sandboxLeft_recycler_view);
-        gridLayoutManagerLeft = new GridLayoutManager(this, spanCount);
+        recyclerViewLeft = (RecyclerView) findViewById(R.id.sandboxLeft_recycler_view);
+        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
 
         ArrayList<Expression> list = new ArrayList<>(GameBoard.level.usedSymbols);
@@ -73,7 +75,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     public void initRightSide(){
 
         recyclerViewRight = (RecyclerView) findViewById(R.id.sandboxRight_recycler_view);
-        gridLayoutManagerRight = new GridLayoutManager(this, 1);
+        gridLayoutManagerRight = new GridLayoutManager(getApplication(), 1);
         recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
 
         ArrayList<OperatorType> list = new ArrayList<>();
@@ -84,8 +86,6 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         adapterRight = new SandboxOperatorAdapter(list);
         recyclerViewRight.setAdapter(adapterRight);
     }
-
-
 
 
 

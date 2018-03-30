@@ -17,24 +17,23 @@
         >
 
 
-        <FrameLayout
-            android:id="@+id/sandbox_right_side"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sandboxRight_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:background="@color/WhiteSmoke"
-
-
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/sandbox_left_side"
+            app:layout_constraintStart_toEndOf="@id/sandboxLeft_recycler_view"
 
 
             />
 
-        <FrameLayout
-            android:id="@+id/sandbox_left_side"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sandboxLeft_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
