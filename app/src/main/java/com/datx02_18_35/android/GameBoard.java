@@ -1,22 +1,15 @@
 package com.datx02_18_35.android;
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,18 +21,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
@@ -68,12 +57,9 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDat
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
 
-import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.Level;
-
-import org.w3c.dom.Text;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.level.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;

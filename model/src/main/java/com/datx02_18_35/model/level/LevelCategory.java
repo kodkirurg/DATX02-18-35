@@ -1,6 +1,5 @@
-package com.datx02_18_35.model.game;
+package com.datx02_18_35.model.level;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

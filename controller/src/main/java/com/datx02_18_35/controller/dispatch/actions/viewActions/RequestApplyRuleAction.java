@@ -2,10 +2,7 @@ package com.datx02_18_35.controller.dispatch.actions.viewActions;
 
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Rule;
-
-import java.util.List;
+import com.datx02_18_35.model.rules.Rule;
 
 /**
  * Created by raxxor on 2018-03-11.

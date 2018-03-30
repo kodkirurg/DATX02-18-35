@@ -1,12 +1,11 @@
 package com.datx02_18_35.model.game;
 
-import com.datx02_18_35.model.expression.Absurdity;
-import com.datx02_18_35.model.expression.Conjunction;
-import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Implication;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.expression.RuleType;
+import com.datx02_18_35.model.rules.IllegalRuleException;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.rules.RuleType;
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.rules.TestRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,8 +14,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by robin on 2018-02-20.

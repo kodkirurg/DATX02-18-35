@@ -13,7 +13,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNewSessionAction;
-import com.datx02_18_35.model.game.Level;
+import com.datx02_18_35.model.level.Level;
 
 
 import game.logic_game.R;

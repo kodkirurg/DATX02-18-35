@@ -1,8 +1,7 @@
 package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
-import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.model.expression.Rule;
+import com.datx02_18_35.model.rules.Rule;
 
 /**
  * Created by robin on 2018-03-07.

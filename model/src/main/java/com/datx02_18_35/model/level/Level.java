@@ -1,4 +1,4 @@
-package com.datx02_18_35.model.game;
+package com.datx02_18_35.model.level;
 
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
@@ -6,6 +6,8 @@ import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.OperatorType;
 import com.datx02_18_35.model.expression.Proposition;
+import com.datx02_18_35.model.expression.ExpressionParseException;
+import com.datx02_18_35.model.expression.ExpressionParser;
 ;
 import java.io.Serializable;
 import java.util.ArrayList;

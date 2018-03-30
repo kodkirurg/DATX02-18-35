@@ -34,13 +34,13 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.ShowNewExpr
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Rule;
-import com.datx02_18_35.model.game.ExpressionParseException;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
-import com.datx02_18_35.model.game.Level;
-import com.datx02_18_35.model.game.LevelParseException;
-import com.datx02_18_35.model.game.LevelProgression;
+import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelParseException;
+import com.datx02_18_35.model.level.LevelProgression;
 
 import java.util.List;
 import java.util.Map;

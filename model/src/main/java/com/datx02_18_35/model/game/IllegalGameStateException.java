@@ -5,7 +5,7 @@ package com.datx02_18_35.model.game;
  */
 
 public class IllegalGameStateException extends Exception {
-    IllegalGameStateException(String message) {
+    public IllegalGameStateException(String message) {
         super(message);
     }
 }
