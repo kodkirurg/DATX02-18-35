@@ -89,6 +89,7 @@ public class Controller extends ActionConsumer {
             }
             Level level = ((RequestStartNewSessionAction) action).level;
             game.startLevel(level);
+
         }
         else if (action instanceof RequestCurrentLevelAction){
             Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
@@ -102,6 +103,7 @@ public class Controller extends ActionConsumer {
             game.assertSessionInProgress();
             game.startNextLevel();
             game.assertSessionInProgress();
+            action.callback(new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap()));
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshHypothesisAction());
             action.callback(getRefreshGameboardAction());
