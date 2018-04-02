@@ -19,6 +19,7 @@ public class CardFactory {
 
     public CardView generateCard(Context context, Expression expr, Map<String,String> symbolMap, int pWidth, int dpHeight){
         topCardView = new CardView(context);
+
         return null;
     }
 }
