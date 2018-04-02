@@ -1,4 +1,4 @@
-TITLE *Title goes here*
+TITLE Absurdity-level
 
 DESCRIPTION START
 *Text goes here*
