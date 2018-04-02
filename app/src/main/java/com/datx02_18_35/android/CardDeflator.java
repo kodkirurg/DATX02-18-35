@@ -2,6 +2,8 @@ package com.datx02_18_35.android;
 
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -248,6 +250,10 @@ public class CardDeflator{
             }
         }
         TextView cardNumberView = new TextView(cardView.getContext());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        cardNumberView.setLayoutParams(lp);
+        cardNumberView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        cardNumberView.setTextSize(TypedValue.COMPLEX_UNIT_SP,25f);
         cardNumberView.setId(R.id.card_number_text_view);
         cardNumberView.setElevation(cardView.getElevation()+1);
         cardNumberView.setVisibility(View.GONE);
