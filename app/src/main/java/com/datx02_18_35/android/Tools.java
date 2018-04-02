@@ -69,7 +69,7 @@ class   Tools {
 
 
     //screen
-    static float getWidthDp(Context context){
+    static float getWidthDpFromPx(Context context){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();

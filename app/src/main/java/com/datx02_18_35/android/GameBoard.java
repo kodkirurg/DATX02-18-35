@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -191,7 +190,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     private void initLeftSide() {
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - (20+130*2);
+        int widthDP=Math.round(Tools.getWidthDpFromPx(getApplication().getApplicationContext())) - (20+130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
