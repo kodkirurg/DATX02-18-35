@@ -62,7 +62,8 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/undefined"
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_margin="5dp"/>
 
         </RelativeLayout>
 
