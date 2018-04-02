@@ -24,10 +24,10 @@ import game.logic_game.R;
 public class Sandbox extends AppCompatActivity implements View.OnClickListener {
 
 
-    public static boolean maySelectOperator=false;
-    public static OperatorType operatorSelcted;
-    public static Button button;
-    public static String reason;
+    public boolean maySelectOperator=false;
+    public OperatorType operatorSelcted;
+    public Button button;
+    public String reason;
 
 
     //Recyclerviews, gridlayouts and adapters
@@ -67,7 +67,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
 
         ArrayList<Expression> list = new ArrayList<>(GameBoard.level.usedSymbols);
-        adapterLeft = new SandboxCardsAdapter(list);
+        adapterLeft = new SandboxCardsAdapter(list,this);
         recyclerViewLeft.setAdapter(adapterLeft);
     }
 
@@ -83,7 +83,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         list.add(OperatorType.DISJUNCTION);
         list.add(OperatorType.CONJUNCTION);
 
-        adapterRight = new SandboxOperatorAdapter(list);
+        adapterRight = new SandboxOperatorAdapter(list,this);
         recyclerViewRight.setAdapter(adapterRight);
     }
 

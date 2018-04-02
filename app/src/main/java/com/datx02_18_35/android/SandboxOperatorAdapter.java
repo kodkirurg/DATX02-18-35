@@ -22,10 +22,12 @@ import game.logic_game.R;
 public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperatorAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<OperatorType> dataSet;
     public static ViewHolder previousSelectedOperatorHolder=null;
+    Sandbox activity;
 
 
-    public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet){
+    public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet, Sandbox activity){
         this.dataSet=dataSet;
+        this.activity=activity;
     }
 
 
@@ -73,22 +75,22 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
         int pos = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewAdapterPosition();
         //get viewholder
         ViewHolder holder = (SandboxOperatorAdapter.ViewHolder) view.getTag(R.string.viewholders);
-        if(dataSet.get(pos) == Sandbox.operatorSelcted){
+        if(dataSet.get(pos) == activity.operatorSelcted){
             //Un-select
-            Sandbox.operatorSelcted=null;
-            Sandbox.button.setText("Make assumption!");
-            Sandbox.button.setBackgroundColor(Color.GREEN);
+            activity.operatorSelcted=null;
+            activity.button.setText("Make assumption!");
+            activity.button.setBackgroundColor(Color.GREEN);
             previousSelectedOperatorHolder=null;
             holder.frame.setScaleX((float) 1);
             holder.frame.setScaleY((float) 1 );
         }
-        else if (Sandbox.maySelectOperator){
+        else if (activity.maySelectOperator){
             //set new other operator selection
             holder.frame.setScaleX((float) 1.30);
             holder.frame.setScaleY((float) 1.30 );
-            Sandbox.button.setText("No assumption(exit)");
-            Sandbox.button.setBackgroundColor(Color.RED);
-            Sandbox.operatorSelcted=dataSet.get(pos);
+            activity.button.setText("No assumption(exit)");
+            activity.button.setBackgroundColor(Color.RED);
+            activity.operatorSelcted=dataSet.get(pos);
             if(previousSelectedOperatorHolder!=null){
                 //un-select other operator previously selected
                 previousSelectedOperatorHolder.frame.setScaleX((float) 1);
