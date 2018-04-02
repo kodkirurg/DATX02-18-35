@@ -94,7 +94,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         switch ( view.getId()){
             case R.id.sandbox_button :
                 if(operatorSelcted==null & maySelectOperator ){
-                    Expression expression = SandboxCardsAdapter.selected.get(0);
+                    Expression expression = adapterLeft.selected.get(0);
                     try {
                         Controller.getSingleton().sendAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
 
@@ -114,7 +114,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         //Needed
         maySelectOperator=false;
         operatorSelcted=null;
-        SandboxCardsAdapter.selected=new ArrayList<Expression>();
-        SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
+        adapterLeft.selected=new ArrayList<Expression>();
+        adapterRight.previousSelectedOperatorHolder=null;
     }
 }

@@ -22,7 +22,7 @@ import game.logic_game.R;
 
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    public static ArrayList<Expression> selected = new ArrayList<Expression>();
+    public ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
     private Sandbox activity;
 
@@ -100,9 +100,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 //restore animations
                 firstSelected.cardView.setScaleX((float) 1.00);
                 firstSelected.cardView.setScaleY((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
+                activity.adapterRight.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
+                activity.adapterRight.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
+                activity.adapterRight.previousSelectedOperatorHolder=null;
                 activity.button.setText("No " + activity.reason +"(exit)");
                 activity.button.setBackgroundColor(Color.RED);
 
