@@ -55,6 +55,7 @@ public class CardDeflator1 {
             Expression op2 = op.getOperand2();
 
             ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
+            middleImage.setVisibility(View.VISIBLE);
             if(op instanceof Implication){
                 middleImage.setBackgroundResource(R.drawable.vertical_implication);
             }
