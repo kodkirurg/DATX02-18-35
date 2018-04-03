@@ -39,11 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button quit_button = findViewById(R.id.quit_button);
         quit_button.setOnClickListener(this);
 
-        RelativeLayout rl = findViewById(R.id.activity_main);
-        CardView cardView = (CardView) LayoutInflater.from(rl.getContext()).inflate(R.layout.card_expression1, rl,false);
-        rl.addView(cardView);
-
-
         // Read model config files
         try {
             AssetManager assets = getApplicationContext().getAssets();

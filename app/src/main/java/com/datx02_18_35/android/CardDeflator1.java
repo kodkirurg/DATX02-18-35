@@ -39,22 +39,17 @@ public class CardDeflator1 {
 
     public static void deflate(final CardView cardView, Expression expr, final Map<String,String> symbolMap, final double widthSmallerCard, final double heightSmallerCard){
 
+
+        cardView.getLayoutParams().height=(int)heightSmallerCard;
+        cardView.getLayoutParams().width=(int)widthSmallerCard;
+
         //whole card one symbol
         if(expr instanceof Proposition | expr instanceof Absurdity){
-            cardView.removeAllViews();
-
-            CardView card =  new CardView(cardView.getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            params.setMargins(5,5,5,5);
-            card.setLayoutParams(params);
-            ImageView imageView = new ImageView(cardView.getContext());
-            card.addView(imageView);
-            cardView.addView(card);
+            ImageView imageView = cardView.findViewById(R.id.card_expression_quadrant1234);
+            imageView.setVisibility(View.VISIBLE);
             sSymbol(expr,imageView,symbolMap);
         }
+        /*
         else {
             Operator op = (Operator) expr;
             Expression op1 = op.getOperand1();
@@ -291,7 +286,8 @@ public class CardDeflator1 {
 
                 }
             }
-        }
+        }*/
+        /*
         TextView cardNumberView = new TextView(cardView.getContext());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         cardNumberView.setLayoutParams(lp);
@@ -301,6 +297,7 @@ public class CardDeflator1 {
         cardNumberView.setElevation(cardView.getElevation()+1);
         cardNumberView.setVisibility(View.GONE);
         cardView.addView(cardNumberView);
+        */
     }
 
     //remove view by id
