@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 
 import java.util.Map;
+import java.util.zip.Inflater;
 
 import game.logic_game.R;
 
@@ -36,11 +38,15 @@ public class CardDeflator1 {
     private static final double heightRatio = 0.41;
 
 
-    public static void deflate(final CardView cardView, Expression expr, final Map<String,String> symbolMap, final double widthSmallerCard, final double heightSmallerCard) {
+    public static void deflate(final CardView cardView, Expression expr, final Map<String,String> symbolMap, final double width, final double height, boolean matchParent) {
 
 
-        cardView.getLayoutParams().height = (int) heightSmallerCard;
-        cardView.getLayoutParams().width = (int) widthSmallerCard;
+
+        if(!matchParent){
+            cardView.getLayoutParams().height = (int) height;
+            cardView.getLayoutParams().width = (int) width;
+
+        }
 
         //whole card one symbol
         if (expr instanceof Proposition | expr instanceof Absurdity) {
@@ -91,6 +97,24 @@ public class CardDeflator1 {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
                     imageUpperMiddle.setVisibility(View.VISIBLE);
+
+
+                    if(op11 instanceof Operator & !matchParent){
+                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
+                        rmView(R.id.card_expression_quadrant1,cardView);
+                        CardView cardView1 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression1,cardViewQuad , false);
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) cardView1.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        cardView1.requestLayout();
+                        deflate(cardView1,op11,symbolMap,width*widthRatio,height*heightRatio,true);
+                        ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1)).addView(cardView1);
+                        Log.d(Tools.debug, "deflate: " + op11.toString());
+
+                    }
+
+
+
                 }
 
 
@@ -133,6 +157,8 @@ public class CardDeflator1 {
                 }
 
 
+
+
 /*
                 final CardView item = cardView.findViewById(R.id.card_card_2_3);
                 final CardView smallCardView = (CardView) LayoutInflater.from(item.getContext()).inflate(R.layout.card_expression, item, false);
@@ -151,6 +177,7 @@ public class CardDeflator1 {
 
             }
 
+            /*
         TextView cardNumberView = new TextView(cardView.getContext());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         cardNumberView.setLayoutParams(lp);
@@ -160,6 +187,7 @@ public class CardDeflator1 {
         cardNumberView.setElevation(cardView.getElevation()+1);
         cardNumberView.setVisibility(View.GONE);
         cardView.addView(cardNumberView);
+        */
 
         }
     }
@@ -170,6 +198,7 @@ public class CardDeflator1 {
         ViewGroup viewGroup = (ViewGroup) view.getParent();
         viewGroup.removeView(view);
     }
+
     //expand to fill by id
     private static void mParent(int rId,CardView card){
         View view = card.findViewById(rId);
@@ -185,6 +214,8 @@ public class CardDeflator1 {
         String symbol = "";
         //assume standard is invisible
         imageView.setVisibility(View.VISIBLE);
+        View view = (View) imageView.getParent();
+        view.setVisibility(View.VISIBLE);
         if(symbolMap.containsKey(expression.toString())){
             symbol = symbolMap.get(expression.toString());
         }
@@ -206,7 +237,6 @@ public class CardDeflator1 {
                 Tools.setImage(imageView,R.drawable.absurdity);
                 break;
             default:
-                Log.d(Tools.debug,expression.toString());
                 Tools.setImage(imageView,R.drawable.dots);
                 break;
 

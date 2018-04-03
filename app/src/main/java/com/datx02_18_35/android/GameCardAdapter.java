@@ -69,7 +69,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            CardDeflator1.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,120,170);
+            CardDeflator1.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,120,170,false);
             if(dataSet.get(position).equals(goal)){
                 setVictoryAnimation(holder.cardView);
             }
