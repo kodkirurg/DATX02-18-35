@@ -1,13 +1,18 @@
 package com.datx02_18_35.android;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
@@ -30,9 +35,11 @@ public class CardDeflator{
     private CardDeflator(){};
 
     private static final String dots = " .. ";
+    private static final double widthRatio = 0.43;
+    private static final double heightRatio = 0.41;
 
 
-    public static void deflate(CardView cardView, Expression expr, Map<String,String> symbolMap){
+    public static void deflate(final CardView cardView, Expression expr, final Map<String,String> symbolMap, final double widthSmallerCard, final double heightSmallerCard){
 
         //whole card one symbol
         if(expr instanceof Proposition | expr instanceof Absurdity){
@@ -184,12 +191,55 @@ public class CardDeflator{
                 if( op1 instanceof Operator & op2 instanceof Operator ){
                     //lower and upper
                     Operator lower = (Operator) op2;
-                    Expression lower_left = lower.getOperand1();
+                    final Expression lower_left = lower.getOperand1();
                     Expression lower_right = lower.getOperand2();
 
                     //lower left
                     if(lower_left instanceof Operator){
-                        sDotsSymbol(cardView,R.id.card_image_3);
+
+                        final RelativeLayout item = cardView.findViewById(R.id.card_card_2_3);
+                        final CardView smallCardView = (CardView) LayoutInflater.from(item.getContext()).inflate(R.layout.card_expression, item,false);
+
+
+                        double newWidthSmallerCard = widthSmallerCard * widthRatio;
+                        double newHeightSmallerCard = heightSmallerCard * heightRatio;
+
+                        CardDeflator.deflate(smallCardView,lower_left,symbolMap,newWidthSmallerCard,newHeightSmallerCard);
+
+
+
+                        //item.addView(smallCardView);
+
+
+
+                        item.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                            @Override
+                            public boolean onPreDraw() {
+                                item.getViewTreeObserver().removeOnPreDrawListener(this);
+
+
+
+                                smallCardView.setScaleX((float)0.2);
+                                smallCardView.setScaleY((float)0.2);
+                                smallCardView.setElevation(50);
+                                item.removeAllViews();
+
+
+
+                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(50,74);
+                                lp.gravity = Gravity.BOTTOM;
+                                smallCardView.setLayoutParams(lp);
+                                cardView.addView(smallCardView);
+
+
+                                Log.d(Tools.debug, "deflate: " + lower_left.toString()+ '\n' + smallCardView.getY());
+                                return false;
+                            }
+
+                        });
+
+
+                        //sDotsSymbol(cardView,R.id.card_image_3);
                     }
                     else{
                         sSymbol( lower_left,cardView,R.id.card_image_3,symbolMap);

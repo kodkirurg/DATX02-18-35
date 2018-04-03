@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,7 +53,7 @@ public class CardFactory {
 
 
     //OnBindviewholder uses this to generate the correct card from template
-    static void paintExpressionOnTemplate(CardView cardView, Expression expr, Map<String,String> symbolMap){
+    static void paintExpressionOnTemplate(final CardView cardView, Expression expr, Map<String,String> symbolMap){
 
         //leaf
         if(expr instanceof Proposition | expr instanceof Absurdity){
@@ -77,32 +78,50 @@ public class CardFactory {
         // 1 operator 2 operands
         if( (op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
 
-
-            //try to create relative layout first
-            RelativeLayout relativeLayout = new RelativeLayout(cardView.getContext());
+            final RelativeLayout relativeLayout = new RelativeLayout(cardView.getContext());
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            relativeLayout.setLayoutParams(lp);
             cardView.addView(relativeLayout);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(2*cardView.getLayoutParams().height)/5);
 
-            lp.gravity= Gravity.END;
+            relativeLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    cardView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,relativeLayout.getHeight()*2/5);
 
-            //upper card
-            CardView cardView1 = new CardView(cardView.getContext());
-            cardView1.setLayoutParams(lp);
-            cardView1.setBackgroundColor(Color.BLACK);
+                    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-            //lower card
-            CardView cardView2 = new CardView(cardView.getContext());
-            cardView2.setLayoutParams(lp);
-            cardView2.setBackgroundColor(Color.BLUE);
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, relativeLayout.getHeight()*2/5);
 
-
-            //middle operator
-            ImageView imageView = new ImageView(cardView.getContext());
+                    //upper card
+                    CardView cardView1 = new CardView(cardView.getContext());
+                    cardView1.setLayoutParams(lp);
+                    cardView1.setBackgroundColor(Color.YELLOW);
 
 
-            cardView.addView(cardView1);
-            cardView.addView(cardView2);
+                    //lower card
+                    CardView cardView2 = new CardView(cardView.getContext());
+                    cardView2.setBackgroundColor(Color.BLUE);
+
+
+                    //middle operator
+                    ImageView imageView = new ImageView(cardView.getContext());
+                    imageView.setBackgroundColor(Color.RED);
+                    imageView.setLayoutParams(lp1);
+
+
+                    Log.d(Tools.debug,"" + imageView.getMeasuredHeight());
+
+                    //cardView.addView(cardView1);
+                    //cardView.addView(cardView2);
+                    cardView.addView(imageView);
+
+
+                    return false;
+                }
+            });
+
         }
 
     }

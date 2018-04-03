@@ -56,7 +56,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.WHITE);
         if(dataSet.get(position)!= null & !holder.alreadyBound) {
-            CardDeflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
+            CardDeflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,50,74);
             holder.alreadyBound = true;
         }
     }

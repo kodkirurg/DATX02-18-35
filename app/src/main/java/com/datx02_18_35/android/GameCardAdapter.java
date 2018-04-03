@@ -55,7 +55,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cardView = CardFactory.generateTemplate(activity.getApplicationContext(),120,170);
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
         return new ViewHolder(cardView);
     }
 
@@ -69,8 +69,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            //CardDeflator.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
-            CardFactory.paintExpressionOnTemplate(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
+            CardDeflator.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,50,74);
+            //CardFactory.paintExpressionOnTemplate(holder.cardView,dataSet.get(position),GameBoard.symbolMap);
             if(dataSet.get(position).equals(goal)){
                 setVictoryAnimation(holder.cardView);
             }
