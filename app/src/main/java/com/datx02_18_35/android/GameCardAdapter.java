@@ -87,7 +87,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()),(CardView) v);
+        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()), v);
         if(((GameBoard)activity).infoWindowClicked){
             ((GameBoard)activity).infoWindowClicked=false;
             ((GameBoard)activity).popupWindow.dismiss();
@@ -97,13 +97,14 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void setSelection(Expression expression, CardView v) {
         selected.add((int) v.getTag());
         selectedView.put((int) v.getTag(),v);
-        v.findViewById(R.id.card_number_text_view).setVisibility(View.VISIBLE);
+        //v.findViewById(R.id.card_number_text_view).setVisibility(View.VISIBLE);
         currentHighestSelectedCard++;
-        ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+currentHighestSelectedCard);
+       // ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+currentHighestSelectedCard);
         setAnimations(v);
     }
 
     void resetSelection(Expression expression, CardView v) {
+        /*
         v.findViewById(R.id.card_number_text_view).setVisibility(View.GONE);
         int deSelectNumber = Integer.parseInt(((TextView)v.findViewById(R.id.card_number_text_view)).getText().toString());
         currentHighestSelectedCard--;
@@ -123,7 +124,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 loopstop--;
            }
         }
-
+        */
         CardView cardView = selectedView.get((int) v.getTag());
         restoreAnimations(cardView);
         selectedView.remove(expression.hashCode());
