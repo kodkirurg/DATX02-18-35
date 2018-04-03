@@ -46,18 +46,15 @@ public class CardDeflator1 {
         //whole card one symbol
         if(expr instanceof Proposition | expr instanceof Absurdity){
             ImageView imageView = cardView.findViewById(R.id.card_expression_quadrant1234);
-            imageView.setVisibility(View.VISIBLE);
             sSymbol(expr,imageView,symbolMap);
         }
-        /*
+
         else {
             Operator op = (Operator) expr;
             Expression op1 = op.getOperand1();
             Expression op2 = op.getOperand2();
 
-
-            cardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.WHITE);
-            ImageView middleImage = cardView.findViewById(R.id.card_image_middle);
+            ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
             if(op instanceof Implication){
                 middleImage.setBackgroundResource(R.drawable.vertical_implication);
             }
@@ -68,26 +65,15 @@ public class CardDeflator1 {
                 middleImage.setBackgroundResource(R.drawable.horizontal_conjunction);
             }
 
-            // set big operator in middle + no complex on up/down card.
+
+            //no complex on up/down card.
             if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
-                rmView(R.id.card_frame_lower,cardView);
-                rmView(R.id.card_frame_upper,cardView);
-                rmView(R.id.card_card_1_1,cardView);
-                rmView(R.id.card_card_2_4,cardView);
+                ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
+                sSymbol(op1,imageViewUpper,symbolMap);
+                sSymbol(op2,imageViewLower,symbolMap);
 
-                mParent(R.id.card_card_1_2,cardView);
-                mParent(R.id.card_card_2_3,cardView);
 
-                if(op1 instanceof Proposition) {
-                    sSymbol((Proposition) op1, cardView, R.id.card_image_2, symbolMap);
-                }else {
-                    sSymbol((Absurdity) op1,cardView,R.id.card_image_2,symbolMap);
-                }
-                if(op2 instanceof Proposition) {
-                    sSymbol((Proposition) op2, cardView, R.id.card_image_3, symbolMap);
-                }else {
-                    sSymbol((Absurdity) op2, cardView, R.id.card_image_3, symbolMap);
-                }
             }
             else{
                 ImageView upperImage = cardView.findViewById(R.id.card_image_upper);
@@ -190,6 +176,10 @@ public class CardDeflator1 {
                     //lower left
                     if(lower_left instanceof Operator){
 
+
+
+
+
                         final CardView item = cardView.findViewById(R.id.card_card_2_3);
                         final CardView smallCardView = (CardView) LayoutInflater.from(item.getContext()).inflate(R.layout.card_expression, item,false);
 
@@ -201,33 +191,13 @@ public class CardDeflator1 {
 
 
 
-                        //item.addView(smallCardView);
-
-
-
-                        item.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                item.getViewTreeObserver().removeOnPreDrawListener(this);
-
-
-                                smallCardView.setScaleX((float)0.4);
-                                smallCardView.setScaleY((float)0.4);
-                                smallCardView.setElevation(50);
-                                item.removeAllViews();
-
-
-                                item.addView(smallCardView);
-
-
-                                Log.d(Tools.debug, "deflate: " + lower_left.toString());
-                                return false;
-                            }
-
-                        });
-
-
                         //sDotsSymbol(cardView,R.id.card_image_3);
+
+
+
+
+
+
                     }
                     else{
                         sSymbol( lower_left,cardView,R.id.card_image_3,symbolMap);
@@ -286,7 +256,7 @@ public class CardDeflator1 {
 
                 }
             }
-        }*/
+        }
         /*
         TextView cardNumberView = new TextView(cardView.getContext());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -319,6 +289,8 @@ public class CardDeflator1 {
     }
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
         String symbol = "";
+        //assume standard is invisible
+        imageView.setVisibility(View.VISIBLE);
         if(symbolMap.containsKey(expression.toString())){
             symbol = symbolMap.get(expression.toString());
         }
