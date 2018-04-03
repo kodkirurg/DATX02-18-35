@@ -76,7 +76,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     TextView scopeLevel,openArrow,closeArrow;
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
-    Animation a;
+    Animation slide_left;
+    Animation delete;
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
@@ -164,12 +165,16 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scopeLevel = findViewById(R.id.toolbar_text);
         scopeLevel.setText("scope 0");
 
-        a = AnimationUtils.loadAnimation(this, R.anim.slide_right);
         //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
 
         gameChange.release();
+        //Animations
+        slide_left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+        slide_left.setAnimationListener(this);
+        delete = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+        delete.setAnimationListener(this);
     }
 
     private void initRightSide() {
@@ -232,7 +237,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public void closeInventory(){
         if (inventoryLayout.isShown()) {
-            startAnimation("slide_left", this, inventoryLayout);
+            startAnimation(slide_left, inventoryLayout);
             //Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
@@ -277,12 +282,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         }
     }
-    public void startAnimation(String s, Context ctx, View v ){
-        switch (s) {
-            case "slide_left":
-                a = AnimationUtils.loadAnimation(ctx, R.anim.slide_left);
-                a.setAnimationListener(this);
-        }
+    public void startAnimation(Animation a, View v ){
         if(a != null){
             a.reset();
             if(v != null){
@@ -378,8 +378,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        inventoryLayout.setVisibility(View.GONE);
-        invRecyclerView.setVisibility(View.GONE);
+        if(animation==slide_left) {
+            inventoryLayout.setVisibility(View.GONE);
+            invRecyclerView.setVisibility(View.GONE);
+        }
+        else if(animation==delete){
+            //delete selection
+        }
     }
 
     @Override
