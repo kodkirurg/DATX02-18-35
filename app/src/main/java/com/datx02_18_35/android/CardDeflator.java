@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.LayoutDirection;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -197,7 +198,7 @@ public class CardDeflator{
                     //lower left
                     if(lower_left instanceof Operator){
 
-                        final RelativeLayout item = cardView.findViewById(R.id.card_card_2_3);
+                        final CardView item = cardView.findViewById(R.id.card_card_2_3);
                         final CardView smallCardView = (CardView) LayoutInflater.from(item.getContext()).inflate(R.layout.card_expression, item,false);
 
 
@@ -218,21 +219,16 @@ public class CardDeflator{
                                 item.getViewTreeObserver().removeOnPreDrawListener(this);
 
 
-
-                                smallCardView.setScaleX((float)0.2);
-                                smallCardView.setScaleY((float)0.2);
+                                smallCardView.setScaleX((float)0.4);
+                                smallCardView.setScaleY((float)0.4);
                                 smallCardView.setElevation(50);
                                 item.removeAllViews();
 
 
-
-                                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(50,74);
-                                lp.gravity = Gravity.BOTTOM;
-                                smallCardView.setLayoutParams(lp);
-                                cardView.addView(smallCardView);
+                                item.addView(smallCardView);
 
 
-                                Log.d(Tools.debug, "deflate: " + lower_left.toString()+ '\n' + smallCardView.getY());
+                                Log.d(Tools.debug, "deflate: " + lower_left.toString());
                                 return false;
                             }
 
