@@ -101,6 +101,35 @@
             />
 
         <ImageView
+            android:id="@+id/card_expression_quadrant12"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            android:layout_margin="4dp"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/card_expression_guideline_horizontal_upper"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            />
+
+        <ImageView
+            android:id="@+id/card_expression_quadrant34"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            android:background="@color/ForestGreen"
+            android:layout_margin="4dp"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/card_expression_guideline_horizontal_lower"
+            app:layout_constraintRight_toRightOf="parent"
+
+            />
+
+        <ImageView
             android:id="@+id/card_expression_top_mid"
             android:layout_width="0dp"
             android:layout_height="0dp"
