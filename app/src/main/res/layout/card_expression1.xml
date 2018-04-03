@@ -130,6 +130,17 @@
             />
 
         <ImageView
+            android:id="@+id/card_expression_quadrant1234"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:background="@color/Black"
+            android:layout_margin="4dp"
+
+
+            />
+
+        <ImageView
             android:id="@+id/card_expression_top_mid"
             android:layout_width="0dp"
             android:layout_height="0dp"
