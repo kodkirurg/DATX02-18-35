@@ -1,20 +1,15 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
 import com.datx02_18_35.model.expression.Expression;
-import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.OperatorType;
 
 import java.util.ArrayList;
@@ -59,7 +54,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     public void initLeftSide(){
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(this) - 130*2);
+        int widthDP=Math.round(Tools.getWidthDpFromPx() - 130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.sandboxLeft_recycler_view);

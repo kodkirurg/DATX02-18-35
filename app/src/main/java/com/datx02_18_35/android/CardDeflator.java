@@ -1,14 +1,12 @@
 package com.datx02_18_35.android;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.support.v7.widget.CardView;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -23,241 +21,212 @@ import java.util.Map;
 import game.logic_game.R;
 
 /**
- * Created by robin on 2018-03-27.
+ * Created by raxxor(Johannes) on 2018-04-03.
  */
 
-public class CardDeflator{
-    private CardDeflator(){};
+public class CardDeflator {
 
     private static final String dots = " .. ";
+    private static final double widthRatio = 0.43;
+    private static final double heightRatio = 0.41;
 
 
-    public static void deflate(CardView cardView, Expression expr, Map<String,String> symbolMap){
+    public static void deflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final double width, final double height, boolean matchParent) {
+
+
+
+        CardView cardView11 = null;
+        CardView cardView12 = null;
+        CardView cardView21 = null;
+        CardView cardView22 = null;
+        @SuppressLint("CutPasteId") final CardView quadrentReference1 = cardView.findViewById(R.id.card_expression_card_quadrant1);
+        @SuppressLint("CutPasteId") final CardView quadrentReference2 = cardView.findViewById(R.id.card_expression_card_quadrant2);
+        @SuppressLint("CutPasteId") final CardView quadrentReference3 = cardView.findViewById(R.id.card_expression_card_quadrant3);
+        @SuppressLint("CutPasteId") final CardView quadrentReference4 = cardView.findViewById(R.id.card_expression_card_quadrant4);
+
+        if(!matchParent){
+            cardView.getLayoutParams().height = (int) height;
+            cardView.getLayoutParams().width = (int) width;
+
+        }
 
         //whole card one symbol
-        if(expr instanceof Proposition | expr instanceof Absurdity){
-            cardView.removeAllViews();
+        if (expr instanceof Proposition | expr instanceof Absurdity) {
+            ImageView imageView = cardView.findViewById(R.id.card_expression_quadrant1234);
+            sSymbol(expr, imageView, symbolMap);
 
-            CardView card =  new CardView(cardView.getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            params.setMargins(5,5,5,5);
-            card.setLayoutParams(params);
-            ImageView imageView = new ImageView(cardView.getContext());
-            card.addView(imageView);
-            cardView.addView(card);
-            sSymbol(expr,imageView,symbolMap);
-        }
-        else {
+            //clean-up
+            rmView(R.id.card_expression_card_quadrant1,cardView);
+            rmView(R.id.card_expression_card_quadrant2,cardView);
+            rmView(R.id.card_expression_card_quadrant3,cardView);
+            rmView(R.id.card_expression_card_quadrant4,cardView);
+
+        } else {
             Operator op = (Operator) expr;
-            Expression op1 = op.getOperand1();
-            Expression op2 = op.getOperand2();
+            Expression exp1 = op.getOperand1();
+            Expression exp2 = op.getOperand2();
 
-
-            cardView.findViewById(R.id.card_frame_middle).setBackgroundColor(Color.WHITE);
-            ImageView middleImage = cardView.findViewById(R.id.card_image_middle);
-            if(op instanceof Implication){
+            ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
+            if (op instanceof Implication) {
                 middleImage.setBackgroundResource(R.drawable.vertical_implication);
-            }
-            else if(op instanceof Disjunction){
+            } else if (op instanceof Disjunction) {
                 middleImage.setBackgroundResource(R.drawable.horizontal_disjunction);
-            }
-            else if(op instanceof Conjunction){
+            } else if (op instanceof Conjunction) {
                 middleImage.setBackgroundResource(R.drawable.horizontal_conjunction);
             }
 
-            // set big operator in middle + no complex on up/down card.
-            if ((op1 instanceof Proposition | op1 instanceof Absurdity) &  (op2 instanceof Proposition | op2 instanceof Absurdity) ){
-                rmView(R.id.card_frame_lower,cardView);
-                rmView(R.id.card_frame_upper,cardView);
-                rmView(R.id.card_card_1_1,cardView);
-                rmView(R.id.card_card_2_4,cardView);
 
-                mParent(R.id.card_card_1_2,cardView);
-                mParent(R.id.card_card_2_3,cardView);
+            //no complex on up/down card.
+            if ((exp1 instanceof Proposition | exp1 instanceof Absurdity) & (exp2 instanceof Proposition | exp2 instanceof Absurdity)) {
+                ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
+                sSymbol(exp1, imageViewUpper, symbolMap);
+                sSymbol(exp2, imageViewLower, symbolMap);
 
-                if(op1 instanceof Proposition) {
-                    sSymbol((Proposition) op1, cardView, R.id.card_image_2, symbolMap);
-                }else {
-                    sSymbol((Absurdity) op1,cardView,R.id.card_image_2,symbolMap);
-                }
-                if(op2 instanceof Proposition) {
-                    sSymbol((Proposition) op2, cardView, R.id.card_image_3, symbolMap);
-                }else {
-                    sSymbol((Absurdity) op2, cardView, R.id.card_image_3, symbolMap);
-                }
-            }
-            else{
-                ImageView upperImage = cardView.findViewById(R.id.card_image_upper);
-                ImageView lowerImage = cardView.findViewById(R.id.card_image_lower);
-                cardView.findViewById(R.id.card_frame_lower).setBackgroundColor(Color.WHITE);
-                cardView.findViewById(R.id.card_frame_upper).setBackgroundColor(Color.WHITE);
+                //clean-up
+                rmView(R.id.card_expression_card_quadrant1,cardView);
+                rmView(R.id.card_expression_card_quadrant2,cardView);
+                rmView(R.id.card_expression_card_quadrant3,cardView);
+                rmView(R.id.card_expression_card_quadrant4,cardView);
+
+            } else {
 
 
+                if (exp1 instanceof Proposition | exp1 instanceof Absurdity) {
+                    //Upper
+                    ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                    sSymbol(exp1, imageViewUpper, symbolMap);
 
-                if( op1 instanceof Operator &  (op2 instanceof Proposition | op2 instanceof Absurdity) ) {
-                    //upper
-                    Operator upper = (Operator) op1;
-                    Expression upper_left = upper.getOperand1();
-                    Expression upper_right = upper.getOperand2();
-
-                    //Upper left
-                    if( upper_left instanceof Operator ){
-                        sDotsSymbol(cardView,R.id.card_image_2);
-                    }
-                    else{
-                        sSymbol( upper_left,cardView,R.id.card_image_2,symbolMap);
-                    }
-
-                    //Upper right
-                    if( upper_right instanceof Operator ){
-                        sDotsSymbol(cardView,R.id.card_image_1);
-                    }
-                    else{
-                        sSymbol( upper_right,cardView,R.id.card_image_1,symbolMap);
-                    }
-                    //Upper middle
-                    if(upper instanceof Implication){
-                        upperImage.setBackgroundResource(R.drawable.horizontal_implication);
-                    }
-                    else if(upper instanceof Disjunction){
-                        upperImage.setBackgroundResource(R.drawable.vertical_disjunction);
-                    }
-                    else if(upper instanceof Conjunction){
-                        upperImage.setBackgroundResource(R.drawable.vertical_conjunction);
-                    }
-
-
-
-                    //lower
-                    rmView(R.id.card_frame_lower,cardView);
-                    rmView(R.id.card_card_2_4,cardView);
-                    mParent(R.id.card_card_2_3,cardView);
-
-                    sSymbol(op2,cardView,R.id.card_image_3,symbolMap);
+                    //clean-up
+                    rmView(R.id.card_expression_card_quadrant1,cardView);
+                    rmView(R.id.card_expression_card_quadrant2,cardView);
+                    rmView(R.id.card_expression_top_mid,cardView);
                 }
 
-                if( (op1 instanceof Proposition | op1 instanceof Absurdity) & op2 instanceof Operator  ) {
+                if (exp2 instanceof Proposition | exp2 instanceof Absurdity) {
+                    //Lower
+                    ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
+                    sSymbol(exp2, imageViewLower, symbolMap);
 
-                    //lower
-                    Operator lower = (Operator) op2;
-                    Expression lower_left = lower.getOperand1();
-                    Expression lower_right = lower.getOperand2();
-
-                    //lower left
-                    if(lower_left instanceof Operator){
-                        sDotsSymbol(cardView,R.id.card_image_3);
-                    }
-                    else{
-                        sSymbol(lower_left,cardView,R.id.card_image_3,symbolMap);
-                    }
-
-                    //lower left
-                    if(lower_right instanceof Operator){
-                        sDotsSymbol(cardView,R.id.card_image_4);
-                    }
-                    else{
-                        sSymbol( lower_right,cardView,R.id.card_image_4,symbolMap);
-                    }
-                    //Lower middle
-                    if(lower instanceof Implication){
-                        lowerImage.setBackgroundResource(R.drawable.horizontal_implication);
-                    }
-                    else if(lower instanceof Disjunction){
-                        lowerImage.setBackgroundResource(R.drawable.vertical_disjunction);
-                    }
-                    else if(lower instanceof Conjunction){
-                        lowerImage.setBackgroundResource(R.drawable.vertical_conjunction);
-                    }
-
-
-
-                    //upper
-                    rmView(R.id.card_frame_upper,cardView);
-                    rmView(R.id.card_card_1_1,cardView);
-                    mParent(R.id.card_card_1_2,cardView);
-                    sSymbol(op1,cardView,R.id.card_image_2,symbolMap);
+                    //clean-up
+                    rmView(R.id.card_expression_card_quadrant3,cardView);
+                    rmView(R.id.card_expression_card_quadrant4,cardView);
+                    rmView(R.id.card_expression_lower_mid,cardView);
                 }
 
-                if( op1 instanceof Operator & op2 instanceof Operator ){
-                    //lower and upper
-                    Operator lower = (Operator) op2;
-                    Expression lower_left = lower.getOperand1();
-                    Expression lower_right = lower.getOperand2();
-
-                    //lower left
-                    if(lower_left instanceof Operator){
-                        sDotsSymbol(cardView,R.id.card_image_3);
-                    }
-                    else{
-                        sSymbol( lower_left,cardView,R.id.card_image_3,symbolMap);
-                    }
-
-                    //lower left
-                    if(lower_right instanceof Operator){
-                        sDotsSymbol(cardView,R.id.card_image_4);
-                    }
-                    else{
-                        sSymbol(lower_right,cardView,R.id.card_image_4,symbolMap);
-                    }
-                    //Lower middle
-                    if(lower instanceof Implication){
-                        lowerImage.setBackgroundResource(R.drawable.horizontal_implication);
-                    }
-                    else if(lower instanceof Disjunction){
-                        lowerImage.setBackgroundResource(R.drawable.vertical_disjunction);
-                    }
-                    else if(lower instanceof Conjunction){
-                        lowerImage.setBackgroundResource(R.drawable.vertical_conjunction);
-                    }
 
 
 
 
-                    Operator upper = (Operator) op1;
-                    Expression upper_left = upper.getOperand1();
-                    Expression upper_right = upper.getOperand2();
+                if (exp1 instanceof Operator) {
 
-                    //Upper left
-                    if( upper_left instanceof Operator ){
-                        sDotsSymbol(cardView,R.id.card_image_2);
-                    }
-                    else{
-                        sSymbol( upper_left,cardView,R.id.card_image_2,symbolMap);
-                    }
+                    Operator op1 = (Operator) exp1;
+                    Expression op11 = op1.getOperand1();
+                    Expression op12 = op1.getOperand2();
 
-                    //Upper right
-                    if( upper_right instanceof Operator ){
-                        sDotsSymbol(cardView,R.id.card_image_1);
-                    }
-                    else{
-                        sSymbol( upper_right,cardView,R.id.card_image_1,symbolMap);
-                    }
-                    //Upper middle
-                    if(upper instanceof Implication){
-                        upperImage.setBackgroundResource(R.drawable.horizontal_implication);
-                    }
-                    else if(upper instanceof Disjunction){
-                        upperImage.setBackgroundResource(R.drawable.vertical_disjunction);
-                    }
-                    else if(upper instanceof Conjunction){
-                        upperImage.setBackgroundResource(R.drawable.vertical_conjunction);
+                    //Upper
+                    ImageView imageViewUpperLeft = cardView.findViewById(R.id.card_expression_quadrant2);
+                    ImageView imageViewUpperRight = cardView.findViewById(R.id.card_expression_quadrant1);
+                    ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
+
+                    sSymbol(op11, imageViewUpperLeft, symbolMap);
+                    sSymbol(op12, imageViewUpperRight, symbolMap);
+                    if (op1 instanceof Implication) {
+                        imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                    } else if (op1 instanceof Disjunction) {
+                        imageUpperMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
+                    } else if (op1 instanceof Conjunction) {
+                        imageUpperMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
 
+
+
+                    if(op11 instanceof Operator){
+                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
+                        rmView(R.id.card_expression_quadrant1,cardView);
+                        cardView11 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) cardView11.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        deflate(cardView11,op11,symbolMap,width*widthRatio,height*heightRatio,true);
+                        Log.d(Tools.debug, "deflate: " + op11.toString());
+
+                    }
+                    if(op12 instanceof Operator){
+                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2));
+                        rmView(R.id.card_expression_quadrant2,cardView);
+                        cardView12 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) cardView12.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        deflate(cardView12,op12,symbolMap,width*widthRatio,height*heightRatio,true);
+                        Log.d(Tools.debug, "deflate: " + op12.toString());
+                    }
+
+
+                }
+
+
+                if (exp2 instanceof Operator) {
+
+                    Operator op2 = (Operator) exp2;
+                    Expression op21 = op2.getOperand1();
+                    Expression op22 = op2.getOperand2();
+
+                    //Upper
+                    ImageView imageViewLowerLeft = cardView.findViewById(R.id.card_expression_quadrant3);
+                    ImageView imageViewLowerRight = cardView.findViewById(R.id.card_expression_quadrant4);
+                    ImageView imageLowerMiddle = cardView.findViewById(R.id.card_expression_lower_mid);
+
+                    sSymbol(op21,imageViewLowerLeft,symbolMap);
+                    sSymbol(op22,imageViewLowerRight,symbolMap);
+
+                    if(op2 instanceof Implication){
+                        imageLowerMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                    }
+                    else if(op2 instanceof Disjunction){
+                        imageLowerMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
+                    }
+                    else if(op2 instanceof Conjunction){
+                        imageLowerMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
+                    }
+
+                    if(op21 instanceof Operator){
+                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3));
+                        rmView(R.id.card_expression_quadrant3,cardView);
+                        cardView21 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) cardView21.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        deflate(cardView21,op21,symbolMap,width*widthRatio,height*heightRatio,true);
+                    }
+                    if(op22 instanceof Operator){
+                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4));
+                        rmView(R.id.card_expression_quadrant4,cardView);
+                        cardView22 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+                        ViewGroup.MarginLayoutParams layoutParams =
+                                (ViewGroup.MarginLayoutParams) cardView22.getLayoutParams();
+                        layoutParams.setMargins(0, 0, 0, 0);
+                        deflate(cardView22,op22,symbolMap,width*widthRatio,height*heightRatio,true);
+                    }
+
+
+                }
+
+                if(cardView11 !=null){
+                    quadrentReference1.addView(cardView11);
+                }
+                if(cardView12 !=null){
+                    quadrentReference2.addView(cardView12);
+                }
+                if(cardView21 !=null){
+                    quadrentReference3.addView(cardView21);
+                }
+                if(cardView22 !=null){
+                    quadrentReference4.addView(cardView22);
                 }
             }
         }
-        TextView cardNumberView = new TextView(cardView.getContext());
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        cardNumberView.setLayoutParams(lp);
-        cardNumberView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        cardNumberView.setTextSize(TypedValue.COMPLEX_UNIT_SP,25f);
-        cardNumberView.setId(R.id.card_number_text_view);
-        cardNumberView.setElevation(cardView.getElevation()+1);
-        cardNumberView.setVisibility(View.GONE);
-        cardView.addView(cardNumberView);
     }
 
     //remove view by id
@@ -266,6 +235,7 @@ public class CardDeflator{
         ViewGroup viewGroup = (ViewGroup) view.getParent();
         viewGroup.removeView(view);
     }
+
     //expand to fill by id
     private static void mParent(int rId,CardView card){
         View view = card.findViewById(rId);

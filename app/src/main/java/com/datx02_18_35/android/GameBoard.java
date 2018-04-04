@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -196,7 +195,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     private void initLeftSide() {
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDp(getApplication().getApplicationContext())) - (20+130*2);
+        int widthDP=Math.round(Tools.getWidthDpFromPx()) - (20+130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
@@ -467,9 +466,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         final CardView cardView = (CardView) LayoutInflater.from(
                                 getCurrentFocus().getContext()).inflate
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
-                        CardDeflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap);
+                        CardDeflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
                         ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
-                        CardDeflator.deflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap);
+                        CardDeflator.deflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
                         cardView.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
@@ -577,7 +576,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
-                    CardDeflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap);
+                    CardDeflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
                     ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                     popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
                 }
