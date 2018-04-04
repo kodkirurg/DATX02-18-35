@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
@@ -46,6 +47,10 @@ public class CardDeflator1 {
         CardView cardView12 = null;
         CardView cardView21 = null;
         CardView cardView22 = null;
+        @SuppressLint("CutPasteId") final CardView quadrentReference1 = cardView.findViewById(R.id.card_expression_card_quadrant1);
+        @SuppressLint("CutPasteId") final CardView quadrentReference2 = cardView.findViewById(R.id.card_expression_card_quadrant2);
+        @SuppressLint("CutPasteId") final CardView quadrentReference3 = cardView.findViewById(R.id.card_expression_card_quadrant3);
+        @SuppressLint("CutPasteId") final CardView quadrentReference4 = cardView.findViewById(R.id.card_expression_card_quadrant4);
 
         if(!matchParent){
             cardView.getLayoutParams().height = (int) height;
@@ -223,16 +228,16 @@ public class CardDeflator1 {
                 }
 
                 if(cardView11 !=null){
-                    ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1)).addView(cardView11);
+                    quadrentReference1.addView(cardView11);
                 }
                 if(cardView12 !=null){
-                    ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2)).addView(cardView12);
+                    quadrentReference2.addView(cardView12);
                 }
                 if(cardView21 !=null){
-                    ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3)).addView(cardView21);
+                    quadrentReference3.addView(cardView21);
                 }
                 if(cardView22 !=null){
-                    ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4)).addView(cardView22);
+                    quadrentReference4.addView(cardView22);
                 }
 /*
                 final CardView item = cardView.findViewById(R.id.card_card_2_3);
