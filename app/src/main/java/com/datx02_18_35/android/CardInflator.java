@@ -24,7 +24,7 @@ import game.logic_game.R;
  * Created by raxxor(Johannes) on 2018-04-03.
  */
 
-public class CardDeflator {
+public class CardInflator {
 
     private static final String dots = " .. ";
     private static final double widthRatio = 0.43;
