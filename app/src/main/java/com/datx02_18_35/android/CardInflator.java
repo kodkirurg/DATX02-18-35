@@ -25,8 +25,7 @@ import game.logic_game.R;
  */
 
 public class CardInflator {
-
-    private static final String dots = " .. ";
+    
     private static final double widthRatio = 0.43;
     private static final double heightRatio = 0.41;
 
