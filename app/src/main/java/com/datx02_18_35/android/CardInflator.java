@@ -25,12 +25,23 @@ import game.logic_game.R;
  */
 
 public class CardInflator {
-    
-    private static final double widthRatio = 0.43;
-    private static final double heightRatio = 0.41;
+
+    //convertion rate when cards get smaller
+    private static final float widthRatio = (float)0.43;
+    private static final float heightRatio = (float) 0.41;
 
 
-    public static void deflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final double width, final double height, boolean matchParent) {
+    /**
+     * Takes a cardview and applies a expression on it
+     *
+     * @param  cardView  a inflated card_expression layout
+     * @param  expr expression to generate
+     * @param  symbolMap map of symbols to use when generating the expression
+     * @param  width width in DP
+     * @param  height height in DP
+     * @param  matchParent if used recursively match parent = true will make the card match parents size
+     */
+    public static void deflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final float width, final float height, boolean matchParent) {
 
 
 
@@ -43,9 +54,11 @@ public class CardInflator {
         @SuppressLint("CutPasteId") final CardView quadrentReference3 = cardView.findViewById(R.id.card_expression_card_quadrant3);
         @SuppressLint("CutPasteId") final CardView quadrentReference4 = cardView.findViewById(R.id.card_expression_card_quadrant4);
 
+
+        //parameters are given in DP
         if(!matchParent){
-            cardView.getLayoutParams().height = (int) height;
-            cardView.getLayoutParams().width = (int) width;
+            cardView.getLayoutParams().height =  (int) Tools.convertDpToPixel(height);
+            cardView.getLayoutParams().width = (int) Tools.convertDpToPixel(width);
 
         }
 
