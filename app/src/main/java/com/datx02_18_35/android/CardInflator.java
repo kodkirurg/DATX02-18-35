@@ -209,8 +209,6 @@ public class CardInflator {
                         layoutParams.setMargins(0, 0, 0, 0);
                         deflate(cardView22,op22,symbolMap,width*widthRatio,height*heightRatio,true);
                     }
-
-
                 }
 
                 if(cardView11 !=null){
@@ -228,31 +226,17 @@ public class CardInflator {
             }
         }
     }
-
     //remove view by id
     private static void rmView(int rId,CardView card){
         View view = card.findViewById(rId);
         ViewGroup viewGroup = (ViewGroup) view.getParent();
         viewGroup.removeView(view);
     }
-
-    //expand to fill by id
-    private static void mParent(int rId,CardView card){
-        View view = card.findViewById(rId);
-        view.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-        view.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-    }
-    //sets text in textview by id.
-    private static void sSymbol(Expression expression,CardView cardView,int rId, Map<String,String> symbolMap){
-        ImageView imageView = cardView.findViewById(rId);
-        sSymbol(expression, imageView, symbolMap);
-    }
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
         String symbol = "";
         if(symbolMap.containsKey(expression.toString())){
             symbol = symbolMap.get(expression.toString());
         }
-
         switch (symbol.toLowerCase()){
             case "redball":
                 Tools.setImage(imageView,R.drawable.redball);
@@ -272,11 +256,6 @@ public class CardInflator {
             default:
                 Tools.setImage(imageView,R.drawable.dots);
                 break;
-
         }
-    }
-
-    private static void sDotsSymbol(CardView cardView,int rId){
-        ( (ImageView) cardView.findViewById(rId) ).setImageResource(R.drawable.dots);
     }
 }
