@@ -93,7 +93,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
 
             }
             else if(activity.operatorSelcted!=null){
-                ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
+                ExpressionFactory expressionFactory =GameBoard.level.expressionFactory;
                 Expression expression = expressionFactory.createOperator(activity.operatorSelcted,selected.get(0),expr);
 
 
