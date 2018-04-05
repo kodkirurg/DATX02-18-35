@@ -156,7 +156,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             e.printStackTrace();
         }
         ((ImageView)findViewById(R.id.inventory_button)).setOnClickListener(this);
-        ((TextView)findViewById(R.id.open_inventory)).setOnClickListener(this);
+        ((ImageView)findViewById(R.id.open_inventory)).setOnClickListener(this);
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
