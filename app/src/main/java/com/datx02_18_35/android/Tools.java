@@ -69,7 +69,7 @@ class   Tools {
 
 
     //screen
-    static float getWidthDpFromPx(){
+    static float getWidthOfDisplayInDp(){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);

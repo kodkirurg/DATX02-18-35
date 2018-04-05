@@ -27,11 +27,14 @@ import game.logic_game.R;
 public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
     GameBoard activity;
+    float cardWidth,cardHeight;
 
 
-    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity){
+    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity,float cardWidth, float cardHeight){
         this.dataSet=dataSet;
         this.activity=activity;
+        this.cardHeight=cardHeight;
+        this.cardWidth=cardWidth;
     }
 
 
@@ -60,8 +63,11 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         holder.frame.setOnClickListener(this);
         holder.frame.setTag(position);
 
+        //set size
+        holder.frame.getLayoutParams().width=Math.round(Tools.convertDpToPixel(cardWidth));
+        holder.frame.getLayoutParams().height=Math.round(Tools.convertDpToPixel(cardHeight));
+
         //set visuals
-        holder.frame.setBackgroundColor(Color.WHITE);
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position).type) {

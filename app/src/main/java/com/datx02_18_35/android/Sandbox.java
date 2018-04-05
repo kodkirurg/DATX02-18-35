@@ -55,7 +55,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     public void initLeftSide(){
         //"screen" re-size
         int spanCount;
-        int widthDP=Math.round(Tools.getWidthDpFromPx() - 130*2);
+        int widthDP=Math.round(Tools.getWidthOfDisplayInDp() - 130*2);
         for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.sandboxLeft_recycler_view);

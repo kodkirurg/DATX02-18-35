@@ -123,8 +123,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
 
 
-        initLeftSide();
-        initRightSide();
+        initLeftSide(120,170,3);
+        initRightSide(120,170);
         initInventory();
         try {
             Controller.getSingleton().handleAction(new RequestGameboardAction(boardCallback));
@@ -171,7 +171,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         delete.setAnimationListener(this);
     }
 
-    private void initRightSide() {
+    //only use one spanCount as rules don't need 2 columns
+    private void initRightSide(float cardWidth, float cardHeight) {
 
         recyclerViewRight = (RecyclerView) findViewById(R.id.game_right_side);
         // use a grid layout manager
@@ -180,25 +181,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         ArrayList<Rule> list = new ArrayList<>();
         //attach list to adapter
-        adapterRight = new GameRuleAdapter(list,this);
+        adapterRight = new GameRuleAdapter(list,this,cardWidth,cardHeight);
 
         //attach adapter
         recyclerViewRight.setAdapter(adapterRight);
     }
 
-    private void initLeftSide() {
-        //"screen" re-size
-        int spanCount;
-        int widthDP=Math.round(Tools.getWidthDpFromPx()) - (20+130*2);
-        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+    //use remaining spanCounts, spanCount-1
+    private void initLeftSide(float cardWidth, float cardHeight, int spanCount) {
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.game_left_side);
         // use a grid layout manager
-        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
+        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount-1);
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
 
 
-        adapterLeft = new GameCardAdapter(new ArrayList<Expression>(),this);
+        adapterLeft = new GameCardAdapter(new ArrayList<Expression>(),this, cardWidth, cardHeight);
 
         recyclerViewLeft.setAdapter(adapterLeft);
 
