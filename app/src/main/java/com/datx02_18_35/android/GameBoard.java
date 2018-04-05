@@ -152,7 +152,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (GameException e) {
             e.printStackTrace();
         }
-        //((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
+        ((ImageView)findViewById(R.id.inventory_button)).setOnClickListener(this);
         ((TextView)findViewById(R.id.open_inventory)).setOnClickListener(this);
 
         //Set toolbar
@@ -624,12 +624,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 }
                 break;
             }
-            /*case R.id.close_inventory:{
-                closeInventory();
+            case R.id.inventory_button:{
+                if(inventoryLayout.isShown()){
+                    closeInventory();
+                }
+                else {
+                    showInventory();
+                }
                 break;
-            }*/
+            }
             case R.id.open_inventory:{
-                showInventory();
+                if(inventoryLayout.isShown()){
+                    closeInventory();
+                }
+                else {
+                    showInventory();
+                }
                 break;
             }
             case R.id.trash_can:{
