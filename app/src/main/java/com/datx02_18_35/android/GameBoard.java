@@ -72,20 +72,19 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button nextLevel;
     Button mainMenu;
     Toolbar toolbar;
-    TextView scopeLevel,openArrow,closeArrow;
+    TextView scopeLevel;
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
     Animation slide_left;
     Animation delete;
-    private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
-    public static boolean victory=false;
-    public static Iterable<Expression> hypothesis;
-    public static ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
-    public static Iterable<Iterable<Expression>> inventories;
-    public static int scopeLevelInt;
-    public static Iterable<Expression> assumptions;
+    public boolean victory=false;
+    public Iterable<Expression> hypothesis;
+    public ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
+    public Iterable<Iterable<Expression>> inventories;
+    public int scopeLevelInt;
+    public Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public static Level level;
     public boolean infoWindowClicked=false;
@@ -252,14 +251,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
         ArrayList<Expression> newSet = new ArrayList<Expression>();
 
-        for (Expression expr: GameBoard.hypothesis){
+        for (Expression expr: hypothesis){
             newSet.add(expr);
         }
-        for (Expression expr: GameBoard.assumptions){
+        for (Expression expr: assumptions){
             newSet.add(expr);
         }
 
-        for (Iterable<Expression> iter: GameBoard.inventories){
+        for (Iterable<Expression> iter: inventories){
             for (Expression expr :iter) {
                 newSet.add(expr);
             }

@@ -140,7 +140,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         selected.clear();
         selectedView.clear();
         try {
-            if(!GameBoard.victory){
+            if(!activity.victory){
                 Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
             }
 
