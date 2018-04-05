@@ -182,7 +182,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
 
         ArrayList<Rule> list = new ArrayList<>();
-        list.add(null);
         //attach list to adapter
         adapterRight = new GameRuleAdapter(list,this);
 
