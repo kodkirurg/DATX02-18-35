@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             //TODO: Pass list of level files as Strings
             Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
-            Controller.getSingleton().start();
         } catch (LevelParseException e) {
             //TODO: Handle this properly
             e.printStackTrace();

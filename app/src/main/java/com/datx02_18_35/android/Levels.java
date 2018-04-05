@@ -13,6 +13,7 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNewSessionAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.level.Level;
 
 
@@ -44,11 +45,10 @@ public class Levels extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         callback = new LevelsCallback();
-        callback.start();
 
         try {
-            Controller.getSingleton().sendAction(new RequestLevelsAction(callback));
-        } catch (Exception e) {
+            Controller.getSingleton().handleAction(new RequestLevelsAction(callback));
+        } catch (GameException e) {
             e.printStackTrace();
         }
 
@@ -56,16 +56,16 @@ public class Levels extends AppCompatActivity {
 
     public void startLevel(Level level){
         try {
-            Controller.getSingleton().sendAction(new RequestStartNewSessionAction(callback,level));
+            Controller.getSingleton().handleAction(new RequestStartNewSessionAction(callback,level));
             Intent intent = new Intent(this, GameBoard.class); //create intent
             startActivity(intent); //start intent
-        } catch (InterruptedException e) {
+        } catch (GameException e) {
             e.printStackTrace();
         }
     }
     public class LevelsCallback extends ActionConsumer {
         @Override
-        public void handleAction(Action action) throws UnhandledActionException, InterruptedException {
+        public void handleAction(Action action) throws GameException {
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
                 adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.progressionMap);
