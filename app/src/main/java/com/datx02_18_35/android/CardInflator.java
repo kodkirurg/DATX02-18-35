@@ -63,6 +63,16 @@ public class CardInflator {
             cardView.getLayoutParams().height =  (int) Tools.convertDpToPixel(height);
             cardView.getLayoutParams().width = (int) Tools.convertDpToPixel(width);
 
+            // Added here to have numberView always centered of the visual card, do not create new TextViews when creating depth recursively.
+            TextView cardNumberView = new TextView(cardView.getContext());
+            cardNumberView.setId(R.id.card_number_text_view);
+            cardNumberView.setElevation(cardView.getElevation()+1);
+            cardNumberView.setVisibility(View.GONE);
+            cardNumberView.setTag(R.id.card_number,0);
+            cardNumberView.setTextSize(20);
+            cardNumberView.setTextColor(Color.MAGENTA);
+            cardView.addView(cardNumberView);
+
         }
 
         //whole card one symbol
@@ -240,14 +250,6 @@ public class CardInflator {
                 }
             }
         }
-        TextView cardNumberView = new TextView(cardView.getContext());
-        cardNumberView.setId(R.id.card_number_text_view);
-        cardNumberView.setElevation(cardView.getElevation()+1);
-        cardNumberView.setVisibility(View.GONE);
-        cardNumberView.setTag(R.id.card_number,0);
-        cardNumberView.setTextSize(20);
-        cardNumberView.setTextColor(Color.MAGENTA);
-        cardView.addView(cardNumberView);
     }
     //remove view by id
     private static void rmView(int rId,CardView card){
