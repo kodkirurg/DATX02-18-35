@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.OperatorType;
 
@@ -91,9 +92,9 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
                 if(operatorSelcted==null & maySelectOperator ){
                     Expression expression = adapterLeft.selected.get(0);
                     try {
-                        Controller.getSingleton().sendAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
+                        Controller.getSingleton().handleAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
 
-                    } catch (InterruptedException e) {
+                    } catch (GameException e) {
                         e.printStackTrace();
                     }
                 }

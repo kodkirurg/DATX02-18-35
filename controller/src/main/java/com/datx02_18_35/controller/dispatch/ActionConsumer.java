@@ -2,6 +2,7 @@ package com.datx02_18_35.controller.dispatch;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.StopAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 
@@ -14,73 +15,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class ActionConsumer {
 
-    private boolean started = false;
-    private final BlockingQueue<Action> actionQueue = new LinkedBlockingQueue<>();
-
-    private class ActionScanner implements Runnable {
-        @Override
-        public void run() {
-            while (true) {
-                Action action = null;
-                try {
-                    action = actionQueue.take();
-                    if (action instanceof StopAction) {
-                        break;
-                    }
-                    handleAction(action);
-
-                } catch (InterruptedException
-                        | UnhandledActionException
-                        | IllegalActionException
-                        | GameManager.LevelNotInListException
-                        | IllegalGameStateException e) {
-                    e.printStackTrace();
-                    if (action != null) {
-                        System.err.println("Faulty Action originated at:");
-                        for (StackTraceElement stackTraceElement : action.stackTrace) {
-                            System.err.println(stackTraceElement);
-                        }
-                    }
-                } finally {
-                    action = null;
-                }
-            }
-        }
-    }
-
-    /**
-     * Start the handling service
-     */
-    public synchronized void start() {
-        if (started) {
-            throw new IllegalStateException("ActionConsumer thread is already running!");
-        }
-        started = true;
-        ActionScanner actionScanner = new ActionScanner();
-        Thread thread = new Thread(actionScanner);
-        thread.start();
-    }
-
-    /**
-     * Stop the handling service
-     * @throws InterruptedException
-     */
-    public synchronized void stop() throws InterruptedException {
-        if (!started) {
-            throw new IllegalStateException("ActionConsumer is not running!");
-        }
-        sendAction(new StopAction());
-    }
-
-    /**
-     * Used to send an action to this consumer
-     * @param action
-     * @throws InterruptedException
-     */
-    public synchronized void sendAction(Action action) throws InterruptedException {
-        actionQueue.put(action);
-    }
-
 
     /**
      * Implemented by the specific service, throw UnhandledActionException if an unhandled Action is supplied.
@@ -88,5 +22,5 @@ public abstract class ActionConsumer {
      * @throws UnhandledActionException
      * @throws InterruptedException
      */
-    protected abstract void handleAction(Action action) throws UnhandledActionException, InterruptedException, IllegalActionException, IllegalGameStateException, GameManager.LevelNotInListException;
+    public abstract void handleAction(Action action) throws GameException;
 }
