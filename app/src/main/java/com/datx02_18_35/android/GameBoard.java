@@ -57,6 +57,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDat
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
 
 
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
@@ -81,7 +82,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Expression> inventoryList = new ArrayList<Expression>();
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
-    public final Semaphore gameChange = new Semaphore(1);
     public static boolean victory=false;
     public static Iterable<Expression> hypothesis;
     public static ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
@@ -109,23 +109,19 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_game);
 
         boardCallback = new BoardCallback();
-        boardCallback.start();
         Intent myIntent= getIntent();
+
+        int levelInt=myIntent.getIntExtra("levelInt",1);
+
         try {
-            gameChange.acquire();
-            int levelInt=myIntent.getIntExtra("levelInt",1);
-        } catch (Exception e) {
+            Controller.getSingleton().handleAction(new RequestInventoryAction(GameBoard.boardCallback));
+        }
+        catch (GameException e){
             e.printStackTrace();
         }
         try {
-            Controller.getSingleton().sendAction(new RequestInventoryAction(GameBoard.boardCallback));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
-        } catch (InterruptedException e) {
+            Controller.getSingleton().handleAction(new RequestHypothesisAction(boardCallback));
+        } catch (GameException e) {
             e.printStackTrace();
         }
 
@@ -134,9 +130,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         initRightSide();
         initInventory();
         try {
-            Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
-            Controller.getSingleton().sendAction(new RequestCurrentLevelAction(boardCallback));
-        } catch (InterruptedException e) {
+            Controller.getSingleton().handleAction(new RequestGameboardAction(boardCallback));
+            Controller.getSingleton().handleAction(new RequestCurrentLevelAction(boardCallback));
+        } catch (GameException e) {
             e.printStackTrace();
         }
 
@@ -152,8 +148,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         try {
-            Controller.getSingleton().sendAction(new RequestSymbolMap(boardCallback));
-        } catch (InterruptedException e) {
+            Controller.getSingleton().handleAction(new RequestSymbolMap(boardCallback));
+        } catch (GameException e) {
             e.printStackTrace();
         }
         //((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
@@ -171,7 +167,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         ImageView trashCan = findViewById(R.id.trash_can);
         trashCan.setOnClickListener(this);
 
-        gameChange.release();
         //Animations
         slide_left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         slide_left.setAnimationListener(this);
@@ -252,10 +247,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     public void showInventory(){
         try {
-            Controller.getSingleton().sendAction(new RequestScopeLevelAction(boardCallback));
-            Controller.getSingleton().sendAction(new RequestInventoryAction(boardCallback));
-            Controller.getSingleton().sendAction(new RequestHypothesisAction(boardCallback));
-        } catch (InterruptedException e) {
+            Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
+            Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
+            Controller.getSingleton().handleAction(new RequestHypothesisAction(boardCallback));
+        } catch (GameException e) {
             e.printStackTrace();
         }
         ArrayList<Expression> newSet = new ArrayList<Expression>();
@@ -300,11 +295,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
 
     public synchronized void newSelection(Object object, View v) {
-        try {
-            gameChange.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (object instanceof Expression){
             Expression expression = (Expression) object;
             //already selected
@@ -324,19 +314,18 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 for (Integer i : adapterLeft.selected){
                     sendList.add(adapterLeft.dataSet.get(i));
                 }
-                Controller.getSingleton().sendAction(new RequestRulesAction(boardCallback, sendList));
-            } catch (Exception e) {
+                Controller.getSingleton().handleAction(new RequestRulesAction(boardCallback, sendList));
+            } catch (GameException e) {
                 e.printStackTrace();
             }
         }
         else if(object instanceof Rule){
             try {
-                Controller.getSingleton().sendAction(new RequestApplyRuleAction(boardCallback,(Rule)object));
-            } catch (Exception e) {
+                Controller.getSingleton().handleAction(new RequestApplyRuleAction(boardCallback,(Rule)object));
+            } catch (GameException e) {
                 e.printStackTrace();
             }
         }
-        gameChange.release();
     }
 
     @Override
@@ -345,12 +334,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         //shutdown session
         try {
             if(!victory){
-                Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+                Controller.getSingleton().handleAction(new RequestAbortSessionAction());
             }
             if(infoWindowClicked){
                 popupWindow.dismiss();
             }
-        } catch (InterruptedException e) {
+        } catch (GameException e) {
             e.printStackTrace();
         }
     }
@@ -368,9 +357,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         switch(menu.getItemId()){
             case R.id.item_assumption:
                 try {
-                    Controller.getSingleton().sendAction((new RequestAssumptionAction(boardCallback)));
+                    Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
                     scopeLevel.setText("");
-                } catch (InterruptedException e) {
+                } catch (GameException e) {
                     e.printStackTrace();
                 }
                 break;
@@ -401,8 +390,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             adapterLeft.selected.clear();
             adapterLeft.selectedView.clear();
             try {
-                Controller.getSingleton().sendAction(new RequestDeleteFromGameboardAction(boardCallback, sendList));
-            } catch (InterruptedException e) {
+
+                Controller.getSingleton().handleAction(new RequestDeleteFromGameboardAction(boardCallback,sendList));
+            } catch (GameException e) {
                 e.printStackTrace();
             }
         }
@@ -417,8 +407,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     public class BoardCallback extends ActionConsumer {
         @Override
-        public void handleAction(final Action action) throws InterruptedException {
-            gameChange.acquire();
+        public void handleAction(final Action action) throws GameException {
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
                 adapterLeft.updateBoard(data);
@@ -536,7 +525,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     }
                 });
             }
-            gameChange.release();
         }
     }
     @Override
@@ -546,10 +534,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
         else if(scopeLevelInt>1){
             try{
-                Controller.getSingleton().sendAction(new RequestCloseScopeAction(GameBoard.boardCallback));
-
+                Controller.getSingleton().handleAction(new RequestCloseScopeAction(GameBoard.boardCallback));
             }
-            catch (InterruptedException e){
+            catch (GameException e) {
                 e.printStackTrace();
             }
         }
@@ -561,9 +548,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onResume(){
         super.onResume();
         try {
-            Controller.getSingleton().sendAction(new RequestScopeLevelAction(GameBoard.boardCallback));
+            Controller.getSingleton().handleAction(new RequestScopeLevelAction(GameBoard.boardCallback));
         }
-        catch (InterruptedException e){
+        catch (GameException e){
             e.printStackTrace();
         }
     }
@@ -610,23 +597,23 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.next_level:{
                 try {
-                    Controller.getSingleton().sendAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
-                    Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
+                    Controller.getSingleton().handleAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
+                    Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
                     Intent intent = new Intent(this, GameBoard.class); //create intent
                     startActivity(intent); //start intent
                     finish();
                 }
-                catch (InterruptedException e){
+                catch (GameException e){
                     e.printStackTrace();
                 }
                 break;
             }
             case R.id.main_menu: {
                 try {
-                    Controller.getSingleton().sendAction(new RequestAbortSessionAction());
+                    Controller.getSingleton().handleAction(new RequestAbortSessionAction());
                     finish();
                 }
-                catch (InterruptedException e){
+                catch (GameException e){
                     e.printStackTrace();
                 }
                 break;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestRulesAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 
 import java.util.ArrayList;
@@ -132,25 +133,20 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     }
 
     void restoreSelections(){
-        try {
-            activity.gameChange.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         for(CardView view : selectedView.values()){
             restoreAnimations(view);
         }
+        currentHighestSelectedCard =0;
         selected.clear();
         selectedView.clear();
         try {
             if(!GameBoard.victory){
-                Controller.getSingleton().sendAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
+                Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
             }
 
-        } catch (InterruptedException e) {
+        } catch (GameException e) {
             e.printStackTrace();
         }
-        activity.gameChange.release();
     }
     void restoreAnimations(CardView cardView){
         cardView.setBackgroundColor(Color.WHITE);

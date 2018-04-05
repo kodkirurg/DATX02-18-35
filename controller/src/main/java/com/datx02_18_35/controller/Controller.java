@@ -33,6 +33,7 @@ import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNext
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.SaveUserDataAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.ShowNewExpressionAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryConditionMetAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.rules.Rule;
@@ -77,13 +78,7 @@ public class Controller extends ActionConsumer {
     }
 
     @Override
-    protected void handleAction(Action action)
-            throws
-            UnhandledActionException,
-            IllegalActionException,
-            InterruptedException,
-            IllegalGameStateException,
-            GameManager.LevelNotInListException {
+    public void handleAction(Action action) throws GameException {
         if (action instanceof RequestStartNewSessionAction) {
             if(game.getSession()!=null){
                 game.quitLevel();
@@ -185,7 +180,7 @@ public class Controller extends ActionConsumer {
                     Rule newRule = game.getSession().finishIncompleteRule(closedAction.incompleteRule, expression);
                     // Send action to itself to apply the new complete rule
                     // Use the callback supplied
-                    this.sendAction(new RequestApplyRuleAction(closedAction.applyRuleCallback, newRule));
+                    this.handleAction(new RequestApplyRuleAction(closedAction.applyRuleCallback, newRule));
                 }
                 break;
                 case ASSUMPTION: {
