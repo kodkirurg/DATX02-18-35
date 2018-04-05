@@ -1,12 +1,15 @@
 package com.datx02_18_35.android;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
 import com.datx02_18_35.model.expression.Conjunction;
@@ -237,6 +240,14 @@ public class CardInflator {
                 }
             }
         }
+        TextView cardNumberView = new TextView(cardView.getContext());
+        cardNumberView.setId(R.id.card_number_text_view);
+        cardNumberView.setElevation(cardView.getElevation()+1);
+        cardNumberView.setVisibility(View.GONE);
+        cardNumberView.setTag(R.id.card_number,0);
+        cardNumberView.setTextSize(20);
+        cardNumberView.setTextColor(Color.MAGENTA);
+        cardView.addView(cardNumberView);
     }
     //remove view by id
     private static void rmView(int rId,CardView card){
