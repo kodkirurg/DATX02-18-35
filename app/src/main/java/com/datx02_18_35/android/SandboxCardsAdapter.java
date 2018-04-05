@@ -47,7 +47,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setBackgroundColor(Color.WHITE);
         holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
-            CardInflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
             holder.alreadyBound=true;
         }
 

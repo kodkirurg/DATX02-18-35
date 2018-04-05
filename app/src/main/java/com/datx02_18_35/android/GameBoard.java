@@ -9,7 +9,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,7 +64,6 @@ import com.datx02_18_35.model.level.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
 
 import game.logic_game.R;
 
@@ -484,9 +482,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         final CardView cardView = (CardView) LayoutInflater.from(
                                 getCurrentFocus().getContext()).inflate
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
-                        CardInflator.deflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
+                        CardInflator.inflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
                         ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
-                        CardInflator.deflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
+                        CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
                         cardView.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
@@ -592,7 +590,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
-                    CardInflator.deflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
+                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
                     ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                     popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER,0,0);
                 }
