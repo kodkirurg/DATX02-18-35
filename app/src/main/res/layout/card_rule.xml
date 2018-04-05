@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:id="@+id/rule_frame"
+    android:background="@color/White"
     >
     <ImageView
         android:layout_width="match_parent"
