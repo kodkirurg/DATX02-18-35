@@ -87,10 +87,12 @@ class Tools {
 
         ScreenInfo(float widthInDP){
 
+
+            //TODO : Fix gameboard and get sizes, then fix this function
             //small screen, use 1 expression and 1 rule column
             if(widthInDP < 390 | true){
                 spanCounts=2;
-                cardWidth=widthInDP/2-12/spanCounts-10-5; // 12 is recycler margin(3+3), 10 is each cards extra margin(5+5) -4 for exta margin
+                cardWidth=widthInDP/2-12/spanCounts-10-5;
             }
             else{
                 spanCounts=Math.round(widthInDP/minimumWidth);
