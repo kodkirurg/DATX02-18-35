@@ -173,6 +173,7 @@ public class Level implements Serializable {
 
         int lineNumb;
         Map<String,String> symbolMap = new HashMap<>();
+        symbolMap.put("#","absurdity");
         List<String> lines = Arrays.asList(levelString.split("\n"));
 
         // Parse SYMBOL
