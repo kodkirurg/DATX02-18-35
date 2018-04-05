@@ -125,13 +125,12 @@ public class Session {
                             if (scopeIter.hasNext()){
                                 Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
                                 if(testIter.hasNext()) {
-                                    System.out.println("ScopeInvIterator");
                                     currentIter = testIter;
                                     newIter=true;
                                 }
                             }if (assumptionIter.hasNext()&&!newIter) {
                                 currentIter = assumptionIter;
-                                System.out.println("AssumptionIterator");
+
                                 newIter=true;
                             }if(hypothesisIter.hasNext()&&!newIter){
                                 currentIter = hypothesisIter;
@@ -158,7 +157,9 @@ public class Session {
         assert isExpressionInScope(expression);
         scopes.peek().addExpressionToGameBoard(expression);
     }
-
+    public void removeExpressionFromGameBoard(Collection<Expression> expressions){
+        scopes.peek().removeExpressionFromGameBoard(expressions);
+    }
     public void addExpressionToInventory(Collection<Expression> expressions) {
         scopes.peek().addExpressionToInventory(expressions);
     }

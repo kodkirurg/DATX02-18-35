@@ -9,6 +9,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypo
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestDeleteFromGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
@@ -114,6 +115,13 @@ public class Controller extends ActionConsumer {
         else if (action instanceof RequestGameboardAction) {
             game.assertSessionInProgress();
             action.callback(getRefreshGameboardAction());
+        }
+        else if (action instanceof RequestDeleteFromGameboardAction) {
+            game.assertSessionInProgress();
+            RequestDeleteFromGameboardAction deleteAction = (RequestDeleteFromGameboardAction) action;
+            game.getSession().removeExpressionFromGameBoard(deleteAction.expressions);
+            action.callback(getRefreshGameboardAction());
+
         }
         else if (action instanceof RequestRulesAction) {
             game.assertSessionInProgress();

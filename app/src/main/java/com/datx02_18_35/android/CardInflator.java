@@ -62,7 +62,7 @@ public class CardInflator {
         if(!matchParent){
             cardView.getLayoutParams().height =  (int) Tools.convertDpToPixel(height);
             cardView.getLayoutParams().width = (int) Tools.convertDpToPixel(width);
-
+            
             // Added here to have numberView always centered of the visual card, do not create new TextViews when creating depth recursively.
             TextView cardNumberView = new TextView(cardView.getContext());
             cardNumberView.setId(R.id.card_number_text_view);
