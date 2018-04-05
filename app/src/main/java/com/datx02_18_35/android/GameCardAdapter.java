@@ -136,6 +136,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         for(CardView view : selectedView.values()){
             restoreAnimations(view);
         }
+        currentHighestSelectedCard =0;
         selected.clear();
         selectedView.clear();
         try {

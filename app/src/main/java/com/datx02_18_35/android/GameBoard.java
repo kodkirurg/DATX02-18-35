@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -150,7 +151,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (GameException e) {
             e.printStackTrace();
         }
-        ((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
+        //((TextView)findViewById(R.id.close_inventory)).setOnClickListener(this);
         ((TextView)findViewById(R.id.open_inventory)).setOnClickListener(this);
 
         //Set toolbar
@@ -162,11 +163,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         //pop-up window for goal and description
         ImageView infoButton = findViewById(R.id.toolbar_goal);
         infoButton.setOnClickListener(this);
+        ImageView trashCan = findViewById(R.id.trash_can);
+        trashCan.setOnClickListener(this);
 
         //Animations
         slide_left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
         slide_left.setAnimationListener(this);
-        delete = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+        delete = AnimationUtils.loadAnimation(this, R.anim.delete);
         delete.setAnimationListener(this);
     }
 
@@ -275,6 +278,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+    public void deleteSelection(){
+        for(CardView view : adapterLeft.selectedView.values()){
+            startAnimation(delete, view);
+        }
+        adapterLeft.selected.clear();
+        adapterLeft.selectedView.clear();
+    }
     public void startAnimation(Animation a, View v ){
         if(a != null){
             a.reset();
@@ -370,8 +380,16 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             invRecyclerView.setVisibility(View.GONE);
         }
         else if(animation==delete){
-            //delete selection
+            for(CardView view : adapterLeft.selectedView.values()){
+                view.setVisibility(View.GONE);
+            }
+            try {
+                Controller.getSingleton().handleAction(new RequestGameboardAction(boardCallback));
+            } catch (GameException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override
@@ -593,15 +611,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 }
                 break;
             }
-            case R.id.close_inventory:{
+            /*case R.id.close_inventory:{
                 closeInventory();
                 break;
-            }
+            }*/
             case R.id.open_inventory:{
                 showInventory();
                 break;
             }
             case R.id.trash_can:{
+                Log.d("test123", "onClick: soptunna");
+                deleteSelection();
                 break;
             }
         }
