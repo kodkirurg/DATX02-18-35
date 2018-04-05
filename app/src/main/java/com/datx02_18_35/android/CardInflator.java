@@ -62,7 +62,6 @@ public class CardInflator {
         if(!matchParent){
             cardView.getLayoutParams().height =  (int) Tools.convertDpToPixel(height);
             cardView.getLayoutParams().width = (int) Tools.convertDpToPixel(width);
-
         }
 
         //whole card one symbol

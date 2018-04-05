@@ -125,13 +125,12 @@ public class Session {
                             if (scopeIter.hasNext()){
                                 Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
                                 if(testIter.hasNext()) {
-                                    System.out.println("ScopeInvIterator");
                                     currentIter = testIter;
                                     newIter=true;
                                 }
                             }if (assumptionIter.hasNext()&&!newIter) {
                                 currentIter = assumptionIter;
-                                System.out.println("AssumptionIterator");
+
                                 newIter=true;
                             }if(hypothesisIter.hasNext()&&!newIter){
                                 currentIter = hypothesisIter;
