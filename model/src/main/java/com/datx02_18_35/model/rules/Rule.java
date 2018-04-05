@@ -20,6 +20,9 @@ import java.util.List;
  */
 
 public class Rule {
+
+
+
     public final RuleType type;
     public final List<Expression> expressions;
 
@@ -32,6 +35,7 @@ public class Rule {
         this.type = type;
         this.expressions = new ArrayList<>(expressions);
     }
+
 
     @Override
     public String toString() {

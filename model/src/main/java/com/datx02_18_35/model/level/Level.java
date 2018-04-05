@@ -8,6 +8,8 @@ import com.datx02_18_35.model.expression.OperatorType;
 import com.datx02_18_35.model.expression.Proposition;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.expression.ExpressionParser;
+import com.datx02_18_35.model.rules.Rule;
+import com.datx02_18_35.model.rules.RuleType;
 ;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,13 +26,6 @@ import java.util.Set;
  */
 
 public class Level implements Serializable {
-    private static final String SYMBOL="SYMBOL";
-    private static final String HYPOTHESIS ="HYPOTHESIS";
-    private static final String GOAL="GOAL";
-    private static final String TITLE="TITLE";
-    private static final String DESCRIPTION="DESCRIPTION";
-    private static final String DESCRIPTION_START="START";
-    private static final String DESCRIPTION_END="END";
     private static final int    HASH_MAGIC_NUMBER = 1_528_680_899;
 
     public final List<Expression> hypothesis;
@@ -39,6 +34,7 @@ public class Level implements Serializable {
     public final ExpressionFactory expressionFactory;
     public final List<Expression> usedSymbols;
     public final String description;
+    public final Set<RuleType> ruleSet;
 
     private final int hashCode;
 
@@ -47,7 +43,8 @@ public class Level implements Serializable {
             List<Expression> hypothesis,
             Expression goal,
             ExpressionFactory expressionFactory,
-            String description) {
+            String description,
+            Set<RuleType> ruleSet) {
 
         this.hypothesis=hypothesis;
         this.goal=goal;
@@ -57,6 +54,7 @@ public class Level implements Serializable {
         this.usedSymbols.addAll(extractPropositions(goal, hypothesis));
         this.usedSymbols.add(expressionFactory.createAbsurdity());
         this.description = description;
+        this.ruleSet = ruleSet;
 
         long magic = HASH_MAGIC_NUMBER;
         long longHash = magic;
@@ -153,20 +151,16 @@ public class Level implements Serializable {
     private static LevelParseException getTooManyDescriptionsParseException(int lineNumb) {
         return new LevelParseException("Level file contains more than one description on line: " + lineNumb);
     }
-    private static LevelParseException getTooManyDifficultiesParseException(int lineNumb) {
-        return new LevelParseException("Level file contains more than one difficulty on line: " + lineNumb);
-    }
     private static LevelParseException getUnexpectedDescriptionArgumentException(int lineNumb, String found, String expected) {
         return new LevelParseException(
-                "Level file contains an unexpected argument to " + DESCRIPTION + " on line: " + lineNumb
+                "Level file contains an unexpected argument to DESCRIPTION on line: " + lineNumb
                 + ". Found: " + found + ", expected: " + expected);
-    }
-    private static LevelParseException getInvalidDifficultyException(int lineNumb, String found) {
-        return new LevelParseException("Level file contains an invalid difficulty on line" + lineNumb +
-                ". Found: " + found + ", expected non-negative number.");
     }
     private static LevelParseException getDescriptionEndOfFileException() {
         return new LevelParseException("Reached end of file while parsing level description");
+    }
+    private static LevelParseException getInvalidRuleSetException(int lineNumb, String token) {
+        return new LevelParseException("Level file contains an invalid ruleset: " + token + " on line: " + lineNumb);
     }
 
     public static Level parseLevel(String levelString) throws LevelParseException, ExpressionParseException {
@@ -180,7 +174,7 @@ public class Level implements Serializable {
         lineNumb = 0;
         for (String line : lines) {
             String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
-            if (tokens[0].equals(SYMBOL)) {
+            if (tokens[0].equals("SYMBOL")) {
                 if (tokens.length != 3) {
                     throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
                 }
@@ -198,6 +192,7 @@ public class Level implements Serializable {
         Expression goal = null;
         String title = null;
         String description = null;
+        Set<RuleType> ruleSet = new HashSet<>();
 
         // Parse HYPOTHESIS, GOAL, TITLE, DESCRIPTION
         lineNumb = 0;
@@ -207,29 +202,52 @@ public class Level implements Serializable {
             String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
             if (tokens.length>0) {
                 switch (tokens[0]) {
-                    case HYPOTHESIS: {
+                    case "HYPOTHESIS": {
                         hypothesis.add(expressionParser.parseString(Util.join(Util.tail(tokens))));
                     }
                     break;
-                    case GOAL: {
+                    case "GOAL": {
                         if (goal != null) {
                             throw getTooManyGoalsLevelParseException(lineNumb);
                         }
                         goal = expressionParser.parseString(Util.join(Util.tail(tokens)));
                     }
                     break;
-                    case TITLE: {
+                    case "TITLE": {
                         if (title != null) {
                             throw getTooManyTitlesLevelParseException(lineNumb);
                         }
                         title = Util.join(" ", Util.tail(tokens));
                     }
                     break;
-                    case DESCRIPTION: {
+                    case "RULESET": {
+                        if (tokens.length <= 1) {
+                            throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
+                        }
+                        for (int i = 1; i < tokens.length; ++i) {
+                            switch (tokens[i]) {
+                                case "CONSTRUCTIVE":
+                                    ruleSet.addAll(RuleType.Sets.CONSTRUCTIVE);
+                                    break;
+                                case "IMPLICATION_ONLY":
+                                    ruleSet.addAll(RuleType.Sets.IMPLICATION_ONLY);
+                                    break;
+                                case "CONJUNCTION_ONLY":
+                                    ruleSet.addAll(RuleType.Sets.CONJUNCTON_ONLY);
+                                    break;
+                                case "DISJUNCTION_ONLY":
+                                    ruleSet.addAll(RuleType.Sets.DISJUNCTION_ONLY);
+                                    break;
+                                default:
+                                    throw getInvalidRuleSetException(lineNumb, tokens[i]);
+                            }
+                        }
+                    }
+                    case "DESCRIPTION": {
                         if (description != null) {
                             throw getTooManyDescriptionsParseException(lineNumb);
                         }
-                        if (Util.join(" ", Util.tail(tokens)).equals(DESCRIPTION_START)) {
+                        if (Util.join(" ", Util.tail(tokens)).equals("START")) {
                             StringBuilder descriptionBuilder = new StringBuilder();
                             boolean firstLine = true;
                             boolean descriptionFinished = false;
@@ -237,10 +255,10 @@ public class Level implements Serializable {
                                 String descriptionLine = lineIterator.next();
                                 String[] descriptionTokens = descriptionLine.split("\\s+");
                                 if (descriptionTokens.length > 0
-                                    && descriptionTokens[0].equals(DESCRIPTION)) {
+                                    && descriptionTokens[0].equals("DESCRIPTION")) {
 
                                     String descriptionArgument = Util.join(" ", Util.tail(descriptionTokens));
-                                    if (descriptionArgument.equals(DESCRIPTION_END)) {
+                                    if (descriptionArgument.equals("END")) {
                                         description = descriptionBuilder.toString();
                                         descriptionFinished = true;
                                         break;
@@ -249,7 +267,7 @@ public class Level implements Serializable {
                                         throw getUnexpectedDescriptionArgumentException(
                                                 lineNumb,
                                                 descriptionArgument,
-                                                DESCRIPTION_END);
+                                                "END");
                                     }
 
                                 } else {
@@ -267,7 +285,7 @@ public class Level implements Serializable {
                         }
                         else {
                             throw getUnexpectedDescriptionArgumentException(
-                                    lineNumb, Util.join(" ", Util.tail(tokens)), DESCRIPTION_START);
+                                    lineNumb, Util.join(" ", Util.tail(tokens)), "START");
                         }
                     }
                 }
@@ -277,36 +295,11 @@ public class Level implements Serializable {
         if (description == null) {
             description = "";
         }
-        return new Level(title,hypothesis,goal,expressionFactory, description);
+        if (ruleSet.isEmpty()) {
+            ruleSet.addAll(RuleType.Sets.DEFAULT);
+        }
+        return new Level(title,hypothesis,goal,expressionFactory, description, ruleSet);
     }
+    
 
-    public static final List<String> exampleLevels;
-    static {
-        exampleLevels = new ArrayList<>();
-        final String levelStr =
-                "TITLE Example Level\n" +
-                "\n" +
-                "SYMBOL P BlueBall\n" +
-                "SYMBOL Q RedBall\n" +
-                "\n" +
-                "HYPOTHESIS (P)\n" +
-                "HYPOTHESIS (Q)\n" +
-                "\n" +
-                "GOAL ((P)&(Q))\n";
-        exampleLevels.add(levelStr);
-    }
-
-
-    public static final Level exampleLevel;
-    static {
-        Map<String,String> dummyMap = new HashMap<>();
-        ExpressionFactory expressionFactory = new ExpressionFactory(dummyMap);
-        List<Expression> hypothesis = new ArrayList<>();
-        Expression p = expressionFactory.createProposition("P");
-        Expression q = expressionFactory.createProposition("Q");
-        hypothesis.add(p);
-        hypothesis.add(q);
-        Expression goal = expressionFactory.createOperator(OperatorType.IMPLICATION,p,q);
-        exampleLevel = new Level("dummy",hypothesis,goal,expressionFactory, "This is a dummy level");
-    }
 }
