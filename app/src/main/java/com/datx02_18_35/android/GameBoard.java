@@ -39,6 +39,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScop
 
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLevelAction;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestDeleteFromGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
@@ -287,8 +288,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         for(CardView view : adapterLeft.selectedView.values()){
             startAnimation(delete, view);
         }
-        adapterLeft.selected.clear();
-        adapterLeft.selectedView.clear();
     }
     public void startAnimation(Animation a, View v ){
         if(a != null){
@@ -391,11 +390,18 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             invRecyclerView.setVisibility(View.GONE);
         }
         else if(animation==delete){
+            ArrayList<Expression> sendList = new ArrayList<>();
+            for (Integer i : adapterLeft.selected){
+                sendList.add(adapterLeft.dataSet.get(i));
+            }
             for(CardView view : adapterLeft.selectedView.values()){
                 view.setVisibility(View.GONE);
+                view.setClickable(false);
             }
+            adapterLeft.selected.clear();
+            adapterLeft.selectedView.clear();
             try {
-                Controller.getSingleton().sendAction(new RequestGameboardAction(boardCallback));
+                Controller.getSingleton().sendAction(new RequestDeleteFromGameboardAction(boardCallback, sendList));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -634,7 +640,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.trash_can:{
-                Log.d("test123", "onClick: soptunna");
                 deleteSelection();
                 break;
             }

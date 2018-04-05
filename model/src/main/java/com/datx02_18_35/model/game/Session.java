@@ -158,7 +158,9 @@ public class Session {
         assert isExpressionInScope(expression);
         scopes.peek().addExpressionToGameBoard(expression);
     }
-
+    public void removeExpressionFromGameBoard(Collection<Expression> expressions){
+        scopes.peek().removeExpressionFromGameBoard(expressions);
+    }
     public void addExpressionToInventory(Collection<Expression> expressions) {
         scopes.peek().addExpressionToInventory(expressions);
     }

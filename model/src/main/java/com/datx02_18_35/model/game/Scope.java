@@ -60,4 +60,7 @@ public class Scope {
         assert expressions != null;
         this.inventory.addAll(expressions);
     }
+    void removeExpressionFromGameBoard(Collection<Expression> expressions){
+        gameBoard.removeAll(expressions);
+    }
 }
