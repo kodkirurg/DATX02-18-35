@@ -318,6 +318,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             } catch (GameException e) {
                 e.printStackTrace();
             }
+
         }
         else if(object instanceof Rule){
             try {
@@ -392,6 +393,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             try {
 
                 Controller.getSingleton().handleAction(new RequestDeleteFromGameboardAction(boardCallback,sendList));
+            } catch (GameException e) {
+                e.printStackTrace();
+            }
+            sendList.clear();
+            try {
+                Controller.getSingleton().handleAction(new RequestRulesAction(boardCallback, sendList));
             } catch (GameException e) {
                 e.printStackTrace();
             }
