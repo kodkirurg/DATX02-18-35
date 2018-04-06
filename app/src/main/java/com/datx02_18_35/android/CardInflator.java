@@ -240,10 +240,15 @@ public class CardInflator {
     }
     //set symbol by expression
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
-        String symbol = "";
-        if(symbolMap.containsKey(expression.toString())){
-            symbol = symbolMap.get(expression.toString());
+        if (expression instanceof Absurdity) {
+            Tools.setImage(imageView, R.drawable.absurdity);
+            return;
         }
+        else if (false == (expression instanceof Proposition)) {
+            throw new IllegalArgumentException("Expression must either be a proposition or absurdity");
+        }
+
+        String symbol = symbolMap.get(expression.toString());
         switch (symbol.toLowerCase()){
             case "redball":
                 Tools.setImage(imageView,R.drawable.redball);
@@ -256,9 +261,6 @@ public class CardInflator {
                 break;
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
-            case "absurdity":
-                Tools.setImage(imageView,R.drawable.absurdity);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);

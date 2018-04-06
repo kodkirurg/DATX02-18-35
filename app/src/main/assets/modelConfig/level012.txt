@@ -8,7 +8,6 @@ SYMBOL P BlueBall
 SYMBOL Q RedBall
 SYMBOL R GreenTriangle
 SYMBOL S YellowRectangle
-SYMBOL # Absurdity
 
 HYPOTHESIS P | (Q | R)
 HYPOTHESIS P > S
