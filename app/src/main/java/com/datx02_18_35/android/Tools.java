@@ -104,7 +104,7 @@ class Tools {
             }
             else{
                 float totalLeftOverSpace = widthInDP-minTotalRequirement;
-                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                float extraSpanCounts = (float) Math.floor((double)(totalLeftOverSpace / cardSize));
                 spanCounts+=extraSpanCounts;
                 float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
                         +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
@@ -118,9 +118,9 @@ class Tools {
     }
 
     static class SandboxScreenInfo{
-        public int spanCounts=3;
-        public float cardWidth=120;
-        public float cardHeight=170;
+        public int spanCounts=2;
+        public float cardWidth;
+        public float cardHeight;
         static final float paperRatio = (float) Math.sqrt(2);
         static final float minimumCardWidth = 120;
         static final float cardMargin=10;
@@ -134,19 +134,18 @@ class Tools {
         SandboxScreenInfo(){
             float widthInDP = Tools.getWidthOfDisplayInDp();
             // extremely small screen, probably don't exist and won't work with our app, however
-            // use 1 expression and 1 rule column
+            // use 1 expression and 1 operator column
             if(widthInDP < minTotalRequirement){
                 float diffPerCard=(minTotalRequirement-widthInDP)/spanCounts;
                 cardWidth=minimumCardWidth-diffPerCard;
             }
             else{
                 float totalLeftOverSpace = widthInDP-minTotalRequirement;
-                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                float extraSpanCounts = (float) Math.floor((double)(totalLeftOverSpace / cardSize));
                 spanCounts+=extraSpanCounts;
                 float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
                         +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
                 float leftoverToAddToWidthForEachCard =totalLeftOverSpaceAfterNewSpanCounts/spanCounts;
-
                 cardWidth=minimumCardWidth+leftoverToAddToWidthForEachCard;
             }
             cardHeight=paperRatio*cardWidth;
