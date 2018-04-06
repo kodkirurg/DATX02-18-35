@@ -46,7 +46,7 @@ public class Util {
     }
 
 
-    public static void Log(String string) {
+    public static void log(String string) {
         StackTraceElement st = new Throwable().getStackTrace()[1];
         String[] lines = string.split("\r\n|\n|\r");
         for (String line : lines) {

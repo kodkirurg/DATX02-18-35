@@ -1,6 +1,5 @@
 package com.datx02_18_35.controller;
 
-import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
@@ -167,7 +166,7 @@ public class Controller extends ActionConsumer {
                 int currentScore = game.getSession().getStepsApplied();
                 action.callback(new VictoryConditionMetAction(game.getSession().getLevel().goal,currentScore, previousScore,game.hasNextLevel()));
                 action.callback(new SaveUserDataAction(game.saveUserData()));
-                Util.Log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
+                Util.log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
             }
         }
         else if (action instanceof ClosedSandboxAction) {
