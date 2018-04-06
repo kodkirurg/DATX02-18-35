@@ -1,4 +1,4 @@
-TITLE Implication Introduction
+TITLE Basic Implication Introduction
 
 DESCRIPTION START
 In this Level you will learn how to create implication cards from almost nothing.

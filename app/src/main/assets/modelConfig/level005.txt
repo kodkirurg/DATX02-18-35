@@ -2,6 +2,8 @@ TITLE Deletion and Inventory
 
 DESCRIPTION START
 Here we will learn how to use inventory.
+
+uh... update this. Tis is wrong.
 DESCRIPTION END
 
 SYMBOL P BlueBall

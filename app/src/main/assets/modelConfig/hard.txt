@@ -11,6 +11,8 @@ SYMBOL Q RedBall
 SYMBOL R GreenTriangle
 SYMBOL S YellowRectangle
 
+//RULESET CLASSICAL
+
 HYPOTHESIS P > (Q > #)
 HYPOTHESIS (P > #) > R
 HYPOTHESIS (S | R) > #

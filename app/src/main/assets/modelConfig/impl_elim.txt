@@ -1,4 +1,4 @@
-TITLE Basic Implication
+TITLE Basic Implication Elimination
 
 DESCRIPTION START
 Here we introduce a new kind of card, the implication card.
