@@ -79,7 +79,7 @@ class Tools {
 
 
     static class GameBoardScreenInfo {
-        public int spanCounts;
+        public int spanCounts=2;
         public float cardWidth;
         public float cardHeight;
         static final float paperRatio = (float) Math.sqrt(2);
@@ -94,9 +94,9 @@ class Tools {
         static final float cardSize = minimumCardWidth+cardMargin;
 
 
-        GameBoardScreenInfo(float widthInDP){
-            spanCounts=2;
+        GameBoardScreenInfo(){
 
+            float widthInDP = Tools.getWidthOfDisplayInDp();
             // extremely small screen, probably don't exist and won't work with our app, however
             // use 1 expression and 1 rule column
             if(widthInDP < minTotalRequirement){
@@ -118,6 +118,18 @@ class Tools {
 
     }
 
+    static class SandboxScreenInfo{
+        public int spanCounts=3;
+        public float cardWidth=120;
+        public float cardHeight=170;
+
+        SandboxScreenInfo(){
+        float widthInDp = Tools.getWidthOfDisplayInDp();
+
+
+
+        }
+    }
 
 
 
