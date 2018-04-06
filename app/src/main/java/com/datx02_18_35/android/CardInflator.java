@@ -153,10 +153,10 @@ public class CardInflator {
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
                     if(op11 instanceof Proposition | op11 instanceof Absurdity){
-                        sSymbol(op12, imageViewUpperLeft, symbolMap);
+                        sSymbol(op11, imageViewUpperRight, symbolMap);
                     }
                     if(op12 instanceof Proposition | op12 instanceof Absurdity){
-                        sSymbol(op11,imageViewUpperRight, symbolMap);
+                        sSymbol(op12,imageViewUpperLeft, symbolMap);
                     }
                     if (op1 instanceof Implication) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);

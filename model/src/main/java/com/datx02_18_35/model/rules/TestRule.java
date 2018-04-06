@@ -42,6 +42,9 @@ public final class TestRule {
                     throw createIllegalRuleExceptionRuleNotInScope(rule);
                 }
             break;
+            case LAW_OF_EXCLUDED_MIDDLE:
+                // Ignore
+            break;
             default:
                 if (!session.isExpressionInScope(exprs)) {
                     throw createIllegalRuleExceptionRuleNotInScope(rule);
@@ -50,6 +53,7 @@ public final class TestRule {
 
         // Check correct number of expressions
         switch (type) {
+            case LAW_OF_EXCLUDED_MIDDLE:
             case CONJUNCTION_ELIMINATION:
                 if (rule.expressions.size() != 1) {
                     throw new IllegalRuleException(rule,
@@ -70,15 +74,19 @@ public final class TestRule {
             break;
             case DISJUNCTION_ELIMINATION:
                 if(rule.expressions.size()!=3){
-                    throw new IllegalRuleException(rule,"Wrong number of expression in rule!"+"Expected: 3, Found "+exprs.size());
+                    throw new IllegalRuleException(rule,
+                            "Wrong number of expression in rule!" +
+                                    "Expected: 3, Found "+exprs.size());
                 }
         }
 
         // Check correct types
         switch (type) {
+            case LAW_OF_EXCLUDED_MIDDLE:
             case IMPLICATION_INTRODUCTION:
             case DISJUNCTION_INTRODUCTION:
             case CONJUNCTION_INTRODUCTION:
+                // Ignore
                 break;
             case CONJUNCTION_ELIMINATION:
                 if (false == exprs.get(0) instanceof Conjunction) {

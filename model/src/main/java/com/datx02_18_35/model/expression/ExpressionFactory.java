@@ -67,6 +67,13 @@ public class ExpressionFactory implements Serializable {
         Expression expr1 = rule.expressions.get(0);
 
         switch (rule.type) {
+            case LAW_OF_EXCLUDED_MIDDLE: {
+                assert rule.expressions.size() == 1;
+                Expression expr2 = createOperator(OperatorType.IMPLICATION, expr1, createAbsurdity());
+                result.add(createOperator(OperatorType.DISJUNCTION, expr1, expr2));
+
+                break;
+            }
             case IMPLICATION_ELIMINATION: {
                 assert rule.expressions.size() == 2;
                 Expression expr2 = rule.expressions.get(1);
