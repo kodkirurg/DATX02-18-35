@@ -47,7 +47,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setBackgroundColor(Color.WHITE);
         holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
-            CardInflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
             holder.alreadyBound=true;
         }
 
@@ -93,7 +93,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
 
             }
             else if(activity.operatorSelcted!=null){
-                ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
+                ExpressionFactory expressionFactory =GameBoard.level.expressionFactory;
                 Expression expression = expressionFactory.createOperator(activity.operatorSelcted,selected.get(0),expr);
 
 

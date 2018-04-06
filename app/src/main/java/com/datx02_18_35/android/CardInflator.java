@@ -1,10 +1,8 @@
 package com.datx02_18_35.android;
 
 import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +42,7 @@ public class CardInflator {
      * @param  height height in DP
      * @param  matchParent if used recursively match parent = true will make the card match parents size
      */
-    public static void deflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final float width, final float height, boolean matchParent) {
+    public static void inflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final float width, final float height, boolean matchParent) {
 
 
 
@@ -62,6 +60,17 @@ public class CardInflator {
         if(!matchParent){
             cardView.getLayoutParams().height =  (int) Tools.convertDpToPixel(height);
             cardView.getLayoutParams().width = (int) Tools.convertDpToPixel(width);
+            
+            // Added here to have numberView always centered of the visual card, do not create new TextViews when creating depth recursively.
+            TextView cardNumberView = new TextView(cardView.getContext());
+            cardNumberView.setId(R.id.card_number_text_view);
+            cardNumberView.setElevation(cardView.getElevation()+1);
+            cardNumberView.setVisibility(View.GONE);
+            cardNumberView.setTag(R.id.card_number,0);
+            cardNumberView.setTextSize(20);
+            cardNumberView.setTextColor(Color.MAGENTA);
+            cardView.addView(cardNumberView);
+
         }
 
         //whole card one symbol
@@ -143,8 +152,12 @@ public class CardInflator {
                     ImageView imageViewUpperRight = cardView.findViewById(R.id.card_expression_quadrant1);
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
-                    sSymbol(op11, imageViewUpperLeft, symbolMap);
-                    sSymbol(op12, imageViewUpperRight, symbolMap);
+                    if(op11 instanceof Proposition | op11 instanceof Absurdity){
+                        sSymbol(op11, imageViewUpperLeft, symbolMap);
+                    }
+                    if(op12 instanceof Proposition | op12 instanceof Absurdity){
+                        sSymbol(op12, imageViewUpperRight, symbolMap);
+                    }
                     if (op1 instanceof Implication) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
                     } else if (op1 instanceof Disjunction) {
@@ -152,32 +165,10 @@ public class CardInflator {
                     } else if (op1 instanceof Conjunction) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
-
-
-
-                    if(op11 instanceof Operator){
-                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
-                        rmView(R.id.card_expression_quadrant1,cardView);
-                        cardView11 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) cardView11.getLayoutParams();
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        deflate(cardView11,op11,symbolMap,width*widthRatio,height*heightRatio,true);
-                        Log.d(Tools.debug, "deflate: " + op11.toString());
-
-                    }
-                    if(op12 instanceof Operator){
-                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2));
-                        rmView(R.id.card_expression_quadrant2,cardView);
-                        cardView12 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) cardView12.getLayoutParams();
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        deflate(cardView12,op12,symbolMap,width*widthRatio,height*heightRatio,true);
-                        Log.d(Tools.debug, "deflate: " + op12.toString());
-                    }
-
-
+                    CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
+                    cardView11 = newSmallCard(cardView,cardViewQuad,symbolMap,op11);
+                    cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2));
+                    cardView12 = newSmallCard(cardView,cardViewQuad,symbolMap,op12);
                 }
 
 
@@ -192,8 +183,13 @@ public class CardInflator {
                     ImageView imageViewLowerRight = cardView.findViewById(R.id.card_expression_quadrant4);
                     ImageView imageLowerMiddle = cardView.findViewById(R.id.card_expression_lower_mid);
 
-                    sSymbol(op21,imageViewLowerLeft,symbolMap);
-                    sSymbol(op22,imageViewLowerRight,symbolMap);
+
+                    if(op21 instanceof Proposition | op21 instanceof Absurdity){
+                        sSymbol(op21,imageViewLowerLeft,symbolMap);
+                    }
+                    if(op22 instanceof Proposition | op22 instanceof Absurdity){
+                        sSymbol(op22,imageViewLowerRight,symbolMap);
+                    }
 
                     if(op2 instanceof Implication){
                         imageLowerMiddle.setBackgroundResource(R.drawable.horizontal_implication);
@@ -204,25 +200,10 @@ public class CardInflator {
                     else if(op2 instanceof Conjunction){
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
-
-                    if(op21 instanceof Operator){
-                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3));
-                        rmView(R.id.card_expression_quadrant3,cardView);
-                        cardView21 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) cardView21.getLayoutParams();
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        deflate(cardView21,op21,symbolMap,width*widthRatio,height*heightRatio,true);
-                    }
-                    if(op22 instanceof Operator){
-                        CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4));
-                        rmView(R.id.card_expression_quadrant4,cardView);
-                        cardView22 = (CardView) LayoutInflater.from(cardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
-                        ViewGroup.MarginLayoutParams layoutParams =
-                                (ViewGroup.MarginLayoutParams) cardView22.getLayoutParams();
-                        layoutParams.setMargins(0, 0, 0, 0);
-                        deflate(cardView22,op22,symbolMap,width*widthRatio,height*heightRatio,true);
-                    }
+                    CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3));
+                    cardView21 = newSmallCard(cardView,cardViewQuad,symbolMap,op21);
+                    cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4));
+                    cardView22 = newSmallCard(cardView,cardViewQuad,symbolMap,op22);
                 }
 
                 if(cardView11 !=null){
@@ -239,21 +220,25 @@ public class CardInflator {
                 }
             }
         }
-        TextView cardNumberView = new TextView(cardView.getContext());
-        cardNumberView.setId(R.id.card_number_text_view);
-        cardNumberView.setElevation(cardView.getElevation()+1);
-        cardNumberView.setVisibility(View.GONE);
-        cardNumberView.setTag(R.id.card_number,0);
-        cardNumberView.setTextSize(20);
-        cardNumberView.setTextColor(Color.MAGENTA);
-        cardView.addView(cardNumberView);
     }
+
+    //new card recursion
+    private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Map<String,String> symbolMap, Expression expression ){
+        CardView smallCardView = (CardView) LayoutInflater.from(topCardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+        ViewGroup.MarginLayoutParams layoutParams4 =
+                (ViewGroup.MarginLayoutParams) smallCardView.getLayoutParams();
+        layoutParams4.setMargins(0, 0, 0, 0);
+        inflate(smallCardView,expression,symbolMap,0,0,true);
+        return smallCardView;
+    }
+
     //remove view by id
     private static void rmView(int rId,CardView card){
         View view = card.findViewById(rId);
         ViewGroup viewGroup = (ViewGroup) view.getParent();
         viewGroup.removeView(view);
     }
+    //set symbol by expression
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
         String symbol = "";
         if(symbolMap.containsKey(expression.toString())){

@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
  * Created by raxxor on 2018-03-15.
  */
 
-class   Tools {
+class Tools {
 
     static final String debug = "test123";
     private static final String userData = "userDatas";
@@ -69,11 +69,37 @@ class   Tools {
 
 
     //screen
-    static float getWidthDpFromPx(){
+    static float getWidthOfDisplayInDp(){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
+    }
+
+
+
+    static class ScreenInfo{
+        public int spanCounts;
+        public float cardWidth;
+        public float cardHeight;
+        static final float paperRatio = (float) Math.sqrt(2);
+        static final float minimumWidth = 120;
+
+        ScreenInfo(float widthInDP){
+
+
+            //TODO : Fix gameboard and get sizes, then fix this function
+            //small screen, use 1 expression and 1 rule column
+            if(widthInDP < 390 | true){
+                spanCounts=2;
+                cardWidth=widthInDP/2-12/spanCounts-10-5;
+            }
+            else{
+                spanCounts=Math.round(widthInDP/minimumWidth);
+            }
+            cardHeight=paperRatio*cardWidth;
+        }
+
     }
 
 

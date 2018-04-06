@@ -30,11 +30,14 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
     private GameBoard activity;
+    private float cardHeight,cardWidth;
 
 
-    GameCardAdapter(ArrayList<Expression> dataSet, GameBoard activity){
+    GameCardAdapter(ArrayList<Expression> dataSet, GameBoard activity, float cardHWidth, float cardHeight){
         this.dataSet = dataSet;
         this.activity=activity;
+        this.cardHeight=cardHeight;
+        this.cardWidth=cardHWidth;
     }
 
     void updateBoard(final Iterable<Expression> data){
@@ -70,7 +73,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            CardInflator.deflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,120,170,false);
+            CardInflator.inflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,cardWidth,cardHeight,false);
             if(dataSet.get(position).equals(goal)){
                 setVictoryAnimation(holder.cardView);
             }
@@ -140,7 +143,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         selected.clear();
         selectedView.clear();
         try {
-            if(!GameBoard.victory){
+            if(!activity.victory){
                 Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback, new ArrayList<Expression>()));
             }
 
