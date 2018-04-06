@@ -86,7 +86,7 @@ public class LevelCollection {
             else {
                 String levelText = configFiles.get(line);
                 if (levelText == null) {
-                    Util.Log("Level file not found: " + line);
+                    Util.log("Level file not found: " + line);
                     continue;
                 }
                 categoryLevels.add(Level.parseLevel(levelText));
@@ -95,7 +95,7 @@ public class LevelCollection {
         }
         categories.add(new LevelCategory(categoryName, categoryLevels));
 
-        Util.Log("Loaded levels! Categories: " + categories.size() + ", levels: " + totalLevels);
+        Util.log("Loaded levels! Categories: " + categories.size() + ", levels: " + totalLevels);
 
         return categories;
     }

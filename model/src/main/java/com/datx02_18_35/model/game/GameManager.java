@@ -51,7 +51,7 @@ public class GameManager {
                 e.printStackTrace();
             }
         }
-        Util.Log("Serializing user data, size=" + byteArray.length + "B");
+        Util.log("Serializing user data, size=" + byteArray.length + "B");
 
         return byteArray;
     }
@@ -70,7 +70,7 @@ public class GameManager {
                 throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
             }
         } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            Util.Log("userData byte array is invalid, falling back to default values." +
+            Util.log("userData byte array is invalid, falling back to default values." +
                     "The following exception was caught: \n" + e);
         } finally {
             if (objIn != null) {
@@ -99,7 +99,7 @@ public class GameManager {
             throw new LevelNotInListException("Level is not in GameManager's list of levels");
         }
         currentSession = new Session(level);
-        Util.Log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
+        Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
     }
 
     public void quitLevel() throws IllegalGameStateException {
