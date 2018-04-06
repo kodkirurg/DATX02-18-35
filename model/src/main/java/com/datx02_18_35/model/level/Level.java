@@ -172,6 +172,9 @@ public class Level implements Serializable {
         // Parse SYMBOL
         lineNumb = 0;
         for (String line : lines) {
+            if (line.startsWith("//")) {
+                continue;
+            }
             String[] tokens = line.split("\\s+"); // regex: One or more whitespaces
             if (tokens[0].equals("SYMBOL")) {
                 if (tokens.length != 3) {
