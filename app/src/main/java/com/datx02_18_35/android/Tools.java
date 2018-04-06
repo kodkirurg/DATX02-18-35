@@ -95,7 +95,6 @@ class Tools {
 
 
         GameBoardScreenInfo(){
-
             float widthInDP = Tools.getWidthOfDisplayInDp();
             // extremely small screen, probably don't exist and won't work with our app, however
             // use 1 expression and 1 rule column
@@ -122,14 +121,40 @@ class Tools {
         public int spanCounts=3;
         public float cardWidth=120;
         public float cardHeight=170;
+        static final float paperRatio = (float) Math.sqrt(2);
+        static final float minimumCardWidth = 120;
+        static final float cardMargin=10;
+        static final float gameLeftSideMargin=6;
+        static final float gameRightSideMargin=6;
+        static final float extraMargin=gameLeftSideMargin+gameRightSideMargin;
+        static final float minTotalRequirement=2*minimumCardWidth+2*cardMargin +gameLeftSideMargin
+                +gameRightSideMargin+extraMargin;
+        static final float cardSize = minimumCardWidth+cardMargin;
 
         SandboxScreenInfo(){
-        float widthInDp = Tools.getWidthOfDisplayInDp();
+            float widthInDP = Tools.getWidthOfDisplayInDp();
+            // extremely small screen, probably don't exist and won't work with our app, however
+            // use 1 expression and 1 rule column
+            if(widthInDP < minTotalRequirement){
+                float diffPerCard=(minTotalRequirement-widthInDP)/spanCounts;
+                cardWidth=minimumCardWidth-diffPerCard;
+            }
+            else{
+                float totalLeftOverSpace = widthInDP-minTotalRequirement;
+                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                spanCounts+=extraSpanCounts;
+                float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
+                        +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
+                float leftoverToAddToWidthForEachCard =totalLeftOverSpaceAfterNewSpanCounts/spanCounts;
 
-
-
+                cardWidth=minimumCardWidth+leftoverToAddToWidthForEachCard;
+            }
+            cardHeight=paperRatio*cardWidth;
         }
+
+
     }
+
 
 
 
