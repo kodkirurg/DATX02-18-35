@@ -78,25 +78,42 @@ class Tools {
 
 
 
-    static class ScreenInfo{
+    static class GameBoardScreenInfo {
         public int spanCounts;
         public float cardWidth;
         public float cardHeight;
         static final float paperRatio = (float) Math.sqrt(2);
-        static final float minimumWidth = 120;
+        static final float minimumCardWidth = 120;
+        static final float cardMargin=10;
+        static final float openInventoryRequire=30;
+        static final float gameLeftSideMargin=6;
+        static final float gameRightSideMargin=6;
+        static final float extraMargin=gameLeftSideMargin+gameRightSideMargin;
+        static final float minTotalRequirement=2*minimumCardWidth+2*cardMargin+openInventoryRequire
+                +gameLeftSideMargin+gameRightSideMargin+extraMargin;
+        static final float cardSize = minimumCardWidth+cardMargin;
 
-        ScreenInfo(float widthInDP){
 
+        GameBoardScreenInfo(float widthInDP){
+            Log.d(Tools.debug, "GameBoardScreenInfo: " + minTotalRequirement + "  " + widthInDP );
 
-            //TODO : Fix gameboard and get sizes, then fix this function
-            //small screen, use 1 expression and 1 rule column
-            if(widthInDP < 390 | true){
-                spanCounts=2;
-                cardWidth=widthInDP/2-12/spanCounts-10-5;
+            spanCounts=2;
+
+            // extremely small screen, probably don't exist and won't work with our app, however
+            // use 1 expression and 1 rule column
+            if(widthInDP < minTotalRequirement){
+                float diffPerCard=(minTotalRequirement-widthInDP)/spanCounts;
+                cardWidth=minimumCardWidth-diffPerCard;
             }
             else{
-                spanCounts=Math.round(widthInDP/minimumWidth);
+                float totalLeftOverSpcae = widthInDP-minTotalRequirement;
+                //float extra spanCounts =
+                //spanCounts+=
+                float diffPerCard=(widthInDP-minTotalRequirement)/spanCounts;
+                cardWidth=minimumCardWidth-diffPerCard;
+                Log.d(Tools.debug, "GameBoardScreenInfo: " + cardWidth);
             }
+
             cardHeight=paperRatio*cardWidth;
         }
 

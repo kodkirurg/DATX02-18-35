@@ -125,12 +125,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         //screen size
-        Tools.ScreenInfo screenInfo = new Tools.ScreenInfo(Tools.getWidthOfDisplayInDp());
+        Tools.GameBoardScreenInfo gameBoardScreenInfo = new Tools.GameBoardScreenInfo(Tools.getWidthOfDisplayInDp());
 
 
 
-        initLeftSide(screenInfo.cardWidth,screenInfo.cardHeight,screenInfo.spanCounts);
-        initRightSide(screenInfo.cardWidth,screenInfo.cardHeight);
+        initLeftSide(gameBoardScreenInfo.cardWidth, gameBoardScreenInfo.cardHeight, gameBoardScreenInfo.spanCounts);
+        initRightSide(gameBoardScreenInfo.cardWidth, gameBoardScreenInfo.cardHeight);
         initInventory();
         try {
             Controller.getSingleton().handleAction(new RequestGameboardAction(boardCallback));
