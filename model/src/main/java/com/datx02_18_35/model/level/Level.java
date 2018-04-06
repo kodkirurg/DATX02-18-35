@@ -7,6 +7,7 @@ import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.expression.ExpressionParser;
+import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.rules.RuleType;
 ;
 import java.io.Serializable;
@@ -193,7 +194,7 @@ public class Level implements Serializable {
         Set<RuleType> ruleSet = new HashSet<>();
 
         // Parse HYPOTHESIS, GOAL, TITLE, DESCRIPTION
-        lineNumb = 0;
+        lineNumb = 1;
         Iterator<String> lineIterator = lines.iterator();
         while (lineIterator.hasNext()) {
             String line = lineIterator.next();
@@ -223,21 +224,11 @@ public class Level implements Serializable {
                             throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
                         }
                         for (int i = 1; i < tokens.length; ++i) {
-                            switch (tokens[i]) {
-                                case "CONSTRUCTIVE":
-                                    ruleSet.addAll(RuleType.Sets.CONSTRUCTIVE);
-                                    break;
-                                case "IMPLICATION_ONLY":
-                                    ruleSet.addAll(RuleType.Sets.IMPLICATION_ONLY);
-                                    break;
-                                case "CONJUNCTION_ONLY":
-                                    ruleSet.addAll(RuleType.Sets.CONJUNCTION_ONLY);
-                                    break;
-                                case "DISJUNCTION_ONLY":
-                                    ruleSet.addAll(RuleType.Sets.DISJUNCTION_ONLY);
-                                    break;
-                                default:
-                                    throw getInvalidRuleSetException(lineNumb, tokens[i]);
+                            Set<RuleType> newRuleSet = RuleType.Sets.get(tokens[i]);
+                            if (newRuleSet != null) {
+                                ruleSet.addAll(newRuleSet);
+                            } else {
+                                throw getInvalidRuleSetException(lineNumb, tokens[i]);
                             }
                         }
                     }
@@ -294,7 +285,7 @@ public class Level implements Serializable {
             description = "";
         }
         if (ruleSet.isEmpty()) {
-            ruleSet.addAll(RuleType.Sets.DEFAULT);
+            ruleSet.addAll(RuleType.Sets.getDefault());
         }
         return new Level(title,hypothesis,goal,expressionFactory, description, ruleSet);
     }
