@@ -66,12 +66,13 @@ public class Rule {
         return result;
     }
 
-    public static List<Rule> getLegalRules( Expression assumption, List<Expression> selection){
+    public static List<Rule> getLegalRules(Expression assumption, List<Expression> selection) {
 
         switch(selection.size()) {
             case 0: {
-                // No applicable rules
-                return new ArrayList<>();
+                List<Rule> legalRules = new ArrayList<>();
+                legalRules.add(new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE, (Expression)null));
+                return legalRules;
             }
             case 1: {
                 final List<Rule> legalRules = new ArrayList<>();
@@ -199,10 +200,14 @@ public class Rule {
     }
 
     public static Rule finishIncompleteRule(Rule rule,Expression expression) throws IllegalRuleException {
-        List<Expression> expressions = new ArrayList<>();
         switch (rule.type) {
+            case LAW_OF_EXCLUDED_MIDDLE:
+                if (rule.expressions.get(0) != null) {
+                    throw new IllegalRuleException(rule, "First argument must be null");
+                }
+                return new Rule(RuleType.LAW_OF_EXCLUDED_MIDDLE, expression);
             case ABSURDITY_ELIMINATION:
-                if (false == rule.expressions.get(0) instanceof Absurdity) {
+                if (false == (rule.expressions.get(0) instanceof Absurdity)) {
                     throw new IllegalRuleException(rule, "First argument must be Absurdity");
                 }
                 if (rule.expressions.get(1) != null) {

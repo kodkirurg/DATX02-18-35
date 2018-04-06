@@ -31,5 +31,6 @@ public class OpenSandboxAction extends Action {
         DISJUNCTION_INTRODUCTION,
         ABSURDITY_ELIMINATION,
         ASSUMPTION,
+        LAW_OF_EXCLUDING_MIDDLE,
     }
 }

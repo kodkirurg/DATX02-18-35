@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
+import com.datx02_18_35.controller.dispatch.IllegalActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 
 
@@ -58,6 +59,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
 
@@ -437,7 +439,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             else if (action instanceof OpenSandboxAction){
                 String reason="";
                 sandboxAction =(OpenSandboxAction) action;
-                switch(((OpenSandboxAction) action).reason){
+                switch(sandboxAction.reason){
                     case ASSUMPTION:{
                         reason = "assumption";
                         break;
@@ -449,6 +451,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     case DISJUNCTION_INTRODUCTION: {
                         reason = "disjunction introduction";
                         break;
+                    }
+                    case LAW_OF_EXCLUDING_MIDDLE: {
+                        reason = "law of excluding middle";
+                        break;
+                    }
+                    default: {
+                        throw new IllegalActionException(action, "Unknown reason: " + sandboxAction.reason);
                     }
 
                 }
