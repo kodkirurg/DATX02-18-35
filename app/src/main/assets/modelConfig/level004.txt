@@ -7,9 +7,9 @@ DESCRIPTION END
 SYMBOL P BlueBall
 SYMBOL Q RedBall
 SYMBOL R YellowRectangle
+SYMBOL # Absurdity
 
 HYPOTHESIS P & Q
 HYPOTHESIS Q > R
-
 
 GOAL R

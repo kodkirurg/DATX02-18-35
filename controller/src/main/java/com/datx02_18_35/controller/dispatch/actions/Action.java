@@ -2,6 +2,7 @@ package com.datx02_18_35.controller.dispatch.actions;
 
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
 import com.datx02_18_35.controller.dispatch.IllegalActionException;
+import com.datx02_18_35.model.GameException;
 
 /**
  * Created by robin on 2018-03-01.
@@ -29,10 +30,10 @@ public abstract class Action {
      * @param action
      * @throws InterruptedException
      */
-    public void callback(Action action) throws InterruptedException, IllegalActionException {
+    public void callback(Action action) throws GameException {
         if (callback == null) {
             throw new IllegalActionException(this, "This action doesn't support callbacks!");
         }
-        this.callback.sendAction(action);
+        this.callback.handleAction(action);
     }
 }

@@ -1,16 +1,15 @@
 package com.datx02_18_35.android;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.OperatorType;
 
@@ -21,10 +20,18 @@ import game.logic_game.R;
 public class Sandbox extends AppCompatActivity implements View.OnClickListener {
 
 
-    public static boolean maySelectOperator=false;
-    public static OperatorType operatorSelcted;
-    public static Button button;
-    public static String reason;
+    public boolean maySelectOperator=false;
+    public OperatorType operatorSelcted;
+    public Button button;
+    public String reason;
+
+
+    //Recyclerviews, gridlayouts and adapters
+    RecyclerView recyclerViewLeft,recyclerViewRight;
+    GridLayoutManager gridLayoutManagerLeft,gridLayoutManagerRight;
+    SandboxCardsAdapter adapterLeft;
+    SandboxOperatorAdapter adapterRight;
+
 
 
     @Override
@@ -32,11 +39,11 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sandbox);
 
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        //init sandbox board
+        initRightSide();
+        initLeftSide();
 
-        ft.replace(R.id.sandbox_right_side, new FragmentSandboxOperators());
-        ft.replace(R.id.sandbox_left_side, new FragmentSandboxCards()).commit();
+
         button = findViewById(R.id.sandbox_button);
         findViewById(R.id.sandbox_button).setOnClickListener(this);
         reason = getIntent().getStringExtra("reason");
@@ -44,16 +51,50 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+
+    public void initLeftSide(){
+        //"screen" re-size
+        int spanCount;
+        int widthDP=Math.round(Tools.getWidthOfDisplayInDp() - 130*2);
+        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+
+        recyclerViewLeft = (RecyclerView) findViewById(R.id.sandboxLeft_recycler_view);
+        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
+        recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
+
+        ArrayList<Expression> list = new ArrayList<>(GameBoard.level.usedSymbols);
+        adapterLeft = new SandboxCardsAdapter(list,this);
+        recyclerViewLeft.setAdapter(adapterLeft);
+    }
+
+
+    public void initRightSide(){
+
+        recyclerViewRight = (RecyclerView) findViewById(R.id.sandboxRight_recycler_view);
+        gridLayoutManagerRight = new GridLayoutManager(getApplication(), 1);
+        recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
+
+        ArrayList<OperatorType> list = new ArrayList<>();
+        list.add(OperatorType.IMPLICATION);
+        list.add(OperatorType.DISJUNCTION);
+        list.add(OperatorType.CONJUNCTION);
+
+        adapterRight = new SandboxOperatorAdapter(list,this);
+        recyclerViewRight.setAdapter(adapterRight);
+    }
+
+
+
     @Override
     public void onClick(View view) {
         switch ( view.getId()){
             case R.id.sandbox_button :
                 if(operatorSelcted==null & maySelectOperator ){
-                    Expression expression = SandboxCardsAdapter.selected.get(0);
+                    Expression expression = adapterLeft.selected.get(0);
                     try {
-                        Controller.getSingleton().sendAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
+                        Controller.getSingleton().handleAction(new ClosedSandboxAction(GameBoard.boardCallback, GameBoard.sandboxAction,expression));
 
-                    } catch (InterruptedException e) {
+                    } catch (GameException e) {
                         e.printStackTrace();
                     }
                 }
@@ -69,7 +110,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         //Needed
         maySelectOperator=false;
         operatorSelcted=null;
-        SandboxCardsAdapter.selected=new ArrayList<Expression>();
-        SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
+        adapterLeft.selected=new ArrayList<Expression>();
+        adapterRight.previousSelectedOperatorHolder=null;
     }
 }

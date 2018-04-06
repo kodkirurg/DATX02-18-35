@@ -22,11 +22,15 @@ import game.logic_game.R;
 
 public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Expression> dataSet;
-    public static ArrayList<Expression> selected = new ArrayList<Expression>();
+    public ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
+    private Sandbox activity;
 
 
-    public SandboxCardsAdapter(ArrayList<Expression> dataSet){this.dataSet=dataSet;}
+    SandboxCardsAdapter(ArrayList<Expression> dataSet, Sandbox activity){
+        this.activity=activity;
+        this.dataSet=dataSet;
+    }
 
 
     @Override
@@ -43,7 +47,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setBackgroundColor(Color.WHITE);
         holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
-            CardDeflator.deflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
             holder.alreadyBound=true;
         }
 
@@ -62,17 +66,17 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             selected.add(expr);
             view.setScaleX((float) 1.05);
             view.setScaleY((float) 1.05 );
-            Sandbox.maySelectOperator=true;
+            activity.maySelectOperator=true;
             firstSelected=(ViewHolder) view.getTag(R.string.viewholders);
-            if(Sandbox.operatorSelcted==null){
-                Sandbox.button.setText("Make " + Sandbox.reason + "!");
-                Sandbox.button.setBackgroundColor(Color.GREEN);
+            if(activity.operatorSelcted==null){
+                activity.button.setText("Make " + activity.reason + "!");
+                activity.button.setBackgroundColor(Color.GREEN);
             }
         }
         else if (selected.size() == 1){
 
-            if(selected.contains(expr) & Sandbox.operatorSelcted==null ){
-                Sandbox.maySelectOperator=false;
+            if(selected.contains(expr) & activity.operatorSelcted==null ){
+                activity.maySelectOperator=false;
                 view.setScaleX((float) 1.00);
                 view.setScaleY((float) 1.00 );
                 ArrayList<Expression> newList = new ArrayList<>();
@@ -84,30 +88,30 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                     newList.add(item);
                 }
                 selected=newList;
-                Sandbox.button.setText("No " + Sandbox.reason +"(exit)");
-                Sandbox.button.setBackgroundColor(Color.RED);
+                activity.button.setText("No " + activity.reason +"(exit)");
+                activity.button.setBackgroundColor(Color.RED);
 
             }
-            else if(Sandbox.operatorSelcted!=null){
-                ExpressionFactory expressionFactory = Level.exampleLevel.getExpressionFactory();
-                Expression expression = expressionFactory.createOperator(Sandbox.operatorSelcted,selected.get(0),expr);
+            else if(activity.operatorSelcted!=null){
+                ExpressionFactory expressionFactory =GameBoard.level.expressionFactory;
+                Expression expression = expressionFactory.createOperator(activity.operatorSelcted,selected.get(0),expr);
 
 
                 //restore animations
                 firstSelected.cardView.setScaleX((float) 1.00);
                 firstSelected.cardView.setScaleY((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
-                SandboxOperatorAdapter.previousSelectedOperatorHolder=null;
-                Sandbox.button.setText("No " + Sandbox.reason +"(exit)");
-                Sandbox.button.setBackgroundColor(Color.RED);
+                activity.adapterRight.previousSelectedOperatorHolder.frame.setScaleX((float) 1.00);
+                activity.adapterRight.previousSelectedOperatorHolder.frame.setScaleY((float) 1.00);
+                activity.adapterRight.previousSelectedOperatorHolder=null;
+                activity.button.setText("No " + activity.reason +"(exit)");
+                activity.button.setBackgroundColor(Color.RED);
 
 
                 //restore variables
                 firstSelected=null;
                 selected.clear();
-                Sandbox.maySelectOperator=false;
-                Sandbox.operatorSelcted=null;
+                activity.maySelectOperator=false;
+                activity.operatorSelcted=null;
 
                 //add new expression
                 dataSet.add(expression);

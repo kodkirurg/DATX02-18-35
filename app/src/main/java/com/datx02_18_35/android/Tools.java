@@ -40,7 +40,7 @@ import static android.content.ContentValues.TAG;
  * Created by raxxor on 2018-03-15.
  */
 
-class   Tools {
+class Tools {
 
     static final String debug = "test123";
     private static final String userData = "userDatas";
@@ -69,12 +69,53 @@ class   Tools {
 
 
     //screen
-    static float getWidthDp(Context context){
+    static float getWidthOfDisplayInDp(){
         float px = Resources.getSystem().getDisplayMetrics().widthPixels;
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
+    }
+
+
+
+    static class GameBoardScreenInfo {
+        public int spanCounts;
+        public float cardWidth;
+        public float cardHeight;
+        static final float paperRatio = (float) Math.sqrt(2);
+        static final float minimumCardWidth = 120;
+        static final float cardMargin=10;
+        static final float openInventoryRequire=30;
+        static final float gameLeftSideMargin=6;
+        static final float gameRightSideMargin=6;
+        static final float extraMargin=gameLeftSideMargin+gameRightSideMargin;
+        static final float minTotalRequirement=2*minimumCardWidth+2*cardMargin+openInventoryRequire
+                +gameLeftSideMargin+gameRightSideMargin+extraMargin;
+        static final float cardSize = minimumCardWidth+cardMargin;
+
+
+        GameBoardScreenInfo(float widthInDP){
+            spanCounts=2;
+
+            // extremely small screen, probably don't exist and won't work with our app, however
+            // use 1 expression and 1 rule column
+            if(widthInDP < minTotalRequirement){
+                float diffPerCard=(minTotalRequirement-widthInDP)/spanCounts;
+                cardWidth=minimumCardWidth-diffPerCard;
+            }
+            else{
+                float totalLeftOverSpace = widthInDP-minTotalRequirement;
+                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                spanCounts+=extraSpanCounts;
+                float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
+                        +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
+                float leftoverToAddToWidthForEachCard =totalLeftOverSpaceAfterNewSpanCounts/spanCounts;
+
+                cardWidth=minimumCardWidth+leftoverToAddToWidthForEachCard;
+            }
+            cardHeight=paperRatio*cardWidth;
+        }
+
     }
 
 
@@ -131,4 +172,15 @@ class   Tools {
     }
 
 
+    //Convertions
+    public static float convertDpToPixel(float dp){
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+    public static float convertPixelsToDp(float px){
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return dp;
+    }
 }

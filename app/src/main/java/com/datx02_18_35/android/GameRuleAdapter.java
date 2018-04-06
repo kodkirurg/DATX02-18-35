@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestApplyRuleAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.rules.Rule;
 
 import java.util.ArrayList;
@@ -26,11 +27,14 @@ import game.logic_game.R;
 public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHolder> implements View.OnClickListener {
     private ArrayList<Rule> dataSet;
     GameBoard activity;
+    float cardWidth,cardHeight;
 
 
-    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity){
+    GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity,float cardWidth, float cardHeight){
         this.dataSet=dataSet;
         this.activity=activity;
+        this.cardHeight=cardHeight;
+        this.cardWidth=cardWidth;
     }
 
 
@@ -59,8 +63,11 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         holder.frame.setOnClickListener(this);
         holder.frame.setTag(position);
 
+        //set size
+        holder.frame.getLayoutParams().width=Math.round(Tools.convertDpToPixel(cardWidth));
+        holder.frame.getLayoutParams().height=Math.round(Tools.convertDpToPixel(cardHeight));
+
         //set visuals
-        holder.frame.setBackgroundColor(Color.WHITE);
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position).type) {
@@ -101,13 +108,13 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     @Override
     public void onClick(View v) {
         try {
-            Controller.getSingleton().sendAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
+            Controller.getSingleton().handleAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
             activity.adapterLeft.restoreSelections();
             if(((GameBoard)activity).infoWindowClicked){
                 ((GameBoard)activity).infoWindowClicked=false;
                 ((GameBoard)activity).popupWindow.dismiss();
             }
-        } catch (Exception e) {
+        } catch (GameException e) {
             e.printStackTrace();
         }
     }

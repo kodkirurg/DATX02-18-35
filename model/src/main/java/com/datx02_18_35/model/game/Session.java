@@ -125,13 +125,12 @@ public class Session {
                             if (scopeIter.hasNext()){
                                 Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
                                 if(testIter.hasNext()) {
-                                    System.out.println("ScopeInvIterator");
                                     currentIter = testIter;
                                     newIter=true;
                                 }
                             }if (assumptionIter.hasNext()&&!newIter) {
                                 currentIter = assumptionIter;
-                                System.out.println("AssumptionIterator");
+
                                 newIter=true;
                             }if(hypothesisIter.hasNext()&&!newIter){
                                 currentIter = hypothesisIter;
@@ -158,7 +157,9 @@ public class Session {
         assert isExpressionInScope(expression);
         scopes.peek().addExpressionToGameBoard(expression);
     }
-
+    public void removeExpressionFromGameBoard(Collection<Expression> expressions){
+        scopes.peek().removeExpressionFromGameBoard(expressions);
+    }
     public void addExpressionToInventory(Collection<Expression> expressions) {
         scopes.peek().addExpressionToInventory(expressions);
     }
@@ -173,6 +174,9 @@ public class Session {
 
     public List<Expression> applyRule(Rule rule) throws IllegalRuleException {
         TestRule.assertRuleIsLegal(this, rule);
+        if (!level.ruleSet.contains(rule.type)) {
+            throw new IllegalRuleException(rule, "The current level does not allow rules of this type.");
+        }
         List<Expression> expressions = level.expressionFactory.applyRule(rule);
         if(rule.type == RuleType.IMPLICATION_INTRODUCTION){
             this.closeScope();
@@ -189,7 +193,7 @@ public class Session {
     }
 
     public List<Rule> getLegalRules(List<Expression> expressions){
-        return Rule.getLegalRules(getAssumption(),expressions);
+        return Rule.filterRules(Rule.getLegalRules(getAssumption(),expressions),level.ruleSet);
     }
 
     public boolean checkWin(){

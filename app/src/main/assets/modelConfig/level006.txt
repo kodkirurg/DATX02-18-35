@@ -2,16 +2,15 @@ TITLE Implication Introduction
 
 DESCRIPTION START
 In this Level you will learn how to create implication cards from almost nothing.
-First thing you need to do is make an assumption. An assumption is just what it sounds like. We assume a card is present on the gameboard and 'poof'
-we get that card on the game board. If we can derive/craft another card based on this assumption we can then create an implication card from our
-assumption to the derived card.
-Try this by making an assumption by clicking the toolbar in the top right and selecting "Assumption". In the sandbox that will be opened click the
-blue ball and then make assumption. On the new game board draw in the red ball from your inventory. Select the red ball and apply the implication
-introduction rule.
+
+First thing you need to do is make an assumption. An assumption is just what it sounds like. We assume a card is present on the gameboard and 'poof' we get that card on the game board. If we can derive/craft another card based on this assumption we can then create an implication card from our assumption to the derived card.
+
+Try this by making an assumption by clicking the toolbar in the top right and selecting "Assumption". In the sandbox that will be opened click the blue ball and then make assumption. On the new game board draw in the red ball from your inventory. Select the red ball and apply the implication introduction rule.
 DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
+SYMBOL # Absurdity
 
 HYPOTHESIS Q
 
