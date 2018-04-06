@@ -25,11 +25,14 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     public ArrayList<Expression> selected = new ArrayList<Expression>();
     private ViewHolder firstSelected=null;
     private Sandbox activity;
+    float cardWidth, cardHeight;
 
 
-    SandboxCardsAdapter(ArrayList<Expression> dataSet, Sandbox activity){
+    SandboxCardsAdapter(ArrayList<Expression> dataSet, Sandbox activity, float cardWidth, float cardHeight){
         this.activity=activity;
         this.dataSet=dataSet;
+        this.cardHeight=cardHeight;
+        this.cardWidth=cardWidth;
     }
 
 
@@ -47,7 +50,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setBackgroundColor(Color.WHITE);
         holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
-            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,120,170,false);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,cardWidth,cardHeight,false);
             holder.alreadyBound=true;
         }
 

@@ -39,9 +39,13 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sandbox);
 
+
+        Tools.SandboxScreenInfo screenInfo = new Tools.SandboxScreenInfo();
+
+
         //init sandbox board
-        initRightSide();
-        initLeftSide();
+        initRightSide(screenInfo.cardWidth,screenInfo.cardHeight);
+        initLeftSide(screenInfo.cardWidth,screenInfo.cardHeight, screenInfo.spanCounts);
 
 
         button = findViewById(R.id.sandbox_button);
@@ -52,26 +56,22 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    public void initLeftSide(){
-        //"screen" re-size
-        int spanCount;
-        int widthDP=Math.round(Tools.getWidthOfDisplayInDp() - 130*2);
-        for (spanCount=0; 130*spanCount < widthDP ;spanCount++);
+    public void initLeftSide(float cardWidth, float cardHeight, int spanCounts){
 
         recyclerViewLeft = (RecyclerView) findViewById(R.id.sandboxLeft_recycler_view);
-        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCount);
+        gridLayoutManagerLeft = new GridLayoutManager(getApplication(), spanCounts-1);
         recyclerViewLeft.setLayoutManager(gridLayoutManagerLeft);
 
         ArrayList<Expression> list = new ArrayList<>(GameBoard.level.usedSymbols);
-        adapterLeft = new SandboxCardsAdapter(list,this);
+        adapterLeft = new SandboxCardsAdapter(list,this,cardWidth, cardHeight);
         recyclerViewLeft.setAdapter(adapterLeft);
     }
 
 
-    public void initRightSide(){
+    public void initRightSide(float cardWidth, float cardHeight){
 
         recyclerViewRight = (RecyclerView) findViewById(R.id.sandboxRight_recycler_view);
-        gridLayoutManagerRight = new GridLayoutManager(getApplication(), 1);
+        gridLayoutManagerRight = new GridLayoutManager(getApplication(),1);
         recyclerViewRight.setLayoutManager(gridLayoutManagerRight);
 
         ArrayList<OperatorType> list = new ArrayList<>();
@@ -79,7 +79,7 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         list.add(OperatorType.DISJUNCTION);
         list.add(OperatorType.CONJUNCTION);
 
-        adapterRight = new SandboxOperatorAdapter(list,this);
+        adapterRight = new SandboxOperatorAdapter(list,this,cardWidth, cardHeight);
         recyclerViewRight.setAdapter(adapterRight);
     }
 

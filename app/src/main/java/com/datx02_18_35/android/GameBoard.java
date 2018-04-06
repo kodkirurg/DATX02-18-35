@@ -125,7 +125,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         //screen size
-        Tools.GameBoardScreenInfo gameBoardScreenInfo = new Tools.GameBoardScreenInfo(Tools.getWidthOfDisplayInDp());
+        Tools.GameBoardScreenInfo gameBoardScreenInfo = new Tools.GameBoardScreenInfo();
 
 
 
