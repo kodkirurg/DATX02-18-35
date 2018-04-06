@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,14 +145,16 @@ public class CardInflator {
                 if (exp1 instanceof Operator) {
 
                     Operator op1 = (Operator) exp1;
-                    Expression op11 = op1.getOperand1();
-                    Expression op12 = op1.getOperand2();
+                    Expression op12 = op1.getOperand1();
+                    Expression op11 = op1.getOperand2();
 
                     //Upper
                     ImageView imageViewUpperLeft = cardView.findViewById(R.id.card_expression_quadrant2);
                     ImageView imageViewUpperRight = cardView.findViewById(R.id.card_expression_quadrant1);
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
+
+                    Log.d(Tools.debug, "inflate: " + op11.toString());
                     if(op11 instanceof Proposition | op11 instanceof Absurdity){
                         sSymbol(op11, imageViewUpperRight, symbolMap);
                     }
