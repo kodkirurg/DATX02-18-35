@@ -1,5 +1,6 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ public class Scope {
         assert assumption != null;
         this.assumption = assumption;
         gameBoard.add(assumption);
+        Util.log("Expression was added as assumption: " + assumption);
     }
 
     Scope(List<Expression> hypothesis) {
         assert hypothesis != null;
         this.assumption = null;
         gameBoard.addAll(hypothesis);
+        for (Expression expression : hypothesis) {
+            Util.log("Expression was added to hypothesis: " + expression);
+        }
     }
 
     public Expression getAssumption() {
@@ -54,11 +59,15 @@ public class Scope {
     void addExpressionToInventory(Expression expression) {
         assert expression != null;
         this.inventory.add(expression);
+        Util.log("Expression was added to inventory in: " + expression);
     }
 
     void addExpressionToInventory(Collection<Expression> expressions) {
         assert expressions != null;
         this.inventory.addAll(expressions);
+        for (Expression expression : expressions) {
+            Util.log("Expression was added to inventory in: " + expression);
+        }
     }
     void removeExpressionFromGameBoard(Collection<Expression> expressions){
         gameBoard.removeAll(expressions);
