@@ -95,8 +95,6 @@ class Tools {
 
 
         GameBoardScreenInfo(float widthInDP){
-            Log.d(Tools.debug, "GameBoardScreenInfo: " + minTotalRequirement + "  " + widthInDP );
-
             spanCounts=2;
 
             // extremely small screen, probably don't exist and won't work with our app, however
@@ -106,14 +104,15 @@ class Tools {
                 cardWidth=minimumCardWidth-diffPerCard;
             }
             else{
-                float totalLeftOverSpcae = widthInDP-minTotalRequirement;
-                //float extra spanCounts =
-                //spanCounts+=
-                float diffPerCard=(widthInDP-minTotalRequirement)/spanCounts;
-                cardWidth=minimumCardWidth-diffPerCard;
-                Log.d(Tools.debug, "GameBoardScreenInfo: " + cardWidth);
-            }
+                float totalLeftOverSpace = widthInDP-minTotalRequirement;
+                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                spanCounts+=extraSpanCounts;
+                float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
+                        +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
+                float leftoverToAddToWidthForEachCard =totalLeftOverSpaceAfterNewSpanCounts/spanCounts;
 
+                cardWidth=minimumCardWidth+leftoverToAddToWidthForEachCard;
+            }
             cardHeight=paperRatio*cardWidth;
         }
 
