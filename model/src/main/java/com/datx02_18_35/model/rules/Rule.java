@@ -12,8 +12,10 @@ import com.datx02_18_35.model.expression.Implication;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by robin on 2018-02-14.
@@ -52,6 +54,16 @@ public class Rule {
         }
         sb.append(")");
         return sb.toString();
+    }
+
+    public static List<Rule> filterRules(Collection<Rule> rules, Set<RuleType> ruleSet) {
+        List<Rule> result = new ArrayList<>();
+        for (Rule rule : rules) {
+            if (ruleSet.contains(rule.type)) {
+                result.add(rule);
+            }
+        }
+        return result;
     }
 
     public static List<Rule> getLegalRules( Expression assumption, List<Expression> selection){

@@ -12,5 +12,4 @@ SYMBOL # Absurdity
 HYPOTHESIS P & Q
 HYPOTHESIS Q > R
 
-
 GOAL R

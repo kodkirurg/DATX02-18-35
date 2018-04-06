@@ -232,6 +232,7 @@ public class Level implements Serializable {
                             }
                         }
                     }
+                    break;
                     case "DESCRIPTION": {
                         if (description != null) {
                             throw getTooManyDescriptionsParseException(lineNumb);
