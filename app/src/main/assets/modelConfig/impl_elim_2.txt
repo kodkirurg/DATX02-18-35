@@ -1,4 +1,4 @@
-TITLE *Title goes here*
+TITLE Basic Implication Elimination 2
 
 DESCRIPTION START
 *Text goes here*
@@ -6,7 +6,6 @@ DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
-SYMBOL # Absurdity
 
 HYPOTHESIS P > (P > Q)
 HYPOTHESIS P

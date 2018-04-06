@@ -1,4 +1,4 @@
-TITLE Conjunction Elimination
+TITLE Basic Conjunction Elimination
 
 DESCRIPTION START
 In this level you will learn how to use conjunction elimination.
@@ -8,7 +8,6 @@ DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
-SYMBOL # Absurdity
 
 RULESET CONJUNCTION_ONLY
 

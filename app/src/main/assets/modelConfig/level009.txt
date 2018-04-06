@@ -6,7 +6,6 @@ DESCRIPTION END
 
 SYMBOL P BlueBall
 SYMBOL Q RedBall
-SYMBOL # Absurdity
 
 HYPOTHESIS P
 

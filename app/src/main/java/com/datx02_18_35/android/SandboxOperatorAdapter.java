@@ -23,11 +23,14 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
     private ArrayList<OperatorType> dataSet;
     public ViewHolder previousSelectedOperatorHolder=null;
     Sandbox activity;
+    float cardWidth, cardHeight;
 
 
-    public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet, Sandbox activity){
+    public SandboxOperatorAdapter(ArrayList<OperatorType> dataSet, Sandbox activity, float cardWidth, float cardHeight){
         this.dataSet=dataSet;
         this.activity=activity;
+        this.cardHeight=cardHeight;
+        this.cardWidth=cardWidth;
     }
 
 
@@ -42,9 +45,9 @@ public class SandboxOperatorAdapter extends RecyclerView.Adapter<SandboxOperator
         holder.frame.setOnClickListener(this);
         holder.frame.setTag(position);
         holder.frame.setTag(R.string.viewholders,holder);
+        holder.frame.getLayoutParams().width=Math.round(Tools.convertDpToPixel(cardWidth));
+        holder.frame.getLayoutParams().height=Math.round(Tools.convertDpToPixel(cardHeight));
         holder.frame.setBackgroundColor(Color.WHITE);
-
-        //set visuals
         ImageView imageView = holder.frame.findViewById(R.id.operator_imageview);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position)) {

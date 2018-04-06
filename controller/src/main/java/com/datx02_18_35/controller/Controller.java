@@ -148,6 +148,12 @@ public class Controller extends ActionConsumer {
                     }
                 }
                 break;
+                case LAW_OF_EXCLUDED_MIDDLE: {
+                    if (rule.expressions.get(0) == null) {
+                        action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.LAW_OF_EXCLUDING_MIDDLE, rule));
+                        return;
+                    }
+                }
             }
             List<Expression> newExpressions = game.getSession().applyRule(rule);
             action.callback(getRefreshInventoryAction());
@@ -167,7 +173,7 @@ public class Controller extends ActionConsumer {
                 int currentScore = game.getSession().getStepsApplied();
                 action.callback(new VictoryConditionMetAction(game.getSession().getLevel().goal,currentScore, previousScore,game.hasNextLevel()));
                 action.callback(new SaveUserDataAction(game.saveUserData()));
-                Util.Log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
+                Util.log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
             }
         }
         else if (action instanceof ClosedSandboxAction) {
@@ -175,6 +181,7 @@ public class Controller extends ActionConsumer {
             ClosedSandboxAction closedAction = (ClosedSandboxAction)action;
             Expression expression =closedAction.expression;
             switch (closedAction.openReason) {
+                case LAW_OF_EXCLUDING_MIDDLE:
                 case ABSURDITY_ELIMINATION:
                 case DISJUNCTION_INTRODUCTION: {
                     Rule newRule = game.getSession().finishIncompleteRule(closedAction.incompleteRule, expression);
@@ -189,6 +196,8 @@ public class Controller extends ActionConsumer {
                     action.callback(getRefreshGameboardAction());
                 }
                 break;
+                default:
+                    throw new IllegalActionException(action, "Unknown reason");
             }
 
         }

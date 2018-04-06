@@ -10,7 +10,8 @@ SYMBOL P BlueBall
 SYMBOL Q RedBall
 SYMBOL R GreenTriangle
 SYMBOL S YellowRectangle
-SYMBOL # Absurdity
+
+RULESET CLASSICAL
 
 HYPOTHESIS P > (Q > #)
 HYPOTHESIS (P > #) > R

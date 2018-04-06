@@ -79,7 +79,7 @@ class Tools {
 
 
     static class GameBoardScreenInfo {
-        public int spanCounts;
+        public int spanCounts=2;
         public float cardWidth;
         public float cardHeight;
         static final float paperRatio = (float) Math.sqrt(2);
@@ -94,9 +94,8 @@ class Tools {
         static final float cardSize = minimumCardWidth+cardMargin;
 
 
-        GameBoardScreenInfo(float widthInDP){
-            spanCounts=2;
-
+        GameBoardScreenInfo(){
+            float widthInDP = Tools.getWidthOfDisplayInDp();
             // extremely small screen, probably don't exist and won't work with our app, however
             // use 1 expression and 1 rule column
             if(widthInDP < minTotalRequirement){
@@ -105,7 +104,7 @@ class Tools {
             }
             else{
                 float totalLeftOverSpace = widthInDP-minTotalRequirement;
-                float extraSpanCounts = Math.round(totalLeftOverSpace / cardSize);
+                float extraSpanCounts = (float) Math.floor((double)(totalLeftOverSpace / cardSize));
                 spanCounts+=extraSpanCounts;
                 float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
                         +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
@@ -115,6 +114,43 @@ class Tools {
             }
             cardHeight=paperRatio*cardWidth;
         }
+
+    }
+
+    static class SandboxScreenInfo{
+        public int spanCounts=2;
+        public float cardWidth;
+        public float cardHeight;
+        static final float paperRatio = (float) Math.sqrt(2);
+        static final float minimumCardWidth = 120;
+        static final float cardMargin=10;
+        static final float gameLeftSideMargin=6;
+        static final float gameRightSideMargin=6;
+        static final float extraMargin=gameLeftSideMargin+gameRightSideMargin;
+        static final float minTotalRequirement=2*minimumCardWidth+2*cardMargin +gameLeftSideMargin
+                +gameRightSideMargin+extraMargin;
+        static final float cardSize = minimumCardWidth+cardMargin;
+
+        SandboxScreenInfo(){
+            float widthInDP = Tools.getWidthOfDisplayInDp();
+            // extremely small screen, probably don't exist and won't work with our app, however
+            // use 1 expression and 1 operator column
+            if(widthInDP < minTotalRequirement){
+                float diffPerCard=(minTotalRequirement-widthInDP)/spanCounts;
+                cardWidth=minimumCardWidth-diffPerCard;
+            }
+            else{
+                float totalLeftOverSpace = widthInDP-minTotalRequirement;
+                float extraSpanCounts = (float) Math.floor((double)(totalLeftOverSpace / cardSize));
+                spanCounts+=extraSpanCounts;
+                float totalLeftOverSpaceAfterNewSpanCounts = widthInDP-minTotalRequirement
+                        +2*minimumCardWidth+2*cardMargin-spanCounts*(minimumCardWidth+cardMargin);
+                float leftoverToAddToWidthForEachCard =totalLeftOverSpaceAfterNewSpanCounts/spanCounts;
+                cardWidth=minimumCardWidth+leftoverToAddToWidthForEachCard;
+            }
+            cardHeight=paperRatio*cardWidth;
+        }
+
 
     }
 

@@ -153,10 +153,10 @@ public class CardInflator {
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
                     if(op11 instanceof Proposition | op11 instanceof Absurdity){
-                        sSymbol(op11, imageViewUpperLeft, symbolMap);
+                        sSymbol(op11, imageViewUpperRight, symbolMap);
                     }
                     if(op12 instanceof Proposition | op12 instanceof Absurdity){
-                        sSymbol(op12, imageViewUpperRight, symbolMap);
+                        sSymbol(op12,imageViewUpperLeft, symbolMap);
                     }
                     if (op1 instanceof Implication) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
@@ -240,10 +240,15 @@ public class CardInflator {
     }
     //set symbol by expression
     private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
-        String symbol = "";
-        if(symbolMap.containsKey(expression.toString())){
-            symbol = symbolMap.get(expression.toString());
+        if (expression instanceof Absurdity) {
+            Tools.setImage(imageView, R.drawable.absurdity);
+            return;
         }
+        else if (false == (expression instanceof Proposition)) {
+            throw new IllegalArgumentException("Expression must either be a proposition or absurdity");
+        }
+
+        String symbol = symbolMap.get(expression.toString());
         switch (symbol.toLowerCase()){
             case "redball":
                 Tools.setImage(imageView,R.drawable.redball);
@@ -256,9 +261,6 @@ public class CardInflator {
                 break;
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
-            case "absurdity":
-                Tools.setImage(imageView,R.drawable.absurdity);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);
