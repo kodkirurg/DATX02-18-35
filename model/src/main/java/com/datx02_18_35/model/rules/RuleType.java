@@ -39,10 +39,10 @@ public enum RuleType {
             IMPLICATION_ONLY.add(IMPLICATION_INTRODUCTION);
         }
 
-        public static final Set<RuleType> CONJUNCTON_ONLY = new HashSet<>();
+        public static final Set<RuleType> CONJUNCTION_ONLY = new HashSet<>();
         static {
-            CONJUNCTON_ONLY.add(CONJUNCTION_ELIMINATION);
-            CONJUNCTON_ONLY.add(CONJUNCTION_INTRODUCTION);
+            CONJUNCTION_ONLY.add(CONJUNCTION_ELIMINATION);
+            CONJUNCTION_ONLY.add(CONJUNCTION_INTRODUCTION);
         }
 
         public static final Set<RuleType> DISJUNCTION_ONLY = new HashSet<>();

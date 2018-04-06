@@ -4,11 +4,9 @@ import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.ExpressionFactory;
 import com.datx02_18_35.model.expression.Operator;
-import com.datx02_18_35.model.expression.OperatorType;
 import com.datx02_18_35.model.expression.Proposition;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.expression.ExpressionParser;
-import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.rules.RuleType;
 ;
 import java.io.Serializable;
@@ -233,7 +231,7 @@ public class Level implements Serializable {
                                     ruleSet.addAll(RuleType.Sets.IMPLICATION_ONLY);
                                     break;
                                 case "CONJUNCTION_ONLY":
-                                    ruleSet.addAll(RuleType.Sets.CONJUNCTON_ONLY);
+                                    ruleSet.addAll(RuleType.Sets.CONJUNCTION_ONLY);
                                     break;
                                 case "DISJUNCTION_ONLY":
                                     ruleSet.addAll(RuleType.Sets.DISJUNCTION_ONLY);
