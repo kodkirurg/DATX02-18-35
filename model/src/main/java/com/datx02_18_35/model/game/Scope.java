@@ -70,6 +70,9 @@ public class Scope {
         }
     }
     void removeExpressionFromGameBoard(Collection<Expression> expressions){
-        gameBoard.removeAll(expressions);
+        assert expressions != null;
+        for (Expression expr : expressions){
+            gameBoard.remove(expr);
+        }
     }
 }
