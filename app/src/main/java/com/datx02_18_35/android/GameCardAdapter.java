@@ -132,7 +132,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
         CardView cardView = selectedView.get((int) v.getTag());
         restoreAnimations(cardView);
-        selectedView.remove(expression.hashCode());
+        selectedView.remove((int)v.getTag());
+
     }
 
     void restoreSelections(){

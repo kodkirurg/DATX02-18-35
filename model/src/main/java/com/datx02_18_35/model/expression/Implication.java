@@ -1,5 +1,7 @@
 package com.datx02_18_35.model.expression;
 
+import java.util.Random;
+
 /**
  * Created by robin on 2018-02-07.
  */
@@ -26,9 +28,10 @@ public class Implication extends Operator { // Operand1 leads to operand2.
                 && this.operand1.equals(((Implication) other).operand1)
                 && this.operand2.equals(((Implication) other).operand2);
     }
+
     @Override
-    public String toString(){
-        return "(" + operand1.toString() + ">" + operand2.toString() + ")";
+    protected String getOperatorSymbol() {
+        return ">";
     }
 
 }
