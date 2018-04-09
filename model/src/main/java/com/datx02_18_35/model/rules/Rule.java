@@ -40,6 +40,26 @@ public class Rule {
 
 
     @Override
+    public boolean equals(Object o){
+        if(o instanceof Rule){
+            if(((Rule) o).type==this.type){
+                for(int i=0;i<this.expressions.size();i++){
+                    if(this.expressions.get(i)==null){
+                        if(((Rule) o).expressions.get(i)==null){
+                        }else{
+                            return false;
+                        }
+                    }else if(!this.expressions.get(i).equals(((Rule) o).expressions.get(i))){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(type.name());
