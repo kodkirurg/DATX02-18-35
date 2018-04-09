@@ -37,7 +37,7 @@ public class getLegalRuleTest {
 
     private Expression generateExpression(double chanceOfOperator){
         double rand1=rand.nextDouble();
-        if(rand1<(1-chanceOfOperator)){
+        if(rand1<(1.0-chanceOfOperator)){
             if(random()<0.8){
                 return testExpressionFactory.createProposition(generateChar());
             }else
@@ -47,9 +47,9 @@ public class getLegalRuleTest {
             double rand2=rand.nextDouble();
             Expression leftExpression = generateExpression(chanceOfOperator*0.95);
             Expression rightExpression = generateExpression(chanceOfOperator*0.95);
-            if(rand2<1/3){
+            if(rand2<1.0/3.0){
                 return testExpressionFactory.createOperator(OperatorType.CONJUNCTION,leftExpression,rightExpression);
-            }else if(1/3<rand2 && rand2<2/3){
+            }else if(1.0/3.0<rand2 && rand2<2.0/3.0){
                 return testExpressionFactory.createOperator(OperatorType.DISJUNCTION,leftExpression,rightExpression);
             }else{
                 return testExpressionFactory.createOperator(OperatorType.IMPLICATION,leftExpression,rightExpression);
