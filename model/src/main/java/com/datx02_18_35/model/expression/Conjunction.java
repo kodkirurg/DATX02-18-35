@@ -14,7 +14,7 @@ public class Conjunction extends Operator {
     public int calculateHash() {
         long magic = ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         long hash = magic;
-        magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER; // Varför detta?? (Svar: Polynom ftw /Robin)
+        magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         hash += operand1.hashCode() * magic;
         magic *= ExpressionUtil.HASH_CONJ_MAGIC_NUMBER;
         hash += operand2.hashCode() * magic;
@@ -29,7 +29,7 @@ public class Conjunction extends Operator {
     }
 
     @Override
-    public String toString(){
-        return "(" + operand1.toString() + "&" + operand2.toString() + ")";
+    protected String getOperatorSymbol() {
+        return "&";
     }
 }
