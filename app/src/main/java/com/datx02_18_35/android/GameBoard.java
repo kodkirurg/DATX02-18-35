@@ -77,8 +77,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     TextView scopeLevel;
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
-    Animation slide_left;
-    Animation delete;
+    Animation slide_left,delete,slide_right;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public boolean victory=false;
@@ -177,6 +176,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         slide_left.setAnimationListener(this);
         delete = AnimationUtils.loadAnimation(this, R.anim.delete);
         delete.setAnimationListener(this);
+        slide_right = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+        slide_right.setAnimationListener(this);
     }
 
     //only use one spanCount as rules don't need 2 columns
@@ -237,11 +238,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void closeInventory(){
         if (inventoryLayout.isShown()) {
             startAnimation(slide_left, inventoryLayout);
-            recyclerViewRight.setVisibility(View.VISIBLE);
-            recyclerViewLeft.setVisibility(View.VISIBLE);
-
-
-
         }
     }
     public void showInventory(){
@@ -258,24 +254,22 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             newSet.add(expr);
         }
         for (Expression expr: assumptions){
-            newSet.add(expr);
-        }
-
-        for (Iterable<Expression> iter: inventories){
-            for (Expression expr :iter) {
+            if(!newSet.contains(expr)){
                 newSet.add(expr);
             }
         }
 
+        for (Iterable<Expression> iter: inventories){
+            for (Expression expr :iter) {
+                if(!newSet.contains(expr)){
+                    newSet.add(expr);
+                }
+            }
+        }
+
         if (!inventoryLayout.isShown()){
-            Fx.slide_right(this, inventoryLayout);
-            inventoryLayout.setVisibility(View.VISIBLE);
-            recyclerViewRight.setVisibility(View.GONE);
-            recyclerViewLeft.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.VISIBLE);
             invRecAdapter.updateInventory(newSet);
-
-
+            startAnimation(slide_right, inventoryLayout);
         }
     }
     public void deleteSelection(){
@@ -369,7 +363,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onAnimationStart(Animation animation) {
-
+        if(animation==slide_left) {
+            recyclerViewRight.setVisibility(View.VISIBLE);
+            recyclerViewLeft.setVisibility(View.VISIBLE);
+        }
+        else if(animation==slide_right){
+            inventoryLayout.setVisibility(View.VISIBLE);
+            invRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -377,6 +378,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         if(animation==slide_left) {
             inventoryLayout.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.GONE);
+        }
+        else if(animation==slide_right){
+            recyclerViewRight.setVisibility(View.GONE);
+            recyclerViewLeft.setVisibility(View.GONE);
         }
         else if(animation==delete){
             ArrayList<Expression> sendList = new ArrayList<>();
