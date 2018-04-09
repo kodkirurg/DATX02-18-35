@@ -163,6 +163,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
         ((ImageView)findViewById(R.id.inventory_button)).setOnClickListener(this);
         ((ImageView)findViewById(R.id.open_inventory)).setOnClickListener(this);
+        ((ImageView)findViewById(R.id.close_inventory)).setOnClickListener(this);
 
         //Set toolbar
         toolbar = findViewById(R.id.toolbar);
@@ -683,6 +684,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.open_inventory:{
+                if(inventoryLayout.isShown()){
+                    closeInventory();
+                }
+                else {
+                    showInventory();
+                }
+                break;
+            }
+            case R.id.close_inventory:{
                 if(inventoryLayout.isShown()){
                     closeInventory();
                 }
