@@ -46,8 +46,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             } catch (GameException e) {
                 e.printStackTrace();
             }
+            Fx.blink_animation(view.getContext(), view);
         }
-        Fx.blink_animation(view.getContext(), view);
     }
 
     @Override

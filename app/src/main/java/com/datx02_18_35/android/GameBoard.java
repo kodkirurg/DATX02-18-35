@@ -79,6 +79,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     RelativeLayout inventoryLayout;
     RelativeLayout victoryScreen;
     Animation slide_left,delete,slide_right;
+    boolean sandboxOpened = false;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
     public boolean victory=false;
@@ -405,11 +406,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch(menu.getItemId()){
             case R.id.item_assumption:
-                try {
-                    Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
-                    scopeLevel.setText("");
-                } catch (GameException e) {
-                    e.printStackTrace();
+                if (inventoryLayout.isShown()){
+                    sandboxOpened=true;
+                    closeInventory();
                 }
                 break;
         }
@@ -433,6 +432,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         if(animation==slide_left) {
             inventoryLayout.setVisibility(View.GONE);
             invRecyclerView.setVisibility(View.GONE);
+            if(sandboxOpened){
+                try {
+                    Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
+                    scopeLevel.setText("");
+                } catch (GameException e) {
+                    e.printStackTrace();
+                }
+                sandboxOpened=false;
+            }
         }
         else if(animation==slide_right){
             recyclerViewRight.setVisibility(View.GONE);
