@@ -112,13 +112,15 @@ public class GameManager {
         currentSession = null;
     }
 
-    public void voidFinishLevel() throws IllegalGameStateException {
+    public void markLevelAsCompleted() throws IllegalGameStateException {
         assertSessionInProgress();
         LevelProgression progression = userData.getProgression(currentSession.getLevel());
         if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
             progression.stepsApplied = currentSession.getStepsApplied();
         }
         progression.completed = true;
+
+
     }
 
 

@@ -169,7 +169,7 @@ public class Controller extends ActionConsumer {
                 else {
                     previousScore = -1;
                 }
-                game.voidFinishLevel();
+                game.markLevelAsCompleted();
                 int currentScore = game.getSession().getStepsApplied();
                 action.callback(new VictoryConditionMetAction(game.getSession().getLevel().goal,currentScore, previousScore,game.hasNextLevel()));
                 action.callback(new SaveUserDataAction(game.saveUserData()));

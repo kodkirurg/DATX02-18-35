@@ -40,6 +40,14 @@ public class LevelCollection {
         return levelCategoryMap.containsKey(level);
     }
 
+    public boolean isUnlocked(UserData userData, LevelCategory category) {
+        return levelsUntilUnlocked(userData, category) > 0;
+    }
+
+    public boolean isUnlocked(UserData userData, Level level) {
+        return levelsUntilUnlocked(userData, level) > 0;
+    }
+
     /**
      * Checks whether a level is unlocked
      * @param userData
@@ -80,25 +88,24 @@ public class LevelCollection {
         return categories;
     }
 
-    public Level getNextLevel(Level level) {
-        LevelCategory category = levelCategoryMap.get(level);
-        Level nextLevel = category.getNextLevel(level);
-        if (nextLevel != null) {
-            return nextLevel;
-        }
-
-        for (int categoryIndex = categories.indexOf(category) + 1;
-             categoryIndex < categories.size();
-             categoryIndex++) {
-
-            nextLevel = categories.get(categoryIndex).getFirstLevel();
-            if (nextLevel != null) {
-                return nextLevel;
+    public LevelCategory nextCategory(LevelCategory category) {
+        Iterator<LevelCategory> categoryIterator = categories.iterator();
+        while (categoryIterator.hasNext()) {
+            if (categoryIterator.next().equals(category)) {
+                if (categoryIterator.hasNext()) {
+                    return categoryIterator.next();
+                }
+                else {
+                    return null;
+                }
             }
         }
-        return null;
+        throw new IllegalStateException("Category now in collection");
+    }
 
-
+    public Level getNextLevel(Level level) {
+        LevelCategory category = levelCategoryMap.get(level);
+        return category.getNextLevel(level);
     }
 
     private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
