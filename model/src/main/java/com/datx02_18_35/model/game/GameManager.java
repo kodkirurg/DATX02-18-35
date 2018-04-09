@@ -93,13 +93,17 @@ public class GameManager {
     }
 
 
-    public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
+    public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException, LevelNotAllowedException {
         assertSessionNotInProgress();
         if(!levelCollection.contains(level)) {
             throw new LevelNotInListException("Level is not in GameManager's list of levels");
         }
-        currentSession = new Session(level);
-        Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
+        if (levelCollection.levelsUntilUnlocked(userData, level) > 0) {
+            throw new LevelNotAllowedException(level, "Level not yet unlocked!");
+        } else {
+            currentSession = new Session(level);
+            Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
+        }
     }
 
     public void quitLevel() throws IllegalGameStateException {
@@ -124,7 +128,7 @@ public class GameManager {
         return levelCollection.getNextLevel(lastLevel) != null;
     }
 
-    public void startNextLevel() throws IllegalGameStateException {
+    public void startNextLevel() throws IllegalGameStateException, LevelNotAllowedException {
         assertSessionInProgress();
         if (!currentSession.checkWin()) {
             throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
