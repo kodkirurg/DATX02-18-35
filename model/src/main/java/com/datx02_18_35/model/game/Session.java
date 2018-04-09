@@ -96,19 +96,16 @@ public class Session {
     }
 
     public Iterable<Expression> getHypotheses(){
-        return new Iterable<Expression>() {
-            @Override
-            public Iterator<Expression> iterator() {
-                return level.hypothesis.iterator();
-            }
-        };
+        return level.hypothesis;
     }
 
      public Iterable<Expression> getAllExpressions() {
          Set<Expression> exprSet = new HashSet<>();
          exprSet.addAll(level.hypothesis);
          for (Scope scope : scopes) {
-             exprSet.add(scope.getAssumption());
+             if (scope.getAssumption() != null) {
+                 exprSet.add(scope.getAssumption());
+             }
              for (Expression expression : scope.getInventory()) {
                  exprSet.add(expression);
              }

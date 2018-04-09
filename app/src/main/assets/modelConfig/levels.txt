@@ -1,6 +1,7 @@
 
 CATEGORY Basic
 
+absurd.txt
 conj_intro.txt
 conj_elim.txt
 impl_elim.txt
