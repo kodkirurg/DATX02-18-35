@@ -188,12 +188,8 @@ public class Session {
     }
 
 
-    public int getScopeInt(){
-        int i=0;
-        for(Scope scopes:this.getScopes()){
-            i++;
-        }
-        return i;
+    public int getScopeDepth(){
+        return scopes.size();
     }
 
     public boolean isExpressionInScope(Expression expression) {

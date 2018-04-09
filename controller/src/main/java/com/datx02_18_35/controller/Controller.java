@@ -159,7 +159,7 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshInventoryAction());
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
-            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeDepth()));
             if (game.getSession().checkWin()) {
                 LevelProgression progression = game.getUserData().getProgression(game.getSession().getLevel());
                 int previousScore;
@@ -211,7 +211,7 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestScopeLevelAction){
             game.assertSessionInProgress();
-            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeDepth()));
         }
         else if( action instanceof RequestMoveFromInventoryAction){
             game.assertSessionInProgress();
@@ -223,7 +223,7 @@ public class Controller extends ActionConsumer {
             game.getSession().closeScope();
             action.callback(getRefreshGameboardAction());
             action.callback(getRefreshInventoryAction());
-            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeInt()));
+            action.callback(new RefreshScopeLevelAction(game.getSession().getScopeDepth()));
         }
         else {
             throw new UnhandledActionException(action);
