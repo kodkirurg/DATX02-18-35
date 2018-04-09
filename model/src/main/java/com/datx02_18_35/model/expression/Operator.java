@@ -22,5 +22,19 @@ public abstract class Operator extends Expression {
         return this.operand2;
     }
 
+    protected abstract String getOperatorSymbol();
+
+    @Override
+    public String toString() {
+        String op1Str = operand1.toString();
+        String op2Str = operand2.toString();
+        if (operand1 instanceof Operator) {
+            op1Str = "(" + op1Str + ")";
+        }
+        if (operand2 instanceof Operator) {
+            op2Str = "(" + op2Str + ")";
+        }
+        return op1Str + " " + getOperatorSymbol() + " " + op2Str;
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.datx02_18_35.model.game;
 
-import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
@@ -14,6 +13,8 @@ import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -104,44 +105,15 @@ public class Session {
     }
 
      public Iterable<Expression> getAllExpressions() {
-        return new Iterable<Expression>() {
-            @Override
-            public Iterator<Expression> iterator() {
-                return new Iterator<Expression>() {
-                    private Iterator<Scope> scopeIter = scopes.iterator();
-                    private Iterator<Expression> currentIter = scopeIter.next().getInventory().iterator();
-                    private Iterator<Expression> assumptionIter = getAssumptions().iterator();
-                    private Iterator<Expression> hypothesisIter = getHypotheses().iterator();
-
-                    @Override
-                    public boolean hasNext() {
-                        return currentIter.hasNext() || scopeIter.hasNext() || assumptionIter.hasNext() || hypothesisIter.hasNext() ;
-                    }
-
-                    @Override
-                    public Expression next() {
-                        Boolean newIter = false;
-                        assert this.hasNext();
-                        if (!currentIter.hasNext()) {
-                            if (scopeIter.hasNext()){
-                                Iterator<Expression> testIter = scopeIter.next().getInventory().iterator();
-                                if(testIter.hasNext()) {
-                                    currentIter = testIter;
-                                    newIter=true;
-                                }
-                            }if (assumptionIter.hasNext()&&!newIter) {
-                                currentIter = assumptionIter;
-
-                                newIter=true;
-                            }if(hypothesisIter.hasNext()&&!newIter){
-                                currentIter = hypothesisIter;
-                            }
-                        }
-                        return currentIter.next();
-                    }
-                };
-            }
-        };
+         Set<Expression> exprSet = new HashSet<>();
+         exprSet.addAll(level.hypothesis);
+         for (Scope scope : scopes) {
+             exprSet.add(scope.getAssumption());
+             for (Expression expression : scope.getInventory()) {
+                 exprSet.add(expression);
+             }
+         }
+         return exprSet;
     }
 
     public Level getLevel(){return this.level;}
@@ -216,12 +188,8 @@ public class Session {
     }
 
 
-    public int getScopeInt(){
-        int i=0;
-        for(Scope scopes:this.getScopes()){
-            i++;
-        }
-        return i;
+    public int getScopeDepth(){
+        return scopes.size();
     }
 
     public boolean isExpressionInScope(Expression expression) {

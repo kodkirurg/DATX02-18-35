@@ -67,7 +67,7 @@ public class LevelCollection {
 
     private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
         String levelList = configFiles.get(LEVEL_LIST_FILENAME);
-        String[] lines = levelList.replaceFirst("[\n\r]+", "").split("[\n|\r]+");
+        String[] lines = levelList.replaceFirst("[\n|\r]+", "").split("[\n|\r]+");
         Iterator<String> lineIterator = Arrays.asList(lines).iterator();
 
         List<LevelCategory> categories = new ArrayList<>();

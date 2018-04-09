@@ -181,7 +181,7 @@ public class Level implements Serializable {
                     throw getWrongNumberOfArgumentsLevelParseException(lineNumb, tokens[0]);
                 }
                 else {
-                    symbolMap.put("(" +tokens[1] + ")", tokens[2]);
+                    symbolMap.put(tokens[1], tokens[2]);
                 }
             }
             lineNumb += 1;

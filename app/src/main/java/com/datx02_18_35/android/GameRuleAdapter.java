@@ -92,6 +92,9 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
                 case IMPLICATION_ELIMINATION:
                     Tools.setImage(imageView,R.drawable.implication_elimination);
                     break;
+                case LAW_OF_EXCLUDED_MIDDLE:
+                    Tools.setImage(imageView,R.drawable.excluded_middle);
+                    break;
                 default:
                     Log.d("test123", "onBindViewHolder: Unknown rule, wtf?");
             }

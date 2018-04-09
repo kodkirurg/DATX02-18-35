@@ -35,7 +35,7 @@ public class Proposition extends Expression {
     }
 
     public String toString(){
-        return "("+ this.id + ")";
+        return this.id;
     }
 
     public String getSymbol() {
