@@ -288,11 +288,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void closeInventory(){
         if (inventoryLayout.isShown()) {
             startAnimation(slide_left, inventoryLayout);
-            //Fx.slide_left(this, inventoryLayout);
             recyclerViewRight.setVisibility(View.VISIBLE);
             recyclerViewLeft.setVisibility(View.VISIBLE);
-            //inventoryLayout.setVisibility(View.GONE);
-            //invRecyclerView.setVisibility(View.GONE);
 
 
 
@@ -565,7 +562,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                                 int previousScore= ((VictoryConditionMetAction) action).previousScore;
                                 final String s = "You've completed the goal! Good job! \n";
                                 if(previousScore<0) {
-                                    scoreView.setText(s + "You finished in: " + currentScore + "steps" +"\n" + "No previous finish");
+                                    scoreView.setText(s + "You finished in: " + currentScore + " steps" +"\n" + "No previous finish");
                                 }
                                 else {
                                     scoreView.setText(s + "You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
