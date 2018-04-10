@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
@@ -21,7 +22,7 @@ import com.datx02_18_35.model.level.LevelCategory;
 
 import game.logic_game.R;
 
-public class Levels extends AppCompatActivity {
+public class Levels extends AppCompatActivity implements View.OnClickListener {
     //callback
     LevelsCallback callback;
 
@@ -39,8 +40,6 @@ public class Levels extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.levels_recyclerview);
 
-
-        //dynamic span count later
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -68,6 +67,12 @@ public class Levels extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        //TODO fix right and left click
+    }
+
     public class LevelsCallback extends ActionConsumer {
         @Override
         public void handleAction(Action action){
