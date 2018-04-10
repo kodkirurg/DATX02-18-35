@@ -2,6 +2,9 @@ package com.datx02_18_35.model.level;
 
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.ExpressionParseException;
+import com.datx02_18_35.model.game.LevelNotAllowedException;
+import com.datx02_18_35.model.userdata.LevelCategoryProgression;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,30 +42,59 @@ public class LevelCollection {
         return levelCategoryMap.containsKey(level);
     }
 
+    public void assertLevelIsUnlocked(UserData userData, Level level) throws LevelNotAllowedException {
+        LevelCategory category = getCategoryFromLevel(level);
+        LevelCategoryProgression categoryProgression = userData.getCategoryProgression(category);
+        if (categoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
+            throw new LevelNotAllowedException(level, "Level is not unlocked");
+        }
+    }
+
+    public LevelCategory getCategoryFromLevel(Level level) {
+        return levelCategoryMap.get(level);
+    }
 
     public List<LevelCategory> getCategories() {
         return categories;
     }
 
-    public Level getNextLevel(Level level) {
-        LevelCategory category = levelCategoryMap.get(level);
-        Level nextLevel = category.getNextLevel(level);
-        if (nextLevel != null) {
-            return nextLevel;
+    public LevelCategory previousCategory(LevelCategory category) {
+        Iterator<LevelCategory> categoryIterator = categories.iterator();
+        if (!categoryIterator.hasNext()) {
+            throw new IllegalStateException("No categories in collection");
         }
+        LevelCategory lastCategory = categoryIterator.next();
+        if (lastCategory.equals(category)) {
+            return null; //First category
+        }
+        while (categoryIterator.hasNext()) {
+            LevelCategory currentCategory = categoryIterator.next();
+            if (currentCategory.equals(category)) {
+                return lastCategory;
+            }
+            lastCategory = currentCategory;
+        }
+        throw new IllegalArgumentException("Category not in collection");
+    }
 
-        for (int categoryIndex = categories.indexOf(category) + 1;
-             categoryIndex < categories.size();
-             categoryIndex++) {
-
-            nextLevel = categories.get(categoryIndex).getFirstLevel();
-            if (nextLevel != null) {
-                return nextLevel;
+    public LevelCategory nextCategory(LevelCategory category) {
+        Iterator<LevelCategory> categoryIterator = categories.iterator();
+        while (categoryIterator.hasNext()) {
+            if (categoryIterator.next().equals(category)) {
+                if (categoryIterator.hasNext()) {
+                    return categoryIterator.next();
+                }
+                else {
+                    return null;
+                }
             }
         }
-        return null;
+        throw new IllegalArgumentException("Category not in collection");
+    }
 
-
+    public Level getNextLevel(Level level) {
+        LevelCategory category = levelCategoryMap.get(level);
+        return category.getNextLevel(level);
     }
 
     private static List<LevelCategory> parseLevelList(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {

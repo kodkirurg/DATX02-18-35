@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
-import com.datx02_18_35.controller.dispatch.UnhandledActionException;
 import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshLevelsAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestLevelsAction;
@@ -68,7 +67,7 @@ public class Levels extends AppCompatActivity {
         public void handleAction(Action action) throws GameException {
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
-                adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.progressionMap);
+                adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.levelProgressionMap);
             }
         }
     }

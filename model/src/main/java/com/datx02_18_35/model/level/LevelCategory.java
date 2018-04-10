@@ -1,5 +1,9 @@
 package com.datx02_18_35.model.level;
 
+import com.datx02_18_35.model.Config;
+import com.datx02_18_35.model.userdata.LevelProgression;
+import com.datx02_18_35.model.userdata.UserData;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +32,28 @@ public class LevelCategory {
 
     public Iterable<Level> getLevels() {
         return levels;
+    }
+
+    public int getCompleted(UserData userData) {
+        int completed = 0;
+        for (Level level : levels) {
+            LevelProgression progression = userData.getLevelProgression(level);
+            if (progression.completed) {
+                completed += 1;
+            }
+        }
+        return completed;
+    }
+
+    public int getCount() {
+        return levels.size();
+    }
+
+    int getLevelsLeftToUnlockNext(UserData userData) {
+        int cutoff = (int)(Math.round(getCount() * (1.0 - Config.CATEGORY_UNLOCK_THRESHOLD_RATIO)));
+        int notFinished = getCount() - getCompleted(userData);
+        int left = notFinished - cutoff;
+        return left >= 0 ? left : 0;
     }
 
     public Level getNextLevel(Level level) {
