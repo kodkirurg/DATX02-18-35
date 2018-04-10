@@ -1,8 +1,5 @@
 package com.datx02_18_35.model.userdata;
 
-import com.datx02_18_35.model.level.LevelCategory;
-import com.datx02_18_35.model.level.LevelCollection;
-
 import java.io.Serializable;
 
 /**

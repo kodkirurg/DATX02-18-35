@@ -6,9 +6,6 @@ import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.game.Session;
-import com.datx02_18_35.model.rules.IllegalRuleException;
-import com.datx02_18_35.model.rules.Rule;
-import com.datx02_18_35.model.rules.RuleType;
 
 import java.util.Iterator;
 import java.util.List;

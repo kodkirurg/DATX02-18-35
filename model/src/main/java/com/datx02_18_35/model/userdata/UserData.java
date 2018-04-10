@@ -15,7 +15,6 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -38,6 +37,8 @@ public class UserData implements Serializable {
         }
         LevelCategory firstCategory = levelCollection.getCategories().get(0);
         categoryProgressionMap.put(firstCategory, new LevelCategoryProgression(LevelCategoryProgression.Status.UNLOCKED));
+
+        checkDebugSettings();
     }
 
     public static byte[] saveUserData(UserData userData) {
@@ -98,10 +99,17 @@ public class UserData implements Serializable {
                 }
             }
         }
-
+        userData.checkDebugSettings();
         return userData;
     }
 
+    private void checkDebugSettings() {
+        if (Config.DEBUG_UNLOCK_ALL) {
+            for (LevelCategory category : categoryProgressionMap.keySet()) {
+                categoryProgressionMap.put(category, new LevelCategoryProgression(LevelCategoryProgression.Status.UNLOCKED));
+            }
+        }
+    }
 
     public void logCategoryProgression() {
         for (Map.Entry<LevelCategory, LevelCategoryProgression> entry : categoryProgressionMap.entrySet()) {
