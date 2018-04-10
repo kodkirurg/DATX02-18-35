@@ -105,7 +105,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         currentHighestSelectedCard++;
         ((TextView)v.findViewById(R.id.card_number_text_view)).setTag(R.id.card_number,currentHighestSelectedCard);
         ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+((TextView)v.findViewById(R.id.card_number_text_view)).getTag(R.id.card_number));
-        ((TextView)v.findViewById(R.id.card_number_text_view)).setGravity(Gravity.CENTER);
+
 
         setAnimations(v);
     }
