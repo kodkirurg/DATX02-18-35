@@ -1,11 +1,11 @@
 TITLE Absurdity-level
 
 DESCRIPTION START
-*Text goes here*
+*New symbols*
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Arrows
+SYMBOL Q Cross
 
 HYPOTHESIS P > #
 
