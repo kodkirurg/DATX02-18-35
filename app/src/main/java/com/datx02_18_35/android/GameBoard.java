@@ -60,6 +60,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.game.VictoryInformation;
 import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
@@ -544,16 +545,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Expression goal=((VictoryConditionMetAction) action).goal;
+                        final VictoryInformation victoryInformation = ((VictoryConditionMetAction) action).victoryInformation;
+                        Expression goal= victoryInformation.goal;
                         int position=adapterLeft.dataSet.indexOf(goal);
                         adapterLeft.dataSet.remove(position);
                         adapterLeft.notifyItemRemoved(position);
                         final CardView cardView = (CardView) LayoutInflater.from(
                                 getCurrentFocus().getContext()).inflate
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
-                        CardInflator.inflate(cardView,((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
+                        CardInflator.inflate(cardView,victoryInformation.goal,symbolMap,120,170,false);
                         ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
-                        CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),((VictoryConditionMetAction) action).goal,symbolMap,120,170,false);
+                        CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),victoryInformation.goal,symbolMap,120,170,false);
                         cardView.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
@@ -563,18 +565,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onAnimationEnd(Animator animator) {
                                 ((ViewGroup)cardView.getParent()).removeView(cardView);
-                                if(!((VictoryConditionMetAction) action).hasNextLevel){
+                                if(!victoryInformation.hasNextLevel){
                                     nextLevel.setVisibility(View.GONE);
                                 }
                                 victoryScreen.setVisibility(View.VISIBLE);
-                                int currentScore = ((VictoryConditionMetAction) action).currentScore;
-                                int previousScore= ((VictoryConditionMetAction) action).previousScore;
+
                                 final String s = "You've completed the goal! Good job! \n";
-                                if(previousScore<0) {
-                                    scoreView.setText(s + "You finished in: " + currentScore + " steps" +"\n" + "No previous finish");
+                                if(victoryInformation.previousScore<0) {
+                                    scoreView.setText(s + "You finished in: " + victoryInformation.newScore + " steps" +"\n" + "No previous finish");
                                 }
                                 else {
-                                    scoreView.setText(s + "You finished in: " + currentScore + " steps" + "\n" + "Your previous best finish was: " + previousScore + " steps");
+                                    scoreView.setText(s + "You finished in: " + victoryInformation.newScore + " steps" + "\n" + "Your previous best finish was: " + victoryInformation.previousScore + " steps");
                                 }
                             }
 

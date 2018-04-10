@@ -46,7 +46,7 @@ public class LevelCollection {
         LevelCategory category = getCategoryFromLevel(level);
         LevelCategoryProgression categoryProgression = userData.getCategoryProgression(category);
         if (categoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
-            throw new LevelNotAllowedException(level, "Failed assertion");
+            throw new LevelNotAllowedException(level, "Level is not unlocked");
         }
     }
 
