@@ -30,25 +30,14 @@ public class UserData implements Serializable {
     public UserData(LevelCollection levelCollection) {
         levelProgressionMap = new HashMap<>();
         categoryProgressionMap = new HashMap<>();
-        Iterator<LevelCategory> categoryIterator = levelCollection.getCategories().iterator();
-        if (categoryIterator.hasNext()) {
-            LevelCategory firstCategory = categoryIterator.next();
-            categoryProgressionMap.put(
-                    firstCategory,
-                    new LevelCategoryProgression(LevelCategoryProgression.Status.UNLOCKED));
-
-            while (categoryIterator.hasNext()) {
-                LevelCategory category = categoryIterator.next();
-                categoryProgressionMap.put(
-                        category,
-                        new LevelCategoryProgression(LevelCategoryProgression.Status.LOCKED));
-                for (Level level : category.getLevels()) {
-                    levelProgressionMap.put(level, new LevelProgression());
-                }
+        for (LevelCategory category : levelCollection.getCategories()) {
+            categoryProgressionMap.put(category, new LevelCategoryProgression(LevelCategoryProgression.Status.LOCKED));
+            for (Level level : category.getLevels()) {
+                levelProgressionMap.put(level, new LevelProgression());
             }
         }
-
-
+        LevelCategory firstCategory = levelCollection.getCategories().get(0);
+        categoryProgressionMap.put(firstCategory, new LevelCategoryProgression(LevelCategoryProgression.Status.UNLOCKED));
     }
 
     public static byte[] saveUserData(UserData userData) {
