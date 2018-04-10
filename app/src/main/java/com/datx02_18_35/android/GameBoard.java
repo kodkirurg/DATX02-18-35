@@ -94,6 +94,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
     public View popUpView;
+    public View.OnClickListener clickListener;
 
 
     //recyclerviews
@@ -192,6 +193,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
         //load pop-up window with goal
         loadPopUpWindow(contentView);
+        clickListener=this;
 
     }
 
@@ -199,33 +201,33 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         contentView.post(new Runnable() {
             @Override
             public void run() {
-                // Inflate the custom layout/view
-                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                popUpView = inflater.inflate(R.layout.pop_up_window,null);
-                popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(new GameBoard());
-                popupWindow = new PopupWindow(popUpView);
+                if(popupWindow==null){
+                    // Inflate the custom layout/view
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    popUpView = inflater.inflate(R.layout.pop_up_window,null);
+                    popUpView.findViewById(R.id.popup_exit_button).setOnClickListener(clickListener);
+                    popupWindow = new PopupWindow(popUpView);
 
-                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        if(infoWindowClicked){
-                            popUpView.setOnClickListener(null);
-                            infoWindowClicked=false;
-                            popupWindow.dismiss();
+                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            if(infoWindowClicked){
+                                infoWindowClicked=false;
+                                popupWindow.dismiss();
+                            }
+
                         }
+                    });
+                    popupWindow.setOutsideTouchable(true);
 
-                    }
-                });
-                popupWindow.setOutsideTouchable(true);
-
-                View bigView = findViewById(R.id.game_board_bottom);
-                int height = bigView.getHeight() * 4 / 5;
-                int width = bigView.getWidth()  - bigView.getWidth() / 15;
-                popupWindow.setWidth(width);
-                popupWindow.setHeight(height);
-                CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
-                ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
-
+                    View bigView = findViewById(R.id.game_board_bottom);
+                    int height = bigView.getHeight() * 4 / 5;
+                    int width = bigView.getWidth()  - bigView.getWidth() / 15;
+                    popupWindow.setWidth(width);
+                    popupWindow.setHeight(height);
+                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
+                    ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
+                }
                 popupWindow.showAtLocation(contentView, Gravity.CENTER,0,0);
             }
         });
@@ -650,7 +652,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()){
             case R.id.popup_exit_button :
                 if(infoWindowClicked){
-                    ((ViewGroup)view.getParent().getParent().getParent().getParent()).removeView((ViewGroup)view.getParent().getParent().getParent());
+                    this.popupWindow.dismiss();
                 }
                 break;
             case R.id.toolbar_goal :

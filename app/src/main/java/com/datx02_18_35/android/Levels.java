@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
@@ -64,7 +66,7 @@ public class Levels extends AppCompatActivity {
     }
     public class LevelsCallback extends ActionConsumer {
         @Override
-        public void handleAction(Action action) throws GameException {
+        public void handleAction(Action action){
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
                 adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.levelProgressionMap);
