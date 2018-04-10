@@ -2,10 +2,12 @@ package com.datx02_18_35.model.game;
 
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.level.LevelCollection;
 import com.datx02_18_35.model.level.LevelParseException;
-import com.datx02_18_35.model.level.LevelProgression;
+import com.datx02_18_35.model.userdata.LevelProgression;
 import com.datx02_18_35.model.expression.ExpressionParseException;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,79 +24,48 @@ import java.util.Map;
 
 public class GameManager {
     private final LevelCollection levelCollection;
-    private UserData userData;
+    private final UserData userData;
 
     private Session currentSession;
 
 
+    public GameManager(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (configFiles == null) {
+            throw new IllegalArgumentException("configFiles can't be null");
+        }
+        if (userDataBytes == null) {
+            throw new IllegalArgumentException("userDataBytes can't be null");
+        }
+        this.levelCollection = new LevelCollection(configFiles);
+        UserData loadedUserData = UserData.loadUserData(userDataBytes);
+        if (loadedUserData != null) {
+            userData = loadedUserData;
+        }
+        else {
+            userData = new UserData(levelCollection);
+        }
+        userData.logCategoryProgression();
+    }
+
     public GameManager(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
+        if (configFiles == null) {
+            throw new IllegalArgumentException("configFiles can't be null");
+        }
         levelCollection = new LevelCollection(configFiles);
         userData = new UserData(levelCollection);
+        userData.logCategoryProgression();
     }
 
 
-    public byte[] saveUserData() {
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        ObjectOutput objOut = null;
-        byte[] byteArray = null;
-        try {
-            objOut = new ObjectOutputStream(byteOut);
-            objOut.writeObject(userData);
-            objOut.flush();
-            byteArray = byteOut.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                byteOut.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Util.log("Serializing user data, size=" + byteArray.length + "B");
 
-        return byteArray;
-    }
-
-    public boolean loadUserData(byte[] data) {
-        boolean success = false;
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
-        ObjectInput objIn = null;
-        try {
-            objIn = new ObjectInputStream(byteIn);
-            Object obj = objIn.readObject();
-            if (obj instanceof UserData) {
-                userData = (UserData)obj;
-                success = true;
-            } else {
-                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
-            }
-        } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            Util.log("userData byte array is invalid, falling back to default values." +
-                    "The following exception was caught: \n" + e);
-        } finally {
-            if (objIn != null) {
-                try {
-                    objIn.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return success;
-    }
 
     public LevelCollection getLevelCollection() {
         return levelCollection;
     }
 
-    public Map<Level, LevelProgression> getProgressionMapReadOnly() {
-        return userData.getProgressionMapReadOnly();
-    }
-
-
-    public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException {
+    public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException, LevelNotAllowedException {
         assertSessionNotInProgress();
+        levelCollection.assertLevelIsUnlocked(userData, level);
         if(!levelCollection.contains(level)) {
             throw new LevelNotInListException("Level is not in GameManager's list of levels");
         }
@@ -108,14 +79,31 @@ public class GameManager {
         currentSession = null;
     }
 
-    public void voidFinishLevel() throws IllegalGameStateException {
-        assertSessionInProgress();
-        LevelProgression progression = userData.getProgression(currentSession.getLevel());
-        if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
-            progression.stepsApplied = currentSession.getStepsApplied();
+    public VictoryInformation checkWin() {
+        if (!currentSession.checkWin()) {
+            return null;
         }
-        progression.completed = true;
+        LevelProgression previousProgression = userData.getLevelProgression(currentSession.getLevel());
+        int previousScore = previousProgression.stepsApplied;
+
+        LevelCategory unlockedCategory = userData.markLevelCompleted(
+                levelCollection,
+                currentSession.getLevel(),
+                currentSession.getStepsApplied());
+
+        LevelProgression newProgression = userData.getLevelProgression(currentSession.getLevel());
+        int newScore = newProgression.stepsApplied;
+
+        VictoryInformation victoryInformation = new VictoryInformation(
+                previousScore,
+                newScore,
+                hasNextLevel(),
+                currentSession.getLevel().goal,
+                unlockedCategory);
+
+        return victoryInformation;
     }
+
 
 
 
@@ -124,7 +112,7 @@ public class GameManager {
         return levelCollection.getNextLevel(lastLevel) != null;
     }
 
-    public void startNextLevel() throws IllegalGameStateException {
+    public void startNextLevel() throws IllegalGameStateException, LevelNotAllowedException {
         assertSessionInProgress();
         if (!currentSession.checkWin()) {
             throw new IllegalGameStateException("Can't proceed to next level unless the current session is finished");
@@ -133,6 +121,7 @@ public class GameManager {
         if (nextLevel == null) {
             throw new IllegalGameStateException("Can't proceed to next level as there are no more left");
         }
+        levelCollection.assertLevelIsUnlocked(userData, nextLevel);
 
         quitLevel();
         try {
