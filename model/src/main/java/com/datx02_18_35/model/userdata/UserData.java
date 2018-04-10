@@ -79,6 +79,7 @@ public class UserData implements Serializable {
                 int totalLevels = category.getCount();
                 if (completedLevels == totalLevels) {
                     categoryProgression = new LevelCategoryProgression(LevelCategoryProgression.Status.COMPLETED);
+                    categoryProgressionMap.put(category, categoryProgression);
                 }
                 LevelCategory nextCategory = collection.nextCategory(category);
                 LevelCategoryProgression nextCategoryProgression = getCategoryProgression(nextCategory);
