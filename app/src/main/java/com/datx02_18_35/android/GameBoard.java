@@ -641,6 +641,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onResume(){
         super.onResume();
+        adapterLeft.restoreSelections();
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(GameBoard.boardCallback));
         }

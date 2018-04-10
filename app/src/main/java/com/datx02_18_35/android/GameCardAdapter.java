@@ -139,6 +139,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void restoreSelections(){
         for(CardView view : selectedView.values()){
             restoreAnimations(view);
+            TextView textView=view.findViewById(R.id.card_number_text_view);
+            textView.setVisibility(View.GONE);
         }
         currentHighestSelectedCard =0;
         selected.clear();
