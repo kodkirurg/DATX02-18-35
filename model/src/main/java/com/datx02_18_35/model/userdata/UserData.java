@@ -75,7 +75,7 @@ public class UserData implements Serializable {
         return byteArray;
     }
 
-    public static UserData loadUserData(byte[] data) {
+    public static UserData loadUserData(LevelCollection levelCollection, byte[] data) {
         UserData userData = null;
         ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
         ObjectInput objIn = null;
@@ -99,6 +99,17 @@ public class UserData implements Serializable {
                 }
             }
         }
+        if (userData == null) {
+            userData = new UserData(levelCollection);
+        } else {
+            for (LevelCategory category : levelCollection.getCategories()) {
+                userData.getCategoryProgression(category); // Ignore result, only make sure it's filled
+                for (Level level : category.getLevels()) {
+                    userData.getLevelProgression(level); // Ignore result, only make sure it's filled
+                }
+            }
+        }
+
         return userData;
     }
 

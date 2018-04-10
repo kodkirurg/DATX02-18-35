@@ -37,7 +37,7 @@ public class GameManager {
             throw new IllegalArgumentException("userDataBytes can't be null");
         }
         this.levelCollection = new LevelCollection(configFiles);
-        UserData loadedUserData = UserData.loadUserData(userDataBytes);
+        UserData loadedUserData = UserData.loadUserData(levelCollection, userDataBytes);
         if (loadedUserData != null) {
             userData = loadedUserData;
         }
