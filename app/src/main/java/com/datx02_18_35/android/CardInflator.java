@@ -91,7 +91,7 @@ public class CardInflator {
 
             ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
             if (op instanceof Implication) {
-                middleImage.setBackgroundResource(R.drawable.vertical_implication);
+                middleImage.setBackgroundResource(R.drawable.horizontal_implication);
             } else if (op instanceof Disjunction) {
                 middleImage.setBackgroundResource(R.drawable.horizontal_disjunction);
             } else if (op instanceof Conjunction) {
@@ -163,7 +163,7 @@ public class CardInflator {
                         sSymbol(op12,imageViewUpperLeft, symbolMap);
                     }
                     if (op1 instanceof Implication) {
-                        imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageUpperMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     } else if (op1 instanceof Disjunction) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
                     } else if (op1 instanceof Conjunction) {
@@ -196,7 +196,7 @@ public class CardInflator {
                     }
 
                     if(op2 instanceof Implication){
-                        imageLowerMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageLowerMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     }
                     else if(op2 instanceof Disjunction){
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
