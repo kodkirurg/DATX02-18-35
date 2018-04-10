@@ -24,67 +24,40 @@ import java.util.Map;
 
 public class GameManager {
     private final LevelCollection levelCollection;
-    private UserData userData;
+    private final UserData userData;
 
     private Session currentSession;
 
 
+    public GameManager(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (configFiles == null) {
+            throw new IllegalArgumentException("configFiles can't be null");
+        }
+        if (userDataBytes == null) {
+            throw new IllegalArgumentException("userDataBytes can't be null");
+        }
+        this.levelCollection = new LevelCollection(configFiles);
+        UserData loadedUserData = UserData.loadUserData(userDataBytes);
+        if (loadedUserData != null) {
+            userData = loadedUserData;
+        }
+        else {
+            userData = new UserData(levelCollection);
+        }
+        userData.logCategoryProgression();
+    }
+
     public GameManager(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
+        if (configFiles == null) {
+            throw new IllegalArgumentException("configFiles can't be null");
+        }
         levelCollection = new LevelCollection(configFiles);
         userData = new UserData(levelCollection);
+        userData.logCategoryProgression();
     }
 
 
-    public byte[] saveUserData() {
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        ObjectOutput objOut = null;
-        byte[] byteArray = null;
-        try {
-            objOut = new ObjectOutputStream(byteOut);
-            objOut.writeObject(userData);
-            objOut.flush();
-            byteArray = byteOut.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                byteOut.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Util.log("Serializing user data, size=" + byteArray.length + "B");
 
-        return byteArray;
-    }
-
-    public boolean loadUserData(byte[] data) {
-        boolean success = false;
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
-        ObjectInput objIn = null;
-        try {
-            objIn = new ObjectInputStream(byteIn);
-            Object obj = objIn.readObject();
-            if (obj instanceof UserData) {
-                userData = (UserData)obj;
-                success = true;
-            } else {
-                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
-            }
-        } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
-            Util.log("userData byte array is invalid, falling back to default values." +
-                    "The following exception was caught: \n" + e);
-        } finally {
-            if (objIn != null) {
-                try {
-                    objIn.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return success;
-    }
 
     public LevelCollection getLevelCollection() {
         return levelCollection;

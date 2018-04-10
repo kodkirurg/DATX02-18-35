@@ -1,10 +1,18 @@
 package com.datx02_18_35.model.userdata;
 
 import com.datx02_18_35.model.Config;
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.level.LevelCollection;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,6 +46,68 @@ public class UserData implements Serializable {
                     levelProgressionMap.put(level, new LevelProgression());
                 }
             }
+        }
+
+
+    }
+
+    public static byte[] saveUserData(UserData userData) {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutput objOut = null;
+        byte[] byteArray = null;
+        try {
+            objOut = new ObjectOutputStream(byteOut);
+            objOut.writeObject(userData);
+            objOut.flush();
+            byteArray = byteOut.toByteArray();
+            Util.log("Serializing user data, size=" + byteArray.length + "B");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                byteOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return byteArray;
+    }
+
+    public static UserData loadUserData(byte[] data) {
+        UserData userData = null;
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
+        ObjectInput objIn = null;
+        try {
+            objIn = new ObjectInputStream(byteIn);
+            Object obj = objIn.readObject();
+            if (obj instanceof UserData) {
+                userData = (UserData)obj;
+            } else {
+                throw new IllegalArgumentException("userData byte array is not an instance of the UserData class");
+            }
+        } catch (IOException | ClassNotFoundException | IllegalArgumentException e) {
+            Util.log("userData byte array is invalid, falling back to default values." +
+                    "The following exception was caught: \n" + e);
+        } finally {
+            if (objIn != null) {
+                try {
+                    objIn.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userData;
+    }
+
+
+    public void logCategoryProgression() {
+        for (Map.Entry<LevelCategory, LevelCategoryProgression> entry : categoryProgressionMap.entrySet()) {
+            LevelCategory cat = entry.getKey();
+            LevelCategoryProgression catProg = entry.getValue();
+            Util.log(cat.getName() + " " + catProg.status);
         }
     }
 

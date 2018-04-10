@@ -45,6 +45,7 @@ import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelParseException;
 import com.datx02_18_35.model.userdata.LevelProgression;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.List;
 import java.util.Map;
@@ -63,16 +64,21 @@ public class Controller extends ActionConsumer {
         }
         return singleton;
     }
-    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException, ExpressionParseException {
-        singleton = new Controller(configFiles);
-        if (userData != null) {
-            singleton.game.loadUserData(userData);
+    public static void init(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (singleton != null) {
+            throw new IllegalStateException("Singleton can't be initialized twice.");
         }
+        singleton = new Controller(configFiles, userDataBytes);
     }
 
     private GameManager game;
-    private Controller(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
-        game = new GameManager(configFiles);
+    private Controller(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (userDataBytes == null) {
+            game = new GameManager(configFiles);
+        }
+        else {
+            game = new GameManager(configFiles, userDataBytes);
+        }
     }
 
     public synchronized boolean isSessionInProgress() {
@@ -165,7 +171,7 @@ public class Controller extends ActionConsumer {
             VictoryInformation victoryInformation = game.checkWin();
             if (victoryInformation != null) {
                 action.callback(new VictoryConditionMetAction(victoryInformation));
-                action.callback(new SaveUserDataAction(game.saveUserData()));
+                action.callback(new SaveUserDataAction(UserData.saveUserData(game.getUserData())));
                 Util.log("Level completed! previousScore="+victoryInformation.previousScore+", newScore="+victoryInformation.newScore);
             }
         }

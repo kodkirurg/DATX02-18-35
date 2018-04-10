@@ -21,7 +21,6 @@ import java.util.Map;
 public class LevelCollection {
 
     private static final String CATEGORY = "CATEGORY";
-    private static final String NO_CATEGORY_NAME = "<NO CATEGORY>";
     private static final String LEVEL_LIST_FILENAME = "levels.txt";
 
 
@@ -46,7 +45,10 @@ public class LevelCollection {
         LevelCategory category = getCategoryFromLevel(level);
         LevelCategoryProgression categoryProgression = userData.getCategoryProgression(category);
         if (categoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
-            throw new LevelNotAllowedException(level, "Level is not unlocked");
+            throw new LevelNotAllowedException(
+                    level,
+                    "Level is not unlocked. Category: " + category.getName() +
+                            ", status: " + categoryProgression.status);
         }
     }
 
@@ -104,7 +106,14 @@ public class LevelCollection {
 
         List<LevelCategory> categories = new ArrayList<>();
         List<Level> categoryLevels = new ArrayList<>();
-        String categoryName = NO_CATEGORY_NAME;
+        if (!lineIterator.hasNext()) {
+            throw new LevelParseException("No categories found in " + LEVEL_LIST_FILENAME);
+        }
+        String firstLine = lineIterator.next();
+        if (!firstLine.startsWith(CATEGORY + " ")) {
+            throw new LevelParseException("First line in " + LEVEL_LIST_FILENAME + " must be a category");
+        }
+        String categoryName = firstLine.replaceFirst(CATEGORY + " ", "");
 
         int totalLevels = 0;
 
