@@ -2,10 +2,12 @@ package com.datx02_18_35.model.game;
 
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.level.LevelCollection;
 import com.datx02_18_35.model.level.LevelParseException;
-import com.datx02_18_35.model.level.LevelProgression;
+import com.datx02_18_35.model.userdata.LevelProgression;
 import com.datx02_18_35.model.expression.ExpressionParseException;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -88,22 +90,14 @@ public class GameManager {
         return levelCollection;
     }
 
-    public Map<Level, LevelProgression> getProgressionMapReadOnly() {
-        return userData.getProgressionMapReadOnly();
-    }
-
-
     public void startLevel(Level level) throws LevelNotInListException, IllegalGameStateException, LevelNotAllowedException {
         assertSessionNotInProgress();
+        levelCollection.assertLevelIsUnlocked(userData, level);
         if(!levelCollection.contains(level)) {
             throw new LevelNotInListException("Level is not in GameManager's list of levels");
         }
-        if (levelCollection.levelsUntilUnlocked(userData, level) > 0) {
-            throw new LevelNotAllowedException(level, "Level not yet unlocked!");
-        } else {
-            currentSession = new Session(level);
-            Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
-        }
+        currentSession = new Session(level);
+        Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
     }
 
     public void quitLevel() throws IllegalGameStateException {
@@ -112,16 +106,31 @@ public class GameManager {
         currentSession = null;
     }
 
-    public void markLevelAsCompleted() throws IllegalGameStateException {
-        assertSessionInProgress();
-        LevelProgression progression = userData.getProgression(currentSession.getLevel());
-        if (!progression.completed || progression.stepsApplied > currentSession.getStepsApplied()) {
-            progression.stepsApplied = currentSession.getStepsApplied();
+    public VictoryInformation checkWin() {
+        if (!currentSession.checkWin()) {
+            return null;
         }
-        progression.completed = true;
+        LevelProgression previousProgression = userData.getLevelProgression(currentSession.getLevel());
+        int previousScore = previousProgression.stepsApplied;
 
+        LevelCategory unlockedCategory = userData.markLevelCompleted(
+                levelCollection,
+                currentSession.getLevel(),
+                currentSession.getStepsApplied());
 
+        LevelProgression newProgression = userData.getLevelProgression(currentSession.getLevel());
+        int newScore = newProgression.stepsApplied;
+
+        VictoryInformation victoryInformation = new VictoryInformation(
+                previousScore,
+                newScore,
+                hasNextLevel(),
+                currentSession.getLevel().goal,
+                unlockedCategory);
+
+        return victoryInformation;
     }
+
 
 
 
@@ -139,6 +148,7 @@ public class GameManager {
         if (nextLevel == null) {
             throw new IllegalGameStateException("Can't proceed to next level as there are no more left");
         }
+        levelCollection.assertLevelIsUnlocked(userData, nextLevel);
 
         quitLevel();
         try {

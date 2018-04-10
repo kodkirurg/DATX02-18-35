@@ -1,7 +1,8 @@
 package com.datx02_18_35.model.level;
 
 import com.datx02_18_35.model.Config;
-import com.datx02_18_35.model.game.UserData;
+import com.datx02_18_35.model.userdata.LevelProgression;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +37,7 @@ public class LevelCategory {
     public int getCompleted(UserData userData) {
         int completed = 0;
         for (Level level : levels) {
-            LevelProgression progression = userData.getProgression(level);
+            LevelProgression progression = userData.getLevelProgression(level);
             if (progression.completed) {
                 completed += 1;
             }

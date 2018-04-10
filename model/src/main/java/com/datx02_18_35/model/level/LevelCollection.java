@@ -2,7 +2,9 @@ package com.datx02_18_35.model.level;
 
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.ExpressionParseException;
-import com.datx02_18_35.model.game.UserData;
+import com.datx02_18_35.model.game.LevelNotAllowedException;
+import com.datx02_18_35.model.userdata.LevelCategoryProgression;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,52 +42,39 @@ public class LevelCollection {
         return levelCategoryMap.containsKey(level);
     }
 
-    public boolean isUnlocked(UserData userData, LevelCategory category) {
-        return levelsUntilUnlocked(userData, category) > 0;
+    public void assertLevelIsUnlocked(UserData userData, Level level) throws LevelNotAllowedException {
+        LevelCategory category = getCategoryFromLevel(level);
+        LevelCategoryProgression categoryProgression = userData.getCategoryProgression(category);
+        if (categoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
+            throw new LevelNotAllowedException(level, "Failed assertion");
+        }
     }
 
-    public boolean isUnlocked(UserData userData, Level level) {
-        return levelsUntilUnlocked(userData, level) > 0;
-    }
-
-    /**
-     * Checks whether a level is unlocked
-     * @param userData
-     * @param level
-     * @return Returns 0 if category is unlocked, otherwise the number of levels to complete in the previous one
-     */
-    public int levelsUntilUnlocked(UserData userData, Level level) {
-        return levelsUntilUnlocked(userData, levelCategoryMap.get(level));
-    }
-
-    /**
-     * Checks whether a category is unlocked.
-     * @param userData
-     * @param category
-     * @return Returns 0 if category is unlocked, otherwise the number of levels to complete in the previous one
-     */
-    public int levelsUntilUnlocked(UserData userData, LevelCategory category) {
-        Iterator<LevelCategory> categoryIterator = categories.iterator();
-        if (!categoryIterator.hasNext()) {
-            throw new IllegalStateException("No level categories loaded!");
-        }
-        LevelCategory lastCategory = categoryIterator.next();
-        if (lastCategory.equals(category)) {
-            return 0; //The querried category is the first one.
-        }
-        while (categoryIterator.hasNext()) {
-            LevelCategory nextCategory = categoryIterator.next();
-            if (nextCategory.equals(category)) {
-                return lastCategory.getLevelsLeftToUnlockNext(userData);
-            }
-
-            lastCategory = nextCategory;
-        }
-        throw new IllegalStateException("Category not in collection");
+    public LevelCategory getCategoryFromLevel(Level level) {
+        return levelCategoryMap.get(level);
     }
 
     public List<LevelCategory> getCategories() {
         return categories;
+    }
+
+    public LevelCategory previousCategory(LevelCategory category) {
+        Iterator<LevelCategory> categoryIterator = categories.iterator();
+        if (!categoryIterator.hasNext()) {
+            throw new IllegalStateException("No categories in collection");
+        }
+        LevelCategory lastCategory = categoryIterator.next();
+        if (lastCategory.equals(category)) {
+            return null; //First category
+        }
+        while (categoryIterator.hasNext()) {
+            LevelCategory currentCategory = categoryIterator.next();
+            if (currentCategory.equals(category)) {
+                return lastCategory;
+            }
+            lastCategory = currentCategory;
+        }
+        throw new IllegalArgumentException("Category not in collection");
     }
 
     public LevelCategory nextCategory(LevelCategory category) {
@@ -100,7 +89,7 @@ public class LevelCollection {
                 }
             }
         }
-        throw new IllegalStateException("Category now in collection");
+        throw new IllegalArgumentException("Category not in collection");
     }
 
     public Level getNextLevel(Level level) {

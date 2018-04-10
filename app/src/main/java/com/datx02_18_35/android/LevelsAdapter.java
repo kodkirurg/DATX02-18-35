@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.level.LevelCollection;
-import com.datx02_18_35.model.level.LevelProgression;
+import com.datx02_18_35.model.userdata.LevelProgression;
 
 import java.util.ArrayList;
 import java.util.List;

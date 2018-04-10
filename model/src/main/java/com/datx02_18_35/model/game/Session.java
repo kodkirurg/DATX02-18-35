@@ -1,11 +1,13 @@
 package com.datx02_18_35.model.game;
 
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.rules.RuleType;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.rules.TestRule;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.ArrayList;
 import java.util.Collection;
