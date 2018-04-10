@@ -43,17 +43,19 @@ public class Rule {
     public boolean equals(Object o){
         if(o instanceof Rule){
             if(((Rule) o).type==this.type){
-                for(int i=0;i<this.expressions.size();i++){
-                    if(this.expressions.get(i)==null){
-                        if(((Rule) o).expressions.get(i)==null){
-                        }else{
+                if(this.expressions.size()==((Rule) o).expressions.size()) {
+                    for (int i = 0; i < this.expressions.size(); i++) {
+                        if (this.expressions.get(i) == null) {
+                            if (((Rule) o).expressions.get(i) == null) {
+                            } else {
+                                return false;
+                            }
+                        } else if (!this.expressions.get(i).equals(((Rule) o).expressions.get(i))) {
                             return false;
                         }
-                    }else if(!this.expressions.get(i).equals(((Rule) o).expressions.get(i))){
-                        return false;
                     }
+                    return true;
                 }
-                return true;
             }
         }
         return false;

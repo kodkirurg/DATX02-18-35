@@ -6,7 +6,7 @@ import org.junit.Test;
  * Created by Jonatan on 2018-04-09.
  */
 
-public class applyRuleTest {
+public class ApplyRuleTest {
 
 
 
