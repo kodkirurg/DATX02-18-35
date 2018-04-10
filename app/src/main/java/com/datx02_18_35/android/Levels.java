@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.ActionConsumer;
@@ -55,6 +57,7 @@ public class Levels extends AppCompatActivity {
     }
 
     public void startLevel(Level level){
+        Log.d(Tools.debug, "startLevel: " + ((TextView)findViewById(R.id.level_top)).getTextSize());
         try {
             Controller.getSingleton().handleAction(new RequestStartNewSessionAction(callback,level));
             Intent intent = new Intent(this, GameBoard.class); //create intent

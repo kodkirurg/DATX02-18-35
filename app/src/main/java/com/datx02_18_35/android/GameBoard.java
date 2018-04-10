@@ -90,7 +90,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public Iterable<Expression> assumptions;
     public static Map<String, String> symbolMap;
     public static Level level;
-    public boolean infoWindowClicked=false;
+    public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
     public View popUpView;
 
@@ -198,7 +198,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         contentView.post(new Runnable() {
             @Override
             public void run() {
-                infoWindowClicked=true;
                 // Inflate the custom layout/view
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
                 popUpView = inflater.inflate(R.layout.pop_up_window,null);
@@ -649,8 +648,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view){
         switch (view.getId()){
             case R.id.popup_exit_button :
-                popupWindow.dismiss();
-                infoWindowClicked=false;
+                if(infoWindowClicked){
+                    ((ViewGroup)view.getParent().getParent().getParent().getParent()).removeView((ViewGroup)view.getParent().getParent().getParent());
+                }
                 break;
             case R.id.toolbar_goal :
                 if(!infoWindowClicked){
@@ -660,11 +660,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         loadPopUpWindow(getCurrentFocus().getRootView());
                     }
 
-                }
-                else if (infoWindowClicked){
-                    popupWindow.setOnDismissListener(null);
-                    infoWindowClicked=false;
-                    popupWindow.dismiss();
                 }
                 break;
             case R.id.next_level:{
