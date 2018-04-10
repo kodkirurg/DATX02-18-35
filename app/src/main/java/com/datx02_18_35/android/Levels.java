@@ -70,15 +70,7 @@ public class Levels extends AppCompatActivity {
         public void handleAction(Action action){
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
-
-
-
                 adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.progressionMap);
-
-
-
-
-
             }
         }
     }

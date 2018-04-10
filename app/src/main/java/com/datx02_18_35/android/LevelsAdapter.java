@@ -31,8 +31,6 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     LevelsAdapter(Levels levelsActivity){
         this.levelsActivity = levelsActivity;
-        this.levelList = null;
-        this.progressionMap = null;
     }
 
     @Override
@@ -45,6 +43,9 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setTag(position);
+
+        Level levelInCard = levelList.get(position);
+        
 
         String title = levelList.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
@@ -63,18 +64,18 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     }
 
-    public void updateLevels(final LevelCollection _levelCollection, final Map<Level, LevelProgression> _progressionMap) {
+    public void updateLevels(final LevelCollection levelCollection, final Map<Level, LevelProgression> progressionMap) {
+        this.progressionMap=progressionMap;
         this.levelsActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 levelList = new ArrayList<>();
-                for (LevelCategory category : _levelCollection.getCategories()) {
+                for (LevelCategory category : levelCollection.getCategories()) {
                     for (Level level : category.getLevels()) {
 
                         levelList.add(level);
                     }
                 }
-                progressionMap = _progressionMap;
                 notifyDataSetChanged();
             }
         });
