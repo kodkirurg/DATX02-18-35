@@ -37,14 +37,12 @@ import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.game.VictoryInformation;
-import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelParseException;
-import com.datx02_18_35.model.userdata.LevelProgression;
 import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.List;

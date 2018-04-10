@@ -6,8 +6,6 @@ package com.datx02_18_35.model.expression;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.rules.RuleType;
 
-import org.junit.Assert;
-import org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import java.util.Random;
 import static com.datx02_18_35.model.rules.Rule.getLegalRules;
 import static java.lang.Math.*;
 import static org.junit.Assert.assertTrue;
-import static sun.rmi.transport.TransportConstants.Return;
 
 
 public class GetLegalRuleTest {

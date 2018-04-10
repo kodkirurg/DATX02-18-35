@@ -7,9 +7,8 @@ import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.expression.ExpressionParser;
-import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.rules.RuleType;
-;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -7,7 +7,6 @@ import com.datx02_18_35.model.expression.Conjunction;
 import com.datx02_18_35.model.expression.Disjunction;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
-// import com.sun.istack.internal.Pool;
 
 import java.util.ArrayList;
 import java.util.Arrays;

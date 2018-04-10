@@ -179,6 +179,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         infoButton.setOnClickListener(this);
         ImageView trashCan = findViewById(R.id.trash_can);
         trashCan.setOnClickListener(this);
+        ImageView assumption = findViewById(R.id.item_assumption);
+        assumption.setOnClickListener(this);
+
 
         //Animations
         slide_left = AnimationUtils.loadAnimation(this, R.anim.slide_left);
@@ -717,6 +720,20 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             case R.id.trash_can:{
                 deleteSelection();
+                break;
+            }
+            case R.id.item_assumption: {
+                if (inventoryLayout.isShown()) {
+                    sandboxOpened = true;
+                    closeInventory();
+                } else {
+                    try {
+                        Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
+                        scopeLevel.setText("");
+                    } catch (GameException e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
             }
         }
