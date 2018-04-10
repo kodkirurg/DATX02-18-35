@@ -91,7 +91,7 @@ public class CardInflator {
 
             ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
             if (op instanceof Implication) {
-                middleImage.setBackgroundResource(R.drawable.vertical_implication);
+                middleImage.setBackgroundResource(R.drawable.horizontal_implication);
             } else if (op instanceof Disjunction) {
                 middleImage.setBackgroundResource(R.drawable.horizontal_disjunction);
             } else if (op instanceof Conjunction) {
@@ -102,7 +102,9 @@ public class CardInflator {
             //no complex on up/down card.
             if ((exp1 instanceof Proposition | exp1 instanceof Absurdity) & (exp2 instanceof Proposition | exp2 instanceof Absurdity)) {
                 ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                imageViewUpper.setRotation(90);
                 ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
+                imageViewLower.setRotation(90);
                 sSymbol(exp1, imageViewUpper, symbolMap);
                 sSymbol(exp2, imageViewLower, symbolMap);
 
@@ -118,6 +120,7 @@ public class CardInflator {
                 if (exp1 instanceof Proposition | exp1 instanceof Absurdity) {
                     //Upper
                     ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                    imageViewUpper.setRotation(90);
                     sSymbol(exp1, imageViewUpper, symbolMap);
 
                     //clean-up
@@ -129,6 +132,7 @@ public class CardInflator {
                 if (exp2 instanceof Proposition | exp2 instanceof Absurdity) {
                     //Lower
                     ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
+                    imageViewLower.setRotation(90);
                     sSymbol(exp2, imageViewLower, symbolMap);
 
                     //clean-up
@@ -159,7 +163,7 @@ public class CardInflator {
                         sSymbol(op12,imageViewUpperLeft, symbolMap);
                     }
                     if (op1 instanceof Implication) {
-                        imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageUpperMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     } else if (op1 instanceof Disjunction) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
                     } else if (op1 instanceof Conjunction) {
@@ -192,7 +196,7 @@ public class CardInflator {
                     }
 
                     if(op2 instanceof Implication){
-                        imageLowerMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageLowerMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     }
                     else if(op2 instanceof Disjunction){
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
@@ -261,6 +265,30 @@ public class CardInflator {
                 break;
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
+                break;
+            case "arrows":
+                Tools.setImage(imageView,R.drawable.arrows);
+                break;
+            case "cross":
+                Tools.setImage(imageView,R.drawable.cross);
+                break;
+            case "crossandcircle":
+                Tools.setImage(imageView,R.drawable.cross_and_circle);
+                break;
+            case "diamond":
+                Tools.setImage(imageView,R.drawable.diamond);
+                break;
+            case "donut":
+                Tools.setImage(imageView,R.drawable.donut);
+                break;
+            case "squares":
+                Tools.setImage(imageView,R.drawable.squares);
+                break;
+            case "sun":
+                Tools.setImage(imageView,R.drawable.sun);
+                break;
+            case "wonky":
+                Tools.setImage(imageView,R.drawable.wonky);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);

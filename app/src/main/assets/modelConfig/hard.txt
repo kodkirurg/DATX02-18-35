@@ -6,10 +6,10 @@ Good luck solving this
 Requires Classical logic, I think...
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
-SYMBOL R GreenTriangle
-SYMBOL S YellowRectangle
+SYMBOL P Donut
+SYMBOL Q CrossAndCircle
+SYMBOL R Diamond
+SYMBOL S Squares
 
 RULESET CLASSICAL
 

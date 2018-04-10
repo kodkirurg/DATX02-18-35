@@ -1,11 +1,11 @@
 TITLE *Title goes here*
 
 DESCRIPTION START
-*Text goes here*
+*New symbols*
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Diamond
+SYMBOL Q Donut
 
 HYPOTHESIS P
 
