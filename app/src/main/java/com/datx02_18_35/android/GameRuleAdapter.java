@@ -89,9 +89,9 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
                     break;
                 case DISJUNCTION_INTRODUCTION:
                     if(hasShownRule) {
-                        Tools.setImage(imageView, R.drawable.disjunction_introduction_1);
-                    }else {
                         Tools.setImage(imageView, R.drawable.disjunction_introduction_2);
+                    }else {
+                        Tools.setImage(imageView, R.drawable.disjunction_introduction_1);
                         hasShownRule = true;
                     }
 
