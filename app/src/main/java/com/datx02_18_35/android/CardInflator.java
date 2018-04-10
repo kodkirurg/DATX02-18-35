@@ -3,10 +3,12 @@ package com.datx02_18_35.android;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
@@ -69,6 +71,9 @@ public class CardInflator {
             cardNumberView.setTag(R.id.card_number,0);
             cardNumberView.setTextSize(20);
             cardNumberView.setTextColor(Color.MAGENTA);
+            cardNumberView.setGravity(Gravity.CENTER | Gravity.LEFT);
+            //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)cardNumberView.getLayoutParams();
+            //layoutParams.setMargins(4,0,0,0);
             cardView.addView(cardNumberView);
 
         }
