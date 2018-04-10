@@ -35,12 +35,9 @@
         android:background="@color/GhostWhite"
 
         android:textSize="25sp"
-
         android:text="@string/undefined"
         android:textAlignment="center"
         android:textColor="@color/Black"
-
-
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/level_upper_guideline"

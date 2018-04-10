@@ -57,7 +57,6 @@ public class Levels extends AppCompatActivity {
     }
 
     public void startLevel(Level level){
-        Log.d(Tools.debug, "startLevel: " + ((TextView)findViewById(R.id.level_top)).getTextSize());
         try {
             Controller.getSingleton().handleAction(new RequestStartNewSessionAction(callback,level));
             Intent intent = new Intent(this, GameBoard.class); //create intent
@@ -68,10 +67,18 @@ public class Levels extends AppCompatActivity {
     }
     public class LevelsCallback extends ActionConsumer {
         @Override
-        public void handleAction(Action action) throws GameException {
+        public void handleAction(Action action){
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
+
+
+
                 adapter.updateLevels(refreshLevelsAction.levelCollection, refreshLevelsAction.progressionMap);
+
+
+
+
+
             }
         }
     }
