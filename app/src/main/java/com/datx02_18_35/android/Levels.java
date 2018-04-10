@@ -74,6 +74,7 @@ public class Levels extends AppCompatActivity {
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
                 LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(x);
+                ((TextView)findViewById(R.id.level_top)).setText(levelCategory.getName());
                 adapter.updateLevels(levelCategory,refreshLevelsAction.levelProgressionMap, refreshLevelsAction.categoryProgressionMap.get(levelCategory));
             }
         }
