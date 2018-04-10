@@ -1,12 +1,12 @@
 TITLE Disjunction Elimination
 
 DESCRIPTION START
-*Text goes here*
+*New symbols*
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
-SYMBOL R GreenTriangle
+SYMBOL P Squares
+SYMBOL Q Sun
+SYMBOL R Wonky
 
 HYPOTHESIS P | Q
 HYPOTHESIS P > R

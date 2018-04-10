@@ -1,13 +1,13 @@
 TITLE *Title goes here*
 
 DESCRIPTION START
-*Text goes here*
+*New symbols*
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
-SYMBOL R GreenTriangle
-SYMBOL S YellowRectangle
+SYMBOL P CrossAndCircle
+SYMBOL Q Cross
+SYMBOL R Diamond
+SYMBOL S Sun
 
 HYPOTHESIS P | (Q | R)
 HYPOTHESIS P > S
