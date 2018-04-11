@@ -59,16 +59,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
-        } catch (LevelParseException | ExpressionParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if(!Controller.isControllerInit()){
+            try {
+                Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
+            } catch (LevelParseException | ExpressionParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

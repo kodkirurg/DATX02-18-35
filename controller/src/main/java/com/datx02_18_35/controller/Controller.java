@@ -55,6 +55,16 @@ import java.util.Map;
 public class Controller extends ActionConsumer {
 
     private static Controller singleton = null;
+
+    public static boolean isControllerInit(){
+        if(singleton!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public static Controller getSingleton() {
         if (singleton == null) {
             throw new IllegalStateException("Singleton not initialized. Call init first.");
