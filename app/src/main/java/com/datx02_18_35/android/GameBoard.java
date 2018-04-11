@@ -9,7 +9,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +34,6 @@ import com.datx02_18_35.controller.dispatch.actions.Action;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshCurrentLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCloseScopeAction;
@@ -45,7 +43,6 @@ import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesi
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestInventoryAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestStartNextLevelAction;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.OpenSandboxAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshRulesAction;
@@ -61,13 +58,11 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.game.VictoryInformation;
-import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import game.logic_game.R;
 
@@ -89,7 +84,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public Iterable<Iterable<Expression>> inventories;
     public int scopeLevelInt;
     public Iterable<Expression> assumptions;
-    public static Map<String, String> symbolMap;
     public static Level level;
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
@@ -159,11 +153,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         scoreView = (TextView) findViewById(R.id.win_score);
 
 
-        try {
-            Controller.getSingleton().handleAction(new RequestSymbolMap(boardCallback));
-        } catch (GameException e) {
-            e.printStackTrace();
-        }
         ((ImageView)findViewById(R.id.inventory_button)).setOnClickListener(this);
         ((ImageView)findViewById(R.id.open_inventory)).setOnClickListener(this);
         ((ImageView)findViewById(R.id.close_inventory)).setOnClickListener(this);
@@ -228,7 +217,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
-                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,symbolMap,120,170,false);
+                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,120,170,false);
                     ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                 }
                 popupWindow.showAtLocation(contentView, Gravity.CENTER,0,0);
@@ -511,9 +500,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 Collection<Rule> data = ((RefreshRulesAction) action).rules;
                 adapterRight.updateBoard(data);
             }
-            else if(action instanceof RefreshSymbolMap){
-                symbolMap=((RefreshSymbolMap) action).symbolMap;
-            }
             else if (action instanceof OpenSandboxAction){
                 String reason="";
                 sandboxAction =(OpenSandboxAction) action;
@@ -573,9 +559,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         final CardView cardView = (CardView) LayoutInflater.from(
                                 getCurrentFocus().getContext()).inflate
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
-                        CardInflator.inflate(cardView,victoryInformation.goal,symbolMap,120,170,false);
+                        CardInflator.inflate(cardView,victoryInformation.goal,120,170,false);
                         ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
-                        CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),victoryInformation.goal,symbolMap,120,170,false);
+                        CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),victoryInformation.goal,120,170,false);
                         cardView.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
