@@ -36,4 +36,9 @@ public abstract class Action {
         }
         this.callback.handleAction(action);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getCanonicalName().replaceAll(".+\\.", "");
+    }
 }
