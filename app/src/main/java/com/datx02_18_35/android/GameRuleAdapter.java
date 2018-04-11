@@ -68,8 +68,10 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         holder.frame.getLayoutParams().width=Math.round(Tools.convertDpToPixel(cardWidth));
         holder.frame.getLayoutParams().height=Math.round(Tools.convertDpToPixel(cardHeight));
 
+        holder.frame.setBackgroundColor(80);
         //set visuals
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
+        imageView.setBackgroundColor(80);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position).type) {
                 case CONJUNCTION_INTRODUCTION:
@@ -89,9 +91,9 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
                     break;
                 case DISJUNCTION_INTRODUCTION:
                     if(hasShownRule) {
-                        Tools.setImage(imageView, R.drawable.disjunction_introduction_1);
-                    }else {
                         Tools.setImage(imageView, R.drawable.disjunction_introduction_2);
+                    }else {
+                        Tools.setImage(imageView, R.drawable.disjunction_introduction_1);
                         hasShownRule = true;
                     }
 
