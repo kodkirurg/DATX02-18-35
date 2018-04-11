@@ -9,8 +9,8 @@ Select two cards and apply the conjunction introduction rule on them.
 Note that the order matters!
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
 
 RULESET CONJUNCTION_ONLY
 

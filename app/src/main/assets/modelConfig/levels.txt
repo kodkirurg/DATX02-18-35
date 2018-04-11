@@ -5,13 +5,13 @@ conj_intro.txt
 conj_elim.txt
 conj_elim_+_intro.txt
 impl_elim.txt
+impl_elim_2.txt
 basic_competence.txt
+basic_competence2.txt
 level005.txt
 impl_intro.txt
-impl_elim_2.txt
 level008.txt
 
-peirs_law.txt
 
 absurd.txt
 

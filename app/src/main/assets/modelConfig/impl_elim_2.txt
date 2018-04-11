@@ -1,11 +1,11 @@
 TITLE Basic Implication Elimination 2
 
 DESCRIPTION START
-*Text goes here*
+Here you need to use implication elimination twice.
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
 
 HYPOTHESIS P > (P > Q)
 HYPOTHESIS P
