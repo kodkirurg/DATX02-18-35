@@ -84,6 +84,8 @@ public class Controller extends ActionConsumer {
 
     @Override
     public void handleAction(Action action) throws GameException {
+        Util.log("Action received: " + action.toString());
+
         if (action instanceof RequestStartNewSessionAction) {
             if(game.getSession()!=null){
                 game.quitLevel();
@@ -198,7 +200,6 @@ public class Controller extends ActionConsumer {
             action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
         }
         else if (action instanceof RequestLevelsAction) {
-            game.assertSessionNotInProgress();
             action.callback(new RefreshLevelsAction(
                     game.getLevelCollection(),
                     game.getUserData().getLevelProgressionMap(),

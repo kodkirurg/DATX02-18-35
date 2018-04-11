@@ -78,14 +78,12 @@ public class GameManager {
         }
         LevelProgression previousProgression = userData.getLevelProgression(currentSession.getLevel());
         int previousScore = previousProgression.stepsApplied;
+        int newScore = currentSession.getStepsApplied();
 
         LevelCategory unlockedCategory = userData.markLevelCompleted(
                 levelCollection,
                 currentSession.getLevel(),
-                currentSession.getStepsApplied());
-
-        LevelProgression newProgression = userData.getLevelProgression(currentSession.getLevel());
-        int newScore = newProgression.stepsApplied;
+                newScore);
 
         VictoryInformation victoryInformation = new VictoryInformation(
                 previousScore,
