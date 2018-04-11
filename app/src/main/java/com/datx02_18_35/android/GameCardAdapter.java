@@ -60,6 +60,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
+        cardView.setCardBackgroundColor(Color.parseColor("#d9d9d9"));
         return new ViewHolder(cardView);
     }
 
@@ -155,11 +156,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
     }
     void restoreAnimations(CardView cardView){
-        cardView.setBackgroundColor(Color.WHITE);
+
         Fx.deselectAnimation(cardView.getContext(), cardView);
     }
     void setAnimations(CardView cardView){
-        cardView.setBackgroundColor(Color.BLACK);
+
         Fx.selectAnimation(cardView.getContext(), cardView);
     }
 

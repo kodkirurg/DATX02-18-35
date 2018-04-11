@@ -56,7 +56,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.setIsRecyclable(false);
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
-        holder.cardView.setBackgroundColor(Color.WHITE);
+        holder.cardView.setBackgroundColor(Color.parseColor("#d9d9d9"));
         if(dataSet.get(position)!= null & !holder.alreadyBound) {
             CardInflator.inflate(holder.cardView, dataSet.get(position),100,145,false);
             holder.alreadyBound = true;
