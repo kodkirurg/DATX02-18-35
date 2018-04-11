@@ -66,6 +66,10 @@ public class UserData implements Serializable {
     }
 
     public static UserData loadUserData(LevelCollection levelCollection, byte[] data) {
+        if (Config.DEBUG_RESET_PROGRESS) {
+            //Ignore read input
+            return new UserData(levelCollection);
+        }
         UserData userData = null;
         ByteArrayInputStream byteIn = new ByteArrayInputStream(data);
         ObjectInput objIn = null;
