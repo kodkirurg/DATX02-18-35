@@ -232,7 +232,11 @@ public class CardInflator {
 
     //new card recursion
     private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
+        cardViewQuad.setCardBackgroundColor(Color.parseColor("#00d9d9d9"));
+        cardViewQuad.setCardElevation(0);
         CardView smallCardView = (CardView) LayoutInflater.from(topCardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+        smallCardView.setCardBackgroundColor(Color.parseColor("#00d9d9d9"));
+        smallCardView.setCardElevation(0);
         ViewGroup.MarginLayoutParams layoutParams4 =
                 (ViewGroup.MarginLayoutParams) smallCardView.getLayoutParams();
         layoutParams4.setMargins(0, 0, 0, 0);
