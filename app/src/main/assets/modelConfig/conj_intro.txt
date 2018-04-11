@@ -3,13 +3,14 @@ TITLE Basic Conjunction Introduction
 DIFFICULTY 0
 
 DESCRIPTION START
+Welcome to Gentzen's Quest and your first level!
 In this level you'll learn about conjunctions.
 Select two cards and apply the conjunction introduction rule on them.
 Note that the order matters!
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
 
 RULESET CONJUNCTION_ONLY
 

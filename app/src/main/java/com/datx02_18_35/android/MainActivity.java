@@ -59,21 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
+        } catch (LevelParseException | ExpressionParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            //TODO: Pass list of level files as Strings
-            Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
-        } catch (LevelParseException e) {
-            //TODO: Handle this properly
-            e.printStackTrace();
-        } catch (ExpressionParseException e) {
-            //TODO: Handle this properly
-            e.printStackTrace();
-        }
     }
 
     @Override

@@ -1,13 +1,15 @@
-TITLE *Title goes here*
+TITLE Basic Comptence 2
 
 DESCRIPTION START
-*Text goes here*
+Use all rules you know
 DESCRIPTION END
 
-SYMBOL P SymbolName
+SYMBOL P Sun
+SYMBOL Q Wonky
+SYMBOL R Arrows
 
 
-RULESET RuleSet1 RuleSet2
+RULESET IMPLICATION_ONLY CONJUNCTION_ONLY
 //
 DEFAULT
 CONSTRUCTIVE,
@@ -27,6 +29,8 @@ Sun
 Wonky
 
 
-HYPOTHESIS
+HYPOTHESIS P
+HYPOTHESIS Q
+HYPOTHESIS (Q & P) > R
 
-GOAL
+GOAL R & P

@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelCategory;
-import com.datx02_18_35.model.level.LevelCollection;
+import com.datx02_18_35.model.userdata.LevelCategoryProgression;
 import com.datx02_18_35.model.userdata.LevelProgression;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +25,15 @@ import game.logic_game.R;
 
 
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener  {
-    private List<Level> levelList;
-    private Map<Level, LevelProgression> progressionMap;
+    private List<Level> dataSet;
     private final Levels levelsActivity;
+    Map<Level, LevelProgression> levelProgressionMap;
+    LevelCategoryProgression levelCategoryProgression;
 
 
     LevelsAdapter(Levels levelsActivity){
         this.levelsActivity = levelsActivity;
+        this.dataSet = new ArrayList<>();
     }
 
     @Override
@@ -44,10 +47,22 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setTag(position);
 
-        Level levelInCard = levelList.get(position);
-        
+        Level levelInCard = dataSet.get(position);
+        if(levelProgressionMap.get(levelInCard).completed){
+            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Green));
+        }
+        else if(!levelProgressionMap.get(levelInCard).completed){
+            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Red));
+        }
+        else if(levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED){
+            holder.cardView.setEnabled(false);
+            holder.cardView.setClickable(false);
+            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Gray));
+        }
 
-        String title = levelList.get(position).title;
+
+
+        String title = dataSet.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
@@ -55,26 +70,26 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        if(levelList ==null){
+        if(dataSet ==null){
             return 0;
         }
         else{
-            return levelList.size();
+            return dataSet.size();
         }
 
     }
 
-    public void updateLevels(final LevelCollection levelCollection, final Map<Level, LevelProgression> progressionMap) {
-        this.progressionMap=progressionMap;
+    public void updateLevels(final LevelCategory levelCategory, Map<Level, LevelProgression> levelProgressionMap, LevelCategoryProgression levelCategoryProgression) {
+        this.levelCategoryProgression=levelCategoryProgression;
+        this.levelProgressionMap=levelProgressionMap;
         this.levelsActivity.runOnUiThread(new Runnable() {
+
+            // levelcollection is category
             @Override
             public void run() {
-                levelList = new ArrayList<>();
-                for (LevelCategory category : levelCollection.getCategories()) {
-                    for (Level level : category.getLevels()) {
-
-                        levelList.add(level);
-                    }
+                dataSet.clear();
+                for (Level level : levelCategory.getLevels()) {
+                    dataSet.add(level);
                 }
                 notifyDataSetChanged();
             }
@@ -84,7 +99,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     @Override
     public void onClick(View view) {
         int position = (int) view.getTag();
-        levelsActivity.startLevel(levelList.get(position));
+        levelsActivity.startLevel(dataSet.get(position));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

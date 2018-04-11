@@ -115,7 +115,7 @@ public class UserData implements Serializable {
         for (Map.Entry<LevelCategory, LevelCategoryProgression> entry : categoryProgressionMap.entrySet()) {
             LevelCategory cat = entry.getKey();
             LevelCategoryProgression catProg = entry.getValue();
-            Util.log(cat.getName() + " " + catProg.status);
+            //Util.log(cat.getName() + " " + catProg.status);
         }
     }
 
