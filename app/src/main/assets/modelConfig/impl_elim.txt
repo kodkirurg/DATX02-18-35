@@ -2,12 +2,12 @@ TITLE Basic Implication Elimination
 
 DESCRIPTION START
 Here we introduce a new kind of card, the implication card.
-The implication card can be combined with whatever card is to the left of the implication arrow to produce the card to the right of the implication arrow
-Go ahead and give it a try by first selecting the implication card and then the card with the blue ball.
+The implication card can be combined with whatever card is over/to the left of the implication arrow to produce the card to the right of the implication arrow
+Go ahead and give it a try by selecting the implication card and then the card with the Sun.
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
 
 RULESET IMPLICATION_ONLY
 
