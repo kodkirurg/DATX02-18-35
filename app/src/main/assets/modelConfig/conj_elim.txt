@@ -2,6 +2,7 @@ TITLE Basic Conjunction Elimination
 
 DESCRIPTION START
 In this level you will learn how to use conjunction elimination.
+
 Select the conjunction card and apply the conjunction elimination rule on it.
 DESCRIPTION END
 

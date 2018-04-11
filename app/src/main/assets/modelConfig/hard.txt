@@ -3,6 +3,7 @@ TITLE Hard shit
 
 DESCRIPTION START
 Good luck solving this
+
 Requires Classical logic, I think...
 DESCRIPTION END
 
