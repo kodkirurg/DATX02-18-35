@@ -10,6 +10,7 @@ level005.txt
 impl_intro.txt
 impl_elim_2.txt
 level008.txt
+peirs_law.txt
 
 CATEGORY Intermediate
 

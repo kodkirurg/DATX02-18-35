@@ -1,0 +1,14 @@
+TITLE *Peirs Law*
+
+DESCRIPTION START
+*If the sun shine means there are no clouds, means the sun is shining, then the sun is shining*
+DESCRIPTION END
+
+SYMBOL P Sun
+SYMBOL Q Wonky
+
+RULESET CLASSICAL
+
+HYPOTHESIS (P > Q ) > P
+
+GOAL P
