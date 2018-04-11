@@ -12,7 +12,6 @@ import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLe
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestDeleteFromGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
@@ -95,10 +94,6 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestCurrentLevelAction){
             Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
-            action.callback(reply);
-        }
-        else if(action instanceof RequestSymbolMap){
-            Action reply = new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap());
             action.callback(reply);
         }
         else if (action instanceof RequestStartNextLevelAction) {

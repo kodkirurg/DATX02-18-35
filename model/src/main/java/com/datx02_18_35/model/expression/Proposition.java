@@ -7,17 +7,17 @@ package com.datx02_18_35.model.expression;
 public class Proposition extends Expression {
 
     private final String id;
-    private String symbol;
+    private final String symbol;
 
     Proposition(String id, String symbol) {
-        super();
+        if (id == null) {
+            throw new IllegalArgumentException("id can't be null");
+        }
+        if (symbol == null) {
+            throw new IllegalArgumentException("symbol can't be null");
+        }
         this.id = id;
         this.symbol = symbol;
-        hash=calculateHash();
-    }
-    Proposition(String id) {
-        super();
-        this.id = id;
         hash=calculateHash();
     }
 
@@ -33,7 +33,7 @@ public class Proposition extends Expression {
     }
 
     public String toString(){
-        return this.id;
+        return this.id + "(" + this.symbol + ")";
     }
 
     public String getSymbol() {

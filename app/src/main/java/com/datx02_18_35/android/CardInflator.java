@@ -39,12 +39,11 @@ public class CardInflator {
      *
      * @param  cardView  a inflated card_expression layout
      * @param  expr expression to generate
-     * @param  symbolMap map of symbols to use when generating the expression
      * @param  width width in DP
      * @param  height height in DP
      * @param  matchParent if used recursively match parent = true will make the card match parents size
      */
-    public static void inflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final float width, final float height, boolean matchParent) {
+    public static void inflate(CardView cardView, Expression expr, final float width, final float height, boolean matchParent) {
 
 
 
@@ -81,7 +80,7 @@ public class CardInflator {
         //whole card one symbol
         if (expr instanceof Proposition | expr instanceof Absurdity) {
             ImageView imageView = cardView.findViewById(R.id.card_expression_quadrant1234);
-            sSymbol(expr, imageView, symbolMap);
+            sSymbol(expr, imageView);
 
             //clean-up
             rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -110,8 +109,8 @@ public class CardInflator {
                 imageViewUpper.setRotation(90);
                 ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
                 imageViewLower.setRotation(90);
-                sSymbol(exp1, imageViewUpper, symbolMap);
-                sSymbol(exp2, imageViewLower, symbolMap);
+                sSymbol(exp1, imageViewUpper);
+                sSymbol(exp2, imageViewLower);
 
                 //clean-up
                 rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -126,7 +125,7 @@ public class CardInflator {
                     //Upper
                     ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
                     imageViewUpper.setRotation(90);
-                    sSymbol(exp1, imageViewUpper, symbolMap);
+                    sSymbol(exp1, imageViewUpper);
 
                     //clean-up
                     rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -138,7 +137,7 @@ public class CardInflator {
                     //Lower
                     ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
                     imageViewLower.setRotation(90);
-                    sSymbol(exp2, imageViewLower, symbolMap);
+                    sSymbol(exp2, imageViewLower);
 
                     //clean-up
                     rmView(R.id.card_expression_card_quadrant3,cardView);
@@ -162,10 +161,10 @@ public class CardInflator {
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
                     if(op11 instanceof Proposition | op11 instanceof Absurdity){
-                        sSymbol(op11, imageViewUpperRight, symbolMap);
+                        sSymbol(op11, imageViewUpperRight);
                     }
                     if(op12 instanceof Proposition | op12 instanceof Absurdity){
-                        sSymbol(op12,imageViewUpperLeft, symbolMap);
+                        sSymbol(op12,imageViewUpperLeft);
                     }
                     if (op1 instanceof Implication) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_implication);
@@ -175,9 +174,9 @@ public class CardInflator {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
                     CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
-                    cardView11 = newSmallCard(cardView,cardViewQuad,symbolMap,op11);
+                    cardView11 = newSmallCard(cardView,cardViewQuad,op11);
                     cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2));
-                    cardView12 = newSmallCard(cardView,cardViewQuad,symbolMap,op12);
+                    cardView12 = newSmallCard(cardView,cardViewQuad,op12);
                 }
 
 
@@ -194,10 +193,10 @@ public class CardInflator {
 
 
                     if(op21 instanceof Proposition | op21 instanceof Absurdity){
-                        sSymbol(op21,imageViewLowerLeft,symbolMap);
+                        sSymbol(op21,imageViewLowerLeft);
                     }
                     if(op22 instanceof Proposition | op22 instanceof Absurdity){
-                        sSymbol(op22,imageViewLowerRight,symbolMap);
+                        sSymbol(op22,imageViewLowerRight);
                     }
 
                     if(op2 instanceof Implication){
@@ -210,9 +209,9 @@ public class CardInflator {
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
                     CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3));
-                    cardView21 = newSmallCard(cardView,cardViewQuad,symbolMap,op21);
+                    cardView21 = newSmallCard(cardView,cardViewQuad,op21);
                     cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4));
-                    cardView22 = newSmallCard(cardView,cardViewQuad,symbolMap,op22);
+                    cardView22 = newSmallCard(cardView,cardViewQuad,op22);
                 }
 
                 if(cardView11 !=null){
@@ -232,12 +231,12 @@ public class CardInflator {
     }
 
     //new card recursion
-    private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Map<String,String> symbolMap, Expression expression ){
+    private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
         CardView smallCardView = (CardView) LayoutInflater.from(topCardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
         ViewGroup.MarginLayoutParams layoutParams4 =
                 (ViewGroup.MarginLayoutParams) smallCardView.getLayoutParams();
         layoutParams4.setMargins(0, 0, 0, 0);
-        inflate(smallCardView,expression,symbolMap,0,0,true);
+        inflate(smallCardView,expression,0,0,true);
         return smallCardView;
     }
 
@@ -248,7 +247,7 @@ public class CardInflator {
         viewGroup.removeView(view);
     }
     //set symbol by expression
-    private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
+    private static void sSymbol(Expression expression,ImageView imageView){
         if (expression instanceof Absurdity) {
             Tools.setImage(imageView, R.drawable.absurdity);
             return;
@@ -257,7 +256,7 @@ public class CardInflator {
             throw new IllegalArgumentException("Expression must either be a proposition or absurdity");
         }
 
-        String symbol = symbolMap.get(expression.toString());
+        String symbol = ((Proposition)expression).getSymbol();
         switch (symbol.toLowerCase()){
             case "redball":
                 Tools.setImage(imageView,R.drawable.redball);
