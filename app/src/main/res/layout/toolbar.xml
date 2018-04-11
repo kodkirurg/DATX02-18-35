@@ -33,8 +33,9 @@
                 android:layout_gravity="end">
                 <ImageView
                     android:id="@+id/trash_can"
-                    android:src="@android:drawable/ic_menu_delete"
+                    android:src="@drawable/trashcan"
                     android:layout_width="70dp"
+
                     android:layout_height="fill_parent"
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="7dp"
