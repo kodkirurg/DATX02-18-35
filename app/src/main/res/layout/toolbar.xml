@@ -22,9 +22,9 @@
                 android:id="@+id/toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_gravity="center"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:layout_gravity="left"
                 android:text="@string/levelTitle"
                 />
             <LinearLayout
@@ -34,7 +34,7 @@
                 <ImageView
                     android:id="@+id/trash_can"
                     android:src="@android:drawable/ic_menu_delete"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="7dp"
@@ -42,7 +42,7 @@
                 <ImageView
                     android:id="@+id/toolbar_goal"
                     android:src="@drawable/goal_symbol"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="7dp"
@@ -50,7 +50,7 @@
                 <ImageView
                     android:id="@+id/inventory_button"
                     android:src="@drawable/inventory_symbol"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="7dp"
@@ -58,7 +58,7 @@
                 <ImageView
                     android:id="@+id/item_assumption"
                     android:src="@drawable/assumption_symbol"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="fill_parent"
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="7dp"
