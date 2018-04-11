@@ -1,0 +1,32 @@
+TITLE *Title goes here*
+
+DESCRIPTION START
+*Text goes here*
+DESCRIPTION END
+
+SYMBOL P SymbolName
+
+
+RULESET RuleSet1 RuleSet2
+//
+DEFAULT
+CONSTRUCTIVE,
+CLASSICAL
+IMPLICATION_ONLY
+CONJUNCTION_ONLY
+DISJUNCTION_ONLY
+
+// Available symbol names:
+Arrows
+Cross
+CrossAndCircle
+Diamond
+Donut
+Squares
+Sun
+Wonky
+
+
+HYPOTHESIS
+
+GOAL
