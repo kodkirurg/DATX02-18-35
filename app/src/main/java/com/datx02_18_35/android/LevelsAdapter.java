@@ -48,19 +48,21 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
         holder.cardView.setTag(position);
 
         Level levelInCard = dataSet.get(position);
-        if(levelProgressionMap.get(levelInCard).completed){
-            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Green));
-        }
-        else if(!levelProgressionMap.get(levelInCard).completed){
-            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Red));
-        }
-        else if(levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED){
+        if (levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
             holder.cardView.setEnabled(false);
             holder.cardView.setClickable(false);
             holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Gray));
         }
-
-
+        else {
+            LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
+            if (levelProgression != null && levelProgression.completed) {
+                holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Green));
+            }
+            else {
+                holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Red));
+            }
+        }
+        
 
         String title = dataSet.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
