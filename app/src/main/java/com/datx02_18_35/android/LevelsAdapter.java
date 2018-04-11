@@ -45,6 +45,10 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (position < 0 || position >= dataSet.size()) {
+            throw new IllegalArgumentException("position must be within the range of the level list, position=" + position);
+        }
+
         holder.cardView.setTag(position);
 
         Level levelInCard = dataSet.get(position);
@@ -62,7 +66,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
                 holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Red));
             }
         }
-        
+
 
         String title = dataSet.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
