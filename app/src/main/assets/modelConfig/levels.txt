@@ -1,6 +1,7 @@
 
 CATEGORY Basic
-
+double_negation_elimination.txt
+peirs_law.txt
 conj_intro.txt
 conj_elim.txt
 conj_elim_+_intro.txt
