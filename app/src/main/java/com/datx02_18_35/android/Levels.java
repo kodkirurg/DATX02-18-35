@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,7 +29,8 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     LevelsAdapter adapter;
-    public int x=0;
+    public int categoryIndex = 0;
+    public int categorySize = -1;
 
 
     @Override
@@ -45,6 +45,10 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
 
         adapter = new LevelsAdapter(this);
         recyclerView.setAdapter(adapter);
+
+        //right and left arrow listeners
+        findViewById(R.id.level_left_arrow).setOnClickListener(this);
+        findViewById(R.id.level_right_arrow).setOnClickListener(this);
     }
 
     @Override
@@ -70,7 +74,32 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //TODO fix right and left click
+        if(categorySize==-1){
+            try {
+                throw new Exception("Levels class: Onclick: Category size not init");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        switch (v.getId()){
+            case R.id.level_left_arrow:
+                if(categoryIndex == 0 || (categoryIndex+1) == categorySize){
+                    //Do nothing
+                    break;
+                }
+                else {
+                    categoryIndex-=1;
+                    try {
+                        Controller.getSingleton().handleAction(new RequestLevelsAction(callback));
+                    } catch (GameException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case R.id.level_right_arrow:
+                //Todo, implement
+                break;
+        }
     }
 
     public class LevelsCallback extends ActionConsumer {
@@ -78,7 +107,10 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
         public void handleAction(Action action){
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
-                LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(x);
+
+                refreshLevelsAction.categoryProgressionMap.size();
+
+                LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(categoryIndex);
                 ((TextView)findViewById(R.id.level_top)).setText(levelCategory.getName());
                 adapter.updateLevels(levelCategory,refreshLevelsAction.levelProgressionMap, refreshLevelsAction.categoryProgressionMap.get(levelCategory));
             }
