@@ -2,6 +2,7 @@
 CATEGORY Basic
 conj_intro.txt
 conj_elim.txt
+conj_elim_+_intro0.txt
 conj_elim_+_intro.txt
 inventorylevel.txt
 conj_elim_+_intro2.txt
