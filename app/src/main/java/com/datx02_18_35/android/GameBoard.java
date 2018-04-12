@@ -303,6 +303,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     public void showInventory(){
         ArrayList<ArrayList<Expression>> totInventory = new ArrayList<ArrayList<Expression>>();
+        ArrayList<String> tempSection = new ArrayList<String>();
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -324,17 +325,20 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             tempAssumptions.add(expr);
         }
         totInventory.add(tempAssumptions);
-
-        ArrayList<Expression> tempList =new ArrayList<Expression>();
+        tempSection.add("Hypothesis");tempSection.add("Assumptions");
+        int i =0;
         for (Iterable<Expression> iter: inventories){
+            ArrayList<Expression> tempList =new ArrayList<Expression>();
             for (Expression expr :iter) {
                 tempList.add(expr);
             }
+            i++;
+            tempSection.add("Scope "+i);
             totInventory.add(tempList);
 
         }
         if (!inventoryLayout.isShown()){
-            parentHolderAdapter.updateInventory(totInventory);
+            parentHolderAdapter.updateInventory(totInventory,tempSection);
             startAnimation(slide_right, inventoryLayout);
         }
     }
