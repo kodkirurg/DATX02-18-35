@@ -1,4 +1,4 @@
-TITLE Basic Conjunction Elimination
+TITLE Conjunction Elimination
 
 DESCRIPTION START
 If you know you have two things, you also know that you have each of those things. This is called conjunction elimination.

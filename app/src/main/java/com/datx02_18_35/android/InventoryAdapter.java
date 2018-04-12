@@ -62,16 +62,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             holder.alreadyBound = true;
         }
     }
-    public void updateInventory(final ArrayList<Expression> newSet) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dataSet.clear();
-                dataSet.addAll(newSet);
-                notifyDataSetChanged();
-            }
-        });
-    }
 
     @Override
     public int getItemCount() {
