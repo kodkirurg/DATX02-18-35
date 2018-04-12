@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_level, parent,false);
-        cardView.setOnClickListener(this);
+        cardView.getRootView().setOnClickListener(this);
         return new LevelsAdapter.ViewHolder(cardView);
     }
 
@@ -56,6 +57,8 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
         }
         else {
             LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
+            holder.cardView.setEnabled(true);
+            holder.cardView.setClickable(true);
             if (levelProgression != null && levelProgression.completed) {
                 holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Green));
                 String highscore = "Highscore: " + levelProgressionMap.get(dataSet.get(position)).stepsApplied;
@@ -107,6 +110,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public void onClick(View view) {
+        Log.d(Tools.debug, "onClick: " +  "test");
         int position = (int) view.getTag();
         levelsActivity.startLevel(dataSet.get(position));
     }
