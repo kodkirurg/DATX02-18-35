@@ -46,8 +46,8 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             } catch (GameException e) {
                 e.printStackTrace();
             }
+            Fx.blink_animation(view.getContext(), view);
         }
-        Fx.blink_animation(view.getContext(), view);
     }
 
     @Override
@@ -56,21 +56,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.setIsRecyclable(false);
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
-        holder.cardView.setBackgroundColor(Color.WHITE);
+        holder.cardView.setBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
         if(dataSet.get(position)!= null & !holder.alreadyBound) {
-            CardInflator.inflate(holder.cardView, dataSet.get(position),GameBoard.symbolMap,100,145,false);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),100,145,false);
             holder.alreadyBound = true;
         }
-    }
-    public void updateInventory(final ArrayList<Expression> newSet) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dataSet.clear();
-                dataSet.addAll(newSet);
-                notifyDataSetChanged();
-            }
-        });
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestCurrentLe
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestDeleteFromGameboardAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestHypothesisAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
-import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestSymbolMap;
 import com.datx02_18_35.controller.dispatch.actions.controllerAction.RefreshScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestScopeLevelAction;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.ClosedSandboxAction;
@@ -36,13 +35,14 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.game.VictoryInformation;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.game.GameManager;
 import com.datx02_18_35.model.game.IllegalGameStateException;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelParseException;
-import com.datx02_18_35.model.level.LevelProgression;
+import com.datx02_18_35.model.userdata.UserData;
 
 import java.util.List;
 import java.util.Map;
@@ -55,22 +55,37 @@ import java.util.Map;
 public class Controller extends ActionConsumer {
 
     private static Controller singleton = null;
+
+    public static boolean isControllerInit(){
+        if(singleton!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public static Controller getSingleton() {
         if (singleton == null) {
             throw new IllegalStateException("Singleton not initialized. Call init first.");
         }
         return singleton;
     }
-    public static void init(Map<String, String> configFiles, byte[] userData) throws LevelParseException, ExpressionParseException {
-        singleton = new Controller(configFiles);
-        if (userData != null) {
-            singleton.game.loadUserData(userData);
+    public static void init(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (singleton != null) {
+            throw new IllegalStateException("Singleton can't be initialized twice.");
         }
+        singleton = new Controller(configFiles, userDataBytes);
     }
 
     private GameManager game;
-    private Controller(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
-        game = new GameManager(configFiles);
+    private Controller(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
+        if (userDataBytes == null) {
+            game = new GameManager(configFiles);
+        }
+        else {
+            game = new GameManager(configFiles, userDataBytes);
+        }
     }
 
     public synchronized boolean isSessionInProgress() {
@@ -79,6 +94,8 @@ public class Controller extends ActionConsumer {
 
     @Override
     public void handleAction(Action action) throws GameException {
+        Util.log("Action received: " + action.toString());
+
         if (action instanceof RequestStartNewSessionAction) {
             if(game.getSession()!=null){
                 game.quitLevel();
@@ -89,10 +106,6 @@ public class Controller extends ActionConsumer {
         }
         else if (action instanceof RequestCurrentLevelAction){
             Action reply = new RefreshCurrentLevelAction(game.getSession().getLevel());
-            action.callback(reply);
-        }
-        else if(action instanceof RequestSymbolMap){
-            Action reply = new RefreshSymbolMap(game.getSession().getLevel().expressionFactory.getSymbolMap());
             action.callback(reply);
         }
         else if (action instanceof RequestStartNextLevelAction) {
@@ -160,20 +173,11 @@ public class Controller extends ActionConsumer {
             action.callback(getRefreshGameboardAction());
             action.callback(new ShowNewExpressionAction(newExpressions));
             action.callback(new RefreshScopeLevelAction(game.getSession().getScopeDepth()));
-            if (game.getSession().checkWin()) {
-                LevelProgression progression = game.getUserData().getProgression(game.getSession().getLevel());
-                int previousScore;
-                if (progression.completed) {
-                    previousScore = progression.stepsApplied;
-                }
-                else {
-                    previousScore = -1;
-                }
-                game.voidFinishLevel();
-                int currentScore = game.getSession().getStepsApplied();
-                action.callback(new VictoryConditionMetAction(game.getSession().getLevel().goal,currentScore, previousScore,game.hasNextLevel()));
-                action.callback(new SaveUserDataAction(game.saveUserData()));
-                Util.log("Level completed! previousScore="+previousScore+", currentScore="+currentScore);
+            VictoryInformation victoryInformation = game.checkWin();
+            if (victoryInformation != null) {
+                action.callback(new VictoryConditionMetAction(victoryInformation));
+                action.callback(new SaveUserDataAction(UserData.saveUserData(game.getUserData())));
+                Util.log("Level completed! previousScore="+victoryInformation.previousScore+", newScore="+victoryInformation.newScore);
             }
         }
         else if (action instanceof ClosedSandboxAction) {
@@ -206,8 +210,10 @@ public class Controller extends ActionConsumer {
             action.callback(new OpenSandboxAction(OpenSandboxAction.Reason.ASSUMPTION));
         }
         else if (action instanceof RequestLevelsAction) {
-            game.assertSessionNotInProgress();
-            action.callback(new RefreshLevelsAction(game.getLevelCollection(), game.getProgressionMapReadOnly()));
+            action.callback(new RefreshLevelsAction(
+                    game.getLevelCollection(),
+                    game.getUserData().getLevelProgressionMap(),
+                    game.getUserData().getCategoryProgressionMap()));
         }
         else if (action instanceof RequestScopeLevelAction){
             game.assertSessionInProgress();

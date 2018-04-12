@@ -1,0 +1,24 @@
+TITLE Conjunction Introduction and Elimination
+
+DESCRIPTION START
+Can you solve this one on your own?
+DESCRIPTION END
+
+SYMBOL P Sun
+SYMBOL Q Wonky
+SYMBOL R Arrows
+
+// Available symbol names:
+Arrows
+Cross
+CrossAndCircle
+Diamond
+Donut
+Squares
+Sun
+Wonky
+
+
+HYPOTHESIS (P & Q) & R
+
+GOAL (R & P) & Q

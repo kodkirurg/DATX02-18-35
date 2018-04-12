@@ -6,30 +6,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_main"
-    tools:context="com.datx02_18_35.android.MainActivity">
+    android:background="@color/colorSecondary"
+    >
 
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:text="Start"
+
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+
+        android:src="@drawable/title_small" />
+    <RelativeLayout
+        android:id="@+id/button_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        >
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+
+
+            android:layout_centerHorizontal="true"
+
+            android:text="Start"
+            android:layout_margin="10dp"
+            android:textSize="30dp"
+            android:textAllCaps="false">
+
+
+        </Button>
+
+        <Button
+            android:id="@+id/quit_button"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+
+            android:layout_below="@+id/start_button"
+            android:textSize="30dp"
+            android:layout_centerHorizontal="true"
+            android:text="Quit"
+            android:textAllCaps="false">
+
+        </Button>
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/card_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_container"
+        android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/quit_button"
-        android:textAllCaps="false">
 
-    </Button>
-
-    <Button
-        android:id="@+id/quit_button"
-        android:layout_width="150dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:text="Quit"
-        android:textAllCaps="false">
-
-    </Button>
+        android:src="@drawable/game_icon" />
 
 
 

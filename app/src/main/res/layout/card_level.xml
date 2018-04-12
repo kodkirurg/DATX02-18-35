@@ -8,38 +8,57 @@
     app:cardBackgroundColor="@color/White"
     app:cardCornerRadius="2dp"
 
-    app:cardElevation="2dp">
+    app:cardElevation="5dp">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.constraint.Guideline
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:id="@+id/card_level_guideline"
+            app:layout_constraintGuide_percent="0.75"
+
+            />
 
         <TextView
             android:id="@+id/card_level_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/card_level_description"
-            android:layout_centerHorizontal="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:text="@string/level"
-            android:textColor="@color/Black"
-            android:textSize="24sp" />
+            android:text="@string/undefined"
+            android:textColor="@color/White"
+            android:textAlignment="center"
+            android:textSize="24sp"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/card_level_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            />
 
 
         <TextView
-            android:id="@+id/card_level_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/card_level_highscore"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="12dp"
-            android:text="@string/level"
-            android:textColor="@color/Black"
-            android:textSize="18sp" />
+            android:text="@string/undefined"
+            android:textColor="@color/White"
+            android:textAlignment="center"
+            android:textSize="18sp"
 
-    </RelativeLayout>
+            app:layout_constraintTop_toBottomOf="@id/card_level_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            >
 
+        </TextView>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

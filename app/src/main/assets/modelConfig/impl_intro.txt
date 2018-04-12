@@ -1,4 +1,4 @@
-TITLE Basic Implication Introduction
+TITLE Implication Introduction
 
 DESCRIPTION START
 In this Level you will learn how to create implication cards from almost nothing.
@@ -8,8 +8,8 @@ First thing you need to do is make an assumption. An assumption is just what it 
 Try this by making an assumption by clicking the toolbar in the top right and selecting "Assumption". In the sandbox that will be opened click the blue ball and then make assumption. On the new game board draw in the red ball from your inventory. Select the red ball and apply the implication introduction rule.
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
 
 HYPOTHESIS Q
 

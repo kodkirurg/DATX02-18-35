@@ -1,7 +1,7 @@
 package com.datx02_18_35.controller.dispatch.actions.controllerAction;
 
 import com.datx02_18_35.controller.dispatch.actions.Action;
-import com.datx02_18_35.model.expression.Expression;
+import com.datx02_18_35.model.game.VictoryInformation;
 
 /**
  * Created by robin on 2018-03-13.
@@ -10,19 +10,9 @@ import com.datx02_18_35.model.expression.Expression;
 public class VictoryConditionMetAction extends Action {
     public final String secretMessage = "YOU'RE THA BOMB!";
 
-    public final int currentScore;
-    public final boolean hasNextLevel;
-    public final Expression goal;
+    public final VictoryInformation victoryInformation;
 
-    /**
-     * Negative value of previousScore denotes the level has not been completed before
-     */
-    public final int previousScore;
-
-    public VictoryConditionMetAction(Expression goal,int currentScore, int previousScore,boolean hasNextLevel) {
-        this.currentScore = currentScore;
-        this.previousScore = previousScore;
-        this.hasNextLevel = hasNextLevel;
-        this.goal=goal;
+    public VictoryConditionMetAction(VictoryInformation victoryInformation) {
+        this.victoryInformation = victoryInformation;
     }
 }

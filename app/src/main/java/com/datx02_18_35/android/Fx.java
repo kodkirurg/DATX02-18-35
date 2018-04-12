@@ -5,6 +5,8 @@ package com.datx02_18_35.android;
  */
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,6 +36,8 @@ public class Fx {
     }
     public static void selectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.select);
+        v.setBackgroundColor(Color.parseColor(ColorConstants.selectedCardBackgroundColor));
+        ((CardView)v).setCardElevation(2);
         if(a != null){
             a.reset();
             if(v != null){
@@ -44,6 +48,8 @@ public class Fx {
     }
     public static void deselectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.deselect);
+        v.setBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        ((CardView)v).setCardElevation(10);
         if(a != null){
             a.reset();
             if(v != null){

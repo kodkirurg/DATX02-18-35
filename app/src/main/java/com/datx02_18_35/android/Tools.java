@@ -5,35 +5,10 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.Image;
-import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.datx02_18_35.model.expression.Absurdity;
-import com.datx02_18_35.model.expression.Conjunction;
-import com.datx02_18_35.model.expression.Disjunction;
-import com.datx02_18_35.model.expression.Expression;
-
-import com.datx02_18_35.model.expression.Implication;
-import com.datx02_18_35.model.expression.Operator;
-import com.datx02_18_35.model.expression.Proposition;
-
-import java.util.Map;
-
-import game.logic_game.R;
-
-import static android.content.ContentValues.TAG;
 
 
 /**

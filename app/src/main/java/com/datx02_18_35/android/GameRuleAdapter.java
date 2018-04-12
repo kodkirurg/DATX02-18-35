@@ -28,7 +28,7 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     private ArrayList<Rule> dataSet;
     GameBoard activity;
     float cardWidth,cardHeight;
-
+    boolean hasShownRule;
 
     GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity,float cardWidth, float cardHeight){
         this.dataSet=dataSet;
@@ -43,6 +43,7 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
             @Override
             public void run() {
                 dataSet.clear();
+                hasShownRule = false;
                 dataSet.addAll(data);
                 notifyDataSetChanged();
             }
@@ -67,8 +68,10 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
         holder.frame.getLayoutParams().width=Math.round(Tools.convertDpToPixel(cardWidth));
         holder.frame.getLayoutParams().height=Math.round(Tools.convertDpToPixel(cardHeight));
 
+        holder.frame.setBackgroundColor(80);
         //set visuals
         ImageView imageView = holder.frame.findViewById(R.id.rule_imageview);
+        imageView.setBackgroundColor(80);
         if (dataSet.get(position) != null){
             switch (dataSet.get(position).type) {
                 case CONJUNCTION_INTRODUCTION:
@@ -87,7 +90,13 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
                     Tools.setImage(imageView,R.drawable.disjunction_elimination);
                     break;
                 case DISJUNCTION_INTRODUCTION:
-                    Tools.setImage(imageView,R.drawable.disjunction_introduction);
+                    if(hasShownRule) {
+                        Tools.setImage(imageView, R.drawable.disjunction_introduction_2);
+                    }else {
+                        Tools.setImage(imageView, R.drawable.disjunction_introduction_1);
+                        hasShownRule = true;
+                    }
+
                     break;
                 case IMPLICATION_ELIMINATION:
                     Tools.setImage(imageView,R.drawable.implication_elimination);

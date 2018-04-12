@@ -60,6 +60,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
+        cardView.setCardBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        cardView.setCardElevation(10);
         return new ViewHolder(cardView);
     }
 
@@ -73,7 +75,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            CardInflator.inflate(holder.cardView,dataSet.get(position),GameBoard.symbolMap,cardWidth,cardHeight,false);
+            CardInflator.inflate(holder.cardView,dataSet.get(position),cardWidth,cardHeight,false);
             if(dataSet.get(position).equals(goal)){
                 setVictoryAnimation(holder.cardView);
             }
@@ -105,7 +107,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         currentHighestSelectedCard++;
         ((TextView)v.findViewById(R.id.card_number_text_view)).setTag(R.id.card_number,currentHighestSelectedCard);
         ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+((TextView)v.findViewById(R.id.card_number_text_view)).getTag(R.id.card_number));
-        ((TextView)v.findViewById(R.id.card_number_text_view)).setGravity(Gravity.CENTER);
+
 
         setAnimations(v);
     }
@@ -139,6 +141,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     void restoreSelections(){
         for(CardView view : selectedView.values()){
             restoreAnimations(view);
+            TextView textView=view.findViewById(R.id.card_number_text_view);
+            textView.setVisibility(View.GONE);
         }
         currentHighestSelectedCard =0;
         selected.clear();
@@ -153,11 +157,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         }
     }
     void restoreAnimations(CardView cardView){
-        cardView.setBackgroundColor(Color.WHITE);
+
         Fx.deselectAnimation(cardView.getContext(), cardView);
     }
     void setAnimations(CardView cardView){
-        cardView.setBackgroundColor(Color.BLACK);
+
         Fx.selectAnimation(cardView.getContext(), cardView);
     }
 

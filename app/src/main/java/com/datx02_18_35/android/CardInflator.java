@@ -3,11 +3,12 @@ package com.datx02_18_35.android;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.datx02_18_35.model.expression.Absurdity;
@@ -38,12 +39,11 @@ public class CardInflator {
      *
      * @param  cardView  a inflated card_expression layout
      * @param  expr expression to generate
-     * @param  symbolMap map of symbols to use when generating the expression
      * @param  width width in DP
      * @param  height height in DP
      * @param  matchParent if used recursively match parent = true will make the card match parents size
      */
-    public static void inflate(CardView cardView, Expression expr, final Map<String,String> symbolMap, final float width, final float height, boolean matchParent) {
+    public static void inflate(CardView cardView, Expression expr, final float width, final float height, boolean matchParent) {
 
 
 
@@ -70,6 +70,10 @@ public class CardInflator {
             cardNumberView.setTag(R.id.card_number,0);
             cardNumberView.setTextSize(20);
             cardNumberView.setTextColor(Color.MAGENTA);
+            cardNumberView.setGravity(Gravity.CENTER | Gravity.LEFT);
+            
+            //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)cardNumberView.getLayoutParams();
+            //layoutParams.setMargins(4,0,0,0);
             cardView.addView(cardNumberView);
 
         }
@@ -77,7 +81,7 @@ public class CardInflator {
         //whole card one symbol
         if (expr instanceof Proposition | expr instanceof Absurdity) {
             ImageView imageView = cardView.findViewById(R.id.card_expression_quadrant1234);
-            sSymbol(expr, imageView, symbolMap);
+            sSymbol(expr, imageView);
 
             //clean-up
             rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -92,7 +96,7 @@ public class CardInflator {
 
             ImageView middleImage = cardView.findViewById(R.id.card_expression_mid_mid);
             if (op instanceof Implication) {
-                middleImage.setBackgroundResource(R.drawable.vertical_implication);
+                middleImage.setBackgroundResource(R.drawable.horizontal_implication);
             } else if (op instanceof Disjunction) {
                 middleImage.setBackgroundResource(R.drawable.horizontal_disjunction);
             } else if (op instanceof Conjunction) {
@@ -103,9 +107,11 @@ public class CardInflator {
             //no complex on up/down card.
             if ((exp1 instanceof Proposition | exp1 instanceof Absurdity) & (exp2 instanceof Proposition | exp2 instanceof Absurdity)) {
                 ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
+                imageViewUpper.setRotation(90);
                 ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
-                sSymbol(exp1, imageViewUpper, symbolMap);
-                sSymbol(exp2, imageViewLower, symbolMap);
+                imageViewLower.setRotation(90);
+                sSymbol(exp1, imageViewUpper);
+                sSymbol(exp2, imageViewLower);
 
                 //clean-up
                 rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -119,7 +125,8 @@ public class CardInflator {
                 if (exp1 instanceof Proposition | exp1 instanceof Absurdity) {
                     //Upper
                     ImageView imageViewUpper = cardView.findViewById(R.id.card_expression_quadrant12);
-                    sSymbol(exp1, imageViewUpper, symbolMap);
+                    imageViewUpper.setRotation(90);
+                    sSymbol(exp1, imageViewUpper);
 
                     //clean-up
                     rmView(R.id.card_expression_card_quadrant1,cardView);
@@ -130,7 +137,8 @@ public class CardInflator {
                 if (exp2 instanceof Proposition | exp2 instanceof Absurdity) {
                     //Lower
                     ImageView imageViewLower = cardView.findViewById(R.id.card_expression_quadrant34);
-                    sSymbol(exp2, imageViewLower, symbolMap);
+                    imageViewLower.setRotation(90);
+                    sSymbol(exp2, imageViewLower);
 
                     //clean-up
                     rmView(R.id.card_expression_card_quadrant3,cardView);
@@ -153,25 +161,23 @@ public class CardInflator {
                     ImageView imageViewUpperRight = cardView.findViewById(R.id.card_expression_quadrant1);
                     ImageView imageUpperMiddle = cardView.findViewById(R.id.card_expression_top_mid);
 
-
-                    Log.d(Tools.debug, "inflate: " + op11.toString());
                     if(op11 instanceof Proposition | op11 instanceof Absurdity){
-                        sSymbol(op11, imageViewUpperRight, symbolMap);
+                        sSymbol(op11, imageViewUpperRight);
                     }
                     if(op12 instanceof Proposition | op12 instanceof Absurdity){
-                        sSymbol(op12,imageViewUpperLeft, symbolMap);
+                        sSymbol(op12,imageViewUpperLeft);
                     }
                     if (op1 instanceof Implication) {
-                        imageUpperMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageUpperMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     } else if (op1 instanceof Disjunction) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
                     } else if (op1 instanceof Conjunction) {
                         imageUpperMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
                     CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant1));
-                    cardView11 = newSmallCard(cardView,cardViewQuad,symbolMap,op11);
+                    cardView11 = newSmallCard(cardView,cardViewQuad,op11);
                     cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant2));
-                    cardView12 = newSmallCard(cardView,cardViewQuad,symbolMap,op12);
+                    cardView12 = newSmallCard(cardView,cardViewQuad,op12);
                 }
 
 
@@ -188,14 +194,14 @@ public class CardInflator {
 
 
                     if(op21 instanceof Proposition | op21 instanceof Absurdity){
-                        sSymbol(op21,imageViewLowerLeft,symbolMap);
+                        sSymbol(op21,imageViewLowerLeft);
                     }
                     if(op22 instanceof Proposition | op22 instanceof Absurdity){
-                        sSymbol(op22,imageViewLowerRight,symbolMap);
+                        sSymbol(op22,imageViewLowerRight);
                     }
 
                     if(op2 instanceof Implication){
-                        imageLowerMiddle.setBackgroundResource(R.drawable.horizontal_implication);
+                        imageLowerMiddle.setBackgroundResource(R.drawable.vertical_implication);
                     }
                     else if(op2 instanceof Disjunction){
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_disjunction);
@@ -204,9 +210,9 @@ public class CardInflator {
                         imageLowerMiddle.setBackgroundResource(R.drawable.vertical_conjunction);
                     }
                     CardView cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant3));
-                    cardView21 = newSmallCard(cardView,cardViewQuad,symbolMap,op21);
+                    cardView21 = newSmallCard(cardView,cardViewQuad,op21);
                     cardViewQuad =  ((CardView)cardView.findViewById(R.id.card_expression_card_quadrant4));
-                    cardView22 = newSmallCard(cardView,cardViewQuad,symbolMap,op22);
+                    cardView22 = newSmallCard(cardView,cardViewQuad,op22);
                 }
 
                 if(cardView11 !=null){
@@ -226,12 +232,16 @@ public class CardInflator {
     }
 
     //new card recursion
-    private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Map<String,String> symbolMap, Expression expression ){
+    private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
+        cardViewQuad.setCardBackgroundColor(Color.parseColor(ColorConstants.transparentCardBackgroundColor));
+        cardViewQuad.setCardElevation(0);
         CardView smallCardView = (CardView) LayoutInflater.from(topCardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
+        smallCardView.setCardBackgroundColor(Color.parseColor(ColorConstants.transparentCardBackgroundColor));
+        smallCardView.setCardElevation(0);
         ViewGroup.MarginLayoutParams layoutParams4 =
                 (ViewGroup.MarginLayoutParams) smallCardView.getLayoutParams();
         layoutParams4.setMargins(0, 0, 0, 0);
-        inflate(smallCardView,expression,symbolMap,0,0,true);
+        inflate(smallCardView,expression,0,0,true);
         return smallCardView;
     }
 
@@ -242,7 +252,7 @@ public class CardInflator {
         viewGroup.removeView(view);
     }
     //set symbol by expression
-    private static void sSymbol(Expression expression,ImageView imageView, Map<String,String> symbolMap){
+    private static void sSymbol(Expression expression,ImageView imageView){
         if (expression instanceof Absurdity) {
             Tools.setImage(imageView, R.drawable.absurdity);
             return;
@@ -251,7 +261,7 @@ public class CardInflator {
             throw new IllegalArgumentException("Expression must either be a proposition or absurdity");
         }
 
-        String symbol = symbolMap.get(expression.toString());
+        String symbol = ((Proposition)expression).getSymbol();
         switch (symbol.toLowerCase()){
             case "redball":
                 Tools.setImage(imageView,R.drawable.redball);
@@ -264,6 +274,30 @@ public class CardInflator {
                 break;
             case "yellowrectangle":
                 Tools.setImage(imageView,R.drawable.yellowrectangle);
+                break;
+            case "arrows":
+                Tools.setImage(imageView,R.drawable.arrows);
+                break;
+            case "cross":
+                Tools.setImage(imageView,R.drawable.cross);
+                break;
+            case "crossandcircle":
+                Tools.setImage(imageView,R.drawable.cross_and_circle);
+                break;
+            case "diamond":
+                Tools.setImage(imageView,R.drawable.diamond);
+                break;
+            case "donut":
+                Tools.setImage(imageView,R.drawable.donut);
+                break;
+            case "squares":
+                Tools.setImage(imageView,R.drawable.squares);
+                break;
+            case "sun":
+                Tools.setImage(imageView,R.drawable.sun);
+                break;
+            case "wonky":
+                Tools.setImage(imageView,R.drawable.wonky);
                 break;
             default:
                 Tools.setImage(imageView,R.drawable.dots);

@@ -1,7 +1,9 @@
 package com.datx02_18_35.android;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,8 @@ import android.widget.TextView;
 
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelCategory;
-import com.datx02_18_35.model.level.LevelCollection;
-import com.datx02_18_35.model.level.LevelProgression;
+import com.datx02_18_35.model.userdata.LevelCategoryProgression;
+import com.datx02_18_35.model.userdata.LevelProgression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,21 +26,21 @@ import game.logic_game.R;
 
 
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener  {
-    private List<Level> levelList;
-    private Map<Level, LevelProgression> progressionMap;
+    private List<Level> dataSet;
     private final Levels levelsActivity;
+    Map<Level, LevelProgression> levelProgressionMap;
+    LevelCategoryProgression levelCategoryProgression;
 
 
     LevelsAdapter(Levels levelsActivity){
         this.levelsActivity = levelsActivity;
-        this.levelList = null;
-        this.progressionMap = null;
+        this.dataSet = new ArrayList<>();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_level, parent,false);
-        cardView.setOnClickListener(this);
+        cardView.getRootView().setOnClickListener(this);
         return new LevelsAdapter.ViewHolder(cardView);
     }
 
@@ -46,35 +48,61 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setTag(position);
 
-        String title = levelList.get(position).title;
+        Level levelInCard = dataSet.get(position);
+        if (levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
+            holder.cardView.setEnabled(false);
+            holder.cardView.setClickable(false);
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorSecondary));
+            ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
+        }
+        else {
+            LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
+            holder.cardView.setEnabled(true);
+            holder.cardView.setClickable(true);
+            if (levelProgression != null && levelProgression.completed) {
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Green));
+                String highscore = "Highscore: " + levelProgressionMap.get(dataSet.get(position)).stepsApplied;
+                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText(highscore);
+            }
+            else {
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorPrimaryLight));
+                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
+            }
+        }
+
+
+        String title = dataSet.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
+
+
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
     }
 
     @Override
     public int getItemCount() {
-        if(levelList ==null){
+        if(dataSet ==null){
             return 0;
         }
         else{
-            return levelList.size();
+            return dataSet.size();
         }
 
     }
 
-    public void updateLevels(final LevelCollection _levelCollection, final Map<Level, LevelProgression> _progressionMap) {
+
+    public void updateLevels(final LevelCategory levelCategory, Map<Level, LevelProgression> levelProgressionMap, LevelCategoryProgression levelCategoryProgression) {
+        this.levelCategoryProgression=levelCategoryProgression;
+        this.levelProgressionMap=levelProgressionMap;
         this.levelsActivity.runOnUiThread(new Runnable() {
+
+            // levelcollection is category
             @Override
             public void run() {
-                levelList = new ArrayList<>();
-                for (LevelCategory category : _levelCollection.getCategories()) {
-                    for (Level level : category.getLevels()) {
-
-                        levelList.add(level);
-                    }
+                dataSet.clear();
+                for (Level level : levelCategory.getLevels()) {
+                    dataSet.add(level);
                 }
-                progressionMap = _progressionMap;
                 notifyDataSetChanged();
             }
         });
@@ -82,8 +110,9 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public void onClick(View view) {
+        Log.d(Tools.debug, "onClick: " +  "test");
         int position = (int) view.getTag();
-        levelsActivity.startLevel(levelList.get(position));
+        levelsActivity.startLevel(dataSet.get(position));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

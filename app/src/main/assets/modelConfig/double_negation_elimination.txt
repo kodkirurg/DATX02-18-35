@@ -1,0 +1,9 @@
+TITLE Double Negation Elimination
+
+RULESET CLASSICAL
+
+SYMBOL P Sun
+
+HYPOTHESIS (P > #) > #
+
+GOAL P
