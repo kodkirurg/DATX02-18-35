@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -72,6 +73,14 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    private void refreshLevels(){
+        try {
+            Controller.getSingleton().handleAction(new RequestLevelsAction(callback));
+        } catch (GameException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if(categorySize==-1){
@@ -83,22 +92,25 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
         }
         switch (v.getId()){
             case R.id.level_left_arrow:
-                if(categoryIndex == 0 || (categoryIndex+1) == categorySize){
+                if(categoryIndex == 0 || (categoryIndex+1) > categorySize){
                     //Do nothing
                     break;
                 }
                 else {
                     categoryIndex-=1;
-                    try {
-                        Controller.getSingleton().handleAction(new RequestLevelsAction(callback));
-                    } catch (GameException e) {
-                        e.printStackTrace();
-                    }
+                    refreshLevels();
+                    break;
                 }
-                break;
             case R.id.level_right_arrow:
-                //Todo, implement
-                break;
+                if((categoryIndex+1) >= categorySize){
+                    //Do nothing
+                    break;
+                }
+                else{
+                    categoryIndex+=1;
+                    refreshLevels();
+                    break;
+                }
         }
     }
 
@@ -108,7 +120,7 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
 
-                refreshLevelsAction.categoryProgressionMap.size();
+                categorySize = refreshLevelsAction.categoryProgressionMap.size();
 
                 LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(categoryIndex);
                 ((TextView)findViewById(R.id.level_top)).setText(levelCategory.getName());

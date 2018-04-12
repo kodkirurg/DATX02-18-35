@@ -87,6 +87,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     }
 
+
     public void updateLevels(final LevelCategory levelCategory, Map<Level, LevelProgression> levelProgressionMap, LevelCategoryProgression levelCategoryProgression) {
         this.levelCategoryProgression=levelCategoryProgression;
         this.levelProgressionMap=levelProgressionMap;
