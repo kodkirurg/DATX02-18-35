@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ import com.datx02_18_35.controller.dispatch.actions.controllerAction.VictoryCond
 
 
 import com.datx02_18_35.model.GameException;
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.rules.IllegalRuleException;
 import com.datx02_18_35.model.rules.Rule;
@@ -84,23 +87,25 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public static OpenSandboxAction sandboxAction=null;
     public boolean victory=false;
     public Iterable<Expression> hypothesis;
-    public ArrayList<Expression> hypothesisList = new ArrayList<Expression>();
     public Iterable<Iterable<Expression>> inventories;
-    public int scopeLevelInt;
     public Iterable<Expression> assumptions;
+    public int scopeLevelInt;
     public static Map<String, String> symbolMap;
     public static Level level;
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
     public View popUpView;
 
+    public ArrayList<Expression> newSet = new ArrayList<Expression>();
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight,invRecyclerView;
-    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight,invRecLayoutManager;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView;
+    public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
+    public LinearLayoutManager parentInvRecLayoutManager;
+    public ScopeHolderAdapter parentHolderAdapter;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
-    public InventoryAdapter invRecAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -266,12 +271,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     }
     private void initInventory() {
-        int spanCount=3;
-        invRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
-        invRecLayoutManager = new GridLayoutManager(getApplication(), spanCount);
-        invRecyclerView.setLayoutManager(invRecLayoutManager);
-        invRecAdapter = new InventoryAdapter(hypothesisList, this);
-        invRecyclerView.setAdapter(invRecAdapter);
+        parentInvRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
+
+        parentInvRecLayoutManager = new LinearLayoutManager(this);
+        parentInvRecyclerView.setLayoutManager(parentInvRecLayoutManager);
+        parentInvRecyclerView.setHasFixedSize(true);
+        parentHolderAdapter = new ScopeHolderAdapter(this);
+        parentInvRecyclerView.setAdapter(parentHolderAdapter);
 
 
 
@@ -296,6 +302,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
+        ArrayList<ArrayList<Expression>> totInventory = new ArrayList<ArrayList<Expression>>();
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -303,27 +310,31 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (GameException e) {
             e.printStackTrace();
         }
-        ArrayList<Expression> newSet = new ArrayList<Expression>();
+        newSet.clear();
 
+        ArrayList<Expression> tempHypothesis = new ArrayList<Expression>();
         for (Expression expr: hypothesis){
             newSet.add(expr);
+            tempHypothesis.add(expr);
         }
-        for (Expression expr: assumptions){
-            if(!newSet.contains(expr)){
-                newSet.add(expr);
-            }
-        }
+        totInventory.add(tempHypothesis);
 
+        ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
+        for (Expression expr: assumptions){
+            tempAssumptions.add(expr);
+        }
+        totInventory.add(tempAssumptions);
+
+        ArrayList<Expression> tempList =new ArrayList<Expression>();
         for (Iterable<Expression> iter: inventories){
             for (Expression expr :iter) {
-                if(!newSet.contains(expr)){
-                    newSet.add(expr);
-                }
+                tempList.add(expr);
             }
-        }
+            totInventory.add(tempList);
 
+        }
         if (!inventoryLayout.isShown()){
-            invRecAdapter.updateInventory(newSet);
+            parentHolderAdapter.updateInventory(totInventory);
             startAnimation(slide_right, inventoryLayout);
         }
     }
@@ -430,7 +441,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
         else if(animation==slide_right){
             inventoryLayout.setVisibility(View.VISIBLE);
-            invRecyclerView.setVisibility(View.VISIBLE);
+            parentInvRecyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -438,7 +449,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onAnimationEnd(Animation animation) {
         if(animation==slide_left) {
             inventoryLayout.setVisibility(View.GONE);
-            invRecyclerView.setVisibility(View.GONE);
+            parentInvRecyclerView.setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
