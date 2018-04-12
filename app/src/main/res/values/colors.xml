@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="SandboxColor">#a4c2f4</color>
+    <color name="InventoryColor">#0b5394</color>
+    <color name="GameboardColor">#3d85c6</color>
+    <color name="ToolbarColor">#073763</color>
+
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
