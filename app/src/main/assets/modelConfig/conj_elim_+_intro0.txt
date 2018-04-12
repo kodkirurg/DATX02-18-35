@@ -1,7 +1,7 @@
 TITLE Conjunction Introduction and Elimination
 
 DESCRIPTION START
-The order matters!
+Use both conjunction introduction and conjunction elimination to complete this level.
 DESCRIPTION END
 
 SYMBOL P Sun
