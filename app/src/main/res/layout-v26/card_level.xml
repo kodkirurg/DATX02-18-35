@@ -7,7 +7,6 @@
     android:layout_margin="4dp"
     app:cardBackgroundColor="@color/White"
     app:cardCornerRadius="2dp"
-
     app:cardElevation="5dp">
 
     <android.support.constraint.ConstraintLayout
