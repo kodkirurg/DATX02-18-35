@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import com.datx02_18_35.model.userdata.LevelCategoryProgression;
 import com.datx02_18_35.model.userdata.LevelProgression;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,15 +55,15 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
         if (levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
             holder.cardView.setEnabled(false);
             holder.cardView.setClickable(false);
-            holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Gray));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Gray));
         }
         else {
             LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
             if (levelProgression != null && levelProgression.completed) {
-                holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Green));
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Green));
             }
             else {
-                holder.cardView.setBackgroundColor(holder.cardView.getResources().getColor(R.color.Red));
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Red));
             }
         }
 
