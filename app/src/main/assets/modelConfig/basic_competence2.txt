@@ -1,4 +1,4 @@
-TITLE Basic Comptence 2
+TITLE Competence 2
 
 DESCRIPTION START
 Use all rules you know

@@ -106,9 +106,7 @@
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:id="@+id/close_inventory"
-            android:background="@color/Black"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
+            android:background="#0b5394"
             android:layout_alignParentEnd="true"
             >
         </ImageView>

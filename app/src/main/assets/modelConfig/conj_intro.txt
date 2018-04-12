@@ -1,4 +1,4 @@
-TITLE Basic Conjunction Introduction
+TITLE Conjunction Introduction
 
 DIFFICULTY 0
 
