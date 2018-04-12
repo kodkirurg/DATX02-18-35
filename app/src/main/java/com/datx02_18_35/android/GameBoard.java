@@ -567,6 +567,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                             public void onAnimationStart(Animator animator) {
 
                             }
+                            private String returnStepOrSteps(int step) {
+                                if(step==1) return "step";
+                                return "steps";
+                            }
 
                             @Override
                             public void onAnimationEnd(Animator animator) {
@@ -578,10 +582,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
                                 final String s = "You've completed the goal! Good job! \n";
                                 if(victoryInformation.previousScore<0) {
-                                    scoreView.setText(s + "You finished in: " + victoryInformation.newScore + " steps" +"\n" + "No previous finish");
+                                    scoreView.setText(s + "You finished in " + victoryInformation.newScore + " " + returnStepOrSteps(victoryInformation.newScore) + "." +"\n" +
+                                            "No previous finish.");
                                 }
                                 else {
-                                    scoreView.setText(s + "You finished in: " + victoryInformation.newScore + " steps" + "\n" + "Your previous best finish was: " + victoryInformation.previousScore + " steps");
+                                    scoreView.setText(s + "You finished in " + victoryInformation.newScore + " " + returnStepOrSteps(victoryInformation.newScore) + "." +"\n" +
+                                            "Your previous best finish was " + victoryInformation.previousScore + " " + returnStepOrSteps(victoryInformation.newScore) + ".");
                                 }
                             }
 
