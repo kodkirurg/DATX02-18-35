@@ -626,7 +626,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     @Override
     public void onBackPressed(){
-        if(inventoryLayout.isShown()){
+        if(infoWindowClicked){
+            popupWindow.dismiss();
+            infoWindowClicked=false;
+        }
+        else if(inventoryLayout.isShown()){
             closeInventory();
         }
         else if(scopeLevelInt>1){

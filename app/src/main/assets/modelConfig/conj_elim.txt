@@ -1,4 +1,4 @@
-TITLE Basic Conjunction Elimination
+TITLE Conjunction Elimination
 
 DESCRIPTION START
 In this level you will learn how to use conjunction elimination.

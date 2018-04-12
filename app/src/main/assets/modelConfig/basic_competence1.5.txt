@@ -1,4 +1,4 @@
-TITLE Basic Competence 1.5
+TITLE Competence 1.5
 
 DESCRIPTION START
 This one's a bit tricky!
