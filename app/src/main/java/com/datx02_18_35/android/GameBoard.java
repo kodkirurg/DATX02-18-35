@@ -451,6 +451,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         if(animation==slide_left) {
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
+            findViewById(R.id.close_inventory).setClickable(false);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -464,6 +465,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         else if(animation==slide_right){
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
+            findViewById(R.id.close_inventory).setClickable(true);
         }
         else if(animation==delete){
             ArrayList<Expression> sendList = new ArrayList<>();
