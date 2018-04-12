@@ -42,7 +42,7 @@
 
 
         <TextView
-            android:id="@+id/card_level_description"
+            android:id="@+id/card_level_highscore"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_alignParentBottom="true"

@@ -56,20 +56,26 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
             holder.cardView.setEnabled(false);
             holder.cardView.setClickable(false);
             holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Gray));
+            ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
         }
         else {
             LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
             if (levelProgression != null && levelProgression.completed) {
                 holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Green));
+                String highscore = "Highscore: " + levelProgressionMap.get(dataSet.get(position)).stepsApplied;
+                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText(highscore);
             }
             else {
                 holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Red));
+                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
             }
         }
 
 
         String title = dataSet.get(position).title;
         ((TextView) holder.cardView.findViewById(R.id.card_level_title)).setText(title);
+
+
         holder.cardView.setTag(position);
         holder.cardView.setOnClickListener(this);
     }

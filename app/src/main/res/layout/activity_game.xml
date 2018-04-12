@@ -42,7 +42,7 @@
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:id="@+id/open_inventory"
-            android:background="#0b5394"
+            android:background="@color/colorPrimaryDark"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="3dp"
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_margin="3dp"
-            android:background="#3d85c6"
+            android:background="@color/colorPrimary"
 
             app:layout_constraintLeft_toRightOf="@id/open_inventory"
             app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="3dp"
-            android:background="#a4c2f4"
+            android:background="@color/colorPrimaryLight"
 
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
