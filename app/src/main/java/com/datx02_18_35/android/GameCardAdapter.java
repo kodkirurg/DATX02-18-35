@@ -60,7 +60,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
-        cardView.setCardBackgroundColor(Color.parseColor("#d9d9d9"));
+        cardView.setCardBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        cardView.setCardElevation(10);
         return new ViewHolder(cardView);
     }
 

@@ -71,6 +71,7 @@ public class CardInflator {
             cardNumberView.setTextSize(20);
             cardNumberView.setTextColor(Color.MAGENTA);
             cardNumberView.setGravity(Gravity.CENTER | Gravity.LEFT);
+            
             //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)cardNumberView.getLayoutParams();
             //layoutParams.setMargins(4,0,0,0);
             cardView.addView(cardNumberView);
@@ -232,10 +233,10 @@ public class CardInflator {
 
     //new card recursion
     private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
-        cardViewQuad.setCardBackgroundColor(Color.parseColor("#00d9d9d9"));
+        cardViewQuad.setCardBackgroundColor(Color.parseColor(ColorConstants.transparentCardBackgroundColor));
         cardViewQuad.setCardElevation(0);
         CardView smallCardView = (CardView) LayoutInflater.from(topCardView.getContext()).inflate(R.layout.card_expression,cardViewQuad , false);
-        smallCardView.setCardBackgroundColor(Color.parseColor("#00d9d9d9"));
+        smallCardView.setCardBackgroundColor(Color.parseColor(ColorConstants.transparentCardBackgroundColor));
         smallCardView.setCardElevation(0);
         ViewGroup.MarginLayoutParams layoutParams4 =
                 (ViewGroup.MarginLayoutParams) smallCardView.getLayoutParams();
