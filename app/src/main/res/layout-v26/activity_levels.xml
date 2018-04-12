@@ -5,14 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/WhiteSmoke"
+    android:background="@color/colorPrimaryVeryDark"
     tools:context="com.datx02_18_35.android.Levels"
-    android:layout_margin="5dp"
 
     >
 
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.constraint.Guideline
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
@@ -20,17 +19,16 @@
         app:layout_constraintGuide_percent="0.12"
 
         >
-
-
-
-    </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.Guideline>
 
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/level_top"
-        android:background="@color/GhostWhite"
+        android:background="@color/colorPrimaryDark"
+
+
 
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="12sp"
@@ -39,7 +37,7 @@
 
         android:text="@string/undefined"
         android:textAlignment="center"
-        android:textColor="@color/Black"
+        android:textColor="@color/WhiteSmoke"
 
 
 
@@ -54,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/level_bottom_board"
+        android:background="@color/colorPrimaryDark"
 
 
         app:layout_constraintTop_toTopOf="@id/level_upper_guideline"
@@ -83,9 +82,10 @@
             android:layout_height="0dp"
             android:id="@+id/level_left_arrow"
             android:src="@drawable/left_arrow"
-            android:background="@color/GhostWhite"
+            android:background="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
+            android:layout_margin="5dp"
 
 
             app:layout_constraintTop_toTopOf="parent"
@@ -100,9 +100,10 @@
             android:layout_height="0dp"
             android:id="@+id/level_right_arrow"
             android:src="@drawable/right_arrow"
-            android:background="@color/GhostWhite"
+            android:background="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
+            android:layout_margin="5dp"
 
 
 
@@ -118,6 +119,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/levels_recyclerview"
+            android:layout_marginTop="5dp"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

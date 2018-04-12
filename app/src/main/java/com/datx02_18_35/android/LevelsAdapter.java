@@ -55,7 +55,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
         if (levelCategoryProgression.status == LevelCategoryProgression.Status.LOCKED) {
             holder.cardView.setEnabled(false);
             holder.cardView.setClickable(false);
-            holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Gray));
+            holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorSecondary));
             ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
         }
         else {
@@ -66,7 +66,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
                 ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText(highscore);
             }
             else {
-                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Red));
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorPrimaryLight));
                 ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
             }
         }
