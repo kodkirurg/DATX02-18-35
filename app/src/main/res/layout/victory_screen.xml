@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/GhostWhite"
     android:id="@+id/victory_screen"
-    >
+    android:clickable="true"
+    android:focusable="true">
 
             <include
                 layout="@layout/card_expression"
