@@ -2,6 +2,7 @@ package com.datx02_18_35.android;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -77,7 +78,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Toolbar toolbar;
     TextView scopeLevel;
     RelativeLayout inventoryLayout;
-    RelativeLayout victoryScreen;
+    ConstraintLayout victoryScreen;
     Animation slide_left,delete,slide_right;
     boolean sandboxOpened = false;
     public static BoardCallback boardCallback;
@@ -87,7 +88,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public Iterable<Iterable<Expression>> inventories;
     public Iterable<Expression> assumptions;
     public int scopeLevelInt;
-    public static Map<String, String> symbolMap;
     public static Level level;
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
@@ -151,11 +151,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         //Set up victory screen buttons and layout
-        victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
+        victoryScreen = (ConstraintLayout) findViewById(R.id.victory_screen);
         victoryScreen.setVisibility(View.GONE);
-        nextLevel = (Button) findViewById(R.id.next_level);
+        nextLevel = (Button) findViewById(R.id.victory_screen_next_level_button);
         nextLevel.setOnClickListener(this);
-        mainMenu = (Button) findViewById(R.id.main_menu);
+        mainMenu = (Button) findViewById(R.id.victory_screen_main_menu_button);
         mainMenu.setOnClickListener(this);
         scoreView = (TextView) findViewById(R.id.win_score);
 
@@ -689,7 +689,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
                 }
                 break;
-            case R.id.next_level:{
+            case R.id.victory_screen_next_level_button:{
                 try {
                     Controller.getSingleton().handleAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
                     Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
@@ -702,7 +702,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 }
                 break;
             }
-            case R.id.main_menu: {
+            case R.id.victory_screen_main_menu_button: {
                 try {
                     Controller.getSingleton().handleAction(new RequestAbortSessionAction());
                     finish();
