@@ -8,23 +8,24 @@ SYMBOL P SymbolName
 
 
 RULESET RuleSet1 RuleSet2
-//
-DEFAULT
-CONSTRUCTIVE,
-CLASSICAL
-IMPLICATION_ONLY
-CONJUNCTION_ONLY
-DISJUNCTION_ONLY
+
+// Rulesets:
+// DEFAULT
+// CONSTRUCTIVE,
+// CLASSICAL
+// IMPLICATION_ONLY
+// CONJUNCTION_ONLY
+// DISJUNCTION_ONLY
 
 // Available symbol names:
-Arrows
-Cross
-CrossAndCircle
-Diamond
-Donut
-Squares
-Sun
-Wonky
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
 
 
 HYPOTHESIS
