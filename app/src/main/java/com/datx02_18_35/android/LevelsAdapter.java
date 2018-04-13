@@ -110,7 +110,6 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
 
     @Override
     public void onClick(View view) {
-        Log.d(Tools.debug, "onClick: " +  "test");
         int position = (int) view.getTag();
         levelsActivity.startLevel(dataSet.get(position));
     }

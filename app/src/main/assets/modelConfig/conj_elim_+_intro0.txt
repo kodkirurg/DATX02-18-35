@@ -7,18 +7,6 @@ DESCRIPTION END
 SYMBOL P Sun
 SYMBOL Q Wonky
 
-
-// Available symbol names:
-Arrows
-Cross
-CrossAndCircle
-Diamond
-Donut
-Squares
-Sun
-Wonky
-
-
 HYPOTHESIS (P & Q)
 
 GOAL (Q & P)

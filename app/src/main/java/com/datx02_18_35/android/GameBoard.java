@@ -317,13 +317,18 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
         totInventory.add(tempHypothesis);
 
-        ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
+
+        tempSection.add("Hypothesis");
+        int i=0;
         for (Expression expr: assumptions){
+            i++;
+            ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
+            tempSection.add("Assumption "+i);
             tempAssumptions.add(expr);
+            totInventory.add(tempAssumptions);
         }
-        totInventory.add(tempAssumptions);
-        tempSection.add("Hypothesis");tempSection.add("Assumptions");
-        int i =0;
+
+        i =0;
         for (Iterable<Expression> iter: inventories){
             ArrayList<Expression> tempList =new ArrayList<Expression>();
             for (Expression expr :iter) {
