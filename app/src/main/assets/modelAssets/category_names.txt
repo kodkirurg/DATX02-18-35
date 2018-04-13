@@ -1,0 +1,4 @@
+
+CATEGORY basic          Basic
+CATEGORY intermediate   Intermediate
+CATEGORY hard           Hard

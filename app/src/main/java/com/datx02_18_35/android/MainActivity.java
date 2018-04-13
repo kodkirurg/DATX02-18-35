@@ -1,23 +1,17 @@
 package com.datx02_18_35.android;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.level.LevelParseException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +19,7 @@ import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String MODEL_CONFIG_PATH = "modelConfig";
+    private static final String MODEL_CONFIG_PATH = "modelAssets";
     private Map<String, String> modelConfigFiles = new HashMap<>();
 
     @Override
@@ -40,37 +34,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quit_button.setOnClickListener(this);
 
         // Read model config files
+        ModelAssetReader modelAssetReader = new ModelAssetReader(getApplicationContext().getAssets());
+        Map<String, String> modelAssets;
         try {
-            AssetManager assets = getApplicationContext().getAssets();
-            String[] modelConfigFilenames = assets.list(MODEL_CONFIG_PATH);
-
-            for (String filename : modelConfigFilenames) {
-                String filepath = MODEL_CONFIG_PATH + "/" + filename;
-                InputStream inputStream = assets.open(filepath);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                while (null != (line = reader.readLine())) {
-                    stringBuilder.append(line).append("\n");
-                }
-                modelConfigFiles.put(filename, stringBuilder.toString());
-            }
-
+            modelAssets = modelAssetReader.read();
         } catch (IOException e) {
             e.printStackTrace();
+            modelAssets = new HashMap<>();
         }
+        for (String name : modelAssets.keySet()) {
+            Util.log("File: " + name);
+        }
+
+        try {
+            Controller.init(modelAssets, Tools.getUserData(getApplicationContext()));
+        } catch (LevelParseException e) {
+            e.printStackTrace();
+        } catch (ExpressionParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(!Controller.isControllerInit()){
-            try {
-                Controller.init(modelConfigFiles, Tools.getUserData(getApplicationContext()));
-            } catch (LevelParseException | ExpressionParseException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
