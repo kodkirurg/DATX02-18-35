@@ -1,6 +1,7 @@
 package com.datx02_18_35.android;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -125,6 +126,24 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
                 LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(categoryIndex);
                 ((TextView)findViewById(R.id.level_top)).setText(levelCategory.getName());
                 adapter.updateLevels(levelCategory,refreshLevelsAction.levelProgressionMap, refreshLevelsAction.categoryProgressionMap.get(levelCategory));
+
+                //arrows remove or add
+                if(categoryIndex == 0){
+                    findViewById(R.id.level_left_arrow).setVisibility(View.GONE);
+                }
+                else{
+                    findViewById(R.id.level_left_arrow).setVisibility(View.VISIBLE);
+                }
+                if(categorySize-1==categoryIndex){
+                    findViewById(R.id.level_right_arrow).setVisibility(View.GONE);
+                }
+                else{
+                    findViewById(R.id.level_right_arrow).setVisibility(View.VISIBLE
+                    );
+                }
+
+
+
             }
         }
     }
