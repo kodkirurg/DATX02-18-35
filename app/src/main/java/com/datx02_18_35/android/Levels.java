@@ -1,12 +1,15 @@
 package com.datx02_18_35.android;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,6 +36,8 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
     LevelsAdapter adapter;
     public int categoryIndex = 0;
     public int categorySize = -1;
+    private float xDown, xUp;
+    private static float percentMovedIfSwipe = (float) 0.25;
 
 
     @Override
@@ -51,6 +56,45 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
         //right and left arrow listeners
         findViewById(R.id.level_left_arrow).setOnClickListener(this);
         findViewById(R.id.level_right_arrow).setOnClickListener(this);
+
+    }
+
+
+    //all events called here
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent e) {
+
+        switch (e.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                xDown = e.getRawX();
+                break;
+            case MotionEvent.ACTION_UP:
+                xUp=e.getRawX();
+
+                //get screenSize in absolute size
+                Display display = getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+                int x = size.x;
+
+                //Swipe
+                if(Math.abs(xDown - xUp) > x * percentMovedIfSwipe){
+                    //Right swipe
+                    if(xDown - xUp < 0){
+                        findViewById(R.id.level_left_arrow).performClick();
+                    }
+                    //Left Swipe
+                    else{
+                        findViewById(R.id.level_right_arrow).performClick();
+                    }
+                }
+
+                break;
+        }
+
+
+        //Don't consume the event
+        return super.dispatchTouchEvent(e);
     }
 
     @Override
