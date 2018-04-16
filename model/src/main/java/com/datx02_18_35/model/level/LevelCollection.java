@@ -107,71 +107,51 @@ public class LevelCollection {
         String[] lines = categoryListFile.replaceFirst("[\n|\r]*", "").split("[\n|\r]+");
 
         for (String line : lines) {
-            String[] tokens = line.split("\\s+");
-            if (tokens.length < 3) {
+            final String[] tokens = line.split("\\s+");
+            if (tokens.length != 2) {
                 throw new LevelParseException("Wrong number of arguments in category list file: " + Config.ASSET_PATH_CATEGORIES);
             }
-            switch (tokens[0]) {
-                case "CATEGORY": {
-                    String directory = tokens[1];
-                    String categoryName = Util.join(Util.tail(Util.tail(tokens)));
-                    String categoryPath = Config.ASSET_PATH_LEVELS + "/" + directory + "/";
-                    List<Level> levels = new ArrayList<>();
-                    for (String path : configFiles.keySet()) {
-                        if (path.startsWith(categoryPath)) {
-                            String levelString = configFiles.get(path);
-                            levels.add(Level.parseLevel(levelString));
-                        }
-                    }
-                    categoryList.add(new LevelCategory(categoryName, levels));
-                }
-                break;
-                default:
-                    throw new LevelParseException("Unknown token: " + tokens[0] + " in file: " + Config.ASSET_PATH_CATEGORIES);
+            if (!tokens[0].equals("CATEGORY")) {
+                throw new LevelParseException("Unknown token: " + tokens[0] + " in file: " + Config.ASSET_PATH_CATEGORIES);
             }
+            final String categoryDirectory = Config.ASSET_PATH_LEVELS + "/" + tokens[1];
+            categoryList.add(parseCategory(configFiles, categoryDirectory));
         }
 
         return categoryList;
-        /*String levelList = configFiles.get(Config.ASSET_PATH_CATEGORIES);
-        String[] lines = levelList.replaceFirst("[\n|\r]+", "").split("[\n|\r]+");
-        Iterator<String> lineIterator = Arrays.asList(lines).iterator();
 
-        List<LevelCategory> categories = new ArrayList<>();
-        List<Level> categoryLevels = new ArrayList<>();
-        if (!lineIterator.hasNext()) {
-            throw new LevelParseException("No categories found in " + Config.ASSET_PATH_CATEGORIES);
-        }
-        String firstLine = lineIterator.next();
-        if (!firstLine.startsWith(CATEGORY + " ")) {
-            throw new LevelParseException("First line in " + Config.ASSET_PATH_CATEGORIES + " must be a category");
-        }
-        String categoryName = firstLine.replaceFirst(CATEGORY + " ", "");
-
-        int totalLevels = 0;
-
-        while (lineIterator.hasNext()) {
-            String line = lineIterator.next();
-            if (line.startsWith(CATEGORY + " ")) {
-                categories.add(new LevelCategory(categoryName, categoryLevels));
-                categoryLevels = new ArrayList<>();
-                categoryName = line.replaceFirst(CATEGORY + " ", "");
-            }
-            else {
-                String levelText = configFiles.get(line);
-                if (levelText == null) {
-                    Util.log("Level file not found: " + line);
-                    continue;
-                }
-                categoryLevels.add(Level.parseLevel(levelText));
-                totalLevels += 1;
-            }
-        }
-        categories.add(new LevelCategory(categoryName, categoryLevels));
-
-        Util.log("Loaded levels! Categories: " + categories.size() + ", levels: " + totalLevels);
-
-        return categories;
-        */
     }
 
+    private static LevelCategory parseCategory(final Map<String, String> configFiles, final String categoryDirectory) throws LevelParseException, ExpressionParseException {
+        final String categoryInfoPath = categoryDirectory + "/" + Config.ASSET_FILE_CATEGORY_INFO;
+        final String categoryInfo = configFiles.get(categoryInfoPath);
+        if (categoryInfo == null) {
+            throw new LevelParseException("Could not find file: " + categoryInfoPath);
+        }
+        String[] lines = categoryInfo.replaceFirst("[\n|\r]*", "").split("[\n|\r]+");
+        String title = null;
+        List<Level> levelList = new ArrayList<>();
+        for (String line : lines) {
+            if (line.startsWith("TITLE ")) {
+                if (title != null) {
+                    throw new LevelParseException("Encountered multiple TITLE tokens in file: " + categoryInfoPath);
+                }
+                title = line.replaceFirst("TITLE ", "");
+            }
+            else {
+                String levelPath = categoryDirectory + "/" + line;
+                String levelStr = configFiles.get(levelPath);
+                if (levelStr == null) {
+                    throw new LevelParseException("Could not find file: " + levelPath);
+                }
+                Level level = Level.parseLevel(levelStr);
+                levelList.add(level);
+            }
+        }
+        if (title == null) {
+            throw new LevelParseException("No TITLE token found in file: " + categoryInfoPath);
+        }
+        return new LevelCategory(title, levelList);
+
+    }
 }
