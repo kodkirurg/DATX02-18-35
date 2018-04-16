@@ -31,18 +31,24 @@ public enum RuleType {
         private static final Map<String, Set<RuleType>> parseMap = new HashMap<>();
         private static final Set<RuleType> CONSTRUCTIVE = new HashSet<>();
         private static final Set<RuleType> CLASSICAL = new HashSet<>();
-        private static final Set<RuleType> IMPLICATION_ONLY = new HashSet<>();
-        private static final Set<RuleType> CONJUNCTION_ONLY = new HashSet<>();
-        private static final Set<RuleType> DISJUNCTION_ONLY = new HashSet<>();
+        private static final Set<RuleType> IMPLICATION = new HashSet<>();
+        private static final Set<RuleType> CONJUNCTION = new HashSet<>();
+        private static final Set<RuleType> DISJUNCTION = new HashSet<>();
         private static final Set<RuleType> DEFAULT = CONSTRUCTIVE;
 
         static {
             parseMap.put("DEFAULT",             DEFAULT);
             parseMap.put("CONSTRUCTIVE",        CONSTRUCTIVE);
             parseMap.put("CLASSICAL",           CLASSICAL);
-            parseMap.put("IMPLICATION_ONLY",    IMPLICATION_ONLY);
-            parseMap.put("CONJUNCTION_ONLY",    CONJUNCTION_ONLY);
-            parseMap.put("DISJUNCTION_ONLY",    DISJUNCTION_ONLY);
+            parseMap.put("IMPLICATION", IMPLICATION);
+            parseMap.put("CONJUNCTION", CONJUNCTION);
+            parseMap.put("DISJUNCTION", DISJUNCTION);
+
+            for (RuleType type : values()) {
+                Set<RuleType> ruleTypeSet = new HashSet<>();
+                ruleTypeSet.add(type);
+                parseMap.put(type.name(), ruleTypeSet);
+            }
 
             CONSTRUCTIVE.add(IMPLICATION_ELIMINATION);
             CONSTRUCTIVE.add(IMPLICATION_INTRODUCTION);
@@ -55,14 +61,14 @@ public enum RuleType {
             CLASSICAL.addAll(CONSTRUCTIVE);
             CLASSICAL.add(LAW_OF_EXCLUDED_MIDDLE);
 
-            IMPLICATION_ONLY.add(IMPLICATION_ELIMINATION);
-            IMPLICATION_ONLY.add(IMPLICATION_INTRODUCTION);
+            IMPLICATION.add(IMPLICATION_ELIMINATION);
+            IMPLICATION.add(IMPLICATION_INTRODUCTION);
 
-            CONJUNCTION_ONLY.add(CONJUNCTION_ELIMINATION);
-            CONJUNCTION_ONLY.add(CONJUNCTION_INTRODUCTION);
+            CONJUNCTION.add(CONJUNCTION_ELIMINATION);
+            CONJUNCTION.add(CONJUNCTION_INTRODUCTION);
 
-            DISJUNCTION_ONLY.add(DISJUNCTION_ELIMINATION);
-            DISJUNCTION_ONLY.add(DISJUNCTION_INTRODUCTION);
+            DISJUNCTION.add(DISJUNCTION_ELIMINATION);
+            DISJUNCTION.add(DISJUNCTION_INTRODUCTION);
         }
     }
 }

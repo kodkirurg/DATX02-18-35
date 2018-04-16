@@ -22,7 +22,7 @@ public class GameManager {
     private final UserData userData;
     private Session currentSession;
 
-    private UserBenchMark userBenchMark;
+    private final UserBenchMark userBenchMark;
 
     public GameManager(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
         if (configFiles == null) {
@@ -56,6 +56,13 @@ public class GameManager {
         levelCollection = new LevelCollection(configFiles);
         userData = new UserData(levelCollection);
         userData.logCategoryProgression();
+
+        if (Config.USER_BENCHMARK) {
+            userBenchMark = new UserBenchMark();
+        }
+        else {
+            userBenchMark = null;
+        }
     }
 
 

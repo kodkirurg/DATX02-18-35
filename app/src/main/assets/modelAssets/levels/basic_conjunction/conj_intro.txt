@@ -1,0 +1,25 @@
+TITLE Conjunction Introduction
+
+DIFFICULTY 0
+
+DESCRIPTION START
+Welcome to Gentzen's Quest and your first level!
+
+In the area on the left you have expressions you know are true, and the quest is to prove the goal.
+
+As for this level: If you know one expression is true, and that another one is true, you know that both expressions are true together.
+
+Select each card and then select the "conjunction introduction" rule to as it appears on the right. This will create a new card with the two selected in conjunction as shown above.
+
+Note that the order matters!
+DESCRIPTION END
+
+SYMBOL P Sun
+SYMBOL Q Wonky
+
+RULESET CONJUNCTION
+
+HYPOTHESIS P
+HYPOTHESIS Q
+
+GOAL P & Q
