@@ -64,6 +64,7 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.game.VictoryInformation;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.rules.RuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -518,6 +519,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if (action instanceof RefreshCurrentLevelAction){
                 level = ((RefreshCurrentLevelAction) action).level;
+                findViewById(R.id.item_assumption).setVisibility(
+                        level.ruleSet.contains(RuleType.IMPLICATION_INTRODUCTION) ? View.VISIBLE : View.INVISIBLE);
                 adapterLeft.updateGoal(level.goal);
             }
             else if (action instanceof RefreshRulesAction){
