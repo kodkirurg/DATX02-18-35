@@ -65,13 +65,17 @@ public class CardInflator {
             // Added here to have numberView always centered of the visual card, do not create new TextViews when creating depth recursively.
             TextView cardNumberView = new TextView(cardView.getContext());
             cardNumberView.setId(R.id.card_number_text_view);
-            cardNumberView.setElevation(cardView.getElevation()+1);
+            cardNumberView.setElevation(cardView.getElevation()+2);
             cardNumberView.setVisibility(View.GONE);
             cardNumberView.setTag(R.id.card_number,0);
             cardNumberView.setTextSize(20);
-            cardNumberView.setTextColor(Color.MAGENTA);
-            cardNumberView.setGravity(Gravity.CENTER | Gravity.LEFT);
-            
+            cardNumberView.setTextColor(Color.BLACK);
+            cardNumberView.setGravity(Gravity.CENTER | Gravity.TOP);
+            cardNumberView.setBackgroundResource(R.drawable.rounded_textview);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0,0,0,0);
+            cardNumberView.setLayoutParams(params);
+
             //LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)cardNumberView.getLayoutParams();
             //layoutParams.setMargins(4,0,0,0);
             cardView.addView(cardNumberView);
