@@ -29,6 +29,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     ArrayList<Expression> dataSet;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
+    boolean clickable=true;
     private GameBoard activity;
     private float cardHeight,cardWidth;
 
@@ -57,10 +58,14 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         this.goal=goal;
     }
 
+
+    public void setUnclickable(){
+        clickable=false;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
-        cardView.setCardBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        cardView.setCardBackgroundColor(Color.GRAY);
         cardView.setCardElevation(10);
         return new ViewHolder(cardView);
     }
@@ -93,10 +98,12 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()), v);
-        if(((GameBoard)activity).infoWindowClicked){
-            ((GameBoard)activity).infoWindowClicked=false;
-            ((GameBoard)activity).popupWindow.dismiss();
+        if(clickable) {
+            ((GameBoard) activity).newSelection(dataSet.get((int) v.getTag()), v);
+            if (((GameBoard) activity).infoWindowClicked) {
+                ((GameBoard) activity).infoWindowClicked = false;
+                ((GameBoard) activity).popupWindow.dismiss();
+            }
         }
     }
 

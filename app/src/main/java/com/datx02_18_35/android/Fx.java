@@ -36,7 +36,7 @@ public class Fx {
     }
     public static void selectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.select);
-        v.setBackgroundColor(Color.parseColor(ColorConstants.selectedCardBackgroundColor));
+        v.setBackgroundColor(Color.BLACK);
         ((CardView)v).setCardElevation(2);
         if(a != null){
             a.reset();
@@ -48,7 +48,7 @@ public class Fx {
     }
     public static void deselectAnimation(Context ctx, View v){
         Animation a =AnimationUtils.loadAnimation(ctx, R.anim.deselect);
-        v.setBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        v.setBackgroundColor(Color.GRAY);
         ((CardView)v).setCardElevation(10);
         if(a != null){
             a.reset();

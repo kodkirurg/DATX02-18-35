@@ -47,7 +47,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
         holder.cardView.setOnClickListener(this);
         holder.cardView.setTag(position);
         holder.cardView.setTag(R.string.viewholders,holder);
-        holder.cardView.setBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        holder.cardView.setBackgroundColor(Color.GRAY);
         holder.setIsRecyclable(false);
         if(dataSet.get(position)!= null & !holder.alreadyBound){
             CardInflator.inflate(holder.cardView, dataSet.get(position),cardWidth,cardHeight,false);

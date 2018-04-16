@@ -10,7 +10,6 @@ import com.datx02_18_35.model.GameException;
 
 public abstract class Action {
     private final ActionConsumer callback;
-    public final StackTraceElement[] stackTrace;
 
     /**
      * Use this super-constructor to register a callback.
@@ -18,7 +17,6 @@ public abstract class Action {
      */
     protected Action(ActionConsumer callback) {
         this.callback = callback;
-        stackTrace = new Throwable().getStackTrace();
     }
 
     protected Action() {

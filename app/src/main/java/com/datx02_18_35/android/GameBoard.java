@@ -64,6 +64,7 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.game.VictoryInformation;
 import com.datx02_18_35.model.rules.Rule;
 import com.datx02_18_35.model.level.Level;
+import com.datx02_18_35.model.rules.RuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,7 +79,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Toolbar toolbar;
     TextView scopeLevel;
     ConstraintLayout inventoryLayout;
-    RelativeLayout victoryScreen;
+    ConstraintLayout victoryScreen;
     Animation slide_left,delete,slide_right;
     boolean sandboxOpened = false;
     public static BoardCallback boardCallback;
@@ -88,7 +89,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public Iterable<Iterable<Expression>> inventories;
     public Iterable<Expression> assumptions;
     public int scopeLevelInt;
-    public static Map<String, String> symbolMap;
     public static Level level;
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
@@ -153,11 +153,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
         //Set up victory screen buttons and layout
-        victoryScreen = (RelativeLayout) findViewById(R.id.victory_screen);
+        victoryScreen = (ConstraintLayout) findViewById(R.id.victory_screen);
         victoryScreen.setVisibility(View.GONE);
-        nextLevel = (Button) findViewById(R.id.next_level);
+        nextLevel = (Button) findViewById(R.id.victory_screen_next_level_button);
         nextLevel.setOnClickListener(this);
-        mainMenu = (Button) findViewById(R.id.main_menu);
+        mainMenu = (Button) findViewById(R.id.victory_screen_main_menu_button);
         mainMenu.setOnClickListener(this);
         scoreView = (TextView) findViewById(R.id.win_score);
 
@@ -191,15 +191,15 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         slide_right.setAnimationListener(this);
 
 
-        CardView cardView = (CardView) inflater.inflate(R.layout.card_expression,
-                (ViewGroup)(findViewById(R.id.quest_card).getParent()) ,false);
-        CardInflator.inflate(cardView,level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
-
 
 
         //load pop-up window with goal
         loadPopUpWindow(contentView);
         clickListener=this;
+
+        //set goal on board
+        CardInflator.inflate((CardView) findViewById(R.id.gameBoard_goal),level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
+
 
     }
 
@@ -542,6 +542,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if (action instanceof RefreshCurrentLevelAction){
                 level = ((RefreshCurrentLevelAction) action).level;
+                findViewById(R.id.item_assumption).setVisibility(
+                        level.ruleSet.contains(RuleType.IMPLICATION_INTRODUCTION) ? View.VISIBLE : View.INVISIBLE);
                 adapterLeft.updateGoal(level.goal);
             }
             else if (action instanceof RefreshRulesAction){
@@ -596,6 +598,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
+                adapterLeft.setUnclickable();
+                adapterRight.setUnclickable();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -713,7 +717,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
                 }
                 break;
-            case R.id.next_level:{
+            case R.id.victory_screen_next_level_button:{
                 try {
                     Controller.getSingleton().handleAction(new RequestStartNextLevelAction(GameBoard.boardCallback));
                     Controller.getSingleton().handleAction(new RequestRulesAction(GameBoard.boardCallback,new ArrayList<Expression>()));
@@ -726,7 +730,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 }
                 break;
             }
-            case R.id.main_menu: {
+            case R.id.victory_screen_main_menu_button: {
                 try {
                     Controller.getSingleton().handleAction(new RequestAbortSessionAction());
                     finish();
