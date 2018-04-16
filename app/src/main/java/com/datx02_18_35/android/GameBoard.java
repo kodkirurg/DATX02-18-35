@@ -11,11 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -95,6 +97,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public PopupWindow popupWindow;
     public View popUpView;
     public View.OnClickListener clickListener;
+    public CardView winningAnimationCard=null;
 
     public ArrayList<Expression> newSet = new ArrayList<Expression>();
 
@@ -202,6 +205,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         CardInflator.inflate((CardView) findViewById(R.id.gameBoard_goal),level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
 
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        // if winning animation ongoing, on click abort it.
+        if(winningAnimationCard!=null && victory){
+            winningAnimationCard.animate().cancel();
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void loadPopUpWindow(final View contentView){
@@ -602,13 +616,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         int position=adapterLeft.dataSet.indexOf(goal);
                         adapterLeft.dataSet.remove(position);
                         adapterLeft.notifyItemRemoved(position);
-                        final CardView cardView = (CardView) LayoutInflater.from(
+                        winningAnimationCard = (CardView) LayoutInflater.from(
                                 getCurrentFocus().getContext()).inflate
                                 (R.layout.card_expression,(ViewGroup) getCurrentFocus().getParent(),false);
-                        CardInflator.inflate(cardView,victoryInformation.goal,120,170,false);
-                        ((ViewGroup)findViewById(android.R.id.content)).addView(cardView);
+
+                        CardInflator.inflate(winningAnimationCard,victoryInformation.goal,120,170,false);
+                        ((ViewGroup)findViewById(android.R.id.content)).addView(winningAnimationCard);
                         CardInflator.inflate((CardView) findViewById(R.id.victoryScreen_goalCard),victoryInformation.goal,120,170,false);
-                        cardView.animate().setListener(new Animator.AnimatorListener() {
+                        winningAnimationCard.animate().setListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animator) {
 
@@ -620,7 +635,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
                             @Override
                             public void onAnimationEnd(Animator animator) {
-                                ((ViewGroup)cardView.getParent()).removeView(cardView);
+                                ((ViewGroup)winningAnimationCard.getParent()).removeView(winningAnimationCard);
                                 if(!victoryInformation.hasNextLevel){
                                     nextLevel.setVisibility(View.GONE);
                                 }
@@ -635,6 +650,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                                     scoreView.setText(s + "You finished in " + victoryInformation.newScore + " " + returnStepOrSteps(victoryInformation.newScore) + "." +"\n" +
                                             "Your previous best finish was " + victoryInformation.previousScore + " " + returnStepOrSteps(victoryInformation.newScore) + ".");
                                 }
+                                winningAnimationCard=null; //restore to not perhaps maybe accidentally trigger animation cancel in disptachTouchevent :)
                             }
 
                             @Override
@@ -649,11 +665,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                         });
                         DisplayMetrics displayMetrics = new DisplayMetrics();
                         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                        int cardHeight=cardView.getLayoutParams().height;
-                        int cardWidth=cardView.getLayoutParams().width;
-                        cardView.setX((float) displayMetrics.widthPixels/2-cardWidth/2 );
-                        cardView.setY((float) displayMetrics.heightPixels/2-cardHeight/2);
-                        cardView.animate().setDuration(5000).scaleY(2).scaleX(2).start();
+                        int cardHeight=winningAnimationCard.getLayoutParams().height;
+                        int cardWidth=winningAnimationCard.getLayoutParams().width;
+                        winningAnimationCard.setX((float) displayMetrics.widthPixels/2-cardWidth/2 );
+                        winningAnimationCard.setY((float) displayMetrics.heightPixels/2-cardHeight/2);
+                        winningAnimationCard.animate().setDuration(5000).scaleY(2).scaleX(2).start();
                     }
                 });
             }
