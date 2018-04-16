@@ -4,19 +4,6 @@ DESCRIPTION START
 *Text goes here*
 DESCRIPTION END
 
-SYMBOL P SymbolName
-
-
-RULESET RuleSet1 RuleSet2
-
-// Rulesets:
-// DEFAULT
-// CONSTRUCTIVE,
-// CLASSICAL
-// IMPLICATION_ONLY
-// CONJUNCTION_ONLY
-// DISJUNCTION_ONLY
-
 // Available symbol names:
 // Arrows
 // Cross
@@ -27,6 +14,9 @@ RULESET RuleSet1 RuleSet2
 // Sun
 // Wonky
 
+SYMBOL P SymbolName
+
+RULESET RuleSet1 RuleSet2
 
 HYPOTHESIS
 

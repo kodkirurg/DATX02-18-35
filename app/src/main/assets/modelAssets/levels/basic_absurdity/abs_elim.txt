@@ -1,0 +1,18 @@
+TITLE Absurdity Elimination
+
+DESCRIPTION START
+In this level we'll learn about how absurdity can be used. If you ever reach absurdity, it means you've reached a logical contradiction in your proof.
+
+As such, under a false premise, you can prove anything you want!
+
+The rule you can use here is called "Absurdity elimination". This will open up the same editor used for "Implication introduction".
+DESCRIPTION END
+
+SYMBOL P Donut
+SYMBOL Q Diamond
+
+RULESET ABSURDITY_ELIMINATION
+
+HYPOTHESIS #
+
+GOAL P

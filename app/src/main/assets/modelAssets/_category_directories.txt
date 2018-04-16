@@ -1,4 +1,4 @@
-
-CATEGORY basic
-CATEGORY intermediate
+CATEGORY basic_conjunction
+CATEGORY basic_implication
+CATEGORY basic_absurdity
 CATEGORY hard

@@ -1,4 +1,4 @@
-TITLE Conjunction Introduction and Elimination
+TITLE Conjunction Introduction and Elimination 3
 
 DESCRIPTION START
 Can you solve this one on your own?
@@ -8,6 +8,7 @@ SYMBOL P Sun
 SYMBOL Q Wonky
 SYMBOL R Arrows
 
+RULESET CONJUNCTION
 
 HYPOTHESIS (P & Q) & R
 
