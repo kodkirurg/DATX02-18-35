@@ -25,9 +25,19 @@ public class GetLegalRuleTest {
     final static String propositonString1="P";
     final static String propositonString2="Q";
     final static String propositonString3="R";
-    final static Map<String,String> emptySymbolMap= new HashMap<>();
-    final static ExpressionFactory testExpressionFactory = new ExpressionFactory(emptySymbolMap);
+    final static Map<String,String> SymbolMap=getSymbolMap();
+    final static ExpressionFactory testExpressionFactory = new ExpressionFactory(SymbolMap);
     private final static Random rand= new Random();
+
+
+
+    private static Map<String,String> getSymbolMap(){
+        Map<String,String> symbolMap = new HashMap<>();
+        for(int i='A';i<='Z';i++){
+            symbolMap.put(Character.toString((char)i),"Sun");
+        }
+        return symbolMap;
+    }
 
     public static String generateChar(){
         return Character.toString((char)('A'+rand.nextInt(('Z'-'A'))));

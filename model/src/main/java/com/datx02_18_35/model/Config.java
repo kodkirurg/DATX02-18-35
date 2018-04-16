@@ -9,4 +9,5 @@ public class Config {
 
     public static final boolean DEBUG_UNLOCK_ALL = false;
     public static final boolean DEBUG_RESET_PROGRESS = true;
+    public static final boolean DEBUG_TEST_RULE = true;
 }
