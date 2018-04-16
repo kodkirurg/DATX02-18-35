@@ -77,53 +77,106 @@
 
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/gameBoard_goal_layout"
             app:layout_constraintLeft_toRightOf="@id/game_left_side"
 
             />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:id="@+id/quest_card"
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/gameBoard_goal_layout"
+              android:background="@color/colorPrimary"
+              android:layout_marginEnd="3dp"
+              android:layout_marginTop="3dp"
+              android:layout_marginBottom="3dp"
+              android:layout_marginStart="6dp"
 
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/game_right_side"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/game_left_side"
-                />
+
+
+
+              app:layout_constraintTop_toBottomOf="@id/game_right_side"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintLeft_toRightOf="@id/game_left_side"
+              app:layout_constraintBottom_toBottomOf="parent"
+              >
+
+
+
+              <include
+                  android:layout_centerHorizontal="true"
+                  android:id="@+id/gameBoard_goal"
+                  layout="@layout/card_expression"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_below="@id/gameboard_goal_text"
+                  android:layout_margin="5dp"
+                  />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_centerHorizontal="true"
+                  android:textAlignment="center"
+                  android:textSize="24sp"
+                  android:textColor="@color/White"
+                  android:id="@+id/gameboard_goal_text"
+                  android:text="Goal"
+                  android:textAllCaps="false"
+                  />
+
+          </RelativeLayout>
 
 
     </android.support.constraint.ConstraintLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/inventory_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="55dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
+        
       >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/hypo_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:orientation="vertical"
+
+            app:layout_constraintRight_toLeftOf="@id/close_inventory"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/inv_recycler_view"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/inv_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:scrollbars="horizontal"
             android:orientation="vertical"
+
+            app:layout_constraintRight_toLeftOf="@id/close_inventory"
+            app:layout_constraintTop_toBottomOf="@+id/hypo_recycler_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             />
         <ImageView
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:id="@+id/close_inventory"
             android:background="#0b5394"
-            android:layout_alignParentEnd="true"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/inv_recycler_view"
             >
         </ImageView>
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
     <include
