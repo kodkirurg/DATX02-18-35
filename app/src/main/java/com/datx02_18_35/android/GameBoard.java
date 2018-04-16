@@ -440,19 +440,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     @Override
     public boolean onOptionsItemSelected(MenuItem menu) {
         switch(menu.getItemId()){
-            case R.id.item_assumption:
-                if (inventoryLayout.isShown()){
-                    sandboxOpened=true;
-                    closeInventory();
-                }
-                else {
-                    try {
-                        Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
-                        scopeLevel.setText("");
-                    } catch (GameException e) {
-                        e.printStackTrace();
-                    }
-                }
+            case R.id.item_exit:
+                finish();
                 break;
         }
         return false;
@@ -467,6 +456,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         else if(animation==slide_right){
             inventoryLayout.setVisibility(View.VISIBLE);
             parentInvRecyclerView.setVisibility(View.VISIBLE);
+            hypothesisRec.setVisibility(View.VISIBLE);
         }
     }
 
@@ -476,8 +466,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(false);
-            findViewById(R.id.inv_recycler_view).setVisibility(View.GONE);
-            findViewById(R.id.hypo_recycler_view).setVisibility(View.GONE);
+            inventoryLayout.setVisibility(View.GONE);
+            parentInvRecyclerView.setVisibility(View.GONE);
+            hypothesisRec.setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -492,8 +483,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(true);
-            findViewById(R.id.inv_recycler_view).setVisibility(View.VISIBLE);
-            findViewById(R.id.hypo_recycler_view).setVisibility(View.VISIBLE);
+            inventoryLayout.setVisibility(View.VISIBLE);
+            parentInvRecyclerView.setVisibility(View.VISIBLE);
+            hypothesisRec.setVisibility(View.VISIBLE);
 
         }
         else if(animation==delete){
