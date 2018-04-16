@@ -10,6 +10,8 @@ import com.datx02_18_35.model.game.Session;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.datx02_18_35.model.Config.DEBUG_TEST_RULE;
+
 /**
  * Created by robin on 2018-03-14.
  */
@@ -19,6 +21,10 @@ public final class TestRule {
 
     public static void assertRuleIsLegal(Session session, Rule rule) throws IllegalRuleException {
         // Shorthand variables
+
+        if(DEBUG_TEST_RULE==false){
+            return;
+        }
         final List<Expression> exprs = rule.expressions;
         final RuleType type = rule.type;
 
@@ -26,6 +32,8 @@ public final class TestRule {
         if (exprs.isEmpty()) {
             throw new IllegalRuleException(rule, "No expressions in rule!");
         }
+
+
 
         // Check expressions in scope
         switch (type) {
@@ -80,25 +88,33 @@ public final class TestRule {
         // Check correct types
         switch (type) {
             case LAW_OF_EXCLUDED_MIDDLE:
-            case IMPLICATION_INTRODUCTION:
             case DISJUNCTION_INTRODUCTION:
             case CONJUNCTION_INTRODUCTION:
                 // Ignore
                 break;
+            case IMPLICATION_INTRODUCTION:
+                if (false == exprs.get(0).equals(session.getAssumption())){
+                    throw createIllegalRuleExceptionWrongTypes(rule);
+                }
+                    break;
             case CONJUNCTION_ELIMINATION:
                 if (false == exprs.get(0) instanceof Conjunction) {
                     throw createIllegalRuleExceptionWrongTypes(rule);
                 }
                 break;
             case IMPLICATION_ELIMINATION:
-                if (false == exprs.get(0) instanceof Implication) {
+                if (false == exprs.get(0) instanceof Implication
+                        && false == ((Implication)exprs.get(0)).getOperand1().equals(exprs.get(1))) {
                     throw createIllegalRuleExceptionWrongTypes(rule);
                 }
                 break;
             case DISJUNCTION_ELIMINATION:
                 if (   false == exprs.get(0) instanceof Disjunction
                         || false == exprs.get(1) instanceof Implication
-                        || false == exprs.get(1) instanceof Implication) {
+                        || false == exprs.get(2) instanceof Implication) {
+                    if(false == ((Disjunction)exprs.get(0)).getOperand1().equals(((Implication)exprs.get(1)).getOperand1())
+                            && false == ((Disjunction)exprs.get(1)).getOperand1().equals(((Implication)exprs.get(2)).getOperand1())
+                            && false == ((Implication)exprs.get(1)).getOperand2().equals(((Implication)exprs.get(2)).getOperand2()))
                     throw createIllegalRuleExceptionWrongTypes(rule);
                 }
                 break;

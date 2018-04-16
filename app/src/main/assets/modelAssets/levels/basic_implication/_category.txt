@@ -1,0 +1,4 @@
+TITLE Basic: Implication
+impl_elim.txt
+impl_elim_2.txt
+impl_intro.txt

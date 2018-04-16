@@ -3,7 +3,6 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,12 @@ import game.logic_game.R;
  */
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
-    int currentHighestSelectedCard=0;
+    private int currentHighestSelectedCard=0;
     Expression goal;
     ArrayList<Expression> dataSet;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
+    private boolean clickable=true;
     private GameBoard activity;
     private float cardHeight,cardWidth;
 
@@ -57,10 +57,14 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         this.goal=goal;
     }
 
+
+    public void setUnclickable(){
+        clickable=false;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.card_expression, parent,false);
-        cardView.setCardBackgroundColor(Color.parseColor(ColorConstants.cardBackgroundColor));
+        cardView.setCardBackgroundColor(Color.GRAY);
         cardView.setCardElevation(10);
         return new ViewHolder(cardView);
     }
@@ -93,10 +97,12 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        ((GameBoard)activity).newSelection(dataSet.get( (int) v.getTag()), v);
-        if(((GameBoard)activity).infoWindowClicked){
-            ((GameBoard)activity).infoWindowClicked=false;
-            ((GameBoard)activity).popupWindow.dismiss();
+        if(clickable) {
+            activity.newSelection(dataSet.get((int) v.getTag()), v);
+            if (activity.infoWindowClicked) {
+                activity.infoWindowClicked = false;
+                activity.popupWindow.dismiss();
+            }
         }
     }
 
@@ -105,8 +111,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         selectedView.put((int) v.getTag(),v);
         v.findViewById(R.id.card_number_text_view).setVisibility(View.VISIBLE);
         currentHighestSelectedCard++;
-        ((TextView)v.findViewById(R.id.card_number_text_view)).setTag(R.id.card_number,currentHighestSelectedCard);
-        ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+((TextView)v.findViewById(R.id.card_number_text_view)).getTag(R.id.card_number));
+        v.findViewById(R.id.card_number_text_view).setTag(R.id.card_number,currentHighestSelectedCard);
+        ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+ v.findViewById(R.id.card_number_text_view).getTag(R.id.card_number));
 
 
         setAnimations(v);
@@ -132,9 +138,9 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 loopStop--;
            }
         }
-        CardView cardView = selectedView.get((int) v.getTag());
+        CardView cardView = selectedView.get(v.getTag());
         restoreAnimations(cardView);
-        selectedView.remove((int)v.getTag());
+        selectedView.remove(v.getTag());
 
     }
 
@@ -156,17 +162,17 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             e.printStackTrace();
         }
     }
-    void restoreAnimations(CardView cardView){
+    private void restoreAnimations(CardView cardView){
 
         Fx.deselectAnimation(cardView.getContext(), cardView);
     }
-    void setAnimations(CardView cardView){
+    private void setAnimations(CardView cardView){
 
         Fx.selectAnimation(cardView.getContext(), cardView);
     }
 
     //TO-DO: Something cool wtih the card that made you win
-    void setVictoryAnimation(CardView cardView){
+    private void setVictoryAnimation(CardView cardView){
 
     }
 

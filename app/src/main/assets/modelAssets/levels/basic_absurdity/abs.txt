@@ -1,0 +1,21 @@
+TITLE Absurdity
+
+DESCRIPTION START
+Now it's time to introduce a new type of card: Absurdity, shown above as the goal.
+
+In formal logic, absurdity may be thought of something that is inherently false; a contradiction.
+
+If you somewhere in your proof can ever reach absurdity, that means you have at least two cards contradicting eachother, meaning both can't be true at the same time.
+
+If a card implies absurdity, that can be thought of opposite of the original card.
+
+DESCRIPTION END
+
+SYMBOL P Donut
+
+RULESET IMPLICATION_ELIMINATION
+
+HYPOTHESIS P
+HYPOTHESIS P > #
+
+GOAL #

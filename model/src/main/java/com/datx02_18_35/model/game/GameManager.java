@@ -1,6 +1,8 @@
 package com.datx02_18_35.model.game;
 
+import com.datx02_18_35.model.Config;
 import com.datx02_18_35.model.Util;
+import com.datx02_18_35.model.benchmark.UserBenchMark;
 import com.datx02_18_35.model.level.Level;
 import com.datx02_18_35.model.level.LevelCategory;
 import com.datx02_18_35.model.level.LevelCollection;
@@ -18,9 +20,9 @@ import java.util.Map;
 public class GameManager {
     private final LevelCollection levelCollection;
     private final UserData userData;
-
     private Session currentSession;
 
+    private final UserBenchMark userBenchMark;
 
     public GameManager(Map<String, String> configFiles, byte[] userDataBytes) throws LevelParseException, ExpressionParseException {
         if (configFiles == null) {
@@ -38,6 +40,13 @@ public class GameManager {
             userData = new UserData(levelCollection);
         }
         userData.logCategoryProgression();
+
+        if (Config.USER_BENCHMARK) {
+            userBenchMark = new UserBenchMark();
+        }
+        else {
+            userBenchMark = null;
+        }
     }
 
     public GameManager(Map<String, String> configFiles) throws LevelParseException, ExpressionParseException {
@@ -47,6 +56,13 @@ public class GameManager {
         levelCollection = new LevelCollection(configFiles);
         userData = new UserData(levelCollection);
         userData.logCategoryProgression();
+
+        if (Config.USER_BENCHMARK) {
+            userBenchMark = new UserBenchMark();
+        }
+        else {
+            userBenchMark = null;
+        }
     }
 
 
@@ -64,6 +80,10 @@ public class GameManager {
         }
         currentSession = new Session(level);
         Util.log("Starting new level...\nTitle=" + level.title + ",\nDescription=\n" + level.description);
+
+        if (Config.USER_BENCHMARK) {
+            userBenchMark.logLevelStarted(level);
+        }
     }
 
     public void quitLevel() throws IllegalGameStateException {
@@ -76,6 +96,11 @@ public class GameManager {
         if (!currentSession.checkWin()) {
             return null;
         }
+
+        if (Config.USER_BENCHMARK) {
+            userBenchMark.logLevelCompleted();
+        }
+
         LevelProgression previousProgression = userData.getLevelProgression(currentSession.getLevel());
         int previousScore = previousProgression.stepsApplied;
         int newScore = currentSession.getStepsApplied();
