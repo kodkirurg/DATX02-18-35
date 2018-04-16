@@ -17,6 +17,7 @@ import game.logic_game.R;
 public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.ViewHolder> {
     GameBoard activity;
     private ArrayList<ArrayList<Expression>> dataSet = new ArrayList<ArrayList<Expression>>();
+    private ArrayList<ArrayList<Expression>> dataSet2 = new ArrayList<ArrayList<Expression>>();
     private ArrayList<String> section = new ArrayList<String>();
 
     public ScopeHolderAdapter(GameBoard activity){
@@ -30,19 +31,31 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.sectionText.setText(section.get(position));
+        holder.assumptionText.setText("Assumption");
+        holder.scopeText.setText(section.get(position));
+
         LinearLayoutManager hs_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false);
         holder.childRecycleView.setLayoutManager(hs_linearLayout);
         holder.childRecycleView.setHasFixedSize(false);
         InventoryAdapter inventoryChildAdapter = new InventoryAdapter(dataSet.get(position), this.activity);
         holder.childRecycleView.setAdapter(inventoryChildAdapter);
+
+        LinearLayoutManager new_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false);
+        holder.cardView.setLayoutManager(new_linearLayout);
+        holder.cardView.setHasFixedSize(false);
+        InventoryAdapter assumptionChildAdapter = new InventoryAdapter(dataSet2.get(position), this.activity);
+        holder.cardView.setAdapter(assumptionChildAdapter);
     }
-    public void updateInventory(final ArrayList<ArrayList<Expression>> newSet, final ArrayList<String> newSection) {
+    public void updateInventory(final ArrayList<ArrayList<Expression>> newSet,
+                                final ArrayList<String> newSection,
+                                final ArrayList<ArrayList<Expression>> newSet2 ) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dataSet.clear();
                 section.clear();
+                dataSet2.clear();
+                dataSet2.addAll(newSet2);
                 section.addAll(newSection);
                 dataSet.addAll(newSet);
                 notifyDataSetChanged();
@@ -57,13 +70,17 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         RecyclerView childRecycleView;
-        TextView sectionText;
+        RecyclerView cardView;
+        TextView assumptionText;
+        TextView scopeText;
 
 
         ViewHolder(View itemView) {
             super(itemView);
-            childRecycleView =  itemView.findViewById(R.id.inv_recycler_row);
-            sectionText = itemView.findViewById(R.id.section_text);
+            childRecycleView =  itemView.findViewById(R.id.recycler_scope);
+            assumptionText = itemView.findViewById(R.id.assumption_text);
+            cardView = itemView.findViewById(R.id.recycler_assumption);
+            scopeText = itemView.findViewById(R.id.scope_text);
         }
     }
 }

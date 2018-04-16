@@ -78,9 +78,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel;
-    RelativeLayout inventoryLayout;
+    ConstraintLayout inventoryLayout;
     ConstraintLayout victoryScreen;
     Animation slide_left,delete,slide_right;
+    boolean clickable=true;
     boolean sandboxOpened = false;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
@@ -98,10 +99,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public ArrayList<Expression> newSet = new ArrayList<Expression>();
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView,hypothesisRec;
     public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
-    public LinearLayoutManager parentInvRecLayoutManager;
+    public LinearLayoutManager parentInvRecLayoutManager,hypothesisMan;
     public ScopeHolderAdapter parentHolderAdapter;
+    public HypothesisAdapter hypothesisAdapter;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
 
@@ -191,9 +193,14 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
 
 
+
         //load pop-up window with goal
         loadPopUpWindow(contentView);
         clickListener=this;
+
+        //set goal on board
+        CardInflator.inflate((CardView) findViewById(R.id.gameBoard_goal),level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
+
 
     }
 
@@ -270,17 +277,23 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     private void initInventory() {
         parentInvRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
-
         parentInvRecLayoutManager = new LinearLayoutManager(this);
         parentInvRecyclerView.setLayoutManager(parentInvRecLayoutManager);
         parentInvRecyclerView.setHasFixedSize(true);
         parentHolderAdapter = new ScopeHolderAdapter(this);
         parentInvRecyclerView.setAdapter(parentHolderAdapter);
 
+        hypothesisRec = (RecyclerView) findViewById(R.id.hypo_recycler_view);
+        hypothesisMan = new LinearLayoutManager(this);
+        hypothesisRec.setLayoutManager(hypothesisMan);
+        hypothesisRec.setHasFixedSize(true);
+        hypothesisAdapter = new HypothesisAdapter(this);
+        hypothesisRec.setAdapter(hypothesisAdapter);
+
 
 
         View gameView = this.findViewById(android.R.id.content);
-        inventoryLayout = (RelativeLayout)findViewById(R.id.inventory_container);
+        inventoryLayout = (ConstraintLayout)findViewById(R.id.inventory_container);
         inventoryLayout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -300,8 +313,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
-        ArrayList<ArrayList<Expression>> totInventory = new ArrayList<ArrayList<Expression>>();
-        ArrayList<String> tempSection = new ArrayList<String>();
+        ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
+        ArrayList<String> botSections = new ArrayList<String>();
+        ArrayList<ArrayList<Expression>> assumptionList = new ArrayList<ArrayList<Expression>>();
+
+        ArrayList<ArrayList<Expression>> topRecycler = new ArrayList<ArrayList<Expression>>();
+        ArrayList<String> topSections = new ArrayList<String>();
+        topSections.add("Hypothesis");topSections.add("Scope 1");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -309,39 +327,40 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (GameException e) {
             e.printStackTrace();
         }
-        newSet.clear();
 
         ArrayList<Expression> tempHypothesis = new ArrayList<Expression>();
         for (Expression expr: hypothesis){
-            newSet.add(expr);
             tempHypothesis.add(expr);
         }
-        totInventory.add(tempHypothesis);
+        topRecycler.add(tempHypothesis);
 
 
-        tempSection.add("Hypothesis");
-        int i=0;
+
+
         for (Expression expr: assumptions){
-            i++;
             ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
-            tempSection.add("Assumption "+i);
             tempAssumptions.add(expr);
-            totInventory.add(tempAssumptions);
+            assumptionList.add(tempAssumptions);
         }
 
-        i =0;
+        int i =0;
         for (Iterable<Expression> iter: inventories){
             ArrayList<Expression> tempList =new ArrayList<Expression>();
             for (Expression expr :iter) {
                 tempList.add(expr);
             }
             i++;
-            tempSection.add("Scope "+i);
-            totInventory.add(tempList);
-
+            if(i==1){
+                topRecycler.add(tempList);
+            }
+            else {
+                botSections.add("Scope " + i);
+                botRecycler.add(tempList);
+            }
         }
         if (!inventoryLayout.isShown()){
-            parentHolderAdapter.updateInventory(totInventory,tempSection);
+            hypothesisAdapter.updateHypothesis(topRecycler,topSections);
+            parentHolderAdapter.updateInventory(botRecycler,botSections,assumptionList);
             startAnimation(slide_right, inventoryLayout);
         }
     }
@@ -458,6 +477,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(false);
+            findViewById(R.id.inv_recycler_view).setVisibility(View.GONE);
+            findViewById(R.id.hypo_recycler_view).setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -472,6 +493,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(true);
+            findViewById(R.id.inv_recycler_view).setVisibility(View.VISIBLE);
+            findViewById(R.id.hypo_recycler_view).setVisibility(View.VISIBLE);
+
         }
         else if(animation==delete){
             ArrayList<Expression> sendList = new ArrayList<>();
@@ -577,6 +601,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 victory=true;
                 adapterLeft.setUnclickable();
                 adapterRight.setUnclickable();
+                clickable=false;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -680,12 +705,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view){
         switch (view.getId()){
             case R.id.popup_exit_button :
-                if(infoWindowClicked){
+                if(clickable && infoWindowClicked){
                     this.popupWindow.dismiss();
                 }
                 break;
             case R.id.toolbar_goal :
-                if(!infoWindowClicked){
+                if(clickable&& !infoWindowClicked){
                     infoWindowClicked=true;
                     View rootView = getCurrentFocus().getRootView();
                     if(rootView!=null){
@@ -718,49 +743,56 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.inventory_button:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.open_inventory:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.close_inventory:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.trash_can:{
-                deleteSelection();
-                break;
+                if(clickable) {
+                    deleteSelection();
+                    break;
+                }
             }
             case R.id.item_assumption: {
-                if (inventoryLayout.isShown()) {
-                    sandboxOpened = true;
-                    closeInventory();
-                } else {
-                    try {
-                        Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
-                        scopeLevel.setText("");
-                    } catch (GameException e) {
-                        e.printStackTrace();
+                if (clickable) {
+                    if (inventoryLayout.isShown()) {
+                        sandboxOpened = true;
+                        closeInventory();
+                    } else {
+                        try {
+                            Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
+                            scopeLevel.setText("");
+                        } catch (GameException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }

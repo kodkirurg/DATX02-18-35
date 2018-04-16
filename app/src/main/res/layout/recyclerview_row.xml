@@ -1,25 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_marginBottom="5dp"
-    android:background="#073763"
+    android:background="#3d85c6"
     >
-    <TextView
-        android:id="@+id/section_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/Gray"
-        android:gravity="center"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/inv_recycler_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"
-        android:background="#3d85c6"
 
-    />
+    <LinearLayout
+        android:id="@+id/inventory_left_side"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="3dp"
 
-</LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/inventory_right_side"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <TextView
+            android:id="@+id/assumption_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Gray"
+            android:gravity="center"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_assumption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:background="#3d85c6"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/inventory_right_side"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/inventory_left_side">
+        <TextView
+            android:id="@+id/scope_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Gray"
+            android:gravity="center"
+/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:background="#3d85c6" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
