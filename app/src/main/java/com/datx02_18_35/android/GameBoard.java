@@ -2,6 +2,7 @@ package com.datx02_18_35.android;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -76,7 +77,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     Button mainMenu;
     Toolbar toolbar;
     TextView scopeLevel;
-    RelativeLayout inventoryLayout;
+    ConstraintLayout inventoryLayout;
     RelativeLayout victoryScreen;
     Animation slide_left,delete,slide_right;
     boolean sandboxOpened = false;
@@ -97,10 +98,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public ArrayList<Expression> newSet = new ArrayList<Expression>();
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView,hypothesisRec;
     public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
-    public LinearLayoutManager parentInvRecLayoutManager;
+    public LinearLayoutManager parentInvRecLayoutManager,hypothesisMan;
     public ScopeHolderAdapter parentHolderAdapter;
+    public HypothesisAdapter hypothesisAdapter;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
 
@@ -189,6 +191,11 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         slide_right.setAnimationListener(this);
 
 
+        CardView cardView = (CardView) inflater.inflate(R.layout.card_expression,
+                (ViewGroup)(findViewById(R.id.quest_card).getParent()) ,false);
+        CardInflator.inflate(cardView,level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
+
+
 
         //load pop-up window with goal
         loadPopUpWindow(contentView);
@@ -269,17 +276,23 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     private void initInventory() {
         parentInvRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
-
         parentInvRecLayoutManager = new LinearLayoutManager(this);
         parentInvRecyclerView.setLayoutManager(parentInvRecLayoutManager);
         parentInvRecyclerView.setHasFixedSize(true);
         parentHolderAdapter = new ScopeHolderAdapter(this);
         parentInvRecyclerView.setAdapter(parentHolderAdapter);
 
+        hypothesisRec = (RecyclerView) findViewById(R.id.hypo_recycler_view);
+        hypothesisMan = new LinearLayoutManager(this);
+        hypothesisRec.setLayoutManager(hypothesisMan);
+        hypothesisRec.setHasFixedSize(true);
+        hypothesisAdapter = new HypothesisAdapter(this);
+        hypothesisRec.setAdapter(hypothesisAdapter);
+
 
 
         View gameView = this.findViewById(android.R.id.content);
-        inventoryLayout = (RelativeLayout)findViewById(R.id.inventory_container);
+        inventoryLayout = (ConstraintLayout)findViewById(R.id.inventory_container);
         inventoryLayout.setVisibility(View.GONE);
 
         gameView.setOnTouchListener(new OnSwipeTouchListener(this) {
@@ -299,8 +312,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
-        ArrayList<ArrayList<Expression>> totInventory = new ArrayList<ArrayList<Expression>>();
-        ArrayList<String> tempSection = new ArrayList<String>();
+        ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
+        ArrayList<String> botSections = new ArrayList<String>();
+        ArrayList<ArrayList<Expression>> assumptionList = new ArrayList<ArrayList<Expression>>();
+
+        ArrayList<ArrayList<Expression>> topRecycler = new ArrayList<ArrayList<Expression>>();
+        ArrayList<String> topSections = new ArrayList<String>();
+        topSections.add("Hypothesis");topSections.add("Scope 1");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -308,39 +326,40 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         } catch (GameException e) {
             e.printStackTrace();
         }
-        newSet.clear();
 
         ArrayList<Expression> tempHypothesis = new ArrayList<Expression>();
         for (Expression expr: hypothesis){
-            newSet.add(expr);
             tempHypothesis.add(expr);
         }
-        totInventory.add(tempHypothesis);
+        topRecycler.add(tempHypothesis);
 
 
-        tempSection.add("Hypothesis");
-        int i=0;
+
+
         for (Expression expr: assumptions){
-            i++;
             ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
-            tempSection.add("Assumption "+i);
             tempAssumptions.add(expr);
-            totInventory.add(tempAssumptions);
+            assumptionList.add(tempAssumptions);
         }
 
-        i =0;
+        int i =0;
         for (Iterable<Expression> iter: inventories){
             ArrayList<Expression> tempList =new ArrayList<Expression>();
             for (Expression expr :iter) {
                 tempList.add(expr);
             }
             i++;
-            tempSection.add("Scope "+i);
-            totInventory.add(tempList);
-
+            if(i==1){
+                topRecycler.add(tempList);
+            }
+            else {
+                botSections.add("Scope " + i);
+                botRecycler.add(tempList);
+            }
         }
         if (!inventoryLayout.isShown()){
-            parentHolderAdapter.updateInventory(totInventory,tempSection);
+            hypothesisAdapter.updateHypothesis(topRecycler,topSections);
+            parentHolderAdapter.updateInventory(botRecycler,botSections,assumptionList);
             startAnimation(slide_right, inventoryLayout);
         }
     }
@@ -457,6 +476,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(false);
+            findViewById(R.id.inv_recycler_view).setVisibility(View.GONE);
+            findViewById(R.id.hypo_recycler_view).setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -471,6 +492,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             recyclerViewRight.setVisibility(View.GONE);
             recyclerViewLeft.setVisibility(View.GONE);
             findViewById(R.id.close_inventory).setClickable(true);
+            findViewById(R.id.inv_recycler_view).setVisibility(View.VISIBLE);
+            findViewById(R.id.hypo_recycler_view).setVisibility(View.VISIBLE);
+
         }
         else if(animation==delete){
             ArrayList<Expression> sendList = new ArrayList<>();
