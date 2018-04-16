@@ -1,0 +1,4 @@
+TITLE Basic
+conj_intro.txt
+conj_elim_+_intro.txt
+conj_elim.txt
