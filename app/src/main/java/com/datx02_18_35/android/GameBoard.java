@@ -80,6 +80,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     RelativeLayout inventoryLayout;
     ConstraintLayout victoryScreen;
     Animation slide_left,delete,slide_right;
+    boolean clickable=true;
     boolean sandboxOpened = false;
     public static BoardCallback boardCallback;
     public static OpenSandboxAction sandboxAction=null;
@@ -574,6 +575,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 victory=true;
                 adapterLeft.setUnclickable();
                 adapterRight.setUnclickable();
+                clickable=false;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -677,12 +679,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public void onClick(View view){
         switch (view.getId()){
             case R.id.popup_exit_button :
-                if(infoWindowClicked){
+                if(clickable && infoWindowClicked){
                     this.popupWindow.dismiss();
                 }
                 break;
             case R.id.toolbar_goal :
-                if(!infoWindowClicked){
+                if(clickable&& !infoWindowClicked){
                     infoWindowClicked=true;
                     View rootView = getCurrentFocus().getRootView();
                     if(rootView!=null){
@@ -715,49 +717,56 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 break;
             }
             case R.id.inventory_button:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.open_inventory:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.close_inventory:{
-                if(inventoryLayout.isShown()){
-                    closeInventory();
+                if(clickable) {
+                    if (inventoryLayout.isShown()) {
+                        closeInventory();
+                    } else {
+                        showInventory();
+                    }
+                    break;
                 }
-                else {
-                    showInventory();
-                }
-                break;
             }
             case R.id.trash_can:{
-                deleteSelection();
-                break;
+                if(clickable) {
+                    deleteSelection();
+                    break;
+                }
             }
             case R.id.item_assumption: {
-                if (inventoryLayout.isShown()) {
-                    sandboxOpened = true;
-                    closeInventory();
-                } else {
-                    try {
-                        Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
-                        scopeLevel.setText("");
-                    } catch (GameException e) {
-                        e.printStackTrace();
+                if (clickable) {
+                    if (inventoryLayout.isShown()) {
+                        sandboxOpened = true;
+                        closeInventory();
+                    } else {
+                        try {
+                            Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
+                            scopeLevel.setText("");
+                        } catch (GameException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }
