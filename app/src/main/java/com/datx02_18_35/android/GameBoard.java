@@ -194,6 +194,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         loadPopUpWindow(contentView);
         clickListener=this;
 
+        //set goal on board
+        CardInflator.inflate((CardView) findViewById(R.id.gameBoard_goal),level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
+
+
     }
 
     private void loadPopUpWindow(final View contentView){
