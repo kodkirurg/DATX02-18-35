@@ -575,6 +575,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             }
             else if(action instanceof VictoryConditionMetAction){
                 victory=true;
+                adapterLeft.setUnclickable();
+                adapterRight.setUnclickable();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

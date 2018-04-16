@@ -29,6 +29,7 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
     GameBoard activity;
     float cardWidth,cardHeight;
     boolean hasShownRule;
+    boolean clickable=true;
 
     GameRuleAdapter(ArrayList<Rule> dataSet, GameBoard activity,float cardWidth, float cardHeight){
         this.dataSet=dataSet;
@@ -49,6 +50,9 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
             }
         });
 
+    }
+    public void setUnclickable(){
+        clickable=false;
     }
 
     @Override
@@ -119,15 +123,17 @@ public class GameRuleAdapter extends RecyclerView.Adapter<GameRuleAdapter.ViewHo
 
     @Override
     public void onClick(View v) {
-        try {
-            Controller.getSingleton().handleAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int)v.getTag())) );
-            activity.adapterLeft.restoreSelections();
-            if(((GameBoard)activity).infoWindowClicked){
-                ((GameBoard)activity).infoWindowClicked=false;
-                ((GameBoard)activity).popupWindow.dismiss();
+        if(clickable) {
+            try {
+                Controller.getSingleton().handleAction(new RequestApplyRuleAction(GameBoard.boardCallback, dataSet.get((int) v.getTag())));
+                activity.adapterLeft.restoreSelections();
+                if (((GameBoard) activity).infoWindowClicked) {
+                    ((GameBoard) activity).infoWindowClicked = false;
+                    ((GameBoard) activity).popupWindow.dismiss();
+                }
+            } catch (GameException e) {
+                e.printStackTrace();
             }
-        } catch (GameException e) {
-            e.printStackTrace();
         }
     }
 
