@@ -165,29 +165,15 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
             if(action instanceof RefreshLevelsAction){
                 RefreshLevelsAction refreshLevelsAction = (RefreshLevelsAction)action;
 
-                categorySize = refreshLevelsAction.categoryProgressionMap.size();
+                categorySize = refreshLevelsAction.levelCollection.getCategories().size();
 
                 LevelCategory levelCategory =  refreshLevelsAction.levelCollection.getCategories().get(categoryIndex);
                 ((TextView)findViewById(R.id.level_top)).setText(levelCategory.getName());
                 adapter.updateLevels(levelCategory,refreshLevelsAction.levelProgressionMap, refreshLevelsAction.categoryProgressionMap.get(levelCategory));
 
                 //arrows remove or add
-                if(categoryIndex == 0){
-                    findViewById(R.id.level_left_arrow).setVisibility(View.GONE);
-                }
-                else{
-                    findViewById(R.id.level_left_arrow).setVisibility(View.VISIBLE);
-                }
-                if(categorySize-1==categoryIndex){
-                    findViewById(R.id.level_right_arrow).setVisibility(View.GONE);
-                }
-                else{
-                    findViewById(R.id.level_right_arrow).setVisibility(View.VISIBLE
-                    );
-                }
-
-
-
+                findViewById(R.id.level_left_arrow).setVisibility(categoryIndex == 0 ? View.GONE : View.VISIBLE);
+                findViewById(R.id.level_right_arrow).setVisibility(categoryIndex == categorySize-1 ? View.GONE : View.VISIBLE);
             }
         }
     }
