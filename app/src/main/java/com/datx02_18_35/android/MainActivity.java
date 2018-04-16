@@ -42,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
             modelAssets = new HashMap<>();
         }
-        for (String name : modelAssets.keySet()) {
-            Util.log("File: " + name);
-        }
 
         try {
             Controller.init(modelAssets, Tools.getUserData(getApplicationContext()));
