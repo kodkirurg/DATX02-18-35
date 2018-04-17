@@ -18,7 +18,6 @@ import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private boolean modelInitialized = false;
 
 
     @Override
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // Init model
-        initModel();
+        initController();
 
         //Add listener
         Button start_button = findViewById(R.id.start_button); //grab a view and convert it to a button class
@@ -37,10 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void initModel() {
-        if (modelInitialized) return;
-
+    private void initController() {
         // Read model config files
+        if (Controller.isInitialized()) {
+            return;
+        }
         ModelAssetReader modelAssetReader = new ModelAssetReader(getApplicationContext().getAssets());
         Map<String, String> modelAssets;
         try {
@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         }
-
-        modelInitialized = true;
     }
 
     @Override

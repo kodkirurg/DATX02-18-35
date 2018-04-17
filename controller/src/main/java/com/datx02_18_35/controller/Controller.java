@@ -56,11 +56,11 @@ public class Controller extends ActionConsumer {
 
     private static Controller singleton = null;
 
-    public static boolean isControllerInit(){
-        if(singleton!=null){
+    public static boolean isInitialized(){
+        if(singleton!=null) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
