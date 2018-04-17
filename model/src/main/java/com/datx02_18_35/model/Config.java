@@ -12,6 +12,7 @@ public class Config {
     public static final String ASSET_PATH_LEVELS = ASSET_PATH_MODEL + "/levels";
     public static final String ASSET_FILE_CATEGORY_INFO = "_category.txt";
 
+    public static final boolean DEBUG_LOG_OUTPUT = true;
     public static final boolean DEBUG_UNLOCK_ALL = true;
     public static final boolean DEBUG_RESET_PROGRESS = true;
     public static final boolean DEBUG_TEST_RULE = true;
