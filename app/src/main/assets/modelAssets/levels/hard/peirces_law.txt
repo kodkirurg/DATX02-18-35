@@ -1,7 +1,7 @@
-TITLE Peir's Law
+TITLE Peirce's Law
 
 DESCRIPTION START
-"If the sun shine means there are no clouds, means the sun is shining, then the sun is shining"s
+"If the sun shine means there are no clouds, means the sun is shining, then the sun is shining"
 DESCRIPTION END
 
 SYMBOL P Sun
