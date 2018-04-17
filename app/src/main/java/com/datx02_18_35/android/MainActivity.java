@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.level.LevelParseException;
 
@@ -19,19 +18,27 @@ import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String MODEL_CONFIG_PATH = "modelAssets";
-    private Map<String, String> modelConfigFiles = new HashMap<>();
+    private boolean modelInitialized = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Init model
+        initModel();
+
         //Add listener
         Button start_button = findViewById(R.id.start_button); //grab a view and convert it to a button class
         start_button.setOnClickListener(this); //this indicates that the onClick will be called
         Button quit_button = findViewById(R.id.quit_button);
         quit_button.setOnClickListener(this);
+
+    }
+
+    private void initModel() {
+        if (modelInitialized) return;
 
         // Read model config files
         ModelAssetReader modelAssetReader = new ModelAssetReader(getApplicationContext().getAssets());
@@ -51,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
+        modelInitialized = true;
     }
 
     @Override
