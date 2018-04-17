@@ -2,5 +2,6 @@ TITLE Basic: Conjunction
 conj_intro.txt
 conj_elim.txt
 conj_elim_intro.txt
+inventorylevel.txt
 conj_elim_intro_2.txt
 conj_elim_intro_3.txt

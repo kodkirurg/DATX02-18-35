@@ -1,9 +1,9 @@
-TITLE Inventory
+TITLE Conjunction Introduction and Inventory Use
 
 DESCRIPTION START
 Here we need to learn how to use the inventory to complete the level.
 
-To open the inventory either press the briefcase at the toolbar in the top or press the black at the left side of the screen.
+To open the inventory either press the briefcase at the toolbar in the top or press the left border of the screen.
 
 Once you are in the inventory you bring cards to the gameboard by clicking on them.
 DESCRIPTION END
