@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.quit_button: {
-                finish();
+                this.finish();
+                System.exit(0);
                 break;
             }
         }
