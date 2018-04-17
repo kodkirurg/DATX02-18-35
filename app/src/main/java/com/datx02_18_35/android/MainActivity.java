@@ -79,4 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        this.finish();
+        System.exit(0);
+    }
 }
