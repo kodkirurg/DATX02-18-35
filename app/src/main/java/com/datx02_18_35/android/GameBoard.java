@@ -99,11 +99,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     public ArrayList<Expression> newSet = new ArrayList<Expression>();
 
     //recyclerviews
-    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView,hypothesisRec;
+    public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView;
     public GridLayoutManager gridLayoutManagerLeft, gridLayoutManagerRight;
-    public LinearLayoutManager parentInvRecLayoutManager,hypothesisMan;
+    public LinearLayoutManager parentInvRecLayoutManager;
     public ScopeHolderAdapter parentHolderAdapter;
-    public HypothesisAdapter hypothesisAdapter;
     public GameRuleAdapter adapterRight;
     public GameCardAdapter adapterLeft;
 
@@ -276,20 +275,13 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     }
     private void initInventory() {
+
         parentInvRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
         parentInvRecLayoutManager = new LinearLayoutManager(this);
         parentInvRecyclerView.setLayoutManager(parentInvRecLayoutManager);
         parentInvRecyclerView.setHasFixedSize(true);
         parentHolderAdapter = new ScopeHolderAdapter(this);
         parentInvRecyclerView.setAdapter(parentHolderAdapter);
-
-        hypothesisRec = (RecyclerView) findViewById(R.id.hypo_recycler_view);
-        hypothesisMan = new LinearLayoutManager(this);
-        hypothesisRec.setLayoutManager(hypothesisMan);
-        hypothesisRec.setHasFixedSize(true);
-        hypothesisAdapter = new HypothesisAdapter(this);
-        hypothesisRec.setAdapter(hypothesisAdapter);
-
 
 
         View gameView = this.findViewById(android.R.id.content);
@@ -314,12 +306,12 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     public void showInventory(){
         ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
-        ArrayList<String> botSections = new ArrayList<String>();
         ArrayList<ArrayList<Expression>> assumptionList = new ArrayList<ArrayList<Expression>>();
+        assumptionList.add(new ArrayList<Expression>());
+        assumptionList.add(new ArrayList<Expression>());
 
-        ArrayList<ArrayList<Expression>> topRecycler = new ArrayList<ArrayList<Expression>>();
         ArrayList<String> topSections = new ArrayList<String>();
-        topSections.add("Hypothesis");topSections.add("Scope 1");
+        topSections.add("Hypothesis");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -332,8 +324,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         for (Expression expr: hypothesis){
             tempHypothesis.add(expr);
         }
-        topRecycler.add(tempHypothesis);
-
 
 
 
@@ -342,25 +332,19 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             tempAssumptions.add(expr);
             assumptionList.add(tempAssumptions);
         }
-
+        botRecycler.add(tempHypothesis);
         int i =0;
         for (Iterable<Expression> iter: inventories){
             ArrayList<Expression> tempList =new ArrayList<Expression>();
             for (Expression expr :iter) {
                 tempList.add(expr);
             }
+            botRecycler.add(tempList);
             i++;
-            if(i==1){
-                topRecycler.add(tempList);
-            }
-            else {
-                botSections.add("Scope " + i);
-                botRecycler.add(tempList);
-            }
+            topSections.add("Scope " + i);
         }
         if (!inventoryLayout.isShown()){
-            hypothesisAdapter.updateHypothesis(topRecycler,topSections);
-            parentHolderAdapter.updateInventory(botRecycler,botSections,assumptionList);
+            parentHolderAdapter.updateInventory(botRecycler,topSections,assumptionList);
             startAnimation(slide_right, inventoryLayout);
         }
     }
@@ -457,7 +441,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         else if(animation==slide_right){
             inventoryLayout.setVisibility(View.VISIBLE);
             parentInvRecyclerView.setVisibility(View.VISIBLE);
-            hypothesisRec.setVisibility(View.VISIBLE);
+//            hypothesisRec.setVisibility(View.VISIBLE);
         }
     }
 
@@ -469,7 +453,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             findViewById(R.id.close_inventory).setClickable(false);
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
-            hypothesisRec.setVisibility(View.GONE);
+//            hypothesisRec.setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -486,7 +470,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             findViewById(R.id.close_inventory).setClickable(true);
             inventoryLayout.setVisibility(View.VISIBLE);
             parentInvRecyclerView.setVisibility(View.VISIBLE);
-            hypothesisRec.setVisibility(View.VISIBLE);
+//            hypothesisRec.setVisibility(View.VISIBLE);
 
         }
         else if(animation==delete){
