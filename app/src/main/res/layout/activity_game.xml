@@ -139,28 +139,15 @@
         android:background="@color/colorPrimary"
         
       >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/hypo_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
-            android:orientation="vertical"
-
-            app:layout_constraintRight_toLeftOf="@id/close_inventory"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/inv_recycler_view"
-            app:layout_constraintLeft_toLeftOf="parent"
-            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/inv_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scrollbars="horizontal"
             android:orientation="vertical"
 
             app:layout_constraintRight_toLeftOf="@id/close_inventory"
-            app:layout_constraintTop_toBottomOf="@+id/hypo_recycler_view"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             />
@@ -168,7 +155,7 @@
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:id="@+id/close_inventory"
-            android:background="#0b5394"
+            android:background="@color/colorPrimaryDark"
 
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

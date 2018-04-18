@@ -3,6 +3,7 @@ package com.datx02_18_35.android;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         holder.cardView.setTag(R.string.viewholders,holder);
         holder.cardView.setBackgroundColor(Color.GRAY);
         if(dataSet.get(position)!= null & !holder.alreadyBound) {
-            CardInflator.inflate(holder.cardView, dataSet.get(position),100,145,false);
+            CardInflator.inflate(holder.cardView, dataSet.get(position),120,170,false);
             holder.alreadyBound = true;
         }
     }
