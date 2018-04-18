@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -99,7 +100,7 @@
         app:layout_constraintRight_toLeftOf="@id/victory_screen_cardRight_guideline"
         app:layout_constraintLeft_toRightOf="@id/victory_screen_cardLeft_guideline"
 
-        />
+        tools:targetApi="o" />
     <Button
         android:id="@+id/victory_screen_next_level_button"
         android:layout_width="0dp"
@@ -120,7 +121,8 @@
         app:layout_constraintRight_toLeftOf="@id/victory_screen_cardRight_guideline"
         app:layout_constraintLeft_toRightOf="@id/victory_screen_main_menu_button"
         app:layout_constraintBottom_toTopOf="@id/victory_screen_buttonBottom_guideline"
-        />
+        tools:ignore="HardcodedText"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/victory_screen_main_menu_button"
@@ -143,6 +145,6 @@
         app:layout_constraintRight_toLeftOf="@id/victory_screen_next_level_button"
         app:layout_constraintBottom_toTopOf="@id/victory_screen_buttonBottom_guideline"
         app:layout_constraintLeft_toRightOf="@id/victory_screen_cardLeft_guideline"
-        />
+        tools:targetApi="o" />
 
 </android.support.constraint.ConstraintLayout>

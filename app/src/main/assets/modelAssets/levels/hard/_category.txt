@@ -1,4 +1,4 @@
 TITLE Hard
 double_negation_elimination.txt
-peirs_law.txt
+peirces_law.txt
 hard.txt
