@@ -279,7 +279,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         parentInvRecyclerView = (RecyclerView) findViewById(R.id.inv_recycler_view);
         parentInvRecLayoutManager = new LinearLayoutManager(this);
         parentInvRecyclerView.setLayoutManager(parentInvRecLayoutManager);
-        parentInvRecyclerView.setHasFixedSize(true);
+        parentInvRecyclerView.setHasFixedSize(false);
         parentHolderAdapter = new ScopeHolderAdapter(this);
         parentInvRecyclerView.setAdapter(parentHolderAdapter);
 

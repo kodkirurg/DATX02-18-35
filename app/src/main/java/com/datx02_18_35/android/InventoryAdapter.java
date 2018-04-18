@@ -53,7 +53,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onBindViewHolder(InventoryAdapter.ViewHolder holder, int position) {
-        Log.d("test123", "onBindViewHolder:"+dataSet.get(position).toString());
         holder.cardView.setOnClickListener(this);
         holder.setIsRecyclable(false);
         holder.cardView.setTag(position);

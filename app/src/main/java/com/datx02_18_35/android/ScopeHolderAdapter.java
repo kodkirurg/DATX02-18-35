@@ -40,7 +40,7 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         if(position<=1){
             ConstraintSet set = new ConstraintSet();
-
+            holder.rightContainer.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
             set.clone(holder.layout);
             // The following breaks the connection.
             set.clear(R.id.inventory_right_side, ConstraintSet.LEFT);
