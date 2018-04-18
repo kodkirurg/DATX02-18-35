@@ -64,7 +64,7 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
             holder.cardView.setTag(position-2);
             holder.cardView.setTag(R.string.viewholders,holder);
             holder.cardView.setBackgroundColor(Color.GRAY);
-            if(dataSet.get(position-2)!= null & !holder.alreadyBound) {
+            if(dataSet2.get(position-2)!= null & !holder.alreadyBound) {
                 CardInflator.inflate((CardView) holder.cardView,dataSet2.get(position-2),120,170,false);
                 holder.alreadyBound = true;
             }
