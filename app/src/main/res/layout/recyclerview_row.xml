@@ -27,12 +27,12 @@
             android:background="@color/Gray"
             android:gravity="center"
             />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_assumption"
+        <include
+            android:id="@+id/assumption_card"
+            layout="@layout/card_expression"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
-            android:background="@color/colorPrimary"
+            android:layout_margin="5dp"
             />
     </LinearLayout>
 

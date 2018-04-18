@@ -1,5 +1,6 @@
 package com.datx02_18_35.android;
 
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.CardView;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.datx02_18_35.controller.Controller;
+import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
+import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 
@@ -19,10 +23,12 @@ import java.util.ArrayList;
 
 import game.logic_game.R;
 
-public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.ViewHolder> {
+import static com.datx02_18_35.android.GameBoard.level;
+
+public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.ViewHolder> implements View.OnClickListener {
     GameBoard activity;
     private ArrayList<ArrayList<Expression>> dataSet = new ArrayList<ArrayList<Expression>>();
-    private ArrayList<ArrayList<Expression>> dataSet2 = new ArrayList<ArrayList<Expression>>();
+    private ArrayList<Expression> dataSet2 = new ArrayList<Expression>();
     private ArrayList<String> section = new ArrayList<String>();
 
     public ScopeHolderAdapter(GameBoard activity){
@@ -49,16 +55,21 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
             set.connect(R.id.inventory_right_side, ConstraintSet.LEFT, R.id.inventory_bottom, ConstraintSet.LEFT, 0);
             set.applyTo(holder.layout);
             holder.leftContainer.setVisibility(View.INVISIBLE);
+            holder.cardView.setVisibility(View.GONE);
 
         }
         else {
-            LinearLayoutManager new_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false);
-            holder.cardView.setLayoutManager(new_linearLayout);
-            holder.cardView.setHasFixedSize(false);
-            InventoryAdapter assumptionChildAdapter = new InventoryAdapter(dataSet2.get(position), this.activity);
-            holder.cardView.setAdapter(assumptionChildAdapter);
-        }
+            holder.cardView.setOnClickListener(this);
+            holder.setIsRecyclable(false);
+            holder.cardView.setTag(position-2);
+            holder.cardView.setTag(R.string.viewholders,holder);
+            holder.cardView.setBackgroundColor(Color.GRAY);
+            if(dataSet.get(position-2)!= null & !holder.alreadyBound) {
+                CardInflator.inflate((CardView) holder.cardView,dataSet2.get(position-2),120,170,false);
+                holder.alreadyBound = true;
+            }
 
+        }
         holder.assumptionText.setText("Assumption");
         holder.scopeText.setText(section.get(position));
 
@@ -70,7 +81,7 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
     }
     public void updateInventory(final ArrayList<ArrayList<Expression>> newSet,
                                 final ArrayList<String> newSection,
-                                final ArrayList<ArrayList<Expression>> newSet2 ) {
+                                final ArrayList<Expression> newSet2 ) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -90,21 +101,35 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
         return (section.size());
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view!=null) {
+            Expression selectedCard = dataSet2.get((int) view.getTag());
+            try {
+                Controller.getSingleton().handleAction(new RequestMoveFromInventoryAction(GameBoard.boardCallback,selectedCard));
+            } catch (GameException e) {
+                e.printStackTrace();
+            }
+            Fx.blink_animation(view.getContext(), view);
+        }
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         RecyclerView childRecycleView;
-        RecyclerView cardView;
+        View cardView;
         TextView assumptionText;
         TextView scopeText;
         LinearLayout leftContainer;
         LinearLayout rightContainer;
         ConstraintLayout layout;
+        boolean alreadyBound=false;
 
 
         ViewHolder(View itemView) {
             super(itemView);
             childRecycleView =  itemView.findViewById(R.id.recycler_scope);
             assumptionText = itemView.findViewById(R.id.assumption_text);
-            cardView = itemView.findViewById(R.id.recycler_assumption);
+            cardView = itemView.findViewById(R.id.assumption_card);
             scopeText = itemView.findViewById(R.id.scope_text);
             leftContainer = itemView.findViewById(R.id.inventory_left_side);
             rightContainer = itemView.findViewById(R.id.inventory_right_side);
