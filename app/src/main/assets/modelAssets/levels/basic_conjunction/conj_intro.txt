@@ -3,7 +3,7 @@ TITLE Conjunction Introduction
 DIFFICULTY 0
 
 DESCRIPTION START
-Welcome to Gentzen's Quest and your first level!
+Welcome to Gentzen's Quest, and your first level!
 
 In the area on the left you have expressions you know are true, and the quest is to prove the goal.
 
