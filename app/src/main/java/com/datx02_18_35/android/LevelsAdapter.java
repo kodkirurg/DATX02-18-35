@@ -1,9 +1,9 @@
 package com.datx02_18_35.android;
 
+import android.annotation.SuppressLint;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +28,8 @@ import game.logic_game.R;
 public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder> implements View.OnClickListener  {
     private List<Level> dataSet;
     private final Levels levelsActivity;
-    Map<Level, LevelProgression> levelProgressionMap;
-    LevelCategoryProgression levelCategoryProgression;
+    private Map<Level, LevelProgression> levelProgressionMap;
+    private LevelCategoryProgression levelCategoryProgression;
 
 
     LevelsAdapter(Levels levelsActivity){
@@ -44,6 +44,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
         return new LevelsAdapter.ViewHolder(cardView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.cardView.setTag(position);
@@ -112,6 +113,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
     public void onClick(View view) {
         int position = (int) view.getTag();
         levelsActivity.startLevel(dataSet.get(position));
+
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

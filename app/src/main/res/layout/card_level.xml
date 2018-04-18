@@ -2,12 +2,12 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:layout_margin="4dp"
     app:cardBackgroundColor="@color/White"
     app:cardCornerRadius="2dp"
-
     app:cardElevation="5dp">
 
     <android.support.constraint.ConstraintLayout
@@ -27,18 +27,27 @@
             android:id="@+id/card_level_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_above="@+id/card_level_highscore"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:text="@string/undefined"
             android:textColor="@color/White"
             android:textAlignment="center"
-            android:textSize="24sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/card_level_guideline"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
 
-            />
+            tools:targetApi="o" />
 
 
         <TextView
@@ -46,17 +55,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:text="@string/undefined"
             android:textColor="@color/White"
             android:textAlignment="center"
-            android:textSize="18sp"
+
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+
 
             app:layout_constraintTop_toBottomOf="@id/card_level_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            >
+            tools:targetApi="o">
 
         </TextView>
     </android.support.constraint.ConstraintLayout>

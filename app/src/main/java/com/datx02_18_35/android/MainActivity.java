@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.datx02_18_35.controller.Controller;
-import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.ExpressionParseException;
 import com.datx02_18_35.model.level.LevelParseException;
 
@@ -19,13 +18,15 @@ import game.logic_game.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String MODEL_CONFIG_PATH = "modelAssets";
-    private Map<String, String> modelConfigFiles = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Init controller & model
+        initController();
 
         //Add listener
         Button start_button = findViewById(R.id.start_button); //grab a view and convert it to a button class
@@ -33,7 +34,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button quit_button = findViewById(R.id.quit_button);
         quit_button.setOnClickListener(this);
 
+    }
+
+    private void initController() {
         // Read model config files
+        if (Controller.isInitialized()) {
+            return;
+        }
         ModelAssetReader modelAssetReader = new ModelAssetReader(getApplicationContext().getAssets());
         Map<String, String> modelAssets;
         try {
@@ -50,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (ExpressionParseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -67,9 +73,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.quit_button: {
-                finish();
+                this.finish();
+                System.exit(0);
                 break;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        this.finish();
+        System.exit(0);
     }
 }

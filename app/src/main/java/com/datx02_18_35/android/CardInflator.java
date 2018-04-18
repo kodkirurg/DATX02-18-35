@@ -30,8 +30,8 @@ import game.logic_game.R;
 public class CardInflator {
 
     //convertion rate when cards get smaller
-    private static final float widthRatio = (float)0.43;
-    private static final float heightRatio = (float) 0.41;
+    private static final float widthRatio = 0.43f;
+    private static final float heightRatio = 0.41f;
 
 
     /**
