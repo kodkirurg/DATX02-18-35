@@ -50,7 +50,7 @@ public class UserData implements Serializable {
             objOut.writeObject(userData);
             objOut.flush();
             byteArray = byteOut.toByteArray();
-            Util.log("Serializing user data, size=" + byteArray.length + "B");
+            Util.log("Serializing user data, size=" + Util.toPrefixedByteString(byteArray.length));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
