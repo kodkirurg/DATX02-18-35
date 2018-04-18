@@ -10,6 +10,20 @@ import java.util.Iterator;
 public class Util {
     private Util(){}
 
+
+    private static final long kibi = 1L << 10L;
+    private static final long mebi = 1L << 20L;
+    private static final long gibi = 1L << 30L;
+    private static final long tebi = 1L << 40L;
+
+    public static String toPrefixedByteString(long i) {
+        if (i > tebi) return String.format("%.2fTiB", (double)i/tebi);
+        if (i > gibi) return String.format("%.2fGiB", (double)i/gibi);
+        if (i > mebi) return String.format("%.2fMiB", (double)i/mebi);
+        if (i > kibi) return String.format("%.2fKiB", (double)i/kibi);
+                      return String.format("%lB", i);
+    }
+
     public static <T> T[] tail(T[] array) {
         if (array.length == 0) {
             throw new IllegalArgumentException("Array must contain at least one element.");
