@@ -436,7 +436,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         else if(animation==slide_right){
             inventoryLayout.setVisibility(View.VISIBLE);
             parentInvRecyclerView.setVisibility(View.VISIBLE);
-//            hypothesisRec.setVisibility(View.VISIBLE);
         }
     }
 
@@ -448,7 +447,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             findViewById(R.id.close_inventory).setClickable(false);
             inventoryLayout.setVisibility(View.GONE);
             parentInvRecyclerView.setVisibility(View.GONE);
-//            hypothesisRec.setVisibility(View.GONE);
             if(sandboxOpened){
                 try {
                     Controller.getSingleton().handleAction((new RequestAssumptionAction(boardCallback)));
@@ -465,7 +463,6 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             findViewById(R.id.close_inventory).setClickable(true);
             inventoryLayout.setVisibility(View.VISIBLE);
             parentInvRecyclerView.setVisibility(View.VISIBLE);
-//            hypothesisRec.setVisibility(View.VISIBLE);
 
         }
         else if(animation==delete){

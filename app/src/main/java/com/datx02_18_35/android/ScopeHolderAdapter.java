@@ -51,10 +51,10 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
             // The following breaks the connection.
             set.clear(R.id.inventory_right_side, ConstraintSet.LEFT);
             set.clear(R.id.inventory_left_side);
-            // Comment out line above and uncomment line below to make the connection.
+
             set.connect(R.id.inventory_right_side, ConstraintSet.LEFT, R.id.inventory_bottom, ConstraintSet.LEFT, 0);
             set.applyTo(holder.layout);
-            holder.leftContainer.setVisibility(View.INVISIBLE);
+            holder.leftContainer.setVisibility(View.GONE);
             holder.cardView.setVisibility(View.GONE);
 
         }
