@@ -1,6 +1,8 @@
 TITLE Conjunction Elimination and Introduction 2
 DESCRIPTION START
 Use both conjunction elimination and introduction to solve this level.
+
+As you can see, you can also have conjunctions of other conjunctions. When a card is laying down horizontally the card to the left is the same as the top one for a vertical card.
 DESCRIPTION END
 
 SYMBOL P Sun

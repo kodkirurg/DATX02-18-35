@@ -14,7 +14,7 @@ public class Config {
 
     public static final boolean DEBUG_LOG_OUTPUT = true;
     public static final boolean DEBUG_UNLOCK_ALL = true;
-    public static final boolean DEBUG_RESET_PROGRESS = true;
+    public static final boolean DEBUG_RESET_PROGRESS = false;
     public static final boolean DEBUG_TEST_RULE = true;
 
     public static final boolean USER_BENCHMARK = true;
