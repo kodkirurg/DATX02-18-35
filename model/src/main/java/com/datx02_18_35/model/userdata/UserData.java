@@ -143,9 +143,7 @@ public class UserData implements Serializable {
 
         LevelCategory category = collection.getCategoryFromLevel(level);
         LevelProgression levelProgression = getLevelProgression(level);
-        Util.log("previous=" + levelProgression.stepsApplied + "\nnew="+stepsApplied);
         if (levelProgression.completed && stepsApplied > levelProgression.stepsApplied) {
-            Util.log("Testing");
             return null;
         }
 
