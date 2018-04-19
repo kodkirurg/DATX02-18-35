@@ -3,11 +3,17 @@
     <!--
     Primary and secondary color scheme
     -->
-    <color name="colorPrimaryLight">#a4c2f4</color>
+
+
+    <color name="colorPrimaryLight">#89b2e2</color>
     <color name="colorPrimary">#3d85c6</color>
-    <color name="colorPrimaryDark">#0b5394</color>
-    <color name="colorPrimaryVeryDark">#003F9F</color>
+    <color name="colorPrimaryDark">#434343</color>
+    <color name="colorPrimaryVeryDark">#415672</color>
     <color name="colorSecondary">@color/cardview_dark_background</color>
+
+
+
+
     <!-- -->
     <color name="colorAccent">#FF4081</color>
     <color name="White">#FFFFFF</color>

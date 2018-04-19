@@ -307,10 +307,9 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
     }
     public void showInventory(){
         ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
-        ArrayList<ArrayList<Expression>> assumptionList = new ArrayList<ArrayList<Expression>>();
 
         ArrayList<String> topSections = new ArrayList<String>();
-        topSections.add("Hypothesis");
+        topSections.add("Hypothesis");topSections.add("Base");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -337,8 +336,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                 tempList.add(expr);
             }
             botRecycler.add(tempList);
+            if(!(i==0)){
+                topSections.add("Scope " + i);
+            }
             i++;
-            topSections.add("Scope " + i);
         }
         if (!inventoryLayout.isShown()){
             parentHolderAdapter.updateInventory(botRecycler,topSections,tempAssumptions);
