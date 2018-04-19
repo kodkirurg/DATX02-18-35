@@ -1,10 +1,12 @@
-TITLE Level 008
+TITLE Implication and Conjunction
 
 DESCRIPTION START
 *Text goes here*
 DESCRIPTION END
 
-SYMBOL P BlueBall
-SYMBOL Q RedBall
+SYMBOL P Sun
+SYMBOL Q Wonky
+
+RULESET IMPLICATION CONJUNCTION
 
 GOAL (P & Q) > P
