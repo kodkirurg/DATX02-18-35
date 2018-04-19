@@ -233,7 +233,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
-                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,120,170,false);
+                    ((TextView)popUpView.findViewById(R.id.popup_level_title)).setText(level.title);
                     ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                 }
                 popupWindow.showAtLocation(contentView, Gravity.CENTER,0,0);
