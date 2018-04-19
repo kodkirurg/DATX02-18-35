@@ -503,7 +503,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         public void handleAction(final Action action) throws GameException {
             if (action instanceof RefreshGameboardAction){
                 Iterable<Expression> data =  ((RefreshGameboardAction) action).boardExpressions;
-                adapterLeft.updateBoard(data);
+                Expression assumption = ((RefreshGameboardAction) action).assumptionExpression;
+                adapterLeft.updateBoard(data,assumption);
 
             }
             else if (action instanceof SaveUserDataAction){

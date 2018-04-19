@@ -34,6 +34,7 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     LevelsAdapter adapter;
+    boolean levelbeenstarted=false;
     public int categoryIndex = 0;
     public int categorySize = -1;
     private float xDown, xUp;
@@ -100,6 +101,7 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        levelbeenstarted=false;
         callback = new LevelsCallback();
         try {
             Controller.getSingleton().handleAction(new RequestLevelsAction(callback));
@@ -110,9 +112,12 @@ public class Levels extends AppCompatActivity implements View.OnClickListener {
 
     public void startLevel(Level level){
         try {
-            Controller.getSingleton().handleAction(new RequestStartNewSessionAction(callback,level));
-            Intent intent = new Intent(this, GameBoard.class); //create intent
-            startActivity(intent); //start intent
+            if(!levelbeenstarted) {
+                Controller.getSingleton().handleAction(new RequestStartNewSessionAction(callback, level));
+                Intent intent = new Intent(this, GameBoard.class); //create intent
+                startActivity(intent); //start intent
+                levelbeenstarted=true;
+            }
         } catch (GameException e) {
             e.printStackTrace();
         }

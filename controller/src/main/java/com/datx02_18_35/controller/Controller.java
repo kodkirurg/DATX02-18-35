@@ -241,7 +241,7 @@ public class Controller extends ActionConsumer {
     }
 
     private Action getRefreshGameboardAction() throws IllegalGameStateException {
-        return new RefreshGameboardAction(game.getSession().getGameBoard());
+        return new RefreshGameboardAction(game.getSession().getGameBoard(),game.getSession().getAssumption());
     }
     private Action getRefreshHypothesisAction() throws IllegalGameStateException {
         return new RefreshHypothesisAction(game.getSession().getHypotheses());

@@ -1,0 +1,28 @@
+TITLE Disjunction Introduction
+
+DESCRIPTION START
+A disjunction between two expression means that at least one of them is true. So if you already know an expression is true, you may create a disjunction between it and any other expression.
+
+To do this, select an expression and apply the "disjunction introduction" rule on it. This will open up the same editor you used when making assumptions.
+
+Note that there's two versions of this rule, as you can choose in what order you want the expressions to be in. The "1" represents the expression you selected and the hammer is the expression you create in the editor.
+DESCRIPTION END
+
+// Available symbol names:
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
+
+SYMBOL P Squares
+SYMBOL Q Diamond
+
+RULESET DISJUNCTION_INTRODUCTION
+
+HYPOTHESIS P
+
+GOAL P | Q

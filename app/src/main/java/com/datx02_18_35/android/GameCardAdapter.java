@@ -26,6 +26,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     private int currentHighestSelectedCard=0;
     Expression goal;
     ArrayList<Expression> dataSet;
+    Expression assumptionOfCurrentScope;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
     private boolean clickable=true;
@@ -40,12 +41,13 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         this.cardWidth=cardHWidth;
     }
 
-    void updateBoard(final Iterable<Expression> data){
+    void updateBoard(final Iterable<Expression> data,final Expression assumption){
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 dataSet.clear();
                 for (Expression expression : data) {dataSet.add(expression);}
+                assumptionOfCurrentScope=assumption;
                 notifyDataSetChanged();
                 restoreSelections();
             }
@@ -79,7 +81,11 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             setAnimations(holder.cardView);
         }
         if(null != dataSet.get(position) & !holder.alreadyBound){
-            CardInflator.inflate(holder.cardView,dataSet.get(position),cardWidth,cardHeight,false);
+            if(dataSet.get(position).equals(assumptionOfCurrentScope)) {
+                CardInflator.inflateAssumption(holder.cardView, dataSet.get(position), cardWidth, cardHeight, false);
+            }else {
+                CardInflator.inflate(holder.cardView, dataSet.get(position), cardWidth, cardHeight, false);
+            }
             if(dataSet.get(position).equals(goal)){
                 setVictoryAnimation(holder.cardView);
             }

@@ -19,6 +19,8 @@ import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
 
+import org.w3c.dom.Text;
+
 import java.util.Map;
 
 import game.logic_game.R;
@@ -235,6 +237,18 @@ public class CardInflator {
         }
     }
 
+
+    public static void inflateAssumption(CardView cardView, Expression expr, final float width, final float height, boolean matchParent){
+        inflate(cardView,expr,width,height,matchParent);
+        ImageView imageView = new ImageView(cardView.getContext());
+        imageView.setImageResource(R.drawable.assumption_symbol);
+        imageView.setScaleX(0.3f);
+        imageView.setScaleY(0.3f);
+        imageView.setElevation(cardView.getElevation()+1);
+        cardView.addView(imageView);
+      // TODO: PUT ASSUMPTION SYMBOL ON INFLATED CARD:
+
+    }
     //new card recursion
     private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
         cardViewQuad.setCardBackgroundColor(Color.TRANSPARENT);
