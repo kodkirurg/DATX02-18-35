@@ -66,7 +66,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
                 ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText(highscore);
             }
             else {
-                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorPrimaryLight));
+                holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorPrimary));
                 ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
             }
         }

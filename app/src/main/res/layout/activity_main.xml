@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_main"
-    android:background="@color/colorSecondary"
+    android:background="@color/colorPrimary"
     >
 
 
@@ -17,8 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
-
-        android:src="@drawable/title_small" />
+        android:elevation="10dp"
+        android:src="@drawable/title_big_shadow" />
     <RelativeLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"
@@ -36,6 +36,8 @@
             android:text="Start"
             android:layout_margin="10dp"
             android:textSize="30dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#ffd966"
             android:textAllCaps="false">
 
 
@@ -50,6 +52,8 @@
             android:textSize="30dp"
             android:layout_centerHorizontal="true"
             android:text="Quit"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#ffd966"
             android:textAllCaps="false">
 
         </Button>
@@ -62,8 +66,8 @@
         android:layout_below="@+id/button_container"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-
-        android:src="@drawable/game_icon" />
+        android:elevation="10dp"
+        android:src="@drawable/game_icon_fixed" />
 
 
 
