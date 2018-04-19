@@ -49,7 +49,10 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/White"
                 android:text="@string/undefined"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textAlignment="center"
+
+                />
 
 
 
