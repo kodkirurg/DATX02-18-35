@@ -3,10 +3,13 @@ package com.datx02_18_35.android;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -238,16 +241,23 @@ public class CardInflator {
     }
 
 
-    public static void inflateAssumption(CardView cardView, Expression expr, final float width, final float height, boolean matchParent){
+    public static void inflateAssumption(final CardView cardView, Expression expr, final float width, final float height, boolean matchParent){
         inflate(cardView,expr,width,height,matchParent);
-        ImageView imageView = new ImageView(cardView.getContext());
+        final ImageView imageView = new ImageView(cardView.getContext());
         imageView.setImageResource(R.drawable.assumption_symbol);
-        imageView.setScaleX(0.3f);
-        imageView.setScaleY(0.3f);
         imageView.setElevation(cardView.getElevation()+1);
         cardView.addView(imageView);
-      // TODO: PUT ASSUMPTION SYMBOL ON INFLATED CARD:
+        cardView.post(new Runnable() {
+            @Override
+            public void run() {
+                int y = cardView.getMeasuredHeight()/5;
+                imageView.getLayoutParams().width=cardView.getMeasuredWidth()/5;
+                imageView.getLayoutParams().height=y;
+                imageView.requestLayout();
+                imageView.setY(cardView.getMeasuredHeight()/2 - y / 2);
 
+            }
+        });
     }
     //new card recursion
     private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
