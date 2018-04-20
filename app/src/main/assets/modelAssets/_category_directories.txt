@@ -2,4 +2,5 @@ CATEGORY basic_conjunction
 CATEGORY basic_implication
 CATEGORY basic_disjunction
 CATEGORY basic_absurdity
+CATEGORY intermediate
 CATEGORY hard
