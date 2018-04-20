@@ -1,0 +1,22 @@
+TITLE Deep implications
+
+DESCRIPTION START
+This proof may have deep implications on your cognitive abilities...
+DESCRIPTION END
+
+// Available symbol names:
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
+
+SYMBOL P Arrows
+SYMBOL Q Cross
+
+RULESET CONSTRUCTIVE
+
+GOAL P > (Q > (Q & P))

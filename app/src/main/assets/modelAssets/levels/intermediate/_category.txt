@@ -1,2 +1,3 @@
 TITLE Intermediate
+deep_implications.txt
 constructive.txt
