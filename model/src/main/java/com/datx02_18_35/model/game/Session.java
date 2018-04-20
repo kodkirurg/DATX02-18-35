@@ -185,7 +185,7 @@ public class Session {
 
 
     public int getScopeDepth(){
-        return scopes.size();
+        return scopes.size() - 1;
     }
 
     public boolean isExpressionInScope(Expression expression) {
