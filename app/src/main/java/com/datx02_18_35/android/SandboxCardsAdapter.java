@@ -54,8 +54,9 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
             CardInflator.inflate(holder.cardView, dataSet.get(position),cardWidth,cardHeight,false);
             holder.alreadyBound=true;
         }
-
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -85,13 +86,6 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 Fx.deselectAnimation(view.getContext(),view);
                 ArrayList<Expression> newList = new ArrayList<>();
                 previousSelectedOperatorHolder=null;
-                //de-selection and remove from list
-/*                for (Expression item : selected ){
-                    if(item.equals(expr)){
-                        continue;
-                    }
-                    newList.add(item);
-                }*/
                 selected=newList;
                 activity.button.setText("No " + activity.reason +"(exit)");
                 activity.button.setBackgroundColor(Color.RED);
@@ -121,6 +115,8 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 //add new expression
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
+                //scroll to last pos when new card added
+                activity.recyclerViewLeft.smoothScrollToPosition(dataSet.size()-1);
             }
             else{
                 ArrayList<Expression> newSelection = new ArrayList<Expression>();
@@ -142,22 +138,13 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         boolean alreadyBound=false;
-
 
         ViewHolder(CardView itemView) {
             super(itemView);
             cardView = itemView;
-        }
-
-
-
-        @Override
-        public void onClick(View view) {
-
-
         }
     }
 }
