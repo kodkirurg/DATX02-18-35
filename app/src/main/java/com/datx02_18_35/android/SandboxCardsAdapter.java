@@ -116,7 +116,7 @@ public class SandboxCardsAdapter extends RecyclerView.Adapter<SandboxCardsAdapte
                 dataSet.add(expression);
                 notifyItemInserted(dataSet.size());
                 //scroll to last pos when new card added
-                activity.recyclerViewLeft.smoothScrollToPosition(dataSet.size()-1);
+                activity.recyclerViewLeft.scrollToPosition(dataSet.size()-1);
             }
             else{
                 ArrayList<Expression> newSelection = new ArrayList<Expression>();

@@ -24,9 +24,9 @@ import game.logic_game.R;
 
 public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHolder> implements View.OnClickListener {
     private int currentHighestSelectedCard=0;
-    Expression goal;
+    private Expression goal;
     ArrayList<Expression> dataSet;
-    Expression assumptionOfCurrentScope;
+    private Expression assumptionOfCurrentScope;
     ArrayList<Integer> selected=new ArrayList<>();
     HashMap<Integer, CardView> selectedView = new HashMap<>();
     private boolean clickable=true;
@@ -50,6 +50,8 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
                 assumptionOfCurrentScope=assumption;
                 notifyDataSetChanged();
                 restoreSelections();
+                //scroll to last pos to show new card
+                activity.recyclerViewLeft.scrollToPosition(dataSet.size()-1);
             }
         });
 
@@ -86,9 +88,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
             }else {
                 CardInflator.inflate(holder.cardView, dataSet.get(position), cardWidth, cardHeight, false);
             }
-            if(dataSet.get(position).equals(goal)){
-                setVictoryAnimation(holder.cardView);
-            }
             holder.alreadyBound=true;
         }
     }
@@ -119,8 +118,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
         currentHighestSelectedCard++;
         v.findViewById(R.id.card_number_text_view).setTag(R.id.card_number,currentHighestSelectedCard);
         ((TextView)v.findViewById(R.id.card_number_text_view)).setText(""+ v.findViewById(R.id.card_number_text_view).getTag(R.id.card_number));
-
-
         setAnimations(v);
     }
 
@@ -175,11 +172,6 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.ViewHo
     private void setAnimations(CardView cardView){
 
         Fx.selectAnimation(cardView.getContext(), cardView);
-    }
-
-    //TO-DO: Something cool wtih the card that made you win
-    private void setVictoryAnimation(CardView cardView){
-
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
