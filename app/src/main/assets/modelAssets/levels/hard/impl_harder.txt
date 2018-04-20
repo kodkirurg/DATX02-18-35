@@ -1,0 +1,15 @@
+TITLE Implication Harder
+
+DESCRIPTION START
+Try this!
+DESCRIPTION END
+
+SYMBOL P Sun
+SYMBOL Q Wonky
+
+
+RULESET CONSTRUCTIVE
+
+HYPOTHESIS P > Q
+
+GOAL (Q > #) > (P > #)
