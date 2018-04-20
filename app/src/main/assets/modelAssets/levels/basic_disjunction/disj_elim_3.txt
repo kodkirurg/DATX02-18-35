@@ -1,7 +1,7 @@
 TITLE Disjunction Elimination 2
 
 DESCRIPTION START
-In this level you'll need to use implication elimination and disjunction elimination.
+In this level you'll need to prove one of the implications needed for the disjunction elimination yourself. If you're unsure how to do this, go back and redo the implication levels again.
 DESCRIPTION END
 
 // Available symbol names:
