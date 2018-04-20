@@ -312,10 +312,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
-        ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
 
-        ArrayList<String> topSections = new ArrayList<String>();
-        topSections.add("Hypothesis");topSections.add("Base");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -324,31 +321,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             e.printStackTrace();
         }
 
-        ArrayList<Expression> tempHypothesis = new ArrayList<>();
-        for (Expression expr: hypothesis){
-            tempHypothesis.add(expr);
-        }
-
-
-        ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
-        for (Expression expr: assumptions){
-            tempAssumptions.add(expr);
-        }
-        botRecycler.add(tempHypothesis);
-        int i =0;
-        for (Iterable<Expression> iter: inventories){
-            ArrayList<Expression> tempList =new ArrayList<Expression>();
-            for (Expression expr :iter) {
-                tempList.add(expr);
-            }
-            botRecycler.add(tempList);
-            if(!(i==0)){
-                topSections.add("Scope " + i);
-            }
-            i++;
-        }
         if (!inventoryLayout.isShown()){
-            parentHolderAdapter.updateInventory(botRecycler,topSections,tempAssumptions);
+            parentHolderAdapter.updateInventory(hypothesis, assumptions, inventories);
             startAnimation(slide_right, inventoryLayout);
         }
     }
