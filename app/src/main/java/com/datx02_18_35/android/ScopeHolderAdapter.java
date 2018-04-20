@@ -6,7 +6,6 @@ import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +15,22 @@ import android.widget.TextView;
 import com.datx02_18_35.controller.Controller;
 import com.datx02_18_35.controller.dispatch.actions.viewActions.RequestMoveFromInventoryAction;
 import com.datx02_18_35.model.GameException;
-import com.datx02_18_35.model.Util;
 import com.datx02_18_35.model.expression.Expression;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import game.logic_game.R;
 
-import static com.datx02_18_35.android.GameBoard.level;
-
 public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.ViewHolder> implements View.OnClickListener {
-    GameBoard activity;
-    private ArrayList<ArrayList<Expression>> dataSet = new ArrayList<ArrayList<Expression>>();
-    private ArrayList<Expression> dataSet2 = new ArrayList<Expression>();
-    private ArrayList<String> section = new ArrayList<String>();
+    private GameBoard activity;
+    private int count;
+    private List<Expression> hypothesis;
+    private List<Expression> assumptions;
+    private List<List<Expression>> inventories;
+
+    private final static int ASSUMPTION_INDEX_OFFSET = 2;
+    private final static int INVENTORIES_INDEX_OFFSET = 1;
 
     public ScopeHolderAdapter(GameBoard activity){
         this.activity = activity;
@@ -44,7 +45,7 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(position<=1){
+        if(position < ASSUMPTION_INDEX_OFFSET){
             ConstraintSet set = new ConstraintSet();
             holder.rightContainer.getLayoutParams().height= ViewGroup.LayoutParams.WRAP_CONTENT;
             set.clone(holder.layout);
@@ -61,36 +62,71 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
         else {
             holder.cardView.setOnClickListener(this);
             holder.setIsRecyclable(false);
-            holder.cardView.setTag(position-2);
+            holder.cardView.setTag(position-ASSUMPTION_INDEX_OFFSET);
             holder.cardView.setTag(R.string.viewholders,holder);
             holder.cardView.setBackgroundColor(Color.GRAY);
-            if(dataSet2.get(position-2)!= null & !holder.alreadyBound) {
-                CardInflator.inflate((CardView) holder.cardView,dataSet2.get(position-2),120,170,false);
+            if(!holder.alreadyBound) {
+                CardInflator.inflate((CardView) holder.cardView,assumptions.get(position-ASSUMPTION_INDEX_OFFSET),120,170,false);
                 holder.alreadyBound = true;
             }
 
         }
-        holder.assumptionText.setText("Assumption");
-        holder.scopeText.setText(section.get(position));
+
+        if (position == 0) {
+            holder.assumptionText.setText("");
+            holder.scopeText.setText("Hypothesis");
+        } else if (position == 1) {
+            holder.assumptionText.setText("");
+            holder.scopeText.setText("Inventory");
+        } else {
+            holder.assumptionText.setText("Assumption #" + (position-ASSUMPTION_INDEX_OFFSET));
+            holder.scopeText.setText("Inventory");
+        }
+
+        //holder.assumptionText.setText("Assumption");
+        //holder.scopeText.setText(section.get(position));
 
         LinearLayoutManager hs_linearLayout = new LinearLayoutManager(this.activity, LinearLayoutManager.HORIZONTAL, false);
         holder.childRecycleView.setLayoutManager(hs_linearLayout);
         holder.childRecycleView.setHasFixedSize(false);
-        InventoryAdapter inventoryChildAdapter = new InventoryAdapter(dataSet.get(position), this.activity);
+        List<Expression> expressions;
+        if (position < INVENTORIES_INDEX_OFFSET) {
+            expressions = hypothesis;
+        }
+        else {
+            expressions = inventories.get(position - INVENTORIES_INDEX_OFFSET);
+        }
+        InventoryAdapter inventoryChildAdapter = new InventoryAdapter(expressions, this.activity);
         holder.childRecycleView.setAdapter(inventoryChildAdapter);
+
+
     }
-    public void updateInventory(final ArrayList<ArrayList<Expression>> newSet,
-                                final ArrayList<String> newSection,
-                                final ArrayList<Expression> newSet2 ) {
+    public void updateInventory(final Iterable<Expression> _hypothesis,
+                                final Iterable<Expression> _assumptions,
+                                final Iterable<Iterable<Expression>> _inventories) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dataSet.clear();
-                section.clear();
-                dataSet2.clear();
-                dataSet2.addAll(newSet2);
-                section.addAll(newSection);
-                dataSet.addAll(newSet);
+
+                hypothesis = new ArrayList<>();
+                for (Expression expr : _hypothesis) {
+                    hypothesis.add(expr);
+                }
+
+                count = 2;
+                assumptions = new ArrayList<>();
+                for (Expression expr : _assumptions) {
+                    assumptions.add(expr);
+                    count += 1;
+                }
+                inventories = new ArrayList<>();
+                for (Iterable<Expression> inventory : _inventories) {
+                    List<Expression> inventoryList = new ArrayList<>();
+                    inventories.add(inventoryList);
+                    for (Expression expr : inventory) {
+                        inventoryList.add(expr);
+                    }
+                }
                 notifyDataSetChanged();
             }
         });
@@ -98,13 +134,13 @@ public class ScopeHolderAdapter extends RecyclerView.Adapter<ScopeHolderAdapter.
 
     @Override
     public int getItemCount() {
-        return (section.size());
+        return count;
     }
 
     @Override
     public void onClick(View view) {
         if (view!=null) {
-            Expression selectedCard = dataSet2.get((int) view.getTag());
+            Expression selectedCard = assumptions.get((int) view.getTag());
             try {
                 Controller.getSingleton().handleAction(new RequestMoveFromInventoryAction(GameBoard.boardCallback,selectedCard));
             } catch (GameException e) {
