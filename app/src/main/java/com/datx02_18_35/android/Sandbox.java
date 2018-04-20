@@ -113,4 +113,15 @@ public class Sandbox extends AppCompatActivity implements View.OnClickListener {
         adapterLeft.selected=new ArrayList<Expression>();
         adapterRight.previousSelectedOperatorHolder=null;
     }
+
+    //if app has been down for a while memory will be trimmed and the app will crash
+    //unless we release memory, i.e lets kill it in a controlled way
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if(TRIM_MEMORY_COMPLETE==level){
+            finish();
+        }
+    }
+
 }

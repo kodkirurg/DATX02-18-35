@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -193,6 +194,17 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         CardInflator.inflate((CardView) findViewById(R.id.gameBoard_goal),level.goal,gameBoardScreenInfo.cardWidth,gameBoardScreenInfo.cardHeight,false);
 
 
+    }
+
+
+    //if app has been down for a while memory will be trimmed and the app will crash
+    //unless we release memory, i.e lets kill it in a controlled way
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if(TRIM_MEMORY_COMPLETE==level){
+            finish();
+        }
     }
 
     public boolean isLevelCompleted() {
