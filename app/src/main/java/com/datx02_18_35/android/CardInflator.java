@@ -291,18 +291,6 @@ public class CardInflator {
 
         String symbol = ((Proposition)expression).getSymbol();
         switch (symbol.toLowerCase()){
-            case "redball":
-                Tools.setImage(imageView,R.drawable.redball);
-                break;
-            case "blueball" :
-                Tools.setImage(imageView,R.drawable.blueball);
-                break;
-            case "greentriangle" :
-                Tools.setImage(imageView,R.drawable.greentriangle);
-                break;
-            case "yellowrectangle":
-                Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
             case "arrows":
                 Tools.setImage(imageView,R.drawable.arrows);
                 break;

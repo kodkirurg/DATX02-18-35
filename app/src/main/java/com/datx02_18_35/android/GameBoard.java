@@ -66,29 +66,31 @@ import java.util.Objects;
 import game.logic_game.R;
 
 public class GameBoard extends AppCompatActivity implements View.OnClickListener,Animation.AnimationListener {
-    TextView scoreView;
-    Button nextLevel;
-    Button mainMenu;
-    Toolbar toolbar;
-    TextView scopeLevel;
-    ConstraintLayout inventoryLayout;
-    ConstraintLayout victoryScreen;
-    Animation slide_left,delete,slide_right;
-    boolean clickable=true;
-    boolean sandboxOpened = false;
-    public static BoardCallback boardCallback;
-    public static OpenSandboxAction sandboxAction=null;
-    public boolean victory=false;
-    public Iterable<Expression> hypothesis;
-    public Iterable<Iterable<Expression>> inventories;
-    public Iterable<Expression> assumptions;
-    public int scopeLevelInt;
-    public static Level level;
+    private TextView scoreView;
+    private Button nextLevel;
+    private Button mainMenu;
+    private Toolbar toolbar;
+    private TextView scopeLevel;
+    private ConstraintLayout inventoryLayout;
+    private ConstraintLayout victoryScreen;
+    private Animation slide_left,delete,slide_right;
+    private boolean clickable=true;
+    private boolean sandboxOpened = false;
+    private boolean victory=false;
+    private Iterable<Expression> hypothesis;
+    private Iterable<Iterable<Expression>> inventories;
+    private Iterable<Expression> assumptions;
+    private int scopeLevelInt;
+
     public boolean infoWindowClicked=true;
     public PopupWindow popupWindow;
     public View popUpView;
     public View.OnClickListener clickListener;
     public CardView winningAnimationCard=null;
+
+    public static BoardCallback boardCallback;
+    public static OpenSandboxAction sandboxAction=null;
+    public static Level level;
 
     //recyclerviews
     public RecyclerView recyclerViewLeft,recyclerViewRight,parentInvRecyclerView;
@@ -193,6 +195,10 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    public boolean isLevelCompleted() {
+        return victory;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
@@ -233,7 +239,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
                     int width = bigView.getWidth()  - bigView.getWidth() / 15;
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(height);
-                    CardInflator.inflate((CardView) popUpView.findViewById(R.id.popup_goalCard),level.goal,120,170,false);
+                    ((TextView)popUpView.findViewById(R.id.popup_level_title)).setText(level.title);
                     ((TextView)popUpView.findViewById(R.id.popup_level_description)).setText(level.description);
                 }
                 popupWindow.showAtLocation(contentView, Gravity.CENTER,0,0);
@@ -306,10 +312,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         }
     }
     public void showInventory(){
-        ArrayList<ArrayList<Expression>> botRecycler = new ArrayList<ArrayList<Expression>>();
 
-        ArrayList<String> topSections = new ArrayList<String>();
-        topSections.add("Hypothesis");topSections.add("Base");
         try {
             Controller.getSingleton().handleAction(new RequestScopeLevelAction(boardCallback));
             Controller.getSingleton().handleAction(new RequestInventoryAction(boardCallback));
@@ -318,31 +321,8 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
             e.printStackTrace();
         }
 
-        ArrayList<Expression> tempHypothesis = new ArrayList<>();
-        for (Expression expr: hypothesis){
-            tempHypothesis.add(expr);
-        }
-
-
-        ArrayList<Expression> tempAssumptions = new ArrayList<Expression>();
-        for (Expression expr: assumptions){
-            tempAssumptions.add(expr);
-        }
-        botRecycler.add(tempHypothesis);
-        int i =0;
-        for (Iterable<Expression> iter: inventories){
-            ArrayList<Expression> tempList =new ArrayList<Expression>();
-            for (Expression expr :iter) {
-                tempList.add(expr);
-            }
-            botRecycler.add(tempList);
-            if(!(i==0)){
-                topSections.add("Scope " + i);
-            }
-            i++;
-        }
         if (!inventoryLayout.isShown()){
-            parentHolderAdapter.updateInventory(botRecycler,topSections,tempAssumptions);
+            parentHolderAdapter.updateInventory(hypothesis, assumptions, inventories);
             startAnimation(slide_right, inventoryLayout);
         }
     }
