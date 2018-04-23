@@ -1,0 +1,27 @@
+TITLE Constructive Logic
+
+DESCRIPTION START
+Intro about how all the rules so far creates constructive logic
+
+This one might be too hard for intermediate
+DESCRIPTION END
+
+// Available symbol names:
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
+
+SYMBOL P CrossAndCircle
+SYMBOL Q Wonky
+
+RULESET CONSTRUCTIVE
+
+HYPOTHESIS P | Q
+HYPOTHESIS (P & Q) > #
+
+GOAL (P > #) | (Q > #)

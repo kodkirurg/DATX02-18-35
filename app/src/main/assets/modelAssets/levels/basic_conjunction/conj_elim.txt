@@ -3,13 +3,13 @@ TITLE Conjunction Elimination
 DESCRIPTION START
 If you know you have two things, you also know that you have each one of those things. This is called conjunction elimination.
 
-Select the card with the two symbols and a conjunction between them, and apply the conjunction elimination rule on it.
+Select the expression with the two symbols and a conjunction between them, and apply the conjunction elimination rule on it.
 DESCRIPTION END
 
 SYMBOL P Sun
 SYMBOL Q Wonky
 
-RULESET CONJUNCTION
+RULESET CONJUNCTION_ELIMINATION
 
 HYPOTHESIS P & Q
 

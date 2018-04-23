@@ -3,7 +3,7 @@ TITLE Inventory Use
 DESCRIPTION START
 Here we need to learn how to use the inventory. To open the inventory either press the briefcase at the toolbar at the top or press the left border of the screen.
 
-Once in the inventory you may introduce another card to the game board by selecting it.
+Once in the inventory you may introduce another card to the game board by pressing on it.
 
 Then close the inventory to get back to the game board, by either clicking the briefcase or on the right border of the screen.
 DESCRIPTION END

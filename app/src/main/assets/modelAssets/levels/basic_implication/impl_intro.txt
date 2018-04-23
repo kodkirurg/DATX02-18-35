@@ -1,12 +1,14 @@
 TITLE Implication Introduction
 
 DESCRIPTION START
-Here you will learn how to create implication cards from almost nothing, by making an assumption.
+Here you will learn how to create implications from almost nothing, by making an assumption. You can assume any expression, and it can implicate anything you know to be true.
 
-You can assume any expression, and it can implicate anything you know to be true.
+To try this, click the thought bubble at the top to begin the assumption. This will bring up an editor where you can construct any type of expression you wish, as it's only an assumption. We'll cover how to create more complicated assumptions later, but for now, simply select the Sun and press "Make assumption!".
 
-Try this, click the thought bubble at the top to begin the assumtion. Use the inventory when choosing what the assumption will implicate.
+Once you have your assumption, you may introduce other expressions from your inventory and combine them as you wish. To create an implication select a card on the game board and apply the implication introduction rule on it. This will return you to the original game board, or previous scope as it's called, and you'll have created an a new implication.
 DESCRIPTION END
+
+RULESET IMPLICATION
 
 SYMBOL P Sun
 SYMBOL Q Wonky

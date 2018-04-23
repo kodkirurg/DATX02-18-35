@@ -14,6 +14,7 @@ import com.datx02_18_35.model.GameException;
 import com.datx02_18_35.model.expression.Expression;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import game.logic_game.R;
 
@@ -22,11 +23,11 @@ import game.logic_game.R;
  */
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> implements View.OnClickListener {
-    private ArrayList<Expression> dataSet;
+    private List<Expression> dataSet;
     GameBoard activity;
 
 
-    public InventoryAdapter(ArrayList<Expression> dataSet, GameBoard activity){
+    public InventoryAdapter(List<Expression> dataSet, GameBoard activity){
         this.dataSet = dataSet;
         this.activity = activity;
     }

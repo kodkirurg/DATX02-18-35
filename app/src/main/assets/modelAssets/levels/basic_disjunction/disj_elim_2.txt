@@ -1,0 +1,27 @@
+TITLE Disjunction Elimination 2
+
+DESCRIPTION START
+In this level you'll need to use implication elimination and disjunction elimination.
+DESCRIPTION END
+
+// Available symbol names:
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
+
+SYMBOL P Squares
+SYMBOL Q Diamond
+SYMBOL R Arrows
+
+RULESET IMPLICATION DISJUNCTION_ELIMINATION CONJUNCTION_ELIMINATION
+
+HYPOTHESIS P | Q
+HYPOTHESIS P > R
+HYPOTHESIS Q > R & Q
+
+GOAL R

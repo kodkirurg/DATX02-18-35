@@ -3,10 +3,13 @@ package com.datx02_18_35.android;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +21,8 @@ import com.datx02_18_35.model.expression.Expression;
 import com.datx02_18_35.model.expression.Implication;
 import com.datx02_18_35.model.expression.Operator;
 import com.datx02_18_35.model.expression.Proposition;
+
+import org.w3c.dom.Text;
 
 import java.util.Map;
 
@@ -235,6 +240,25 @@ public class CardInflator {
         }
     }
 
+
+    public static void inflateAssumption(final CardView cardView, Expression expr, final float width, final float height, boolean matchParent){
+        inflate(cardView,expr,width,height,matchParent);
+        final ImageView imageView = new ImageView(cardView.getContext());
+        imageView.setImageResource(R.drawable.assumption_symbol);
+        imageView.setElevation(cardView.getElevation()+1);
+        cardView.addView(imageView);
+        cardView.post(new Runnable() {
+            @Override
+            public void run() {
+                int y = cardView.getMeasuredHeight()/5;
+                imageView.getLayoutParams().width=cardView.getMeasuredWidth()/5;
+                imageView.getLayoutParams().height=y;
+                imageView.requestLayout();
+                imageView.setY(cardView.getMeasuredHeight()/2 - y / 2);
+
+            }
+        });
+    }
     //new card recursion
     private static CardView newSmallCard(CardView topCardView,CardView cardViewQuad, Expression expression ){
         cardViewQuad.setCardBackgroundColor(Color.TRANSPARENT);
@@ -267,18 +291,6 @@ public class CardInflator {
 
         String symbol = ((Proposition)expression).getSymbol();
         switch (symbol.toLowerCase()){
-            case "redball":
-                Tools.setImage(imageView,R.drawable.redball);
-                break;
-            case "blueball" :
-                Tools.setImage(imageView,R.drawable.blueball);
-                break;
-            case "greentriangle" :
-                Tools.setImage(imageView,R.drawable.greentriangle);
-                break;
-            case "yellowrectangle":
-                Tools.setImage(imageView,R.drawable.yellowrectangle);
-                break;
             case "arrows":
                 Tools.setImage(imageView,R.drawable.arrows);
                 break;

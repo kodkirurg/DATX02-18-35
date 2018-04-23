@@ -1,17 +1,17 @@
 TITLE Implication Elimination
 
 DESCRIPTION START
-Here we introduce a new kind of card, the implication card.
+Here we introduce a new kind of expression: Implication!
 
-The implication card can be combined with whatever card is over/to the left of the implication arrow to produce the card to the right of the implication arrow.
+An implication can be combined with whatever expression the arrow is facing away from to produce the expression the arrow is pointing towards.
 
-Go ahead and give it a try by selecting the implication card and then the card with the Sun.
+Go ahead and give it a try by selecting the implication expression and then the card with the Sun.
 DESCRIPTION END
 
 SYMBOL P Sun
 SYMBOL Q Wonky
 
-RULESET IMPLICATION
+RULESET IMPLICATION_ELIMINATION
 
 HYPOTHESIS P > Q
 HYPOTHESIS P

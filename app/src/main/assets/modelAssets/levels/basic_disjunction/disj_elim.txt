@@ -1,0 +1,29 @@
+TITLE Disjunction Elimination
+
+DESCRIPTION START
+In this level we'll introduce "disjunction elimination". You can in fact prove new expressions from a disjunction even though you don't know which of the expressions in it are true. But to do this you need to show that each expression in the disjunction independently can imply the same thing.
+
+Here we've already provided you with two implications, which both implies the goal. Select all three cards and apply the "disjunction elimination" rule on them.
+DESCRIPTION END
+
+// Available symbol names:
+// Arrows
+// Cross
+// CrossAndCircle
+// Diamond
+// Donut
+// Squares
+// Sun
+// Wonky
+
+SYMBOL P Squares
+SYMBOL Q Diamond
+SYMBOL R Arrows
+
+RULESET DISJUNCTION_ELIMINATION
+
+HYPOTHESIS P | Q
+HYPOTHESIS P > R
+HYPOTHESIS Q > R
+
+GOAL R
