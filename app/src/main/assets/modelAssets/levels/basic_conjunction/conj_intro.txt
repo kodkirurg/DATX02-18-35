@@ -5,11 +5,11 @@ DIFFICULTY 0
 DESCRIPTION START
 Welcome to Gentzen's Quest, and your first level!
 
-The card above, shown as your goal represents a logical expression. In the area on the left you have expressions you know are true, and the quest is to prove the goal. If you select cards on the left you'll be presented with rules you can apply on them on the right side. Select a rule by simply pressing on it.
+In the area on the left you have expressions you know are true, and the quest is to prove the goal (shown in the bottom right area of the screen). If you select cards on the left you'll be presented with rules you can apply on them on the right side. Select a rule by simply pressing on it.
 
 As for this level: If you know one expression is true, and that another one is true, you know that both expressions are true together.
 
-Select each expression by pressing them and then select the "conjunction introduction" rule as it appears on the right. This will create a new expression with the two selected in conjunction as shown above as your goal.
+Select each expression by pressing them and then select the "conjunction introduction" rule as it appears on the right. This will create a new expression with the two selected in conjunction as shown in the bottom right as your goal.
 
 Note that the order matters!
 

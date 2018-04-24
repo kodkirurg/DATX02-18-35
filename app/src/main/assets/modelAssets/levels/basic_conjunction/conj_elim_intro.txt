@@ -1,7 +1,7 @@
 TITLE Conjunction Introduction and Elimination
 
 DESCRIPTION START
-Use both conjunction introduction and conjunction elimination.
+Use both conjunction introduction and conjunction elimination to solve this level.
 DESCRIPTION END
 
 SYMBOL P Sun
