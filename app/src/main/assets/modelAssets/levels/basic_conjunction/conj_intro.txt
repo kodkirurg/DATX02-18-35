@@ -13,7 +13,6 @@ Select each expression by pressing them and then select the "conjunction introdu
 
 Note that the order matters!
 
-To start playing press the X in the top right corner or outside of the description box. If you wish to see this information again, press the star symbol in the toolbar at the top of the screen.
 DESCRIPTION END
 
 SYMBOL P Sun
