@@ -642,7 +642,7 @@ public class GameBoard extends AppCompatActivity implements View.OnClickListener
         else if(inventoryLayout.isShown()){
             closeInventory();
         }
-        else if(scopeLevelInt>1){
+        else if(scopeLevelInt>=1){
             try{
                 Controller.getSingleton().handleAction(new RequestCloseScopeAction(GameBoard.boardCallback));
             }
