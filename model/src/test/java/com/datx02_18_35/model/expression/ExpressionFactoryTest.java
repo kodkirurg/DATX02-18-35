@@ -2,12 +2,24 @@ package com.datx02_18_35.model.expression;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class ExpressionFactoryTest {
 
     final static String propositionAsString1 = "abc123ABC&#";
-    final static ExpressionFactory expressionFactory = new ExpressionFactory(null);
+    final static Map<String,String> SymbolMap=getSymbolMap();
+    final static ExpressionFactory expressionFactory  = new ExpressionFactory(SymbolMap);
+
+    private static Map<String,String> getSymbolMap(){
+        Map<String,String> symbolMap = new HashMap<>();
+        for(int i='A';i<='Z';i++){
+            symbolMap.put(Character.toString((char)i),"Sun");
+        }
+        return symbolMap;
+    }
 
     @Test
     public void createProposition() {
