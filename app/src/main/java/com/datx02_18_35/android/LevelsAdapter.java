@@ -62,7 +62,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
             holder.cardView.setClickable(true);
             if (levelProgression != null && levelProgression.completed) {
                 holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.Green));
-                String highscore = "Highscore: " + levelProgressionMap.get(dataSet.get(position)).stepsApplied;
+                String highscore = "Score: " + levelProgressionMap.get(dataSet.get(position)).stepsApplied;
                 ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText(highscore);
             }
             else {
