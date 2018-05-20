@@ -54,7 +54,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
             holder.cardView.setEnabled(false);
             holder.cardView.setClickable(false);
             holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorSecondary));
-            ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
+            ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Score -");
         }
         else {
             LevelProgression levelProgression = levelProgressionMap.get(levelInCard);
@@ -67,7 +67,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.ViewHolder
             }
             else {
                 holder.cardView.setBackgroundColor(ContextCompat.getColor(holder.cardView.getContext(),R.color.colorPrimary));
-                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Highscore -");
+                ((TextView) holder.cardView.findViewById(R.id.card_level_highscore)).setText("Score -");
             }
         }
 
